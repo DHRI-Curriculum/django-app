@@ -150,6 +150,6 @@ def create_new_workshop(frontmatter):
   dhri_log(f"{f} (id {f.id}) has been updated with all the necessary information.")
 
   # Final warning about pre-requisites
-  dhri_warning(f"Note: Pre-requisites are not programmatically added, but must be added through the Django admin interface.")
+  dhri_warning(f"Pre-requisites are not programmatically added, but must be added through the Django admin interface.")
 
   return(w)
