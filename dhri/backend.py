@@ -13,6 +13,7 @@ from frontmatter.models import Frontmatter, Project, Resource, Literature, Contr
 
 
 def validate_existing(name, model=Workshop):
+  """ Validate whether database already contains workshop, and choose how to move on. Returns 0 (no workshop exists), 1 (one or more workshops exist so update latest), 2 (create duplicate workshop) """
   existing = model.objects.filter(name=name).count()
   message = None
   if existing == 0:
@@ -53,11 +54,10 @@ def update_workshop(frontmatter):
   w = Workshop.objects.get(pk=update_id)
   print(w.frontmatter)
   print(w.frontmatter.projects)
-  
+
   w.parent_backend = frontmatter['parent_backend']
   w.parent_repo = frontmatter['parent_repo']
   w.parent_branch = frontmatter['parent_branch']
-  # TODO: map all the values from frontmatter on here `w.XXXXX = frontmatter['XXXXXXX']
 
   ids = process_list(frontmatter['projects'], Project)
   w.frontmatter.projects.set(ids)
@@ -67,6 +67,8 @@ def update_workshop(frontmatter):
 
   ids = process_list(frontmatter['readings'], Literature)
   w.frontmatter.readings.set(ids)
+
+  # TODO: map all the collaborators from frontmatter here
 
   w.save()
 
