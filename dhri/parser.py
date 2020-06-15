@@ -5,7 +5,7 @@ import json
 # Regex setup
 MD_LIST_ELEMENTS = r"\- (.*)(\n|$)"
 NUMBERS = r"(\d+([\.,][\d+])?)"
-
+URL = r"(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])?"
 
 
 def load_data(json_file):
