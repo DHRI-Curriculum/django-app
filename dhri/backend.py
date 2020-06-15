@@ -110,10 +110,10 @@ def create_new_workshop(frontmatter):
   f.projects.set(ids)
 
   ids = process_list(frontmatter['resources'], Project)
-  f.projects.set(ids)
+  f.resources.set(ids)
 
   ids = process_list(frontmatter['readings'], Project)
-  f.projects.set(ids)
+  f.readings.set(ids)
 
   f.save()
 
