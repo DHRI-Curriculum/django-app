@@ -51,8 +51,6 @@ def update_workshop(frontmatter):
   dhri_log(f"Updating {frontmatter['name']}")
   update_id = Workshop.objects.latest('created').id
   w = Workshop.objects.get(pk=update_id)
-  print(w.frontmatter)
-  print(w.frontmatter.projects)
 
   w.parent_backend = frontmatter['parent_backend']
   w.parent_repo = frontmatter['parent_repo']
