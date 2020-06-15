@@ -8,16 +8,14 @@ from dhri.backend import validate_existing, create_new_workshop, update_workshop
 
 if __name__ == "__main__":
   # Process arguments
-  # TODO add a `--download` argument, which should be able to download any given repository using the now implemented `markdown_parser` functions in the dhri library.
-  if not len(sys.argv): dhri_error("Path to JSON file must be provided as first argument to script.")
+  # TODO: add a `--download` argument, which should be able to download any given repository using the now implemented `markdown_parser` functions in the dhri library.
+  if not len(sys.argv) > 1: dhri_error("Path to JSON file must be provided as first argument to script.")
   json_file = sys.argv[1]
 
   data = load_data(json_file) # Load data from json_file
   test_integrity(data) # Test data integrity
 
 
-  # Validate whether database already contains workshop, and choose how to move on
-  # `existing` will be set to 0 (no workshop exists), 1 (one or more workshops exist so update latest), 2 (create duplicate workshop)
   existing = validate_existing(data['frontmatter']['Name'])
 
 
@@ -26,7 +24,7 @@ if __name__ == "__main__":
   ## frontmatter
   frontmatter = parse_frontmatter(data['frontmatter'])
 
-  ## TODO add other parsers here (below `parse_frontmatter`)
+  ## TODO: add other parsers here (below `parse_frontmatter`)
 
 
   # TODO: *temporarily here* here, I fix the numbers for the estimated time, which should not be done here but rather in the parser, so this should be removed/moved to DHRIParser.py
