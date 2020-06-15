@@ -28,7 +28,7 @@ def validate_existing(name, model=Workshop):
     return(int(validate))
 
 
-def process_list(the_list, model)
+def process_list(the_list, model):
   """ Validates a list of list of names (the_list) against the database, asks the user whether to update with the new data or create a new database object with the same information. Return a list of the resulting ids, which can be inserted into a new database object. """
   ids = []
   for name in the_list:
@@ -51,8 +51,6 @@ def update_workshop(frontmatter):
   dhri_log(f"Updating {frontmatter['name']}")
   update_id = Workshop.objects.latest('created').id
   w = Workshop.objects.get(pk=update_id)
-  print(w.frontmatter)
-  print(w.frontmatter.projects)
 
   w.parent_backend = frontmatter['parent_backend']
   w.parent_repo = frontmatter['parent_repo']
@@ -102,8 +100,19 @@ def create_new_workshop(frontmatter):
         workshop = w,
         abstract = frontmatter['abstract'],
         learning_objectives = frontmatter['learning_objectives'],
-        estimated_time = frontmatter['estimated_time'],
+        estimated_time = frontmatter['estimated_time']
       )
+  f.save()
+
+  ids = process_list(frontmatter['projects'], Project)
+  f.projects.set(ids)
+
+  ids = process_list(frontmatter['resources'], Project)
+  f.resources.set(ids)
+
+  ids = process_list(frontmatter['readings'], Project)
+  f.readings.set(ids)
+
   f.save()
 
   return(w)
