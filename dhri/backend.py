@@ -41,10 +41,15 @@ def process_list(the_list, model):
       ids.append(instance.id)
     elif existing == 1:
       instance = model.objects.filter(name=name).last()
-      # TODO: need to see examples befpre I update projects here
+      # TODO: need to see examples before I update projects here
       instance.save()
       ids.append(instance.id)
   return(ids)
+
+def pre_process_contributors(the_list):
+  """ Returns a list of tuples with the first name in the first location and all the last names in the second location. Won't work perfectly but it's as good as we can get it. """
+  # TODO: #14 move pre_process_contributors to an earlier stage in the data processing (to dhri.parser?)
+  return([(x.split(" ")[0], " ".join(x.split(" ")[1:])) for x in the_list])
 
 
 def update_workshop(frontmatter):
@@ -65,7 +70,9 @@ def update_workshop(frontmatter):
   ids = process_list(frontmatter['readings'], Literature)
   w.frontmatter.readings.set(ids)
 
-  # TODO: map all the collaborators from frontmatter here
+  # TODO: map all the contributors from frontmatter here
+  contributors = pre_process_contributors(frontmatter['contributors'])
+  print(contributors)
 
   w.save()
 
@@ -87,14 +94,6 @@ def create_new_workshop(frontmatter):
   dhri_log(f"{w} (id {w.id}) has been created.")
 
   # TODO: branch out into all the related information here and create them
-  '''
-          projects
-          resources
-          readings
-          contributors
-          prerequisites
-          ethical_considerations
-  '''
 
   f = Frontmatter(
         workshop = w,
@@ -112,6 +111,14 @@ def create_new_workshop(frontmatter):
 
   ids = process_list(frontmatter['readings'], Project)
   f.readings.set(ids)
+
+  pre_process_contributors(frontmatter['contributors'])
+
+  '''
+    - contributors
+    - prerequisites
+    - ethical_considerations
+  '''
 
   f.save()
 
