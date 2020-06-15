@@ -67,13 +67,17 @@ def process_contributors(the_list):
   return(ids)
 
 def update_workshop(frontmatter):
-  dhri_log(f"Updating {frontmatter['name']}")
+  dhri_log(f"Updating workshop {frontmatter['name']}")
   update_id = Workshop.objects.latest('created').id
   w = Workshop.objects.get(pk=update_id)
 
   w.parent_backend = frontmatter['parent_backend']
   w.parent_repo = frontmatter['parent_repo']
   w.parent_branch = frontmatter['parent_branch']
+
+  dhri_log(f"Adding frontmatter information for workshop {frontmatter['name']}")
+
+  w.frontmatter.ethical_considerations = frontmatter['ethical_considerations']
 
   ids = process_list(frontmatter['projects'], Project)
   w.frontmatter.projects.set(ids)
@@ -117,6 +121,7 @@ def create_new_workshop(frontmatter):
         workshop = w,
         abstract = frontmatter['abstract'],
         learning_objectives = frontmatter['learning_objectives'],
+        ethical_considerations = frontmatter['ethical_considerations'],
         estimated_time = frontmatter['estimated_time']
       )
   f.save()
@@ -140,11 +145,11 @@ def create_new_workshop(frontmatter):
   f.contributors.set(ids)
   dhri_log(f"Contributors {ids} have been added to frontmatter.")
 
-  '''
-    - prerequisites
-    - ethical_considerations
-  '''
-
   f.save()
+
+  dhri_log(f"{f} (id {f.id}) has been updated with all the necessary information.")
+
+  # Final warning about pre-requisites
+  dhri_warning(f"Note: Pre-requisites are not programmatically added, but must be added through the Django admin interface.")
 
   return(w)
