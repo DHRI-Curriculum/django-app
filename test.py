@@ -1,10 +1,9 @@
 from pathlib import Path
 import sys, re
-from DHRIlog import dhri_error, dhri_log, dhri_warning
 
-
-from DHRIParser import load_data, parse_frontmatter, test_integrity, NUMBERS
-from DHRIBackend import validate_existing, create_new_workshop, update_workshop, Workshop, Frontmatter, Project, Resource, Literature, Contributor
+from dhri.log import dhri_error, dhri_log, dhri_warning
+from dhri.parser import load_data, parse_frontmatter, test_integrity, NUMBERS
+from dhri.backend import validate_existing, create_new_workshop, update_workshop, Workshop, Frontmatter, Project, Resource, Literature, Contributor
 
 
 # Load data
@@ -49,7 +48,7 @@ else:
 
 if existing == 0 or existing == 2:
   w = create_new_workshop(frontmatter)
-  dhri_log(f"{w} (id {w.id}) has been created.")
+  
 elif existing == 1:
   w = update_workshop(frontmatter)
-  dhri_log(f"{w} (id {w.id}) has been updated.")
+  

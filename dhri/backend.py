@@ -1,5 +1,5 @@
 import sys, os, django, json
-from DHRIlog import dhri_error, dhri_log, dhri_warning, _format_message, Fore
+from .log import dhri_error, dhri_log, dhri_warning, _format_message, Fore
 
 
 dhri_log(f"setting up database interaction...")
@@ -69,6 +69,9 @@ def update_workshop(frontmatter):
   w.frontmatter.readings.set(ids)
 
   w.save()
+
+  dhri_log(f"{w} (id {w.id}) has been updated.")
+
   return(w)
 
 
@@ -81,6 +84,8 @@ def create_new_workshop(frontmatter):
         parent_branch = frontmatter['parent_branch']
       )
   w.save()
+
+  dhri_log(f"{w} (id {w.id}) has been created.")
 
   # TODO: branch out into all the related information here and create them
   '''

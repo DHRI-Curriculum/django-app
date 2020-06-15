@@ -1,4 +1,4 @@
-from DHRIlog import dhri_error, dhri_log, dhri_warning
+from .log import dhri_error, dhri_log, dhri_warning
 from pathlib import Path
 import json
 
