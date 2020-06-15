@@ -49,7 +49,7 @@ if __name__ == "__main__":
   elif args.file:
     json_file = args.file
   else:
-    args.error("huh?")
+    args.error("Cannot interpret the arguments passed to the script. Try running it with argument -h to see more information.")
 
   # Now we load up the backend
   from dhri.backend import validate_existing, create_new_workshop, update_workshop, Workshop, Frontmatter, Project, Resource, Literature, Contributor
