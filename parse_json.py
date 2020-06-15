@@ -21,21 +21,44 @@ if __name__ == "__main__":
 
     dhri_log(f"URL accepted: {args.download}")
 
-    data = get_raw_content(args.download)
+    data = get_raw_content(args.download, branch="v2.0")
 
     sections = {}
     sections['frontmatter'] = split_md_into_sections(data['content']['frontmatter'])
     sections['theory-to-practice'] = split_md_into_sections(data['content']['theory-to-practice'])
     sections['assessment'] = split_md_into_sections(data['content']['assessment'])
 
-    # TODO: This needs to change, obviously
-    sections['frontmatter']['Name'] = 'Test Repository'
+    if not "github" in args.download.lower():
+      dhri_warning(f"Your URL seems to not originate with Github. Currently, our curriculum only works with Github as backend.")
+
+    try:
+      url_elems = args.download.split("/")
+      user = url_elems[3]
+      repo = url_elems[4]
+    except:
+      user, repo = args.download, args.download
+
+    _user = input(f"Username (default '{user}')")
+    if _user != "": user = _user
+
+    _repo = input(f"Repository (default '{repo}')")
+    if _repo != "": repo = _repo
+
+    try:
+      name = repo.replace("-", " ").title()
+    except:
+      name = repo
+
+    _name = input(f"Workshop name (default '{name}')")
+    if _name != "": name = _name
+
+    sections['frontmatter']['Name'] = name
     sections['frontmatter']['Parent backend'] = "Github"
-    sections['frontmatter']['Parent repo'] = "kallewesterling/dhri-test-repo"
+    sections['frontmatter']['Parent repo'] = f"{user}/{repo}"
     sections['frontmatter']['Parent branch'] = "v2.0"
 
     if args.dest: write_path = args.dest
-    else: write_path = "workshop.json"
+    else: write_path = f"{repo}.json"
 
     Path(write_path).write_text(json.dumps(sections))
     dhri_log(f"File downloaded: {write_path}")
