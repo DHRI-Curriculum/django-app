@@ -28,7 +28,7 @@ In order to test out the tool, follow these steps:
 
    Once we are in production, the point will be to quickly populate the database with the most recent information from a live repository on GitHub but for now we have to work with this sample data.
 
-   **Optionally**, you may add another parameter to the script choosing the filename for the resulting data file. It will default to workshop.json.
+   **Optionally**, you may add another parameter to the script choosing the filename for the resulting data file. It will default to `{name-of-repo}.json`.
 
    ```
    python parse_json --download https://github.com/kallewesterling/dhri-test-repo --dest workshop.json
