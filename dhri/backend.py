@@ -115,8 +115,6 @@ def create_new_workshop(frontmatter):
 
   dhri_log(f"{w} (id {w.id}) has been created.")
 
-  # TODO: branch out into all the related information here and create them
-
   f = Frontmatter(
         workshop = w,
         abstract = frontmatter['abstract'],
