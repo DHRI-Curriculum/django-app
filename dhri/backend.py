@@ -51,6 +51,20 @@ def pre_process_contributors(the_list):
   # TODO: #14 move pre_process_contributors to an earlier stage in the data processing (to dhri.parser?)
   return([(x.split(" ")[0], " ".join(x.split(" ")[1:])) for x in the_list])
 
+def process_contributors(the_list):
+  ids = []
+  for name in the_list:
+    first_name, last_name = name
+    # TODO: make the process with _everything_ more like this... it's a lot smarter, I think?
+    if Contributor.objects.filter(first_name=first_name, last_name=last_name).count() == 0:
+      # NOTE: The line above means that people who share first and last names will be confused by the script.
+      p = Contributor(first_name=first_name, last_name=last_name)
+      p.save()
+
+    for obj in Contributor.objects.filter(first_name=first_name, last_name=last_name):
+      if obj.id not in ids: ids.append(obj.id)
+
+  return(ids)
 
 def update_workshop(frontmatter):
   dhri_log(f"Updating {frontmatter['name']}")
@@ -63,16 +77,20 @@ def update_workshop(frontmatter):
 
   ids = process_list(frontmatter['projects'], Project)
   w.frontmatter.projects.set(ids)
+  dhri_log(f"Projects {ids} have been updated in frontmatter.")
 
   ids = process_list(frontmatter['resources'], Resource)
   w.frontmatter.resources.set(ids)
+  dhri_log(f"Resources {ids} have been updated in frontmatter.")
 
   ids = process_list(frontmatter['readings'], Literature)
   w.frontmatter.readings.set(ids)
+  dhri_log(f"Readings {ids} have been updated in frontmatter.")
 
-  # TODO: map all the contributors from frontmatter here
   contributors = pre_process_contributors(frontmatter['contributors'])
-  print(contributors)
+  ids = process_contributors(contributors)
+  w.frontmatter.contributors.set(ids)
+  dhri_log(f"Contributors {ids} have been updated in frontmatter.")
 
   w.save()
 
@@ -103,19 +121,26 @@ def create_new_workshop(frontmatter):
       )
   f.save()
 
+  dhri_log(f"{f} (id {f.id}) has been created.")
+
   ids = process_list(frontmatter['projects'], Project)
   f.projects.set(ids)
+  dhri_log(f"Projects {ids} have been added to frontmatter.")
 
-  ids = process_list(frontmatter['resources'], Project)
+  ids = process_list(frontmatter['resources'], Resource)
   f.resources.set(ids)
+  dhri_log(f"Resources {ids} have been added to frontmatter.")
 
-  ids = process_list(frontmatter['readings'], Project)
+  ids = process_list(frontmatter['readings'], Literature)
   f.readings.set(ids)
+  dhri_log(f"Readings {ids} have been added to frontmatter.")
 
-  pre_process_contributors(frontmatter['contributors'])
+  contributors = pre_process_contributors(frontmatter['contributors'])
+  ids = process_contributors(contributors)
+  f.contributors.set(ids)
+  dhri_log(f"Contributors {ids} have been added to frontmatter.")
 
   '''
-    - contributors
     - prerequisites
     - ethical_considerations
   '''
