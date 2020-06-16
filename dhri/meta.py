@@ -58,6 +58,17 @@ def save_data(path: str, data: dict) -> bool:
     return(True)
 
 
+def delete_data(path, auto=False):
+    if auto == False:
+      _continue = dhri_input(f'Are you sure you want to delete the data file ({path})? (y/N) ', bold=True, color='red')
+      if _continue.lower() != 'y':
+        exit()
+    else:
+      dhri_warning('Deleting file (DELETE_FILE set to True)...')
+    
+    Path(path).unlink()
+
+
 def get_or_default(message: str, default_variable: str) -> str:
     _ = input(f'{message} (default "{default_variable}"): ')
     if _ != '':

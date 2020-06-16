@@ -68,8 +68,12 @@ def normalize_number(assumed_integer):
   return(assumed_integer)
 
 
-def parse_frontmatter(data):
-  data = normalize_data(data, 'frontmatter')
-  data['estimated_time'] = normalize_number(data['estimated_time'])
+def parse(data, data_type: str) -> dict:
+  dhri_log(f'Parsing {data_type} for workshop...')
+  
+  data = normalize_data(data, data_type)
+  
+  if data_type == 'frontmatter':
+    data['estimated_time'] = normalize_number(data['estimated_time'])
+  
   return(data)
-
