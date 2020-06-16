@@ -13,7 +13,9 @@ def dhri_log(message):
   print(message)
 
 
-def dhri_error(message, kill=True):
+def dhri_error(message, kill=True, raise_error=None):
+  if raise_error != None:
+    raise(raise_error(message))
   message = colorize("Error: " + message, fg="red", opts=('bold',))
   _test_kill(message, kill)
 

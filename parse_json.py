@@ -7,6 +7,7 @@ from dhri.constants import *
 from dhri.markdown_parser import get_raw_content, split_md_into_sections
 from dhri.meta import get_argparser, verify_url, load_data, save_data, get_or_default
 
+
 if __name__ == "__main__":
   # Process arguments
   parser = get_argparser()

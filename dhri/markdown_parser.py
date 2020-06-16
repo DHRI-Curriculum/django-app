@@ -2,10 +2,41 @@ import requests
 from requests.exceptions import HTTPError
 
 from .log import dhri_log, dhri_error
-from .constants import REMOVE_EMPTY_HEADINGS, BULLETPOINTS_TO_LISTS, BRANCH_AUTO
+from .constants import _test, REMOVE_EMPTY_HEADINGS, BULLETPOINTS_TO_LISTS, BRANCH_AUTO
 
 
 # TODO: add a constant FORCE_BULLETPOINTS that uses regex to extract whatever bulletpoints exist in a section and skip other content.
+
+
+def verify_repo(string):
+    """ Verifies that a provided repository string is correct. Returns a string with corrected information """
+
+    # TODO: This function doubles up with verify_url() from .meta
+
+    if string == None:
+        dhri_error("No repository URL provided.", raise_error=RuntimeError)
+
+    if string.endswith("/"):
+        string = string[:-1]
+
+    if len(string.split("/")) != 5:
+        dhri_error("Cannot interpret repository URL. Are you sure it's a simple https://github.com/user-name/repo link?", raise_error=RuntimeError)
+
+    return(string)
+
+
+def get_text_from_url(url):
+    """ # TODO: insert docstring here """
+
+    r = requests.get(url)
+    
+    try:
+        r.raise_for_status()
+    except HTTPError as e:
+        dhri_error(f"The URL ({url}) could not be used. Verify that you are using the correct repository, and that the branch that you provide is correct.")
+    
+    return(r.text)
+
 
 def get_raw_content(repo=None, branch=BRANCH_AUTO):
     """
@@ -17,12 +48,7 @@ def get_raw_content(repo=None, branch=BRANCH_AUTO):
     - assessment.md
     """
 
-    if repo == None: raise RuntimeError("No repo URL provided.")
-
-    if repo.endswith("/"): repo = repo[:-1]
-
-    if len(repo.split("/")) != 5:
-        raise RuntimeError("Cannot interpret repo URL. Are you sure it's a simple https://github.com/user-name/repo link?")
+    repo = verify_repo(repo)
 
     user = repo.split("/")[3]
     repo_name = repo.split("/")[4]
@@ -34,17 +60,6 @@ def get_raw_content(repo=None, branch=BRANCH_AUTO):
     raw_urls['theory-to-practice'] = f"{raw_url}/theory-to-practice.md"
     raw_urls['assessment'] = f"{raw_url}/assessment.md"
 
-    r = requests.get(raw_urls['frontmatter'])
-    try:
-        r.raise_for_status()
-    except HTTPError as e:
-        dhri_error(f"The URL could not be used. Verify that you are using the correct repository {repo_name}, and that the branch ({branch}) is correct.")
-
-    raw_content = {}
-    raw_content['frontmatter'] = requests.get(raw_urls['frontmatter']).text
-    raw_content['theory-to-practice'] = requests.get(raw_urls['theory-to-practice']).text
-    raw_content['assessment'] = requests.get(raw_urls['assessment']).text
-
     return({
         'meta': {
             'raw_urls': raw_urls,
@@ -53,14 +68,25 @@ def get_raw_content(repo=None, branch=BRANCH_AUTO):
             'repo_name': repo_name,
             'branch': branch,
         },
-        'content': raw_content,
+        'content': {
+            'frontmatter': get_text_from_url(raw_urls['frontmatter']),
+            'theory-to-practice': get_text_from_url(raw_urls['theory-to-practice']),
+            'assessment': get_text_from_url(raw_urls['assessment']),
+        }
     })
 
 
 def section_is_bulletpoints(markdown):
     """ Returns `True` if a section of markdown only contains bullet points. Otherwise returns `False` """
-    if not "\n- " in markdown and not markdown.startswith("- "): return False # make sure there ARE lists in there at all
-    return len([x for x in markdown.splitlines() if x.startswith("- ")]) == len(markdown.splitlines())
+    
+    # First, make sure there ARE lists in there at all
+    if not "\n- " in markdown and not markdown.startswith("- "):
+        return False
+    
+    num_lines = len(markdown.splitlines())
+    num_of_bulletpoint_lines = len([x for x in markdown.splitlines() if x.startswith("- ")])
+
+    return num_of_bulletpoint_lines == num_lines
 
 
 def section_as_list(markdown, shave_off=2):
@@ -77,10 +103,10 @@ def split_md_into_sections(markdown, remove_empty_headings=REMOVE_EMPTY_HEADINGS
     - `bulletpoints_to_lists` (bool) which determines whether sections that contain ONLY bulletpoints should be converted into python lists with each bullet point as an element in the list (defaults to BULLETPOINTS_TO_LISTS, defined on line 4)
     """
 
-    if not isinstance(remove_empty_headings, bool): raise RuntimeError("`remove_empty_headings` provided must be a boolean.")
-    if not isinstance(bulletpoints_to_lists, bool): raise RuntimeError("`bulletpoints_to_lists` provided must be a boolean.")
-
-    lines = [x for x in markdown.splitlines() if x]
+    _test(variable=remove_empty_headings)
+    _test(variable=bulletpoints_to_lists)
+    
+    lines = [x for x in markdown.splitlines() if x] # cleans out any empty lines
 
     sections = {}
 

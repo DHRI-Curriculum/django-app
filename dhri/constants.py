@@ -33,13 +33,28 @@ URL = r"(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w
 
 
 
-def _check_normalizer(dictionary=NORMALIZING_SECTIONS):
-    from itertools import chain
+######## DO NOT EDIT BELOW THIS LINE IF YOU DON'T KNOW WHAT YOU ARE DOING ##############
 
+# Make sure to set up a test of all of the constants
+
+from .log import dhri_error
+from itertools import chain
+
+def _check_normalizer(dictionary=NORMALIZING_SECTIONS):
     for section in NORMALIZING_SECTIONS:
         all_ = [x.lower() for x in list(chain.from_iterable([x for x in NORMALIZING_SECTIONS[section].values()]))]
 
         if max([all_.count(x) for x in set(all_)]) > 1:
-            raise RuntimeError("NORMALIZING_SECTIONS is confusing: multiple alternative strings for normalizing.") from None
-        
+            dhri_error("NORMALIZING_SECTIONS is confusing: multiple alternative strings for normalizing.", raise_error=RuntimeError)
+    
+    return(True)
+
+def _test(variable=None, as_type=bool):
+    if not isinstance(variable, as_type): dhri_error(f"`{variable}` provided must be a {as_type}.", raise_error=RuntimeError)
+    return(True)
+
+# Run tests
+
 _check_normalizer()
+_test(variable=REMOVE_EMPTY_HEADINGS)
+_test(variable=BULLETPOINTS_TO_LISTS)
