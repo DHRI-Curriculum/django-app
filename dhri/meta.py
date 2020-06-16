@@ -12,7 +12,7 @@ def get_argparser() -> argparse.ArgumentParser:
     g.add_argument('-f', '--file', type=str, help='load data from a file containing JSON with processed data from a DHRI curriculum')
     g.add_argument('-r', '--reset', action='store_true', help='reset the DHRI curriculum data in the database')
     
-    g2 = group.add_argument_group()
+    g2 = g.add_argument_group()
     g2.add_argument('--dest', type = str, help = 'optional destination for download')
     
     return(parser)
