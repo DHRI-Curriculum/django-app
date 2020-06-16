@@ -1,10 +1,5 @@
-from colorama import Fore, Style
-from colorama import init as colorama_init
+from django.utils.termcolors import colorize
 
-colorama_init()
-
-def _format_message(clr, message):
-  return clr + message + Style.RESET_ALL
 
 def _test_kill(message, kill):
   if kill:
@@ -12,14 +7,29 @@ def _test_kill(message, kill):
   else:
     print(message)
 
+
 def dhri_log(message):
-  message = _format_message(Fore.GREEN, message)
-  print("-->", message)
+  message = colorize("--> " + message, fg="green", opts=('bold',))
+  print(message)
+
 
 def dhri_error(message, kill=True):
-  message = _format_message(Fore.RED, message)
+  message = colorize("Error: " + message, fg="red", opts=('bold',))
   _test_kill(message, kill)
 
+
 def dhri_warning(message, kill=False):
-  message = _format_message(Fore.YELLOW, "Warning: " + message)
+  message = colorize("Warning: " + message, fg="yellow", opts=('bold',))
   _test_kill(message, kill)
+
+
+def dhri_input(message, bold=True, color=""):
+  if color != "" and bold == True:
+    return(input(colorize(message, fg=color, opts=('bold',))))
+  elif color != "" and bold == False:
+    return(input(colorize(message, fg=color)))
+  elif color == "" and bold == True:
+    return(input(colorize(message, opts=('bold',))))
+  elif color == "" and bold == False:
+    print("You can just use input here.")
+    return(input(colorize(message)))

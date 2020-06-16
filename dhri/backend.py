@@ -1,5 +1,5 @@
 import sys, os, django, json
-from .log import dhri_error, dhri_log, dhri_warning, _format_message, Fore
+from .log import dhri_error, dhri_log, dhri_warning, dhri_input
 
 dhri_log(f"setting up database interaction...")
 
@@ -23,7 +23,7 @@ def validate_existing(name, model=Workshop):
     message = f"`{name}` of type {model.__name__} already exists - do you want to update (1) or create a new one (2)? "
 
   if message:
-    validate = input(_format_message(Fore.YELLOW, message))
+    validate = dhri_input(message, bold=True, color="")
     if validate not in ["1", "2"]: dhri_error("Cancelled.")
     return(int(validate))
 
