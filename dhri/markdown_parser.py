@@ -14,13 +14,13 @@ def verify_repo(string):
     # TODO: This function doubles up with verify_url() from .meta
 
     if string == None:
-        dhri_error("No repository URL provided.", raise_error=RuntimeError)
+        dhri_error('No repository URL provided.', raise_error=RuntimeError)
 
-    if string.endswith("/"):
+    if string.endswith('/'):
         string = string[:-1]
 
-    if len(string.split("/")) != 5:
-        dhri_error("Cannot interpret repository URL. Are you sure it's a simple https://github.com/user-name/repo link?", raise_error=RuntimeError)
+    if len(string.split('/')) != 5:
+        dhri_error('Cannot interpret repository URL. Are you sure it is a simple https://github.com/user-name/repo link?', raise_error=RuntimeError)
 
     return(string)
 
@@ -33,7 +33,7 @@ def get_text_from_url(url):
     try:
         r.raise_for_status()
     except HTTPError as e:
-        dhri_error(f"The URL ({url}) could not be used. Verify that you are using the correct repository, and that the branch that you provide is correct.")
+        dhri_error(f'The URL ({url}) could not be used. Verify that you are using the correct repository, and that the branch that you provide is correct.')
     
     return(r.text)
 
@@ -50,15 +50,15 @@ def get_raw_content(repo=None, branch=BRANCH_AUTO):
 
     repo = verify_repo(repo)
 
-    user = repo.split("/")[3]
-    repo_name = repo.split("/")[4]
+    user = repo.split('/')[3]
+    repo_name = repo.split('/')[4]
 
-    raw_url = f"https://raw.githubusercontent.com/{user}/{repo_name}/{branch}"
+    raw_url = f'https://raw.githubusercontent.com/{user}/{repo_name}/{branch}'
 
     raw_urls = {}
-    raw_urls['frontmatter'] = f"{raw_url}/frontmatter.md"
-    raw_urls['theory-to-practice'] = f"{raw_url}/theory-to-practice.md"
-    raw_urls['assessment'] = f"{raw_url}/assessment.md"
+    raw_urls['frontmatter'] = f'{raw_url}/frontmatter.md'
+    raw_urls['theory-to-practice'] = f'{raw_url}/theory-to-practice.md'
+    raw_urls['assessment'] = f'{raw_url}/assessment.md'
 
     return({
         'meta': {
@@ -80,11 +80,11 @@ def section_is_bulletpoints(markdown):
     """ Returns `True` if a section of markdown only contains bullet points. Otherwise returns `False` """
     
     # First, make sure there ARE lists in there at all
-    if not "\n- " in markdown and not markdown.startswith("- "):
+    if not '\n- ' in markdown and not markdown.startswith('- '):
         return False
     
     num_lines = len(markdown.splitlines())
-    num_of_bulletpoint_lines = len([x for x in markdown.splitlines() if x.startswith("- ")])
+    num_of_bulletpoint_lines = len([x for x in markdown.splitlines() if x.startswith('- ')])
 
     return num_of_bulletpoint_lines == num_lines
 
@@ -111,15 +111,15 @@ def split_md_into_sections(markdown, remove_empty_headings=REMOVE_EMPTY_HEADINGS
     sections = {}
 
     for linenumber, line in enumerate(lines):
-        if line.startswith("### ") or line.startswith("## ") or line.startswith("# "):
-            header = "".join([x for x in line.split("#") if x]).strip()
+        if line.startswith('### ') or line.startswith('## ') or line.startswith('# '):
+            header = ''.join([x for x in line.split('#') if x]).strip()
             if header not in sections:
-                sections[header] = ""
+                sections[header] = ''
                 skip_ahead = False
                 for nextline in lines[linenumber + 1:]:
-                    if nextline.startswith("#"): skip_ahead = True
+                    if nextline.startswith('#"): skip_ahead = True
                     if skip_ahead: continue
-                    sections[header] += "\n" + nextline
+                    sections[header] += '\n" + nextline
                 sections[header] = sections[header].strip()
 
                 if bulletpoints_to_lists:

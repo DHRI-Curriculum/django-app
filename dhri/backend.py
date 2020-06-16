@@ -1,7 +1,7 @@
 import sys, os, django, json
 from .log import dhri_error, dhri_log, dhri_warning, dhri_input
 
-dhri_log(f"setting up database interaction...")
+dhri_log(f'setting up database interaction...')
 
 sys.path.append('./app')
 os.environ['DJANGO_SETTINGS_MODULE'] = 'app.settings'
@@ -16,13 +16,13 @@ def validate_existing(name, model=Workshop):
   if existing == 0:
     return(0)
   elif existing == 1:
-    message = f"`{name}` of type {model.__name__} already exists - do you want to update (1) or create a new one (2)? "
+    message = f'`{name}` of type {model.__name__} already exists - do you want to update (1) or create a new one (2)? '
   elif existing > 1:
-    message = f"Multiple `{name}` of type {model.__name__} already exist - do you want to update the latest one (1) or create a new one (2)? "
+    message = f'Multiple `{name}` of type {model.__name__} already exist - do you want to update the latest one (1) or create a new one (2)? '
 
   if message:
-    validate = dhri_input(message, bold=True, color="")
-    if validate not in ["1", "2"]: dhri_error("Cancelled.")
+    validate = dhri_input(message, bold=True, color='')
+    if validate not in ['1', '2']: dhri_error('Cancelled.')
     return(int(validate))
 
 
@@ -48,7 +48,7 @@ def process_list(the_list, model):
 def pre_process_contributors(the_list):
   """ Returns a list of tuples with the first name in the first location and all the last names in the second location. Won't work perfectly but it's as good as we can get it. """
   # TODO: #14 move pre_process_contributors to an earlier stage in the data processing (to dhri.parser?)
-  return([(x.split(" ")[0], " ".join(x.split(" ")[1:])) for x in the_list])
+  return([(x.split(' ')[0], ' '.join(x.split(' ')[1:])) for x in the_list])
 
 
 def process_contributors(the_list):
@@ -69,20 +69,23 @@ def process_contributors(the_list):
 
 
 def workshop_magic(meta, frontmatter):
-  dhri_log(f"Processing workshop {meta['name']}")
-  w = Workshop.objects.filter(name = meta['name'])
+  name = meta['name']
+  
+  dhri_log(f'Processing workshop {name]}')
+  
+  w = Workshop.objects.filter(name=name)
   if len(w):
     new = False
   elif len(w) == 0:
     new = True
   
   if new == False:
-    _continue = input(f"Update existing Workshop {meta['name']} with frontmatter from json file? (y/N) ")
-    if _continue.lower() == "y":
+    _continue = input(f'Update existing Workshop {name} with frontmatter from json file? (y/N) ')
+    if _continue.lower() == 'y':
       print('update')
     else:
-      _continue = input(f"Add a new Workshop {meta['name']} with frontmatter from json file? (y/N) ")
-      if _continue.lower() == "y":
+      _continue = input(f'Add a new Workshop {name} with frontmatter from json file? (y/N) ')
+      if _continue.lower() == 'y':
         print('insert new')
         new = True
       else:
@@ -93,7 +96,7 @@ def workshop_magic(meta, frontmatter):
     w = Workshop.objects.latest('created')
 
   if new == True:
-    w = Workshop(name=meta['name'])
+    w = Workshop(name=name])
     w.save()
   
   frontmatter['workshop'] = w
@@ -120,12 +123,12 @@ def workshop_magic(meta, frontmatter):
   f = Frontmatter.objects.create(**frontmatter)
 
   for list_element, ids in lists.items():
-    if list_element == "projects": f.projects.set(ids)
-    elif list_element == "resources": f.resources.set(ids)
-    elif list_element == "readings": f.readings.set(ids)
-    elif list_element == "contributors": f.contributors.set(ids)
+    if list_element == 'projects': f.projects.set(ids)
+    elif list_element == 'resources': f.resources.set(ids)
+    elif list_element == 'readings': f.readings.set(ids)
+    elif list_element == 'contributors': f.contributors.set(ids)
     else:
-      raise RuntimeError("Encountered unknown list element.")
+      dhri_error('Encountered unknown list element.', raise_error=RuntimeError)
 
   f.save()
     
@@ -134,52 +137,54 @@ def workshop_magic(meta, frontmatter):
 
 
 def update_workshop(meta, frontmatter):
-  dhri_log(f"Updating workshop {meta['name']}")
   w = Workshop.objects.latest('created')
+  
+  dhri_log(f'Updating workshop {w}')
 
   w.parent_backend = meta['parent_backend']
   w.parent_repo = meta['parent_repo']
   w.parent_branch = meta['parent_branch']
 
-  dhri_log(f"Adding frontmatter information for workshop {meta['name']}")
+  dhri_log(f'Adding frontmatter information for workshop {name}')
 
   w.frontmatter.ethical_considerations = frontmatter['ethical_considerations']
 
   ids = process_list(frontmatter['projects'], Project)
   w.frontmatter.projects.set(ids)
-  dhri_log(f"Projects {ids} have been updated in frontmatter.")
+  dhri_log(f'Projects {ids} have been updated in frontmatter.')
 
   ids = process_list(frontmatter['resources'], Resource)
   w.frontmatter.resources.set(ids)
-  dhri_log(f"Resources {ids} have been updated in frontmatter.")
+  dhri_log(f'Resources {ids} have been updated in frontmatter.')
 
   ids = process_list(frontmatter['readings'], Literature)
   w.frontmatter.readings.set(ids)
-  dhri_log(f"Readings {ids} have been updated in frontmatter.")
+  dhri_log(f'Readings {ids} have been updated in frontmatter.')
 
   contributors = pre_process_contributors(frontmatter['contributors'])
   ids = process_contributors(contributors)
   w.frontmatter.contributors.set(ids)
-  dhri_log(f"Contributors {ids} have been updated in frontmatter.")
+  dhri_log(f'Contributors {ids} have been updated in frontmatter.')
 
   w.save()
 
-  dhri_log(f"{w} (id {w.id}) has been updated.")
+  dhri_log(f'{w} (id {w.id}) has been updated.')
 
   return(w)
 
 
 def create_new_workshop(meta, frontmatter):
-  dhri_log(f"Creating {meta['name']}")
+  name = meta['name']
+  dhri_log(f'Creating {name}')
   w = Workshop(
-        name = meta['name'],
+        name = name,
         parent_backend = meta['parent_backend'],
         parent_repo = meta['parent_repo'],
         parent_branch = meta['parent_branch']
       )
   w.save()
 
-  dhri_log(f"{w} (id {w.id}) has been created.")
+  dhri_log(f'{w} (id {w.id}) has been created.')
 
   f = Frontmatter(
         workshop = w,
@@ -190,30 +195,30 @@ def create_new_workshop(meta, frontmatter):
       )
   f.save()
 
-  dhri_log(f"{f} (id {f.id}) has been created.")
+  dhri_log(f'{f} (id {f.id}) has been created.')
 
   ids = process_list(frontmatter['projects'], Project)
   f.projects.set(ids)
-  dhri_log(f"Projects {ids} have been added to frontmatter.")
+  dhri_log(f'Projects {ids} have been added to frontmatter.')
 
   ids = process_list(frontmatter['resources'], Resource)
   f.resources.set(ids)
-  dhri_log(f"Resources {ids} have been added to frontmatter.")
+  dhri_log(f'Resources {ids} have been added to frontmatter.')
 
   ids = process_list(frontmatter['readings'], Literature)
   f.readings.set(ids)
-  dhri_log(f"Readings {ids} have been added to frontmatter.")
+  dhri_log(f'Readings {ids} have been added to frontmatter.')
 
   contributors = pre_process_contributors(frontmatter['contributors'])
   ids = process_contributors(contributors)
   f.contributors.set(ids)
-  dhri_log(f"Contributors {ids} have been added to frontmatter.")
+  dhri_log(f'Contributors {ids} have been added to frontmatter.')
 
   f.save()
 
-  dhri_log(f"{f} (id {f.id}) has been updated with all the necessary information.")
+  dhri_log(f'{f} (id {f.id}) has been updated with all the necessary information.')
 
   # Final warning about pre-requisites
-  dhri_warning(f"Pre-requisites are not programmatically added, but must be added through the Django admin interface.")
+  dhri_warning(f'Pre-requisites are not programmatically added, but must be added through the Django admin interface.')
 
   return(w)

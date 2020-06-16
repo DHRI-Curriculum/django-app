@@ -7,7 +7,7 @@ from .constants import _test, MD_LIST_ELEMENTS, NUMBERS, URL, NORMALIZING_SECTIO
 
 # Data integrity tests
 
-def test_for_keys(key_set=None, dictionary=None, dictionary_name="", lower=True, exact=True):
+def test_for_keys(key_set=None, dictionary=None, dictionary_name='', lower=True, exact=True):
   """ Checks whether a dictionary has all keys.
   Lowers the keys if lower is set to True (default).
   Exact (default True) whether exact matches of key_set values are in the dictionary's keys. If not checked, it uses Python's "in"
@@ -22,7 +22,7 @@ def test_for_keys(key_set=None, dictionary=None, dictionary_name="", lower=True,
     missing_sections = list(key_set - set(check_keys))
   
     for section in missing_sections:
-      dhri_error(f"`{section}` section missing in dictionary ({dictionary_name}).")
+      dhri_error(f'`{section}` section missing in dictionary ({dictionary_name}).')
   
   elif exact == False:
     for section in list(key_set - set(check_keys)):
@@ -30,7 +30,7 @@ def test_for_keys(key_set=None, dictionary=None, dictionary_name="", lower=True,
       for _ in check_keys:
         if section in _: ok = True
       if ok == False:
-        dhri_error(f"`{section}` section missing in dictionary ({dictionary_name}).")
+        dhri_error(f'`{section}` section missing in dictionary ({dictionary_name}).')
 
 
 def test_integrity(data):
@@ -59,8 +59,8 @@ def normalize_data(data, section):
 def normalize_number(assumed_integer):
   g = re.search(NUMBERS, assumed_integer)
   if g:
-    if "." in g.groups()[0]:
-      assumed_integer = g.groups()[0].split(".")[0]
+    if '.' in g.groups()[0]:
+      assumed_integer = g.groups()[0].split('.')[0]
     else:
       assumed_integer = g.groups()[0]
   else:
