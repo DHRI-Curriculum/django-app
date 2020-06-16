@@ -53,3 +53,10 @@ def get_or_default(message, default_variable):
         return(_)
     else:
         return(default_variable)
+
+
+def reset_all(kill=True):
+    from dhri.backend import Workshop, Frontmatter, Project, Resource, Literature, Contributor
+    for _ in [Workshop, Frontmatter, Project, Resource, Literature, Contributor]:
+        _.objects.all().delete()
+    dhri_log(f"All {_.__name__} deleted.", kill=kill)

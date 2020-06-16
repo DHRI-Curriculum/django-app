@@ -2,6 +2,8 @@ REQUIRED_SECTIONS = {}
 
 ##################################################################
 
+AUTO_RESET = True
+
 BACKEND_AUTO = "Github"
 BRANCH_AUTO = "v2.0"
 

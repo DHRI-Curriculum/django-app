@@ -1,11 +1,8 @@
-from pathlib import Path
-import re, json
-
 from dhri.log import dhri_error, dhri_log, dhri_warning, dhri_input
 from dhri.parser import parse_frontmatter, test_integrity
 from dhri.constants import *
 from dhri.markdown_parser import get_raw_content, split_md_into_sections
-from dhri.meta import get_argparser, verify_url, load_data, save_data, get_or_default
+from dhri.meta import get_argparser, verify_url, load_data, save_data, get_or_default, reset_all
 
 
 # Set up empty variables
@@ -18,16 +15,16 @@ if __name__ == "__main__":
   args = parser.parse_args()
 
   # First check for reset
-  if args.reset:
-    _continue = dhri_input("Are you sure you want to reset the entire DHRI curriculum in the current Django database? (y/N) ", bold=True, color="red")
-    if _continue.lower() == "y":
-      from dhri.backend import Workshop, Frontmatter, Project, Resource, Literature, Contributor
-      for _ in [Workshop, Frontmatter, Project, Resource, Literature, Contributor]:
-        _.objects.all().delete()
-        dhri_log(f"All {_.__name__} deleted.")
-      exit()
+  if args.reset or AUTO_RESET == True:
+    if AUTO_RESET == False:
+      _continue = dhri_input("Are you sure you want to reset the entire DHRI curriculum in the current Django database? (y/N) ", bold=True, color="red")
+      if _continue.lower() == "y":
+        reset_all()
+      else:
+        exit()
     else:
-      exit()
+      dhri_warning("Resetting database (AUTO_RESET set to True)...")
+      reset_all(kill=False)
 
   if args.download:
     url = verify_url(args.download)
@@ -68,7 +65,8 @@ if __name__ == "__main__":
     args.error("Cannot interpret the arguments passed to the script. Try running it with argument -h to see more information.")
 
   # Now we load up the backend (we do it here because we don't want to load the whole django framework before, because it takes a second)
-  from dhri.backend import validate_existing, workshop_magic, create_new_workshop, update_workshop, Workshop, Frontmatter, Project, Resource, Literature, Contributor
+  from dhri.backend import validate_existing, workshop_magic, create_new_workshop, update_workshop
+  from dhri.backend import Workshop, Frontmatter, Project, Resource, Literature, Contributor
 
   data = load_data(path)
   
