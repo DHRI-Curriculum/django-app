@@ -1,7 +1,7 @@
 import argparse, re, json
 from pathlib import Path
-from .constants import URL
-from .log import dhri_log, dhri_error
+from .constants import URL, AUTO_RESET
+from .log import dhri_log, dhri_warning, dhri_error
 
 
 def get_argparser():
@@ -56,7 +56,14 @@ def get_or_default(message, default_variable):
 
 
 def reset_all(kill=True):
+    if AUTO_RESET == False:
+      _continue = dhri_input("Are you sure you want to reset the entire DHRI curriculum in the current Django database? (y/N) ", bold=True, color="red")
+      if _continue.lower() != "y":
+        exit()
+    else:
+      dhri_warning("Resetting database (AUTO_RESET set to True)...")
+
     from dhri.backend import Workshop, Frontmatter, Project, Resource, Literature, Contributor
     for _ in [Workshop, Frontmatter, Project, Resource, Literature, Contributor]:
         _.objects.all().delete()
-    dhri_log(f"All {_.__name__} deleted.", kill=kill)
+    dhri_log(f"All {_.__name__} deleted.", kill=not AUTO_RESET)

@@ -16,15 +16,7 @@ if __name__ == "__main__":
 
   # First check for reset
   if args.reset or AUTO_RESET == True:
-    if AUTO_RESET == False:
-      _continue = dhri_input("Are you sure you want to reset the entire DHRI curriculum in the current Django database? (y/N) ", bold=True, color="red")
-      if _continue.lower() == "y":
-        reset_all()
-      else:
-        exit()
-    else:
-      dhri_warning("Resetting database (AUTO_RESET set to True)...")
-      reset_all(kill=False)
+    reset_all()
 
   if args.download:
     url = verify_url(args.download)
