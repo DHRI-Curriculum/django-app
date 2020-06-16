@@ -16,6 +16,19 @@ if __name__ == "__main__":
   # Process arguments
   parser = get_argparser()
   args = parser.parse_args()
+
+  # First check for reset
+  if args.reset:
+    _continue = dhri_input("Are you sure you want to reset the entire DHRI curriculum in the current Django database? (y/N) ", bold=True, color="red")
+    if _continue.lower() == "y":
+      from dhri.backend import Workshop, Frontmatter, Project, Resource, Literature, Contributor
+      for _ in [Workshop, Frontmatter, Project, Resource, Literature, Contributor]:
+        _.objects.all().delete()
+        dhri_log(f"All {_.__name__} deleted.")
+      exit()
+    else:
+      exit()
+
   if args.download:
     url = verify_url(args.download)
     
@@ -50,17 +63,6 @@ if __name__ == "__main__":
 
   elif args.file:
     path = args.file
-
-  elif args.reset:
-    _continue = dhri_input("Are you sure you want to reset the entire DHRI curriculum in the current Django database? (y/N) ", bold=True, color="red")
-    if _continue.lower() == "y":
-      from dhri.backend import Workshop, Frontmatter, Project, Resource, Literature, Contributor
-      for _ in [Workshop, Frontmatter, Project, Resource, Literature, Contributor]:
-        _.objects.all().delete()
-        dhri_log(f"All {_.__name__} deleted.")
-      exit()
-    else:
-      exit()
 
   else:
     args.error("Cannot interpret the arguments passed to the script. Try running it with argument -h to see more information.")
