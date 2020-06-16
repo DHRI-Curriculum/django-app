@@ -88,4 +88,4 @@ def reset_all(kill=True) -> None:
     from dhri.backend import Workshop, Frontmatter, Project, Resource, Literature, Contributor
     for _ in [Workshop, Frontmatter, Project, Resource, Literature, Contributor]:
         _.objects.all().delete()
-    dhri_log(f'All {_.__name__} deleted.', kill=not AUTO_RESET)
+        dhri_log(f'All {_.__name__} deleted.', kill=not AUTO_RESET)
