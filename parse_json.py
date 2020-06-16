@@ -121,7 +121,6 @@ if __name__ == "__main__":
   ########################################################################
 
 
-
   if existing == 0 or existing == 2:
     w = create_new_workshop(frontmatter)
   elif existing == 1:
