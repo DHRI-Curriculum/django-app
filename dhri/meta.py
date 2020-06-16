@@ -27,6 +27,8 @@ def verify_url(string):
         dhri_error("-d must provide a valid URL to a DHRI repository.")
     if not "github" in string.lower():
         dhri_error(f"Your URL seems to not originate with Github. Currently, our curriculum only works with Github as backend.") # Set to kill out of the program
+    dhri_log(f"URL accepted: {string}")
+    return(string)
 
 
 def load_data(path):
@@ -42,3 +44,12 @@ def load_data(path):
 def save_data(path, data):
     Path(path).write_text(json.dumps(data))
     dhri_log(f"File saved to {path}")
+    return(True)
+
+
+def get_or_default(message, default_variable):
+    _ = input(f"{message} (default '{default_variable}'): ")
+    if _ != "":
+        return(_)
+    else:
+        return(default_variable)

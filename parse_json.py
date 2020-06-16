@@ -5,44 +5,27 @@ from dhri.log import dhri_error, dhri_log, dhri_warning, dhri_input
 from dhri.parser import parse_frontmatter, test_integrity
 from dhri.constants import *
 from dhri.markdown_parser import get_raw_content, split_md_into_sections
-from dhri.meta import get_argparser, verify_url, load_data, save_data
+from dhri.meta import get_argparser, verify_url, load_data, save_data, get_or_default
 
 if __name__ == "__main__":
   # Process arguments
   parser = get_argparser()
   args = parser.parse_args()
   if args.download:
-    verify_url(args.download)
+    url = verify_url(args.download)
     
-    dhri_log(f"URL accepted: {args.download}")
+    branch = get_or_default("Branch", BRANCH_AUTO)
 
-    _ = input(f"Branch (default '{BRANCH_AUTO}'): ")
-    if _ != "": branch = _
-    else: branch = BRANCH_AUTO
+    data = get_raw_content(url, branch=branch)
 
-    data = get_raw_content(args.download, branch=branch)
+    user = get_or_default("Username", data['meta']['user'])
+    repo = get_or_default("Repository", data['meta']['repo_name'])
+    name = get_or_default("Workshop name", repo.replace("-", " ").title())
 
     sections = {}
     sections['frontmatter'] = split_md_into_sections(data['content']['frontmatter'])
     sections['theory-to-practice'] = split_md_into_sections(data['content']['theory-to-practice'])
     sections['assessment'] = split_md_into_sections(data['content']['assessment'])
-
-    user = data['meta']['user']
-    repo = data['meta']['repo_name']
-    
-    _user = input(f"Username (default '{user}'): ")
-    if _user != "": user = _user
-
-    _repo = input(f"Repository (default '{repo}'): ")
-    if _repo != "": repo = _repo
-
-    try:
-      name = repo.replace("-", " ").title()
-    except:
-      name = repo
-
-    _name = input(f"Workshop name (default '{name}'): ")
-    if _name != "": name = _name
 
     sections['meta'] = {}
     sections['meta']['name'] = name
