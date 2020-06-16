@@ -1,4 +1,6 @@
 import json, requests
+from .log import dhri_log, dhri_error
+from pathlib import Path
 
 # This code was originally published at https://github.com/kallewesterling/markdown-interpreter
 
@@ -29,20 +31,22 @@ def get_raw_content(repo="https://github.com/kallewesterling/dhri-test-repo", br
 
     raw_url = f"https://raw.githubusercontent.com/{user}/{repo_name}/{branch}"
 
-    raw_meta = {}
-    raw_meta['frontmatter'] = f"{raw_url}/frontmatter.md"
-    raw_meta['theory-to-practice'] = f"{raw_url}/theory-to-practice.md"
-    raw_meta['assessment'] = f"{raw_url}/assessment.md"
+    raw_urls = {}
+    raw_urls['frontmatter'] = f"{raw_url}/frontmatter.md"
+    raw_urls['theory-to-practice'] = f"{raw_url}/theory-to-practice.md"
+    raw_urls['assessment'] = f"{raw_url}/assessment.md"
 
     raw_content = {}
-    raw_content['frontmatter'] = requests.get(raw_meta['frontmatter']).text
-    raw_content['theory-to-practice'] = requests.get(raw_meta['theory-to-practice']).text
-    raw_content['assessment'] = requests.get(raw_meta['assessment']).text
+    raw_content['frontmatter'] = requests.get(raw_urls['frontmatter']).text
+    raw_content['theory-to-practice'] = requests.get(raw_urls['theory-to-practice']).text
+    raw_content['assessment'] = requests.get(raw_urls['assessment']).text
 
     return({
-        'repo': repo,
-        'branch': branch,
-        'meta': raw_meta,
+        'meta': {
+            'raw_urls': raw_urls,
+            'repo': repo,
+            'branch': branch,
+        },
         'content': raw_content,
     })
 

@@ -9,7 +9,7 @@ def _test_kill(message, kill):
 
 
 def dhri_log(message):
-  message = colorize("--> " + message, fg="green", opts=('bold',))
+  message = colorize("--> " + message, fg="green", opts=('',))
   print(message)
 
 

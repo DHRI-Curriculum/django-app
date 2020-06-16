@@ -29,7 +29,11 @@ if __name__ == "__main__":
     if not "github" in args.download.lower():
       dhri_error(f"Your URL seems to not originate with Github. Currently, our curriculum only works with Github as backend.") # Set to kill out of the program
 
-    data = get_raw_content(args.download, branch="v2.0")
+    _ = input(f"Branch (default '{BRANCH_AUTO}'): ")
+    if _ != "": branch = _
+    else: branch = BRANCH_AUTO
+
+    data = get_raw_content(args.download, branch=branch)
 
     sections = {}
     sections['frontmatter'] = split_md_into_sections(data['content']['frontmatter'])
@@ -37,7 +41,7 @@ if __name__ == "__main__":
     sections['assessment'] = split_md_into_sections(data['content']['assessment'])
 
     try:
-      url_elems = args.download.split("/")
+      url_elems = data['meta']['repo'].split("/")
       user = url_elems[3]
       repo = url_elems[4]
     except:
@@ -61,7 +65,7 @@ if __name__ == "__main__":
     sections['meta']['name'] = name
     sections['meta']['Parent repo'] = f"{user}/{repo}"
     sections['meta']['Parent backend'] = BACKEND_AUTO
-    sections['meta']['Parent branch'] = BRANCH_AUTO
+    sections['meta']['Parent branch'] = data['meta']['branch']
 
     if args.dest: write_path = args.dest
     else: write_path = f"{repo}.json"
@@ -79,7 +83,7 @@ if __name__ == "__main__":
     json_file = args.file
 
   elif args.reset:
-    _continue = input(Fore.RED + "Are you sure you want to reset the entire DHRI curriculum in the current Django database? (y/N) " + Style.RESET_ALL)
+    _continue = dhri_input("Are you sure you want to reset the entire DHRI curriculum in the current Django database? (y/N) ", bold=True, color="red")
     if _continue.lower() == "y":
       from dhri.backend import Workshop, Frontmatter, Project, Resource, Literature, Contributor
       for _ in [Workshop, Frontmatter, Project, Resource, Literature, Contributor]:
