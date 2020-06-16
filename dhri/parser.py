@@ -1,11 +1,7 @@
 from .log import dhri_error, dhri_log, dhri_warning
+from .constants import MD_LIST_ELEMENTS, NUMBERS, URL
 from pathlib import Path
 import json
-
-# Regex setup
-MD_LIST_ELEMENTS = r"\- (.*)(\n|$)"
-NUMBERS = r"(\d+([\.,][\d+])?)"
-URL = r"(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])?"
 
 
 def load_data(json_file):

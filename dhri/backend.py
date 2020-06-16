@@ -1,4 +1,4 @@
-import sys, os, django, json
+import sys, os, django
 from .log import dhri_error, dhri_log, dhri_warning, _format_message, Fore
 
 dhri_log(f"setting up database interaction...")
@@ -17,10 +17,10 @@ def validate_existing(name, model=Workshop):
   message = None
   if existing == 0:
     return(0)
-  elif existing > 1:
-    message = f"Multiple `{name}` of type {model.__name__} already exist - do you want to update the latest one (1) or create a new one (2)? "
   elif existing == 1:
     message = f"`{name}` of type {model.__name__} already exists - do you want to update (1) or create a new one (2)? "
+  elif existing > 1:
+    message = f"Multiple `{name}` of type {model.__name__} already exist - do you want to update the latest one (1) or create a new one (2)? "
 
   if message:
     validate = input(_format_message(Fore.YELLOW, message))
@@ -69,10 +69,13 @@ def process_contributors(the_list):
   return(ids)
 
 
+def workshop_magic(frontmatter):
+  dhri_log(f"Updating workshop {frontmatter['name']}")
+
+
 def update_workshop(frontmatter):
   dhri_log(f"Updating workshop {frontmatter['name']}")
-  update_id = Workshop.objects.latest('created').id
-  w = Workshop.objects.get(pk=update_id)
+  w = Workshop.objects.latest('created')
 
   w.parent_backend = frontmatter['parent_backend']
   w.parent_repo = frontmatter['parent_repo']
