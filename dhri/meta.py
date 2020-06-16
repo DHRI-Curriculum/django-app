@@ -15,23 +15,23 @@ def get_argparser():
     return(parser)
 
 
-def confirm_url(string):
+def confirm_url(url: str) -> bool:
     """ Confirm that the string tested is a URL """
-    if re.findall(URL, string):
+    if re.findall(URL, url):
         return(True)
     return(False)
 
 
-def verify_url(string):
-    if not confirm_url(string):
+def verify_url(url: str) -> str:
+    if not confirm_url(url):
         dhri_error("-d must provide a valid URL to a DHRI repository.")
-    if not "github" in string.lower():
+    if not "github" in url.lower():
         dhri_error(f"Your URL seems to not originate with Github. Currently, our curriculum only works with Github as backend.") # Set to kill out of the program
-    dhri_log(f"URL accepted: {string}")
-    return(string)
+    dhri_log(f"URL accepted: {url}")
+    return(url)
 
 
-def load_data(path):
+def load_data(path: str) -> dict:
   dhri_log(f"Loading {path}")
 
   if not Path(path).exists():
@@ -41,21 +41,21 @@ def load_data(path):
   return(data)
 
 
-def test_path(path):
+def test_path(path: str) -> bool:
     """ Tests the pathname """
     if not path.endswith(".json"):
-        dhri_warning("The data file is not saved as a .json file. It will work but it might be confusing.")
+        dhri_warning(f"The data file ({path}) is not saved as a .json file. It will work but it might be confusing.")
     return(True)
 
 
-def save_data(path, data):
+def save_data(path: str, data: dict) -> bool:
     test_path(path)
     Path(path).write_text(json.dumps(data))
     dhri_log(f"File saved to {path}")
     return(True)
 
 
-def get_or_default(message, default_variable):
+def get_or_default(message: str, default_variable: str) -> str:
     _ = input(f"{message} (default '{default_variable}'): ")
     if _ != "":
         return(_)
@@ -63,7 +63,7 @@ def get_or_default(message, default_variable):
         return(default_variable)
 
 
-def reset_all(kill=True):
+def reset_all(kill=True) -> None:
     if AUTO_RESET == False:
       _continue = dhri_input("Are you sure you want to reset the entire DHRI curriculum in the current Django database? (y/N) ", bold=True, color="red")
       if _continue.lower() != "y":
