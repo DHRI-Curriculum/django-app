@@ -1,11 +1,7 @@
 from .log import dhri_error, dhri_log, dhri_warning
+from .constants import MD_LIST_ELEMENTS, NUMBERS, URL, NORMALIZING_SECTIONS
 from pathlib import Path
 import json
-
-# Regex setup
-MD_LIST_ELEMENTS = r"\- (.*)(\n|$)"
-NUMBERS = r"(\d+([\.,][\d+])?)"
-URL = r"(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])?"
 
 
 def load_data(json_file):
@@ -23,8 +19,8 @@ def load_data(json_file):
 
 def test_integrity(data):
   # Test for required name
-  if not 'frontmatter' in data: dhri_error(f"`frontmatter` section missing in submitted JSON data.")
-  if not 'Name' in data['frontmatter']: dhri_error(f"`Required `Name` in frontmatter missing in submitted JSON data.")
+  if not 'meta' in data: dhri_error(f"`meta` section missing in submitted JSON data.")
+  if not 'name' in data['meta']: dhri_error(f"`Required `Name` missing in submitted JSON data (should be in meta).")
 
   # Test for sections in data
   missing_sections = list({'frontmatter', 'theory-to-practice', 'assessment'} - set(data.keys()))
@@ -42,9 +38,6 @@ def test_integrity(data):
     {'section': 'reading', 'human': 'readings', 'null': True, 'type': list},
     {'section': 'project', 'human': 'projects', 'null': True, 'type': list},
     {'section': 'resource', 'human': 'resources', 'null': True, 'type': list},
-    {'section': 'parent backend', 'human': 'parent backend', 'null': True, 'type': tuple},
-    {'section': 'parent repo', 'human': 'parent repository', 'null': True, 'type': tuple},
-    {'section': 'parent branch', 'human': 'parent branch', 'null': True, 'type': tuple},
   ]
   lower_sections = [x.lower() for x in data['frontmatter'].keys()]
 
@@ -62,36 +55,20 @@ def test_integrity(data):
     # TODO: check whether type test passed.
 
 
+
+def normalize_data(data, section):
+  _ = {}
+  for normalized_key, alts in NORMALIZING_SECTIONS[section].items():
+      for alt in alts:
+          done = False
+          for key, val in data.items():
+              if done:
+                  continue
+              if key.lower() == alt.lower():
+                  _[normalized_key] = val
+                  done = True
+  return(_)
+
 def parse_frontmatter(data):
-  abstract, name, contributors, estimated_time, ethical_considerations, learning_objectives, readings, projects, resources = None, None, None, None, None, None, None, None, None
-  for key in data:
-    val = data[key]
-    check = key.lower()
-
-    if "abstract" in check: abstract = val
-    elif "name" in check: name = val
-    elif "acknowledgements" in check: contributors = val
-    elif "estimated time" in check: estimated_time = val
-    elif "ethical consideration" in check: ethical_considerations = val
-    elif "learning objective" in check: learning_objectives = val
-    elif "reading" in check: readings = val
-    elif "project" in check: projects = val
-    elif "resource" in check: resources = val
-    elif "parent backend" in check: parent_backend = val
-    elif "parent repo" in check: parent_repo = val
-    elif "parent branch" in check: parent_branch = val
-
-  return({
-    'name': name,
-    'abstract': abstract,
-    'contributors': contributors,
-    'estimated_time': estimated_time,
-    'learning_objectives': learning_objectives,
-    'ethical_considerations': ethical_considerations,
-    'readings': readings,
-    'projects': projects,
-    'resources': resources,
-    'parent_backend': parent_backend,
-    'parent_repo': parent_repo,
-    'parent_branch': parent_branch,
-  })
+  data = normalize_data(data, 'frontmatter')
+  return(data)
