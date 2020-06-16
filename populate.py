@@ -64,7 +64,7 @@ if __name__ == '__main__':
   # Test integrity for the data
   test_integrity(data)
 
-  w = workshop_magic(data )
+  w = workshop_magic(data)
 
 
   if DELETE_FILE and path:

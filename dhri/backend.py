@@ -73,37 +73,38 @@ def process_contributors(the_list):
 
 
 
-def workshop_magic(data):
+def workshop_magic(data: dict) -> bool:
+  """ Returns False if workshop has been updated, False if no changes have been made. """
+  
+  # Process and create workshop
+
+  new = True
+  
   name = data['meta']['name']
   
-  dhri_log(f'Processing workshop {name}')
+  dhri_log(f'Processing workshop {name}...')
   
   w = Workshop.objects.filter(name=name)
+  
   if len(w):
     new = False
-  elif len(w) == 0:
-    new = True
-  
-  if new == False:
-    _continue = input(f'Update existing Workshop {name} with frontmatter from json file? (y/N) ')
-    if _continue.lower() == 'y':
-      print('update')
-    else:
-      _continue = input(f'Add a new Workshop {name} with frontmatter from json file? (y/N) ')
+    _continue = dhri_input(f'Update latest existing Workshop {name} with frontmatter from json file? (y/N) ', bold=True, color='')
+    if _continue.lower() == 'n':
+      _continue = dhri_input(f'Add a new Workshop {name} with frontmatter from json file? (y/N) ', bold=True, color='')
       if _continue.lower() == 'y':
-        print('insert new')
         new = True
       else:
-        print('no update')
-        return(False) # TODO: OK?
-  
-  if new == False:
-    w = Workshop.objects.latest('created')
+        return(False)
+    else:
+      w = Workshop.objects.latest('created')
 
   if new == True:
-    w = Workshop(name=name)
+    w = Workshop(**data['meta'])
     w.save()
   
+
+  # Process and create frontmatter
+
   data['frontmatter']['workshop'] = w
 
   lists = {}
@@ -136,6 +137,14 @@ def workshop_magic(data):
       dhri_error('Encountered unknown list element.', raise_error=RuntimeError)
 
   f.save()
+
+  
+  # Process theory-to-practice
+
+  # TODO alpha-1, after creating Django models: process and create
+
+  
+  # Process theory-to-practice
     
   
 
