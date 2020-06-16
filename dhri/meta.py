@@ -1,6 +1,7 @@
-import argparse, re
+import argparse, re, json
+from pathlib import Path
 from .constants import URL
-from .log import dhri_error
+from .log import dhri_log, dhri_error
 
 
 def get_argparser():
@@ -26,3 +27,18 @@ def verify_url(string):
         dhri_error("-d must provide a valid URL to a DHRI repository.")
     if not "github" in string.lower():
         dhri_error(f"Your URL seems to not originate with Github. Currently, our curriculum only works with Github as backend.") # Set to kill out of the program
+
+
+def load_data(path):
+  dhri_log(f"loading {path}")
+
+  if not Path(path).exists():
+    dhri_error(f"Could not find JSON file on path: {path}")
+
+  data = json.loads(Path(path).read_text())
+  return(data)
+
+
+def save_data(path, data):
+    Path(path).write_text(json.dumps(data))
+    dhri_log(f"File saved to {path}")

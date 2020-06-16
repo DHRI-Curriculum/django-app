@@ -1,11 +1,11 @@
 from pathlib import Path
-import sys, re, json
+import re, json
 
 from dhri.log import dhri_error, dhri_log, dhri_warning, dhri_input
 from dhri.parser import parse_frontmatter, test_integrity
 from dhri.constants import *
-from dhri.markdown_parser import load_data, get_raw_content, split_md_into_sections
-from dhri.meta import get_argparser, verify_url
+from dhri.markdown_parser import get_raw_content, split_md_into_sections
+from dhri.meta import get_argparser, verify_url, load_data, save_data
 
 if __name__ == "__main__":
   # Process arguments
@@ -50,20 +50,19 @@ if __name__ == "__main__":
     sections['meta']['Parent backend'] = BACKEND_AUTO
     sections['meta']['Parent branch'] = data['meta']['branch']
 
-    if args.dest: write_path = args.dest
-    else: write_path = f"{repo}.json"
+    path = f"{repo}.json"
+    if args.dest: path = args.dest
 
-    Path(write_path).write_text(json.dumps(sections))
-    dhri_log(f"File downloaded: {write_path}")
+    save_data(path, sections)
 
     _continue = dhri_input("Do you want to continue with this file? (Y/n) ", bold=True, color="yellow")
     if _continue == "" or _continue.lower() == "y":
-      json_file = write_path
+      pass # we continue
     else:
       exit()
 
   elif args.file:
-    json_file = args.file
+    path = args.file
 
   elif args.reset:
     _continue = dhri_input("Are you sure you want to reset the entire DHRI curriculum in the current Django database? (y/N) ", bold=True, color="red")
@@ -82,7 +81,7 @@ if __name__ == "__main__":
   # Now we load up the backend
   from dhri.backend import validate_existing, workshop_magic, create_new_workshop, update_workshop, Workshop, Frontmatter, Project, Resource, Literature, Contributor
 
-  data = load_data(json_file) # Load data from json_file
+  data = load_data(path) # Load data from path
   test_integrity(data) # Test data integrity
 
   # existing = validate_existing(data['meta']['Name'])

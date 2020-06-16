@@ -17,8 +17,6 @@ def test_integrity(data):
   for section in missing_sections:
     dhri_error(f"`{section}` section missing in submitted JSON data.")
 
-  # in the following, we call `dhri_warning` when the model defines the field as `null=True`
-
   test_sections = [
     {'section': 'abstract', 'human': 'abstract', 'null': True, 'type': str},
     {'section': 'acknowledgements', 'human': 'acknowledgements', 'null': True, 'type': str},
@@ -39,10 +37,8 @@ def test_integrity(data):
         # TODO: test for type here as well
 
     if not passed_existing:
-      if test['null'] == True: dhri_warning(f"No {test['human']} section (optional) in frontmatter in submitted JSON.")
+      if test['null'] == True: dhri_warning(f"No {test['human']} section (optional) in frontmatter in submitted JSON.") # we call `dhri_warning` when the model defines the field as `null=True`
       elif test['null'] == False: dhri_error(f"No {test['human']} section (required) in frontmatter in submitted JSON.")
-
-    # TODO: check whether type test passed.
 
 
 def normalize_data(data, section):
@@ -57,6 +53,7 @@ def normalize_data(data, section):
                   _[normalized_key] = val
                   done = True
   return(_)
+
 
 def parse_frontmatter(data):
   data = normalize_data(data, 'frontmatter')

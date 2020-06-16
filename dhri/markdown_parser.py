@@ -1,9 +1,8 @@
-import json, requests
+import requests
+from requests.exceptions import HTTPError
+
 from .log import dhri_log, dhri_error
 from .constants import REMOVE_EMPTY_HEADINGS, BULLETPOINTS_TO_LISTS
-
-from pathlib import Path
-from requests.exceptions import HTTPError
 
 # This code was originally published at https://github.com/kallewesterling/markdown-interpreter
 
@@ -107,13 +106,3 @@ def split_md_into_sections(markdown, remove_empty_headings=REMOVE_EMPTY_HEADINGS
                     if len(sections[header]) == 0: del sections[header]
 
     return(sections)
-
-
-def load_data(json_file):
-  dhri_log(f"loading {json_file}")
-
-  if not Path(json_file).exists():
-    dhri_error(f"Could not find JSON file on path: {json_file}")
-
-  data = json.loads(Path(json_file).read_text())
-  return(data)
