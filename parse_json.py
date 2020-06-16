@@ -4,6 +4,7 @@ from dhri.markdown_parser import get_raw_content, split_md_into_sections_batch
 from dhri.meta import get_argparser, verify_url, load_data, save_data, delete_data, get_or_default, reset_all
 from dhri.constants import *
 
+from pprint import pprint
 
 if __name__ == '__main__':
   # Process arguments
@@ -25,18 +26,19 @@ if __name__ == '__main__':
     repo = get_or_default('Repository', data['meta']['repo_name'])
     name = get_or_default('Workshop name', repo.replace('-', ' ').title())
     
-    sections = split_md_into_sections_batch({'frontmatter', 'theory-to-practice', 'assessment'}, data['content'])
-    sections['meta'] = {
+    data = split_md_into_sections_batch({'frontmatter', 'theory-to-practice', 'assessment'}, data['content'])
+    
+    data['meta'] = {
       'name': name,
       'parent_repo': f'{user}/{repo}',
       'parent_backend': BACKEND_AUTO,
-      'parent_branch': data['meta']['branch']
+      'parent_branch': branch
     }
 
     path = f'{repo}.json'
     if args.dest: path = args.dest
 
-    save_data(path, sections)
+    save_data(path, data)
 
     _continue = dhri_input('Do you want to continue with this file? (Y/n) ', bold=True, color='yellow')
     if _continue == '' or _continue.lower() == 'y':
@@ -55,16 +57,18 @@ if __name__ == '__main__':
   from dhri.backend import Workshop, Frontmatter, Project, Resource, Literature, Contributor
 
   data = load_data(path)
-  
+
+  pprint(data)
+
   # Parse data
   data['frontmatter'] = parse(data['frontmatter'], "frontmatter")
   data['theory-to-practice'] = parse(data['theory-to-practice'], "theory-to-practice")
   data['assessment'] = parse(data['assessment'], "assessment")
-  
+
   # Test integrity for the data
   test_integrity(data)
 
-  w = workshop_magic(sections['meta'], data['frontmatter'])
+  w = workshop_magic(data )
 
 
   if DELETE_FILE and path:

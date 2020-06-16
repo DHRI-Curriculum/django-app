@@ -25,10 +25,14 @@ NORMALIZING_SECTIONS = {
         'resources': ['Resources (optional)', 'Resource (optional)', 'Resources optional', 'Resource optional'],
     },
     'theory-to-practice': {
-        'section': ['Other', 'Ways', 'Of', 'Spelling', 'Section']
+        'discussion_questions': ['Discussion Questions'],
+        'tutorials': ['Other Tutorials'],
+        'further_projects': ['Projects or Challenges to Try'],
+        'further_readings': ['Suggested Further Readings']
     },
     'assessment': {
-        'section_name': ['Yet', 'More', 'Kinds', 'of', 'Spells']
+        'qualitative_assessment': ['Qualitative Self-Assessment'],
+        'quantitative_assessment': ['Quantitative Self-Assessment'],
     }
 }
 

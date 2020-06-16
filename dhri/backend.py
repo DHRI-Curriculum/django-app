@@ -68,8 +68,8 @@ def process_contributors(the_list):
 
 
 
-def workshop_magic(meta, frontmatter):
-  name = meta['name']
+def workshop_magic(data):
+  name = data['meta']['name']
   
   dhri_log(f'Processing workshop {name}')
   
@@ -99,11 +99,11 @@ def workshop_magic(meta, frontmatter):
     w = Workshop(name=name)
     w.save()
   
-  frontmatter['workshop'] = w
+  data['frontmatter']['workshop'] = w
 
   lists = {}
   for list_element, model in {'projects': Project, 'resources': Resource, 'readings': Literature}.items():
-    list_ = frontmatter.pop(list_element)
+    list_ = data['frontmatter'].pop(list_element)
     ids = []
     for name in list_:
       e = model(name=name) # TODO: This does not yet test whether the list_element already exists, and provides the user with a test whether they want to update/create new
@@ -111,7 +111,7 @@ def workshop_magic(meta, frontmatter):
       if e.id not in ids: ids.append(e.id)
     lists[list_element] = ids
   
-  contributors = pre_process_contributors(frontmatter.pop('contributors'))
+  contributors = pre_process_contributors(data['frontmatter'].pop('contributors'))
   ids = []
   for contributor in contributors:
     first_name, last_name = contributor
@@ -120,7 +120,7 @@ def workshop_magic(meta, frontmatter):
     if c.id not in ids: ids.append(c.id)
   lists['contributors'] = ids
   
-  f = Frontmatter.objects.create(**frontmatter)
+  f = Frontmatter.objects.create(**data['frontmatter'])
 
   for list_element, ids in lists.items():
     if list_element == 'projects': f.projects.set(ids)
@@ -136,32 +136,32 @@ def workshop_magic(meta, frontmatter):
 
 
 
-def update_workshop(meta, frontmatter):
+def update_workshop(data):
   w = Workshop.objects.latest('created')
   
   dhri_log(f'Updating workshop {w}')
 
-  w.parent_backend = meta['parent_backend']
-  w.parent_repo = meta['parent_repo']
-  w.parent_branch = meta['parent_branch']
+  w.parent_backend = data['meta']['parent_backend']
+  w.parent_repo = data['meta']['parent_repo']
+  w.parent_branch = data['meta']['parent_branch']
 
-  dhri_log(f'Adding frontmatter information for workshop {name}')
+  dhri_log(f'Adding frontmatter information for workshop {w}')
 
-  w.frontmatter.ethical_considerations = frontmatter['ethical_considerations']
+  w.frontmatter.ethical_considerations = data['frontmatter']['ethical_considerations']
 
-  ids = process_list(frontmatter['projects'], Project)
+  ids = process_list(data['frontmatter']['projects'], Project)
   w.frontmatter.projects.set(ids)
   dhri_log(f'Projects {ids} have been updated in frontmatter.')
 
-  ids = process_list(frontmatter['resources'], Resource)
+  ids = process_list(data['frontmatter']['resources'], Resource)
   w.frontmatter.resources.set(ids)
   dhri_log(f'Resources {ids} have been updated in frontmatter.')
 
-  ids = process_list(frontmatter['readings'], Literature)
+  ids = process_list(data['frontmatter']['readings'], Literature)
   w.frontmatter.readings.set(ids)
   dhri_log(f'Readings {ids} have been updated in frontmatter.')
 
-  contributors = pre_process_contributors(frontmatter['contributors'])
+  contributors = pre_process_contributors(data['frontmatter']['contributors'])
   ids = process_contributors(contributors)
   w.frontmatter.contributors.set(ids)
   dhri_log(f'Contributors {ids} have been updated in frontmatter.')
@@ -173,14 +173,14 @@ def update_workshop(meta, frontmatter):
   return(w)
 
 
-def create_new_workshop(meta, frontmatter):
-  name = meta['name']
+def create_new_workshop(data):
+  name = data['meta']['name']
   dhri_log(f'Creating {name}')
   w = Workshop(
         name = name,
-        parent_backend = meta['parent_backend'],
-        parent_repo = meta['parent_repo'],
-        parent_branch = meta['parent_branch']
+        parent_backend = data['meta']['parent_backend'],
+        parent_repo = data['meta']['parent_repo'],
+        parent_branch = data['meta']['parent_branch']
       )
   w.save()
 
@@ -188,28 +188,28 @@ def create_new_workshop(meta, frontmatter):
 
   f = Frontmatter(
         workshop = w,
-        abstract = frontmatter['abstract'],
-        learning_objectives = frontmatter['learning_objectives'],
-        ethical_considerations = frontmatter['ethical_considerations'],
-        estimated_time = frontmatter['estimated_time']
+        abstract = data['frontmatter']['abstract'],
+        learning_objectives = data['frontmatter']['learning_objectives'],
+        ethical_considerations = data['frontmatter']['ethical_considerations'],
+        estimated_time = data['frontmatter']['estimated_time']
       )
   f.save()
 
   dhri_log(f'{f} (id {f.id}) has been created.')
 
-  ids = process_list(frontmatter['projects'], Project)
+  ids = process_list(data['frontmatter']['projects'], Project)
   f.projects.set(ids)
   dhri_log(f'Projects {ids} have been added to frontmatter.')
 
-  ids = process_list(frontmatter['resources'], Resource)
+  ids = process_list(data['frontmatter']['resources'], Resource)
   f.resources.set(ids)
   dhri_log(f'Resources {ids} have been added to frontmatter.')
 
-  ids = process_list(frontmatter['readings'], Literature)
+  ids = process_list(data['frontmatter']['readings'], Literature)
   f.readings.set(ids)
   dhri_log(f'Readings {ids} have been added to frontmatter.')
 
-  contributors = pre_process_contributors(frontmatter['contributors'])
+  contributors = pre_process_contributors(data['frontmatter']['contributors'])
   ids = process_contributors(contributors)
   f.contributors.set(ids)
   dhri_log(f'Contributors {ids} have been added to frontmatter.')
