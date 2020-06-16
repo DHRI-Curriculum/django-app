@@ -1,17 +1,7 @@
 from .log import dhri_error, dhri_log, dhri_warning
 from .constants import MD_LIST_ELEMENTS, NUMBERS, URL, NORMALIZING_SECTIONS
 from pathlib import Path
-import json
 
-
-def load_data(json_file):
-  dhri_log(f"loading {json_file}")
-
-  if not Path(json_file).exists():
-    dhri_error(f"Could not find JSON file on path: {json_file}")
-
-  data = json.loads(Path(json_file).read_text())
-  return(data)
 
 
 

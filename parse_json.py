@@ -2,9 +2,9 @@ from pathlib import Path
 import sys, re, argparse, json
 
 from dhri.log import dhri_error, dhri_log, dhri_warning, dhri_input
-from dhri.parser import load_data, parse_frontmatter, test_integrity
+from dhri.parser import parse_frontmatter, test_integrity
 from dhri.constants import MD_LIST_ELEMENTS, NUMBERS, URL, BACKEND_AUTO, BRANCH_AUTO
-from dhri.markdown_parser import get_raw_content, split_md_into_sections
+from dhri.markdown_parser import load_data, get_raw_content, split_md_into_sections
 
 def get_argparser():
   parser = argparse.ArgumentParser()
