@@ -132,3 +132,4 @@ dmypy.json
 .vscode
 *.json
 dhri-test-repo.json
+*.ipynb
