@@ -1,4 +1,4 @@
-import sys, os, django, json
+import sys, os, django
 from .log import dhri_error, dhri_log, dhri_warning, dhri_input
 
 dhri_log(f'setting up database interaction...')
