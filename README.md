@@ -7,11 +7,11 @@ Deadline: June 25
 
 ## Documentation
 
-This repository contains two projects in one: **parse_json** and **app**. Some documentation is available below. It will be improved over the course of [the alpha versions](https://github.com/DHRI-Curriculum/django-app/releases) of this project.
+This repository contains two projects in one: **populate** and **app**. Some documentation is available below. It will be improved over the course of [the alpha versions](https://github.com/DHRI-Curriculum/django-app/releases) of this project.
 
-### [parse_json](parse_json-README.md)
+### [populate](populate-README.md)
 
-The first, **`parse_json`** is a pre-processing Python script that runs on the command line and helps set up the data for the second project, the **app** (see below). `parse_json` is designed to integrate with the curriculum transition and quickly populate the Django database.
+The first, **`populate`** is a pre-processing Python script that runs on the command line and helps set up the data for the second project, the **app** (see below). `populate` is designed to integrate with the curriculum transition and quickly populate the Django database.
 
 ### [app](app-README.md)
 
