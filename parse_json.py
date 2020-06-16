@@ -4,8 +4,6 @@ from dhri.markdown_parser import get_raw_content, split_md_into_sections_batch
 from dhri.meta import get_argparser, verify_url, load_data, save_data, delete_data, get_or_default, reset_all
 from dhri.constants import *
 
-from pprint import pprint
-
 if __name__ == '__main__':
   # Process arguments
   parser = get_argparser()
@@ -57,8 +55,6 @@ if __name__ == '__main__':
   from dhri.backend import Workshop, Frontmatter, Project, Resource, Literature, Contributor
 
   data = load_data(path)
-
-  pprint(data)
 
   # Parse data
   data['frontmatter'] = parse(data['frontmatter'], 'frontmatter')
