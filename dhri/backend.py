@@ -7,9 +7,7 @@ sys.path.append('./app')
 os.environ['DJANGO_SETTINGS_MODULE'] = 'app.settings'
 django.setup()
 
-from workshop.models import Workshop
-from frontmatter.models import Frontmatter, Project, Resource, Literature, Contributor
-
+from .models import *
 
 def validate_existing(name, model=Workshop):
   """ Validate whether database already contains workshop, and choose how to move on. Returns 0 (no workshop exists), 1 (one or more workshops exist so update latest), 2 (create duplicate workshop) """
@@ -17,10 +15,10 @@ def validate_existing(name, model=Workshop):
   message = None
   if existing == 0:
     return(0)
-  elif existing > 1:
-    message = f"Multiple `{name}` of type {model.__name__} already exist - do you want to update the latest one (1) or create a new one (2)? "
   elif existing == 1:
     message = f"`{name}` of type {model.__name__} already exists - do you want to update (1) or create a new one (2)? "
+  elif existing > 1:
+    message = f"Multiple `{name}` of type {model.__name__} already exist - do you want to update the latest one (1) or create a new one (2)? "
 
   if message:
     validate = dhri_input(message, bold=True, color="")
@@ -69,16 +67,81 @@ def process_contributors(the_list):
   return(ids)
 
 
-def update_workshop(frontmatter):
-  dhri_log(f"Updating workshop {frontmatter['name']}")
-  update_id = Workshop.objects.latest('created').id
-  w = Workshop.objects.get(pk=update_id)
 
-  w.parent_backend = frontmatter['parent_backend']
-  w.parent_repo = frontmatter['parent_repo']
-  w.parent_branch = frontmatter['parent_branch']
+def workshop_magic(meta, frontmatter):
+  dhri_log(f"Processing workshop {meta['name']}")
+  w = Workshop.objects.filter(name = meta['name'])
+  if len(w):
+    new = False
+  elif len(w) == 0:
+    new = True
+  
+  if new == False:
+    _continue = input(f"Update existing Workshop {meta['name']} with frontmatter from json file? (y/N) ")
+    if _continue.lower() == "y":
+      print('update')
+    else:
+      _continue = input(f"Add a new Workshop {meta['name']} with frontmatter from json file? (y/N) ")
+      if _continue.lower() == "y":
+        print('insert new')
+        new = True
+      else:
+        print('no update')
+        return(False) # TODO: OK?
+  
+  if new == False:
+    w = Workshop.objects.latest('created')
 
-  dhri_log(f"Adding frontmatter information for workshop {frontmatter['name']}")
+  if new == True:
+    w = Workshop(name=meta['name'])
+    w.save()
+  
+  frontmatter['workshop'] = w
+
+  lists = {}
+  for list_element, model in {'projects': Project, 'resources': Resource, 'readings': Literature}.items():
+    list_ = frontmatter.pop(list_element)
+    ids = []
+    for name in list_:
+      e = model(name=name) # TODO: This does not yet test whether the list_element already exists, and provides the user with a test whether they want to update/create new
+      e.save()
+      if e.id not in ids: ids.append(e.id)
+    lists[list_element] = ids
+  
+  contributors = pre_process_contributors(frontmatter.pop('contributors'))
+  ids = []
+  for contributor in contributors:
+    first_name, last_name = contributor
+    c = Contributor(first_name=first_name, last_name=last_name) # TODO: This does not yet test whether the list_element already exists, and provides the user with a test whether they want to update/create new
+    c.save()
+    if c.id not in ids: ids.append(c.id)
+  lists['contributors'] = ids
+  
+  f = Frontmatter.objects.create(**frontmatter)
+
+  for list_element, ids in lists.items():
+    if list_element == "projects": f.projects.set(ids)
+    elif list_element == "resources": f.resources.set(ids)
+    elif list_element == "readings": f.readings.set(ids)
+    elif list_element == "contributors": f.contributors.set(ids)
+    else:
+      raise RuntimeError("Encountered unknown list element.")
+
+  f.save()
+    
+  
+
+
+
+def update_workshop(meta, frontmatter):
+  dhri_log(f"Updating workshop {meta['name']}")
+  w = Workshop.objects.latest('created')
+
+  w.parent_backend = meta['parent_backend']
+  w.parent_repo = meta['parent_repo']
+  w.parent_branch = meta['parent_branch']
+
+  dhri_log(f"Adding frontmatter information for workshop {meta['name']}")
 
   w.frontmatter.ethical_considerations = frontmatter['ethical_considerations']
 
@@ -106,13 +169,13 @@ def update_workshop(frontmatter):
   return(w)
 
 
-def create_new_workshop(frontmatter):
-  dhri_log(f"Creating {frontmatter['name']}")
+def create_new_workshop(meta, frontmatter):
+  dhri_log(f"Creating {meta['name']}")
   w = Workshop(
-        name = frontmatter['name'],
-        parent_backend = frontmatter['parent_backend'],
-        parent_repo = frontmatter['parent_repo'],
-        parent_branch = frontmatter['parent_branch']
+        name = meta['name'],
+        parent_backend = meta['parent_backend'],
+        parent_repo = meta['parent_repo'],
+        parent_branch = meta['parent_branch']
       )
   w.save()
 
