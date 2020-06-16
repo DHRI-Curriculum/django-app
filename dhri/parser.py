@@ -1,44 +1,43 @@
 from .log import dhri_error, dhri_log, dhri_warning
-from .constants import MD_LIST_ELEMENTS, NUMBERS, URL, NORMALIZING_SECTIONS
+from .constants import _test, MD_LIST_ELEMENTS, NUMBERS, URL, NORMALIZING_SECTIONS, REQUIRED_SECTIONS
 from pathlib import Path
-
-
 
 
 # Data integrity tests
 
+def test_for_keys(key_set=None, dictionary=None, dictionary_name="", lower=True, exact=True):
+  """ Checks whether a dictionary has all keys.
+  Lowers the keys if lower is set to True (default).
+  Exact (default True) whether exact matches of key_set values are in the dictionary's keys. If not checked, it uses Python's "in"
+  """
+  _test(key_set, set)
+  _test(dictionary, dict)
+  
+  check_keys = [x for x in dictionary.keys()]
+  if lower: check_keys = [x.lower() for x in check_keys]
+
+  if exact == True:
+    missing_sections = list(key_set - set(check_keys))
+  
+    for section in missing_sections:
+      dhri_error(f"`{section}` section missing in dictionary ({dictionary_name}).")
+  
+  elif exact == False:
+    for section in list(key_set - set(check_keys)):
+      ok = False
+      for _ in check_keys:
+        if section in _: ok = True
+      if ok == False:
+        dhri_error(f"`{section}` section missing in dictionary ({dictionary_name}).")
+
+
 def test_integrity(data):
   # Test for required name
-  if not 'meta' in data: dhri_error(f"`meta` section missing in submitted JSON data.")
-  if not 'name' in data['meta']: dhri_error(f"`Required `Name` missing in submitted JSON data (should be in meta).")
-
-  # Test for sections in data
-  missing_sections = list({'frontmatter', 'theory-to-practice', 'assessment'} - set(data.keys()))
-  for section in missing_sections:
-    dhri_error(f"`{section}` section missing in submitted JSON data.")
-
-  test_sections = [
-    {'section': 'abstract', 'human': 'abstract', 'null': True, 'type': str},
-    {'section': 'acknowledgements', 'human': 'acknowledgements', 'null': True, 'type': str},
-    {'section': 'estimated time', 'human': 'estimated time', 'null': True, 'type': int},
-    {'section': 'ethical considerations', 'human': 'ethical considerations', 'null': True, 'type': str},
-    {'section': 'learning objective', 'human': 'learning objectives', 'null': True, 'type': list},
-    {'section': 'reading', 'human': 'readings', 'null': True, 'type': list},
-    {'section': 'project', 'human': 'projects', 'null': True, 'type': list},
-    {'section': 'resource', 'human': 'resources', 'null': True, 'type': list},
-  ]
-  lower_sections = [x.lower() for x in data['frontmatter'].keys()]
-
-  for test in test_sections:
-    passed_existing = False
-    for _ in lower_sections:
-      if test['section'] in _:
-        passed_existing = True
-        # TODO: test for type here as well
-
-    if not passed_existing:
-      if test['null'] == True: dhri_warning(f"No {test['human']} section (optional) in frontmatter in submitted JSON.") # we call `dhri_warning` when the model defines the field as `null=True`
-      elif test['null'] == False: dhri_error(f"No {test['human']} section (required) in frontmatter in submitted JSON.")
+  test_for_keys({'meta', 'frontmatter', 'theory-to-practice', 'assessment'}, data, 'data')
+  test_for_keys({'name'}, data['meta'], 'meta in data')
+  test_for_keys(REQUIRED_SECTIONS['frontmatter'], data['frontmatter'], 'frontmatter in data', exact=True)
+  
+  return(True)
 
 
 def normalize_data(data, section):

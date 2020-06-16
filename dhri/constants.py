@@ -1,3 +1,6 @@
+REQUIRED_SECTIONS = {}
+
+##################################################################
 
 BACKEND_AUTO = "Github"
 BRANCH_AUTO = "v2.0"
@@ -25,6 +28,10 @@ NORMALIZING_SECTIONS = {
         'section_name': ['Yet', 'More', 'Kinds', 'of', 'Spells']
     }
 }
+
+REQUIRED_SECTIONS['frontmatter'] = set(NORMALIZING_SECTIONS['frontmatter'].keys())
+REQUIRED_SECTIONS['theory-to-practice'] = set(NORMALIZING_SECTIONS['theory-to-practice'].keys())
+REQUIRED_SECTIONS['assessment'] = set(NORMALIZING_SECTIONS['assessment'].keys())
 
 # Regex setup
 MD_LIST_ELEMENTS = r"\- (.*)(\n|$)"
