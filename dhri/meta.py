@@ -30,7 +30,7 @@ def verify_url(string):
 
 
 def load_data(path):
-  dhri_log(f"loading {path}")
+  dhri_log(f"Loading {path}")
 
   if not Path(path).exists():
     dhri_error(f"Could not find JSON file on path: {path}")
