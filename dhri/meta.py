@@ -1,7 +1,7 @@
 import argparse, re, json
 from pathlib import Path
 from .constants import URL, AUTO_RESET
-from .log import dhri_log, dhri_warning, dhri_error
+from .log import dhri_log, dhri_warning, dhri_error, dhri_input
 
 
 def get_argparser():
