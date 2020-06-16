@@ -1,5 +1,6 @@
 import argparse, re
 from .constants import URL
+from .log import dhri_error
 
 
 def get_argparser():
@@ -18,3 +19,10 @@ def confirm_url(string):
     if re.findall(URL, string):
         return(True)
     return(False)
+
+
+def verify_url(string):
+    if not confirm_url(string):
+        dhri_error("-d must provide a valid URL to a DHRI repository.")
+    if not "github" in string.lower():
+        dhri_error(f"Your URL seems to not originate with Github. Currently, our curriculum only works with Github as backend.") # Set to kill out of the program

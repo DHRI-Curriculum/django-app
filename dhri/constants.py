@@ -3,6 +3,10 @@ BACKEND_AUTO = "Github"
 BRANCH_AUTO = "v2.0"
 
 
+REMOVE_EMPTY_HEADINGS = True    # removing empty headings from sectioning of markdown
+BULLETPOINTS_TO_LISTS = True    # remakes sections that ONLY contain bulletpoints into python lists
+
+
 NORMALIZING_SECTIONS = {
     'frontmatter': {
         'abstract': ['Abstract'],

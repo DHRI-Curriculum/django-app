@@ -5,20 +5,16 @@ from dhri.log import dhri_error, dhri_log, dhri_warning, dhri_input
 from dhri.parser import parse_frontmatter, test_integrity
 from dhri.constants import *
 from dhri.markdown_parser import load_data, get_raw_content, split_md_into_sections
-from dhri.meta import get_argparser, confirm_url
+from dhri.meta import get_argparser, verify_url
 
 if __name__ == "__main__":
   # Process arguments
   parser = get_argparser()
   args = parser.parse_args()
   if args.download:
-    if not confirm_url(args.download):
-      parser.error("-d must provide a valid URL to a DHRI repository.")
-
+    verify_url(args.download)
+    
     dhri_log(f"URL accepted: {args.download}")
-
-    if not "github" in args.download.lower():
-      dhri_error(f"Your URL seems to not originate with Github. Currently, our curriculum only works with Github as backend.") # Set to kill out of the program
 
     _ = input(f"Branch (default '{BRANCH_AUTO}'): ")
     if _ != "": branch = _
@@ -31,13 +27,9 @@ if __name__ == "__main__":
     sections['theory-to-practice'] = split_md_into_sections(data['content']['theory-to-practice'])
     sections['assessment'] = split_md_into_sections(data['content']['assessment'])
 
-    try:
-      url_elems = data['meta']['repo'].split("/")
-      user = url_elems[3]
-      repo = url_elems[4]
-    except:
-      user, repo = args.download, args.download
-
+    user = data['meta']['user']
+    repo = data['meta']['repo_name']
+    
     _user = input(f"Username (default '{user}'): ")
     if _user != "": user = _user
 

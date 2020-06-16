@@ -1,17 +1,16 @@
 import json, requests
 from .log import dhri_log, dhri_error
+from .constants import REMOVE_EMPTY_HEADINGS, BULLETPOINTS_TO_LISTS
+
 from pathlib import Path
+from requests.exceptions import HTTPError
 
 # This code was originally published at https://github.com/kallewesterling/markdown-interpreter
 
 
-REMOVE_EMPTY_HEADINGS = True    # removing empty headings from sectioning of markdown
-BULLETPOINTS_TO_LISTS = True    # remakes sections that ONLY contain bulletpoints into python lists
 # TODO: add a constant FORCE_BULLETPOINTS that uses regex to extract whatever bulletpoints exist in a section and skip other content.
 
-# TODO: remove the explicit reference to the dhri-test-repo
-
-def get_raw_content(repo="https://github.com/kallewesterling/dhri-test-repo", branch="master"):
+def get_raw_content(repo=None, branch="master"):
     """
     Downloads all the raw content from a provided repository on GitHub, and from a particular master.
 
@@ -20,6 +19,8 @@ def get_raw_content(repo="https://github.com/kallewesterling/dhri-test-repo", br
     - theory-to-practice.md
     - assessment.md
     """
+
+    if repo == None: raise RuntimeError("No repo URL provided.")
 
     if repo.endswith("/"): repo = repo[:-1]
 
@@ -36,6 +37,12 @@ def get_raw_content(repo="https://github.com/kallewesterling/dhri-test-repo", br
     raw_urls['theory-to-practice'] = f"{raw_url}/theory-to-practice.md"
     raw_urls['assessment'] = f"{raw_url}/assessment.md"
 
+    r = requests.get(raw_urls['frontmatter'])
+    try:
+        r.raise_for_status()
+    except HTTPError as e:
+        dhri_error(f"The URL could not be used. Verify that you are using the correct repository {repo_name}, and that the branch ({branch}) is correct.")
+
     raw_content = {}
     raw_content['frontmatter'] = requests.get(raw_urls['frontmatter']).text
     raw_content['theory-to-practice'] = requests.get(raw_urls['theory-to-practice']).text
@@ -44,7 +51,9 @@ def get_raw_content(repo="https://github.com/kallewesterling/dhri-test-repo", br
     return({
         'meta': {
             'raw_urls': raw_urls,
-            'repo': repo,
+            'repo_url': repo,
+            'user': user,
+            'repo_name': repo_name,
             'branch': branch,
         },
         'content': raw_content,

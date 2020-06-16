@@ -45,7 +45,6 @@ def test_integrity(data):
     # TODO: check whether type test passed.
 
 
-
 def normalize_data(data, section):
   _ = {}
   for normalized_key, alts in NORMALIZING_SECTIONS[section].items():
