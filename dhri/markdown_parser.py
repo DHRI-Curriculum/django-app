@@ -130,3 +130,12 @@ def split_md_into_sections(markdown, remove_empty_headings=REMOVE_EMPTY_HEADINGS
                     if len(sections[header]) == 0: del sections[header]
 
     return(sections)
+
+
+def split_md_into_sections_batch(section_names: set, dictionary: dict) -> dict:
+    """ Can run multiple split_md_into_sections and return a dictionary with the results """
+    _ = {}
+    for section_name in section_names:
+        if section_name not in _:
+            _[section_name] = split_md_into_sections(dictionary[section_name])
+    return(_)

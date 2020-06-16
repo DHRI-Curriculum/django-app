@@ -1,12 +1,8 @@
 from dhri.log import dhri_error, dhri_log, dhri_warning, dhri_input
 from dhri.parser import parse_frontmatter, test_integrity
 from dhri.constants import *
-from dhri.markdown_parser import get_raw_content, split_md_into_sections
+from dhri.markdown_parser import get_raw_content, split_md_into_sections, split_md_into_sections_batch
 from dhri.meta import get_argparser, verify_url, load_data, save_data, get_or_default, reset_all
-
-
-# Set up empty variables
-sections, sections['meta'] = {}, {}
 
 
 if __name__ == "__main__":
@@ -29,15 +25,13 @@ if __name__ == "__main__":
     repo = get_or_default("Repository", data['meta']['repo_name'])
     name = get_or_default("Workshop name", repo.replace("-", " ").title())
     
-    sections['meta']['name'] = name
-    sections['meta']['Parent repo'] = f"{user}/{repo}"
-    sections['meta']['Parent backend'] = BACKEND_AUTO
-    sections['meta']['Parent branch'] = data['meta']['branch']
-
-    sections['frontmatter'] = split_md_into_sections(data['content']['frontmatter'])
-    sections['theory-to-practice'] = split_md_into_sections(data['content']['theory-to-practice'])
-    sections['assessment'] = split_md_into_sections(data['content']['assessment'])
-
+    sections = split_md_into_sections_batch({'frontmatter', 'theory-to-practice', 'assessment'}, data['content'])
+    sections['meta'] = {
+      'name': name,
+      'parent_repo': f"{user}/{repo}",
+      'parent_backend': BACKEND_AUTO,
+      'parent_branch': data['meta']['branch']
+    }
 
     path = f"{repo}.json"
     if args.dest: path = args.dest

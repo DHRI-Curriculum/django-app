@@ -41,7 +41,15 @@ def load_data(path):
   return(data)
 
 
+def test_path(path):
+    """ Tests the pathname """
+    if not path.endswith(".json"):
+        dhri_warning("The data file is not saved as a .json file. It will work but it might be confusing.")
+    return(True)
+
+
 def save_data(path, data):
+    test_path(path)
     Path(path).write_text(json.dumps(data))
     dhri_log(f"File saved to {path}")
     return(True)
