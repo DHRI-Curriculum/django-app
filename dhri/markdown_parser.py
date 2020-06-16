@@ -2,14 +2,12 @@ import requests
 from requests.exceptions import HTTPError
 
 from .log import dhri_log, dhri_error
-from .constants import REMOVE_EMPTY_HEADINGS, BULLETPOINTS_TO_LISTS
-
-# This code was originally published at https://github.com/kallewesterling/markdown-interpreter
+from .constants import REMOVE_EMPTY_HEADINGS, BULLETPOINTS_TO_LISTS, BRANCH_AUTO
 
 
 # TODO: add a constant FORCE_BULLETPOINTS that uses regex to extract whatever bulletpoints exist in a section and skip other content.
 
-def get_raw_content(repo=None, branch="master"):
+def get_raw_content(repo=None, branch=BRANCH_AUTO):
     """
     Downloads all the raw content from a provided repository on GitHub, and from a particular master.
 
