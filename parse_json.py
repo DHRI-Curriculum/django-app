@@ -97,7 +97,7 @@ if __name__ == "__main__":
   data = load_data(json_file) # Load data from json_file
   test_integrity(data) # Test data integrity
 
-  existing = validate_existing(data['frontmatter']['Name'])
+  # existing = validate_existing(data['frontmatter']['Name'])
 
 
   # Start parsing
@@ -123,7 +123,9 @@ if __name__ == "__main__":
 
   w = workshop_magic(frontmatter)
 
+"""
   if existing == 0 or existing == 2:
     w = create_new_workshop(frontmatter)
   elif existing == 1:
     w = update_workshop(frontmatter)
+"""
