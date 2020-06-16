@@ -1,27 +1,18 @@
 from pathlib import Path
-import sys, re, argparse, json
+import sys, re, json
 
 from dhri.log import dhri_error, dhri_log, dhri_warning, dhri_input
 from dhri.parser import parse_frontmatter, test_integrity
 from dhri.constants import *
 from dhri.markdown_parser import load_data, get_raw_content, split_md_into_sections
-
-def get_argparser():
-  parser = argparse.ArgumentParser()
-  group = parser.add_mutually_exclusive_group(required=True)
-  group.add_argument("-d", "--download", type=str, help="download from a directory")
-  group.add_argument("-f", "--file", type=str, help="load data from a file containing JSON with processed data from a DHRI curriculum")
-  group.add_argument("-r", "--reset", action='store_true', help="reset the DHRI curriculum data in the database")
-  group2 = group.add_argument_group()
-  group2.add_argument('--dest', type=str, help="optional destination for download")
-  return(parser)
+from dhri.meta import get_argparser, confirm_url
 
 if __name__ == "__main__":
   # Process arguments
   parser = get_argparser()
   args = parser.parse_args()
   if args.download:
-    if not re.findall(URL, args.download):
+    if not confirm_url(args.download):
       parser.error("-d must provide a valid URL to a DHRI repository.")
 
     dhri_log(f"URL accepted: {args.download}")
