@@ -1,8 +1,8 @@
-from dhri.log import dhri_error, dhri_log, dhri_warning, dhri_input
-from dhri.parser import parse_frontmatter, test_integrity
-from dhri.constants import *
-from dhri.markdown_parser import get_raw_content, split_md_into_sections, split_md_into_sections_batch
+from dhri.log import dhri_input
+from dhri.parser import parse, test_integrity
+from dhri.markdown_parser import get_raw_content, split_md_into_sections_batch
 from dhri.meta import get_argparser, verify_url, load_data, save_data, get_or_default, reset_all
+from dhri.constants import *
 
 
 if __name__ == '__main__':
@@ -57,7 +57,9 @@ if __name__ == '__main__':
   data = load_data(path)
   
   # Parse data
-  data['frontmatter'] = parse_frontmatter(data['frontmatter']) # TODO: add other parsers after `parse_frontmatter`
+  data['frontmatter'] = parse(data['frontmatter'], "frontmatter")
+  data['theory-to-practice'] = parse(data['theory-to-practice'], "theory-to-practice")
+  data['assessment'] = parse(data['assessment'], "assessment")
   
   # Test integrity for the data
   test_integrity(data)
