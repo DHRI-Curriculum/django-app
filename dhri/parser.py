@@ -1,6 +1,8 @@
+from pathlib import Path
+import re
+
 from .log import dhri_error, dhri_log, dhri_warning
 from .constants import _test, MD_LIST_ELEMENTS, NUMBERS, URL, NORMALIZING_SECTIONS, REQUIRED_SECTIONS
-from pathlib import Path
 
 
 # Data integrity tests
@@ -54,6 +56,20 @@ def normalize_data(data, section):
   return(_)
 
 
+def normalize_number(assumed_integer):
+  g = re.search(NUMBERS, assumed_integer)
+  if g:
+    if "." in g.groups()[0]:
+      assumed_integer = g.groups()[0].split(".")[0]
+    else:
+      assumed_integer = g.groups()[0]
+  else:
+    assumed_integer = 0
+  return(assumed_integer)
+
+
 def parse_frontmatter(data):
   data = normalize_data(data, 'frontmatter')
+  data['estimated_time'] = normalize_number(data['estimated_time'])
   return(data)
+

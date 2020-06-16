@@ -9,8 +9,8 @@ from dhri.meta import get_argparser, verify_url, load_data, save_data, get_or_de
 
 
 # Set up empty variables
-
 sections, sections['meta'] = {}, {}
+
 
 if __name__ == "__main__":
   # Process arguments
@@ -73,26 +73,10 @@ if __name__ == "__main__":
   data = load_data(path)
   
   # Parse data
-  data['frontmatter'] = parse_frontmatter(data['frontmatter'])
-      # TODO: add other parsers here (below `parse_frontmatter`)
+  data['frontmatter'] = parse_frontmatter(data['frontmatter']) # TODO: add other parsers after `parse_frontmatter`
   
   # Test integrity for the data
   test_integrity(data)
-
-
-
-  # TODO: *temporarily here* here, I fix the numbers for the estimated time, which should not be done here but rather in the parser, so this should be removed/moved to DHRIParser.py
-  ########################################################################
-  g = re.search(NUMBERS, data['frontmatter']['estimated_time'])
-  if g:
-    if "." in g.groups()[0]:
-      data['frontmatter']['estimated_time'] = g.groups()[0].split(".")[0]
-    else:
-      data['frontmatter']['estimated_time'] = g.groups()[0]
-  else:
-    data['frontmatter']['estimated_time'] = 0
-  ########################################################################
-
 
   w = workshop_magic(sections['meta'], data['frontmatter'])
 
