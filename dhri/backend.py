@@ -69,8 +69,36 @@ def process_contributors(the_list):
   return(ids)
 
 
+
 def workshop_magic(frontmatter):
   dhri_log(f"Updating workshop {frontmatter['name']}")
+  w = Workshop.objects.filter(name = frontmatter['name'])
+  if len(w):
+    w = Workshop.objects.latest('created')
+    new = False
+  elif len(w) == 0:
+    w = Workshop(name=frontmatter['name'])
+    w.save()
+    new = True
+  
+  if new == False:
+    _continue = input("Update existing Workshop with frontmatter from json file? (y/N) ")
+    if _continue.lower() == "y":
+      print('update')
+      # TODO: create function update_workshop(id, frontmatter)
+    else:
+      _continue = input("Add a new Workshop with frontmatter from json file? (y/N) ")
+      if _continue.lower() == "y":
+        print('insert new')
+        new = True
+      else:
+        print('no update')
+        return(False) # TODO: OK?
+  
+  if new == True:
+    pass # TODO: insert all the information...    
+  
+
 
 
 def update_workshop(frontmatter):

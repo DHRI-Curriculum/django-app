@@ -92,7 +92,7 @@ if __name__ == "__main__":
     args.error("Cannot interpret the arguments passed to the script. Try running it with argument -h to see more information.")
 
   # Now we load up the backend
-  from dhri.backend import validate_existing, create_new_workshop, update_workshop, Workshop, Frontmatter, Project, Resource, Literature, Contributor
+  from dhri.backend import validate_existing, workshop_magic, create_new_workshop, update_workshop, Workshop, Frontmatter, Project, Resource, Literature, Contributor
 
   data = load_data(json_file) # Load data from json_file
   test_integrity(data) # Test data integrity
@@ -120,6 +120,8 @@ if __name__ == "__main__":
     frontmatter['estimated_time'] = 0
   ########################################################################
 
+
+  w = workshop_magic(frontmatter)
 
   if existing == 0 or existing == 2:
     w = create_new_workshop(frontmatter)
