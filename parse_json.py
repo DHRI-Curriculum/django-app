@@ -51,7 +51,7 @@ if __name__ == '__main__':
     args.error('Cannot interpret the arguments passed to the script. You need to provide either -f or -d. Try running it with argument -h to see more information.')
 
   # Now we load up the backend (we do it here because we don't want to load the whole django framework before, because it takes a second)
-  from dhri.backend import validate_existing, workshop_magic, create_new_workshop, update_workshop
+  from dhri.backend import workshop_magic, create_new_workshop, update_workshop
   from dhri.backend import Workshop, Frontmatter, Project, Resource, Literature, Contributor
 
   data = load_data(path)

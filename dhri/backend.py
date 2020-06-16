@@ -9,8 +9,9 @@ django.setup()
 
 from .models import *
 
-def validate_existing(name, model=Workshop):
-  """ Validate whether database already contains workshop, and choose how to move on. Returns 0 (no workshop exists), 1 (one or more workshops exist so update latest), 2 (create duplicate workshop) """
+
+""" def validate_existing(name, model=Workshop): # not currently in use
+  # Validate whether database already contains workshop, and choose how to move on. Returns 0 (no workshop exists), 1 (one or more workshops exist so update latest), 2 (create duplicate workshop)
   existing = model.objects.filter(name=name).count()
   message = None
   if existing == 0:
@@ -24,10 +25,13 @@ def validate_existing(name, model=Workshop):
     validate = dhri_input(message, bold=True, color='')
     if validate not in ['1', '2']: dhri_error('Cancelled.')
     return(int(validate))
+"""
 
 
-def process_list(the_list, model):
-  """ Validates a list of list of names (the_list) against the database, asks the user whether to update with the new data or create a new database object with the same information. Return a list of the resulting ids, which can be inserted into a new database object. """
+""" # Not currently in use
+def process_list(the_list: list, model):
+  # Validates a list of list of names (the_list) against the database, asks the user whether to update with the new data or create a new database object with the same information. Return a list of the resulting ids, which can be inserted into a new database object.
+  print(type(model))
   ids = []
   for name in the_list:
     existing = validate_existing(name, model=model)
@@ -43,6 +47,7 @@ def process_list(the_list, model):
       instance.save()
       ids.append(instance.id)
   return(ids)
+"""
 
 
 def pre_process_contributors(the_list):
