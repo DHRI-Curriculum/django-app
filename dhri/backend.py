@@ -144,10 +144,9 @@ def workshop_magic(data: dict) -> bool:
   # TODO alpha-1, after creating Django models: process and create
 
   
-  # Process theory-to-practice
+  # Process assessment
     
-  
-
+  # TODO alpha-1, after creating Django models: process and create
 
 
 def update_workshop(data):
