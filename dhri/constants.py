@@ -2,7 +2,8 @@ REQUIRED_SECTIONS = {}
 
 ##################################################################
 
-AUTO_RESET = True
+AUTO_RESET = True # reset all the DHRI curriculum database elements automatically before script runs (not recommended in production)
+DELETE_FILE = True # delete file after script is done
 
 BACKEND_AUTO = 'Github'
 BRANCH_AUTO = 'v2.0'

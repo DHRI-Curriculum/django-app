@@ -1,7 +1,7 @@
 from dhri.log import dhri_input
 from dhri.parser import parse, test_integrity
 from dhri.markdown_parser import get_raw_content, split_md_into_sections_batch
-from dhri.meta import get_argparser, verify_url, load_data, save_data, get_or_default, reset_all
+from dhri.meta import get_argparser, verify_url, load_data, save_data, delete_data, get_or_default, reset_all
 from dhri.constants import *
 
 
@@ -65,6 +65,10 @@ if __name__ == '__main__':
   test_integrity(data)
 
   w = workshop_magic(sections['meta'], data['frontmatter'])
+
+
+  if DELETE_FILE and path:
+    delete_data(path, auto=True)
 
 """
   if existing == 0 or existing == 2:
