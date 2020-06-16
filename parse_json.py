@@ -1,7 +1,7 @@
 from pathlib import Path
 import sys, re, argparse, json
 
-from dhri.log import dhri_error, dhri_log, dhri_warning, Fore, Style
+from dhri.log import dhri_error, dhri_log, dhri_warning, dhri_input
 from dhri.parser import load_data, parse_frontmatter, test_integrity
 from dhri.constants import MD_LIST_ELEMENTS, NUMBERS, URL, BACKEND_AUTO, BRANCH_AUTO
 from dhri.markdown_parser import get_raw_content, split_md_into_sections
@@ -69,7 +69,7 @@ if __name__ == "__main__":
     Path(write_path).write_text(json.dumps(sections))
     dhri_log(f"File downloaded: {write_path}")
 
-    _continue = input(Fore.YELLOW + "Do you want to continue with this file? (Y/n) " + Style.RESET_ALL)
+    _continue = dhri_input("Do you want to continue with this file? (Y/n) ", bold=True, color="yellow")
     if _continue == "" or _continue.lower() == "y":
       json_file = write_path
     else:
