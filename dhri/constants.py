@@ -4,8 +4,8 @@ REQUIRED_SECTIONS = {}
 
 AUTO_RESET = True
 
-BACKEND_AUTO = "Github"
-BRANCH_AUTO = "v2.0"
+BACKEND_AUTO = 'Github'
+BRANCH_AUTO = 'v2.0'
 
 
 REMOVE_EMPTY_HEADINGS = True    # removing empty headings from sectioning of markdown
@@ -36,9 +36,9 @@ REQUIRED_SECTIONS['theory-to-practice'] = set(NORMALIZING_SECTIONS['theory-to-pr
 REQUIRED_SECTIONS['assessment'] = set(NORMALIZING_SECTIONS['assessment'].keys())
 
 # Regex setup
-MD_LIST_ELEMENTS = r"\- (.*)(\n|$)"
-NUMBERS = r"(\d+([\.,][\d+])?)"
-URL = r"(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])?"
+MD_LIST_ELEMENTS = r'\- (.*)(\n|$)'
+NUMBERS = r'(\d+([\.,][\d+])?)'
+URL = r'(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])?'
 
 
 
@@ -54,12 +54,12 @@ def _check_normalizer(dictionary=NORMALIZING_SECTIONS):
         all_ = [x.lower() for x in list(chain.from_iterable([x for x in NORMALIZING_SECTIONS[section].values()]))]
 
         if max([all_.count(x) for x in set(all_)]) > 1:
-            dhri_error("NORMALIZING_SECTIONS is confusing: multiple alternative strings for normalizing.", raise_error=RuntimeError)
+            dhri_error('NORMALIZING_SECTIONS is confusing: multiple alternative strings for normalizing.', raise_error=RuntimeError)
     
     return(True)
 
 def _test(variable=None, as_type=bool):
-    if not isinstance(variable, as_type): dhri_error(f"`{variable}` provided must be a {as_type}.", raise_error=RuntimeError)
+    if not isinstance(variable, as_type): dhri_error(f'`{variable}` provided must be a {as_type}.', raise_error=RuntimeError)
     return(True)
 
 # Run tests

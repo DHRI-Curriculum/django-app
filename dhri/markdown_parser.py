@@ -117,9 +117,9 @@ def split_md_into_sections(markdown, remove_empty_headings=REMOVE_EMPTY_HEADINGS
                 sections[header] = ''
                 skip_ahead = False
                 for nextline in lines[linenumber + 1:]:
-                    if nextline.startswith('#"): skip_ahead = True
+                    if nextline.startswith('#'): skip_ahead = True
                     if skip_ahead: continue
-                    sections[header] += '\n" + nextline
+                    sections[header] += '\n' + nextline
                 sections[header] = sections[header].strip()
 
                 if bulletpoints_to_lists:

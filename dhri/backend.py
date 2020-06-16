@@ -71,7 +71,7 @@ def process_contributors(the_list):
 def workshop_magic(meta, frontmatter):
   name = meta['name']
   
-  dhri_log(f'Processing workshop {name]}')
+  dhri_log(f'Processing workshop {name}')
   
   w = Workshop.objects.filter(name=name)
   if len(w):
@@ -96,7 +96,7 @@ def workshop_magic(meta, frontmatter):
     w = Workshop.objects.latest('created')
 
   if new == True:
-    w = Workshop(name=name])
+    w = Workshop(name=name)
     w.save()
   
   frontmatter['workshop'] = w
