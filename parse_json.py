@@ -57,10 +57,11 @@ if __name__ == "__main__":
     _name = input(f"Workshop name (default '{name}'): ")
     if _name != "": name = _name
 
-    sections['frontmatter']['Name'] = name
-    sections['frontmatter']['Parent repo'] = f"{user}/{repo}"
-    sections['frontmatter']['Parent backend'] = BACKEND_AUTO
-    sections['frontmatter']['Parent branch'] = BRANCH_AUTO
+    sections['meta'] = {}
+    sections['meta']['name'] = name
+    sections['meta']['Parent repo'] = f"{user}/{repo}"
+    sections['meta']['Parent backend'] = BACKEND_AUTO
+    sections['meta']['Parent branch'] = BRANCH_AUTO
 
     if args.dest: write_path = args.dest
     else: write_path = f"{repo}.json"
@@ -97,7 +98,7 @@ if __name__ == "__main__":
   data = load_data(json_file) # Load data from json_file
   test_integrity(data) # Test data integrity
 
-  # existing = validate_existing(data['frontmatter']['Name'])
+  # existing = validate_existing(data['meta']['Name'])
 
 
   # Start parsing
@@ -121,7 +122,7 @@ if __name__ == "__main__":
   ########################################################################
 
 
-  w = workshop_magic(frontmatter)
+  w = workshop_magic(sections['meta'], frontmatter)
 
 """
   if existing == 0 or existing == 2:

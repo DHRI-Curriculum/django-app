@@ -19,8 +19,8 @@ def load_data(json_file):
 
 def test_integrity(data):
   # Test for required name
-  if not 'frontmatter' in data: dhri_error(f"`frontmatter` section missing in submitted JSON data.")
-  if not 'Name' in data['frontmatter']: dhri_error(f"`Required `Name` in frontmatter missing in submitted JSON data.")
+  if not 'meta' in data: dhri_error(f"`meta` section missing in submitted JSON data.")
+  if not 'name' in data['meta']: dhri_error(f"`Required `Name` missing in submitted JSON data (should be in meta).")
 
   # Test for sections in data
   missing_sections = list({'frontmatter', 'theory-to-practice', 'assessment'} - set(data.keys()))
@@ -38,9 +38,6 @@ def test_integrity(data):
     {'section': 'reading', 'human': 'readings', 'null': True, 'type': list},
     {'section': 'project', 'human': 'projects', 'null': True, 'type': list},
     {'section': 'resource', 'human': 'resources', 'null': True, 'type': list},
-    {'section': 'parent backend', 'human': 'parent backend', 'null': True, 'type': tuple},
-    {'section': 'parent repo', 'human': 'parent repository', 'null': True, 'type': tuple},
-    {'section': 'parent branch', 'human': 'parent branch', 'null': True, 'type': tuple},
   ]
   lower_sections = [x.lower() for x in data['frontmatter'].keys()]
 
