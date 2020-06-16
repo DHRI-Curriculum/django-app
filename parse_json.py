@@ -61,9 +61,9 @@ if __name__ == '__main__':
   pprint(data)
 
   # Parse data
-  data['frontmatter'] = parse(data['frontmatter'], "frontmatter")
-  data['theory-to-practice'] = parse(data['theory-to-practice'], "theory-to-practice")
-  data['assessment'] = parse(data['assessment'], "assessment")
+  data['frontmatter'] = parse(data['frontmatter'], 'frontmatter')
+  data['theory-to-practice'] = parse(data['theory-to-practice'], 'theory-to-practice')
+  data['assessment'] = parse(data['assessment'], 'assessment')
 
   # Test integrity for the data
   test_integrity(data)
