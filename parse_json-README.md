@@ -42,6 +42,18 @@ If you choose to exit the script, you can always work with local data by running
   python parse_json --file workshop.json
   ```
 
+## Reset DHRI Curriculum Elements in Database
+
+Included in the script is an easy way to reset the database's DHRI elements, which is good for development purposes as well as if there are any problems with the database in the future.
+
+Just run in your terminal:
+
+```
+python parse_json --r
+```
+
+You will be asked to confirm (with a "Y") before the data is wiped.
+
 ## Notes
 
 - The script has not yet been tested for compatibility but works in development on Mac OS Catalina (10.15.4) and Python 3.8.0.
