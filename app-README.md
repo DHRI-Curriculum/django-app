@@ -10,6 +10,28 @@ Contents:
 
 ---
 
+## Two Central Files
+
+Before we begin, it is good for you to keep track of two files:
+
+```
+— django-app  
+|  
++— app  
+|  |  
+|  +— manage.py  <—— django
+|  
++— populate.py   <—— DHRI-specific
+```
+
+`manage.py` is the central tool for Django, and you will need it, most importantly, to run the server, but also to set up databases, etc. In this repository it is located inside `django-app` > `app`.
+
+`populate.py` is the central tool for populating Django's database with DHRI-specific content. It is located in the `django-app` root directory.
+
+#### This manual focuses primarily on Django (`manage.py`). [Populate-README](populate-README.md) focuses on the options for the `populate.py` script.
+
+---
+
 ## 1. Installing
 
 ### Step 1. Install Dependencies
