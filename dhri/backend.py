@@ -1,7 +1,7 @@
 import sys, os, django
 from .log import dhri_error, dhri_log, dhri_warning, dhri_input
 
-dhri_log(f'setting up database interaction...')
+dhri_log(f'Setting up database interaction...')
 
 sys.path.append('./app')
 os.environ['DJANGO_SETTINGS_MODULE'] = 'app.settings'
