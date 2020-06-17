@@ -7,7 +7,7 @@ from dhri.meta import reset_all
 
 ## Add to dhri.constants
 
-QUESTION_AUTOCHOICE = 'Multi-choice'
+QUESTION_AUTOCHOICE = 'radio' # other choices could be: select, text, range?, checkbox, 
 
 
 

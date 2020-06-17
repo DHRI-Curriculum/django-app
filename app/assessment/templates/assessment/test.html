@@ -5,5 +5,13 @@
         {% for answer in question.answer.all %}
             <p>{{ answer.label }}{% if answer.is_correct_answer %} (correct){% endif %}</p>
         {% endfor %}
+
+
+        <form action="{% url 'assessment:test' question.id %}" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value="Submit">
+        </form>
+        
     </body>
 </html>
