@@ -19,7 +19,7 @@ Before we begin, it is good for you to keep track of two files:
 |  
 +— app  
 |  |  
-|  +— manage.py  <—— django
+|  +— manage.py  <—— Django
 |  
 +— populate.py   <—— DHRI-specific
 ```
@@ -28,7 +28,7 @@ Before we begin, it is good for you to keep track of two files:
 
 `populate.py` is the central tool for populating Django's database with DHRI-specific content. It is located in the `django-app` root directory.
 
-#### This manual focuses primarily on Django (`manage.py`). [Populate-README](populate-README.md) focuses on the options for the `populate.py` script.
+#### This manual focuses primarily on Django (`manage.py`). [Populate-README](populate-README.md) focuses on the options for the `populate.py` script. Django's own [documentation](https://docs.djangoproject.com/en/3.0/ref/django-admin/) for `manage.py` can also be helpful for more advanced users.
 
 ---
 
