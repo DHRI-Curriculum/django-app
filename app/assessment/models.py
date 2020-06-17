@@ -3,8 +3,6 @@ from adminsortable.models import SortableMixin
 from adminsortable.fields import SortableForeignKey
 
 
-
-
 class QuestionType(models.Model):
     label = models.TextField(max_length=500)
 
@@ -35,14 +33,3 @@ class Answer(SortableMixin):
 
     def __str__(self):
         return self.label
-
-
-"""
-class QuestionOrder(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
-    order = models.PositiveSmallIntegerField()
-
-    def __str__(self):
-        return f"{self.question} answer #{self.order}"
-"""
