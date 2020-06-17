@@ -1,0 +1,9 @@
+<html>
+    <body>
+        <p><strong>{{ question.label }}</strong></p>
+        <p>{{ question.question_type }}</p>
+        {% for answer in question.answer.all %}
+            <p>{{ answer.label }}{% if answer.is_correct_answer %} (correct){% endif %}</p>
+        {% endfor %}
+    </body>
+</html>

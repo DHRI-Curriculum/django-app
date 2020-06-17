@@ -9,6 +9,7 @@ class AnswerInline(SortableTabularInline):
     model = Answer
     extra = 1
 
+
 class QuestionAdmin(NonSortableParentAdmin):
     inlines = [AnswerInline]
 
