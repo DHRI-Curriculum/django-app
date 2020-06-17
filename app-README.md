@@ -2,10 +2,10 @@
 
 Contents:
 
-1. [Installing](#installing)
-2. [Populate Database](#populate-database)
-3. [Run Server](#run-server)
-4. [Advanced: Enable Access on Local Network](#enable-access-on-local-network-advanced)  
+1. [Installing](#1-installing)
+2. [Populate Database](#2-populate-database)
+3. [Run Server](#3-run-server)
+4. [Advanced: Enable Access on Local Network](#4-enable-access-on-local-network-advanced)  
    [Footnotes](#footnotes)
 
 ---
