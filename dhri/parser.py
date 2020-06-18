@@ -3,7 +3,7 @@ import re
 
 from .log import dhri_error, dhri_log, dhri_warning
 from .constants import _test, NORMALIZING_SECTIONS, REQUIRED_SECTIONS
-from dhri.utils.regex import MD_LIST_ELEMENTS, NUMBERS, URL
+from dhri.utils.regex import NUMBERS
 
 # Data integrity tests
 

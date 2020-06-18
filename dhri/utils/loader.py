@@ -3,9 +3,10 @@ from pathlib import Path
 from datetime import datetime, timedelta
 
 from dhri.utils.markdown import split_into_sections
-from dhri.constants import NORMALIZING_SECTIONS, BRANCH_AUTO, DOWNLOAD_CACHE_DIR, TEST_AGE
+from dhri.constants import NORMALIZING_SECTIONS, BRANCH_AUTO, DOWNLOAD_CACHE_DIR, TEST_AGE, BACKEND_AUTO
 from dhri.backend import *
 from dhri.models import *
+from dhri.log import *
 
 
 SECTIONS = {
@@ -19,10 +20,10 @@ SECTIONS = {
         'projects': Project,
     },
     'praxis': {
-        'tutorials': Tutorial,
-        'further_readings': Reading,
         'discussion_questions': Praxis,
         'next_steps': Praxis,
+        'tutorials': Tutorial,
+        'further_readings': Reading,
     },
     'assessment': {
         # add here
@@ -44,12 +45,6 @@ def normalize_data(data, section):
     return(_)
 
 
-
-class Error():
-    # TODO: Should be a dhri_error but gotta fix that later
-    def __init__(self, message, kill=True):
-        print(message)
-        if kill: exit()
 
 
 class Loader():
@@ -107,6 +102,10 @@ class Loader():
 
                 
         self.meta = self._raw_content['meta']
+        self.parent_backend = BACKEND_AUTO
+        self.parent_repo = f"{self.user}/{self.repo_name}"
+        self.parent_branch = self.branch
+
         self.content = self._raw_content['content']
 
         self._frontmatter_raw = self.content.get('frontmatter')
@@ -170,7 +169,7 @@ class Loader():
         try:
             r.raise_for_status()
         except HTTPError as e:
-            Logger(f'The URL ({url}) could not be used. Verify that you are using the correct repository, and that the branch that you provide is correct.')
+            dhri.error(f'The URL ({url}) could not be used. Verify that you are using the correct repository, and that the branch that you provide is correct.', raise_error=RuntimeError)
         return(r.text)
 
     def _verify_repo(self):
@@ -179,13 +178,13 @@ class Loader():
         # TODO: This function doubles up with verify_url() from .meta
 
         if self.repo == None:
-            Logger('No repository URL provided.', raise_error=RuntimeError)
+            dhri_error('No repository URL provided.', raise_error=RuntimeError)
 
         if self.repo.endswith('/'):
             self.repo = self.repo[:-1]
 
         if len(self.repo.split('/')) != 5:
-            Logger(f'Cannot interpret repository URL {self.repo}. Are you sure it is a simple https://github.com/user-name/repo link?', raise_error=RuntimeError)
+            dhri_error(f'Cannot interpret repository URL {self.repo}. Are you sure it is a simple https://github.com/user-name/repo link?', raise_error=RuntimeError)
 
     def __str__(self):
         return self.meta
@@ -218,7 +217,7 @@ class LoaderCache():
         now = datetime.today()
 
         if now - file_mod_time > TEST_AGE:
-            print(f"Cache has expired - older than {TEST_AGE} minutes... Removing.")
+            dhri_log(f"Cache has expired - older than {TEST_AGE} minutes... Removing.")
             self.path.unlink()
             return False
         else:
@@ -226,12 +225,12 @@ class LoaderCache():
         
         
     def load_cache(self):
-        print("loading cache...")
+        dhri_log("loading cache...")
         return(json.loads(self.path.read_text()))
         
         
     def save_cache(self, *args, **kwargs):
-        print("saving cache...")
+        dhri_log("saving cache...")
         if len(args) == 2:
             data = args[1]
             self.path.write_text(json.dumps(data))
@@ -245,14 +244,3 @@ class LoaderCache():
         return f'LoaderCache("{self.repo_name}")'
     
     
-    
-    
-
-class Logger():
-    # TODO: Should be a dhri_error but gotta fix that later
-    def __init__(self, message, raise_error=None):
-        if raise_error: raise raise_error(message)
-        print(message)
-    
-            
-            

@@ -1,6 +1,14 @@
+{% load markdownify %}
+
 <h1>{{ workshop.name }}</h1>
 
-<p>{{ workshop.frontmatter.abstract }}</p>
+<p>{{ workshop.frontmatter.abstract | markdown | safe }}</p>
+
+<p>
+  ```py
+  print("Something here!")
+  ```
+</p>
 
 <p>{{ workshop.frontmatter.learning_objectives }}</p>
 

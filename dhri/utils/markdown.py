@@ -11,11 +11,12 @@ Overview:
     is_exclusively_bullets(markdown)    Returns bool showing whether markdown contains *only* bulletpoints.
     get_list(markdown)                  Returns a list of all elements of a kind from a markdown string.
     get_bulletpoints(markdown)          Returns a list of all bulletpoints from a markdown string.
-
+    split_into_sections                 Splits a markdown file into a dictionary with headings as keys
+                                        and the section contents as values, and returns as dictionary.
 """
 
 from dhri.utils.regex import *
-
+from dhri.log import dhri_error
 
 def clear_emptylines(markdown:str) -> str:
     """ Returns markdown string without all empty lines removed """
@@ -52,10 +53,13 @@ def get_list(markdown:str, *args) -> list:
             BULLETS_NO_EXTRA_P: All bulletpoints in markdown that do not have an extra paragraph
     """
     if not len(args): 
-        _regex = GET_BULLETPOINTS['ALL_BULLETS']
+        _regex = ALL_BULLETS
     else:
         _regex = args[0]
-    return(re.findall(_regex, markdown, re.MULTILINE))
+    try:
+        return(re.findall(_regex, markdown, re.MULTILINE))
+    except TypeError:
+        dhri_error(f"Cannot interpret the text {markdown}", raise_error=TypeError)
 
 
 def get_bulletpoints(markdown:str) -> list:
@@ -63,7 +67,7 @@ def get_bulletpoints(markdown:str) -> list:
     Returns a list of all bulletpoints from a markdown string.
     [Alias function for get_list(markdown, ALL_BULLETS).]
     """
-    return(get_list(markdown, GET_BULLETPOINTS['ALL']))
+    return(get_list(markdown, ALL_BULLETS))
 
 
 def split_into_sections(markdown:str) -> dict:
@@ -93,3 +97,4 @@ def split_into_sections(markdown:str) -> dict:
                     sections[header] = clear_emptylines(sections[header])
 
     return(sections)
+

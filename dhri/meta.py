@@ -1,4 +1,4 @@
-import argparse, re, json
+import argparse, re, json, os
 from pathlib import Path
 from dhri.constants import AUTO_RESET
 from dhri.log import dhri_log, dhri_warning, dhri_error, dhri_input
@@ -71,7 +71,7 @@ def delete_data(path, auto=False):
 
 
 def get_or_default(message: str, default_variable: str) -> str:
-    _ = input(f'{message} (default "{default_variable}"): ')
+    _ = dhri_input(f'{message} (default "{default_variable}"): ')
     if _ != '':
         return(_)
     else:
@@ -79,6 +79,8 @@ def get_or_default(message: str, default_variable: str) -> str:
 
 
 def reset_all(kill=True) -> None:
+    ''' development function - DO NOT USE IN PRODUCTION, EVER. '''
+
     if AUTO_RESET == False:
       _continue = dhri_input('Are you sure you want to reset the entire DHRI curriculum in the current Django database? (y/N) ', bold=True, color='red')
       if _continue.lower() != 'y':
@@ -86,7 +88,43 @@ def reset_all(kill=True) -> None:
     else:
       dhri_warning('Resetting database (AUTO_RESET set to True)...')
 
+    
     from dhri.backend import Workshop, Frontmatter, Project, Resource, Reading, Contributor, Answer, Question, QuestionType
     for _ in [Workshop, Frontmatter, Project, Resource, Reading, Contributor, Answer, Question, QuestionType]:
         _.objects.all().delete()
         dhri_log(f'All {_.__name__} deleted.', kill=not AUTO_RESET)
+    
+    '''
+    p = Path(__file__).resolve()
+    p = p.parent.parent
+    app_path = Path(p) / 'app'
+    manage = Path(app_path) / 'manage.py'
+    sql = Path(app_path) / '/db.sqlite3'
+
+    for app in ['assessment', 'frontmatter', 'praxis', 'workshop']:
+        path = Path(app_path) / f'{app}/migrations/'
+        for file in path.glob("*.py"):
+            if not "__" in file.name: 
+                dhri_warning(f'Deleting file {file.name}')
+                file.unlink()
+    
+    try:
+        sql.unlink()
+    except FileNotFoundError:
+        dhri_warning("Could not find database file for deletion...")
+
+    commands = [
+        f'python {manage} makemigrations',
+        f'python {manage} migrate',
+    ]
+    print(commands[0])
+    os.system(commands[0])
+    print(commands[1])
+    os.system(commands[1])
+    exit()
+    '''
+
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
+    if not User.objects.filter(username='admin').count():
+        User.objects.create_superuser('admin', '', 'admin')
