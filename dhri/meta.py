@@ -85,7 +85,7 @@ def reset_all(kill=True) -> None:
     else:
       dhri_warning('Resetting database (AUTO_RESET set to True)...')
 
-    from dhri.backend import Workshop, Frontmatter, Project, Resource, Literature, Contributor, Answer, Question, QuestionType
-    for _ in [Workshop, Frontmatter, Project, Resource, Literature, Contributor, Answer, Question, QuestionType]:
+    from dhri.backend import Workshop, Frontmatter, Project, Resource, Reading, Contributor, Answer, Question, QuestionType
+    for _ in [Workshop, Frontmatter, Project, Resource, Reading, Contributor, Answer, Question, QuestionType]:
         _.objects.all().delete()
         dhri_log(f'All {_.__name__} deleted.', kill=not AUTO_RESET)

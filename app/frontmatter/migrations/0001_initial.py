@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Literature',
+            name='Reading',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.TextField(max_length=200)),
@@ -56,7 +56,7 @@ class Migration(migrations.Migration):
                 ('contributors', models.ManyToManyField(blank=True, related_name='frontmatters', to='frontmatter.Contributor')),
                 ('prerequisites', models.ManyToManyField(blank=True, related_name='prerequisites', to='workshop.Workshop')),
                 ('projects', models.ManyToManyField(blank=True, related_name='frontmatters', to='frontmatter.Project')),
-                ('readings', models.ManyToManyField(blank=True, related_name='frontmatters', to='frontmatter.Literature')),
+                ('readings', models.ManyToManyField(blank=True, related_name='frontmatters', to='frontmatter.Reading')),
                 ('resources', models.ManyToManyField(blank=True, related_name='frontmatters', to='frontmatter.Resource')),
                 ('workshop', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='frontmatter', to='workshop.Workshop')),
             ],

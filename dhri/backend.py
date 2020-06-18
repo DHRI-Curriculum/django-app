@@ -108,7 +108,7 @@ def workshop_magic(data: dict) -> bool:
   data['frontmatter']['workshop'] = w
 
   lists = {}
-  for list_element, model in {'projects': Project, 'resources': Resource, 'readings': Literature}.items():
+  for list_element, model in {'projects': Project, 'resources': Resource, 'readings': Reading}.items():
     list_ = data['frontmatter'].pop(list_element)
     ids = []
     for name in list_:
@@ -170,7 +170,7 @@ def update_workshop(data):
   w.frontmatter.resources.set(ids)
   dhri_log(f'Resources {ids} have been updated in frontmatter.')
 
-  ids = process_list(data['frontmatter']['readings'], Literature)
+  ids = process_list(data['frontmatter']['readings'], Reading)
   w.frontmatter.readings.set(ids)
   dhri_log(f'Readings {ids} have been updated in frontmatter.')
 
@@ -218,7 +218,7 @@ def create_new_workshop(data):
   f.resources.set(ids)
   dhri_log(f'Resources {ids} have been added to frontmatter.')
 
-  ids = process_list(data['frontmatter']['readings'], Literature)
+  ids = process_list(data['frontmatter']['readings'], Reading)
   f.readings.set(ids)
   dhri_log(f'Readings {ids} have been added to frontmatter.')
 
