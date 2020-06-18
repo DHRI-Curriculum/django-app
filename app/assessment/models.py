@@ -3,6 +3,17 @@ from adminsortable.models import SortableMixin
 from adminsortable.fields import SortableForeignKey
 
 
+
+
+QUESTION_TYPE_CHOICES = [
+    ('radio', 'Multiple choice (checkbox)'),
+    ('select', 'Dropdown menu'),
+    ('checkbox', 'Multiple choice (checkbox)'),
+    ('text', 'Textfield')
+]
+
+
+
 class QuestionType(models.Model):
     label = models.TextField(max_length=500)
 

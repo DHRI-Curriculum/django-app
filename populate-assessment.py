@@ -4,6 +4,9 @@ from dhri.backend import *
 from dhri.models import Question, Answer, QuestionType
 from dhri.meta import reset_all
 
+from assessment.models import QUESTION_TYPE_CHOICES
+
+print(QUESTION_TYPE_CHOICES)
 
 ## Add to dhri.constants
 
@@ -26,7 +29,6 @@ def test_for_auto_label():
 ## First make sure that we have our QuestionTypes set up
 
 auto_question_type = test_for_auto_label()
-
 
 
 
