@@ -1,15 +1,12 @@
 <html>
     <body>
         <p><strong>{{ question.label }}</strong></p>
-        <p>{{ question.question_type }}</p>
-        {% for answer in question.answer.all %}
-            <p>{{ answer.label }}{% if answer.is_correct_answer %} (correct){% endif %}</p>
-        {% endfor %}
-
-
         <form action="{% url 'assessment:test' question.id %}" method="post">
             {% csrf_token %}
-            {{ form }}
+            {% for choice in question.answer.all %}
+                <input type="{{ question.question_type }}" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                <label for="choice{{ forloop.counter }}">{{ choice.label }}</label><br>
+            {% endfor %}
             <input type="submit" value="Submit">
         </form>
         
