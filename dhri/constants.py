@@ -28,7 +28,8 @@ NORMALIZING_SECTIONS = {
         'discussion_questions': ['Discussion Questions'],
         'tutorials': ['Other Tutorials'],
         'further_projects': ['Projects or Challenges to Try'],
-        'further_readings': ['Suggested Further Readings']
+        'further_readings': ['Suggested Further Readings'],
+        'next_steps': ['Next Steps']
     },
     'assessment': {
         'qualitative_assessment': ['Qualitative Self-Assessment'],
