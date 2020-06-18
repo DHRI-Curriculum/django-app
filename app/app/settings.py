@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'workshop',
     'frontmatter',
     'assessment',
+    'praxis',
     'adminsortable',
     'django.contrib.admin',
     'django.contrib.auth',

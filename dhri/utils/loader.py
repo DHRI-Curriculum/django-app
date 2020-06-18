@@ -4,7 +4,8 @@ from datetime import datetime, timedelta
 
 from dhri.utils.markdown import split_into_sections
 from dhri.constants import NORMALIZING_SECTIONS, BRANCH_AUTO, DOWNLOAD_CACHE_DIR, TEST_AGE
-
+from dhri.backend import *
+from dhri.models import *
 
 
 
@@ -41,6 +42,29 @@ class Loader():
     """
     meta = {}
     content = {}
+
+    _frontmatter_sections = {
+        'abstract': Frontmatter,
+        'learning_objectives': Frontmatter,
+        'estimated_time': Frontmatter,
+        'contributors': Contributor,
+        'ethical_considerations': Frontmatter,
+        'readings': Reading,
+        'projects': Project,
+    }
+
+    _praxis_sections = {
+        'tutorials': Tutorial,
+        'further_readings': Reading,
+        'discussion_questions': DiscussionQuestion,
+        'next_steps': NextSteps,
+    }
+    
+    frontmatter_models = {}
+    for section, model in _frontmatter_sections.items():
+        if not model in frontmatter_models: frontmatter_models[model] = []
+        frontmatter_models[model].append(section)
+
     
     def __init__(self, repo='https://www.github.com/kallewesterling/dhri-test-repo', branch=BRANCH_AUTO, download=True):
         self.repo = repo
@@ -87,11 +111,19 @@ class Loader():
     @property
     def frontmatter(self):
         return self._frontmatter
+
+    @property
+    def frontmatter_sections(self):
+        return {x: self._frontmatter_sections[x] for x in self._frontmatter}
         
+
     @property
     def praxis(self):
         return self._praxis
-        
+
+    def praxis_sections(self):
+        return {x: self._praxis_sections[x] for x in self._praxis}
+
     @property
     def assessment(self):
         return self._assessment
