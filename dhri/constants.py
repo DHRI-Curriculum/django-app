@@ -48,12 +48,22 @@ URL = r'(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w
 
 
 
+DOWNLOAD_CACHE_DIR = './__loader-cache__'
+
+TEST_AGE = 60 # minutes
+
+
+
+
+
 ######## DO NOT EDIT BELOW THIS LINE IF YOU DON'T KNOW WHAT YOU ARE DOING ##############
 
 # Make sure to set up a test of all of the constants
 
 from .log import dhri_error
 from itertools import chain
+from datetime import timedelta
+from pathlib import Path
 
 def _check_normalizer(dictionary=NORMALIZING_SECTIONS):
     for section in NORMALIZING_SECTIONS:
@@ -67,6 +77,12 @@ def _check_normalizer(dictionary=NORMALIZING_SECTIONS):
 def _test(variable=None, as_type=bool):
     if not isinstance(variable, as_type): dhri_error(f'`{variable}` provided must be a {as_type}.', raise_error=RuntimeError)
     return(True)
+
+
+DOWNLOAD_CACHE_DIR = Path(DOWNLOAD_CACHE_DIR)
+if not DOWNLOAD_CACHE_DIR.exists(): DOWNLOAD_CACHE_DIR.mkdir()
+
+TEST_AGE = timedelta(minutes=TEST_AGE)
 
 # Run tests
 
