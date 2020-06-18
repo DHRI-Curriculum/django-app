@@ -8,6 +8,27 @@ from dhri.backend import *
 from dhri.models import *
 
 
+SECTIONS = {
+    'frontmatter': {
+        'abstract': Frontmatter,
+        'learning_objectives': Frontmatter,
+        'estimated_time': Frontmatter,
+        'contributors': Contributor,
+        'ethical_considerations': Frontmatter,
+        'readings': Reading,
+        'projects': Project,
+    },
+    'praxis': {
+        'tutorials': Tutorial,
+        'further_readings': Reading,
+        'discussion_questions': Praxis,
+        'next_steps': Praxis,
+    },
+    'assessment': {
+        # add here
+    }
+}
+
 
 def normalize_data(data, section):
     _ = {}
@@ -43,27 +64,19 @@ class Loader():
     meta = {}
     content = {}
 
-    _frontmatter_sections = {
-        'abstract': Frontmatter,
-        'learning_objectives': Frontmatter,
-        'estimated_time': Frontmatter,
-        'contributors': Contributor,
-        'ethical_considerations': Frontmatter,
-        'readings': Reading,
-        'projects': Project,
-    }
+    _frontmatter_sections = SECTIONS['frontmatter']
 
-    _praxis_sections = {
-        'tutorials': Tutorial,
-        'further_readings': Reading,
-        'discussion_questions': DiscussionQuestion,
-        'next_steps': NextSteps,
-    }
+    _praxis_sections = SECTIONS['praxis']
     
     frontmatter_models = {}
     for section, model in _frontmatter_sections.items():
         if not model in frontmatter_models: frontmatter_models[model] = []
         frontmatter_models[model].append(section)
+
+    praxis_models = {}
+    for section, model in _praxis_sections.items():
+        if not model in praxis_models: praxis_models[model] = []
+        praxis_models[model].append(section)
 
     
     def __init__(self, repo='https://www.github.com/kallewesterling/dhri-test-repo', branch=BRANCH_AUTO, download=True):
@@ -205,7 +218,7 @@ class LoaderCache():
         now = datetime.today()
 
         if now - file_mod_time > TEST_AGE:
-            print("cache too old - removing...")
+            print(f"Cache has expired - older than {TEST_AGE} minutes... Removing.")
             self.path.unlink()
             return False
         else:

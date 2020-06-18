@@ -41,11 +41,6 @@ REQUIRED_SECTIONS['frontmatter'] = set(NORMALIZING_SECTIONS['frontmatter'].keys(
 REQUIRED_SECTIONS['theory-to-practice'] = set(NORMALIZING_SECTIONS['theory-to-practice'].keys())
 REQUIRED_SECTIONS['assessment'] = set(NORMALIZING_SECTIONS['assessment'].keys())
 
-# Regex setup
-MD_LIST_ELEMENTS = r'\- (.*)(\n|$)'
-NUMBERS = r'(\d+([\.,][\d+])?)'
-URL = r'(http|ftp|https):\/\/([\w_-]+(?:(?:\.[\w_-]+)+))([\w.,@?^=%&:\/~+#-]*[\w@?^=%&\/~+#-])?'
-
 
 
 DOWNLOAD_CACHE_DIR = './__loader-cache__'
