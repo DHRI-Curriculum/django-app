@@ -94,7 +94,6 @@ def reset_all(kill=True) -> None:
         _.objects.all().delete()
         dhri_log(f'All {_.__name__} deleted.', kill=not AUTO_RESET)
     
-    '''
     p = Path(__file__).resolve()
     p = p.parent.parent
     app_path = Path(p) / 'app'
@@ -108,6 +107,7 @@ def reset_all(kill=True) -> None:
                 dhri_warning(f'Deleting file {file.name}')
                 file.unlink()
     
+    '''
     try:
         sql.unlink()
     except FileNotFoundError:
