@@ -26,22 +26,21 @@ def test_for_auto_label():
 ## First make sure that we have our QuestionTypes set up
 
 auto_question_type = test_for_auto_label()
-print(auto_question_type)
 
 
 
 
 data = get_raw_content("https://github.com/DHRI-Curriculum/command-line", branch="v2.0-smorello-edits")
 data = split_md_into_sections_batch({'frontmatter', 'theory-to-practice', 'assessment'}, data['content'])
-data = normalize_data(data['assessment'], 'assessment')
+assessment_data = normalize_data(data['assessment'], 'assessment')
 
-def split_assessment(data):
+def split_assessment(assessment_data: dict) -> tuple:
     return((
-        [x for x in data['qualitative_assessment'].splitlines() if x],
-        [x for x in data['quantitative_assessment'].splitlines() if x]
+        [x for x in assessment_data['qualitative_assessment'].splitlines() if x],
+        [x for x in assessment_data['quantitative_assessment'].splitlines() if x]
     ))
 
-qualitative_lines, quantitative_lines = split_assessment(data)
+qualitative_lines, quantitative_lines = split_assessment(assessment_data)
 
 
 quantitative_questions = []
