@@ -1,6 +1,16 @@
 from django.utils.termcolors import colorize
 
 
+
+
+class Logger():
+    # TODO: Make this log function into a nice little class instead!
+    def __init__(self, message, raise_error=None):
+        if raise_error: raise raise_error(message)
+        print(message)
+    
+            
+          
 def _test_kill(message, kill):
   if kill:
     exit(message)

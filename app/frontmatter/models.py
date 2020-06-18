@@ -8,7 +8,7 @@ class Frontmatter(models.Model):
   estimated_time = models.PositiveSmallIntegerField(blank=True, null=True, help_text="assign full minutes")
   projects = models.ManyToManyField('frontmatter.Project', related_name="frontmatters", blank=True)
   resources = models.ManyToManyField('frontmatter.Resource', related_name="frontmatters", blank=True)
-  readings = models.ManyToManyField('frontmatter.Literature', related_name="frontmatters", blank=True)
+  readings = models.ManyToManyField('frontmatter.Reading', related_name="frontmatters", blank=True)
   contributors = models.ManyToManyField('frontmatter.Contributor', related_name="frontmatters", blank=True)
   prerequisites = models.ManyToManyField('workshop.Workshop', related_name="prerequisites", blank=True)
 
@@ -17,32 +17,36 @@ class Frontmatter(models.Model):
     return("Frontmatter for " + self.workshop.name)
 
 class Project(models.Model):
-  name = models.TextField(max_length=200)
-  url = models.TextField(max_length=200)
+  title = models.TextField(max_length=500)
+  url = models.TextField(max_length=500, null=True, blank=True)
+  comment = models.TextField(max_length=3000, null=True, blank=True)
 
   def __str__(self):
-    return(self.name)
+    return(self.title)
 
 
 class Resource(models.Model):
-  name = models.TextField(max_length=200)
-  url = models.TextField(max_length=200)
+  title = models.TextField(max_length=500)
+  url = models.TextField(max_length=500)
+  comment = models.TextField(max_length=3000, null=True, blank=True)
 
   def __str__(self):
-    return(self.name)
+    return(self.title)
 
 
-class Literature(models.Model):
-  name = models.TextField(max_length=200)
-  url = models.TextField(max_length=200)
+class Reading(models.Model):
+  title = models.TextField(max_length=500)
+  url = models.TextField(max_length=500)
+  comment = models.TextField(max_length=3000, null=True, blank=True)
 
   def __str__(self):
-    return(self.name)
+    return(self.title)
 
 
 class Contributor(models.Model):
-  first_name = models.TextField(max_length=50)
-  last_name = models.TextField(max_length=50)
+  first_name = models.TextField(max_length=100)
+  last_name = models.TextField(max_length=100)
+  role = models.TextField(max_length=100, null=True, blank=True)
 
   def _fullname(self):
     return self.first_name + ' ' + self.last_name

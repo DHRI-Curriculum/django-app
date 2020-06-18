@@ -52,7 +52,7 @@ if __name__ == '__main__':
 
   # Now we load up the backend (we do it here because we don't want to load the whole django framework before, because it takes a second)
   from dhri.backend import workshop_magic, create_new_workshop, update_workshop
-  from dhri.backend import Workshop, Frontmatter, Project, Resource, Literature, Contributor
+  from dhri.backend import Workshop, Frontmatter, Project, Resource, Reading, Contributor
 
   data = load_data(path)
 
