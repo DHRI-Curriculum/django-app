@@ -1,5 +1,20 @@
 # populate
 
+```
+
+
+
+
+
+Note: These instructions are now outdated and need an update.
+
+
+
+
+
+
+```
+
 **`populate`** is a pre-processing Python script that runs on the command line and helps set up the data for the second project, the **app** (see below). `populate` is designed to integrate with the curriculum transition and quickly populate the Django database.
 
 ## Getting started
