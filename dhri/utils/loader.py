@@ -12,7 +12,7 @@ from dhri.log import *
 SECTIONS = {
     'frontmatter': {
         'abstract': Frontmatter,
-        'learning_objectives': Frontmatter,
+        'learning_objectives': LearningObjective,
         'estimated_time': Frontmatter,
         'contributors': Contributor,
         'ethical_considerations': Frontmatter,
