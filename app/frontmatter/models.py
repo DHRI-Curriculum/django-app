@@ -1,9 +1,10 @@
 from django.db import models
 
+
 class Frontmatter(models.Model):
   workshop = models.OneToOneField('workshop.Workshop', related_name="frontmatter", on_delete=models.CASCADE)
   abstract = models.TextField(max_length=1000, blank=True, null=True)
-  learning_objectives = models.TextField(max_length=1000, blank=True, null=True)
+  # learning_objectives = models.TextField(max_length=1000, blank=True, null=True)
   ethical_considerations = models.TextField(max_length=1000, blank=True, null=True)
   estimated_time = models.PositiveSmallIntegerField(blank=True, null=True, help_text="assign full minutes")
   projects = models.ManyToManyField('frontmatter.Project', related_name="frontmatters", blank=True)
@@ -12,9 +13,17 @@ class Frontmatter(models.Model):
   contributors = models.ManyToManyField('frontmatter.Contributor', related_name="frontmatters", blank=True)
   prerequisites = models.ManyToManyField('workshop.Workshop', related_name="prerequisites", blank=True)
 
+  def __str__(self):
+    return "Frontmatter for " + self.workshop.name
+
+
+class LearningObjective(models.Model):
+  frontmatter = models.ForeignKey(Frontmatter, on_delete=models.CASCADE)
+  label = models.TextField(max_length=500)
 
   def __str__(self):
-    return("Frontmatter for " + self.workshop.name)
+    return self.label
+
 
 class Project(models.Model):
   title = models.TextField(max_length=500)
@@ -22,7 +31,7 @@ class Project(models.Model):
   comment = models.TextField(max_length=3000, null=True, blank=True)
 
   def __str__(self):
-    return(self.title)
+    return self.title
 
 
 class Resource(models.Model):
@@ -31,7 +40,7 @@ class Resource(models.Model):
   comment = models.TextField(max_length=3000, null=True, blank=True)
 
   def __str__(self):
-    return(self.title)
+    return self.title
 
 
 class Reading(models.Model):
@@ -40,7 +49,7 @@ class Reading(models.Model):
   comment = models.TextField(max_length=3000, null=True, blank=True)
 
   def __str__(self):
-    return(self.title)
+    return self.title
 
 
 class Contributor(models.Model):
@@ -56,4 +65,4 @@ class Contributor(models.Model):
   full_name = property(_fullname)
 
   def __str__(self):
-    return(self.full_name)
+    return self.full_name
