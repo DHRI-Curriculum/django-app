@@ -6,18 +6,11 @@ from dhri.utils.loader import Loader
 from dhri.utils.markdown import get_bulletpoints, is_exclusively_bullets, get_list
 from dhri.utils.text import get_urls, get_number, get_markdown_hrefs
 from dhri.logger import Logger
+from dhri.constants import FIXTURE_PATH, AUTO_PROCESS
 
 
 # dev part - remove in production #############
 reset_all()
-AUTO_REPOS = [
-        'command-line',
-        'project-lab'
-    ]
-AUTO_BRANCHES = [
-        'v2.0-smorello-edits',
-        'v2.0rhody-edits'
-    ]
 ###############################################
 
 if __name__ == '__main__':
@@ -31,8 +24,7 @@ if __name__ == '__main__':
         iteration += 1
 
         try:
-            repo = AUTO_REPOS[iteration-1]
-            branch = AUTO_BRANCHES[iteration-1]
+            repo, branch = AUTO_PROCESS[iteration-1]
         except:
             repo, branch = '', ''
 
@@ -273,10 +265,18 @@ if __name__ == '__main__':
         for _ in collector.values():
             all_objects.extend([x for x in _])
 
-        done = get_or_default('Are you done? [y/N] ', done, color='red').lower()
+        if iteration == len(AUTO_PROCESS):
+          done = "y"
+          msg = 'Are you done? [Y/n] '
+        else:
+          done = "n"
+          msg = 'Are you done? [y/N] '
+        done = get_or_default(msg, done, color='red').lower()
 
+    log.log(f'Generating fixtures file for Django...')
     # Create fixtures.json
     all_objects_dict = json.loads(serializers.serialize('json', all_objects, ensure_ascii=False))
 
     from pathlib import Path
-    Path('app/fixtures.json').write_text(json.dumps(all_objects_dict))
+    Path(FIXTURE_PATH).write_text(json.dumps(all_objects_dict))
+    log.log(f'Fixture file generated: {FIXTURE_PATH}')

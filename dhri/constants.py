@@ -2,6 +2,15 @@ REQUIRED_SECTIONS = {}
 
 ##################################################################
 
+FIXTURE_PATH = 'app/fixtures.json' # This is where the final fixtures JSON file will be saved
+
+# Which repositories and branches should we do automatically?
+AUTO_PROCESS = [
+        ('command-line', 'v2.0-smorello-edits'),
+        ('project-lab', 'v2.0rhody-edits')
+    ]
+
+
 AUTO_RESET = True # reset all the DHRI curriculum database elements automatically before script runs (not recommended in production)
 DELETE_FILE = True # delete file after script is done
 
