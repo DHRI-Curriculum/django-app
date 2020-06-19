@@ -55,22 +55,25 @@ TEST_AGE = 60 # minutes
 
 # Make sure to set up a test of all of the constants
 
-from .log import dhri_error
+from dhri.logger import Logger
+from dhri.utils.exceptions import ConstantError
 from itertools import chain
 from datetime import timedelta
 from pathlib import Path
+
+log = Logger()
+
+def _test(constant=None, as_type=bool):
+    if not isinstance(constant, as_type): log.error(f'{constant}` provided must be a {as_type}.', raise_error=ConstantError)
+    return(True)
 
 def _check_normalizer(dictionary=NORMALIZING_SECTIONS):
     for section in NORMALIZING_SECTIONS:
         all_ = [x.lower() for x in list(chain.from_iterable([x for x in NORMALIZING_SECTIONS[section].values()]))]
 
         if max([all_.count(x) for x in set(all_)]) > 1:
-            dhri_error('NORMALIZING_SECTIONS is confusing: multiple alternative strings for normalizing.', raise_error=RuntimeError)
+            log.error('NORMALIZING_SECTIONS is confusing: multiple alternative strings for normalizing.', raise_error=ConstantError)
     
-    return(True)
-
-def _test(variable=None, as_type=bool):
-    if not isinstance(variable, as_type): dhri_error(f'`{variable}` provided must be a {as_type}.', raise_error=RuntimeError)
     return(True)
 
 
@@ -82,5 +85,5 @@ TEST_AGE = timedelta(minutes=TEST_AGE)
 # Run tests
 
 _check_normalizer()
-_test(variable=REMOVE_EMPTY_HEADINGS)
-_test(variable=BULLETPOINTS_TO_LISTS)
+_test(constant=REMOVE_EMPTY_HEADINGS)
+_test(constant=BULLETPOINTS_TO_LISTS)

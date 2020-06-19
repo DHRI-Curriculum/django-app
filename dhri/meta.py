@@ -1,8 +1,25 @@
-import argparse, re, json, os
+import argparse, json, os, re
 from pathlib import Path
+
 from dhri.constants import AUTO_RESET
-from dhri.log import dhri_log, dhri_warning, dhri_error, dhri_input
+from dhri.logger import Logger, colorize
 from dhri.utils.regex import URL
+from dhri.utils.exceptions import UnresolvedNameOrBranch
+
+log = Logger()
+
+
+def dhri_input(message, bold=True, color=''):
+    if color != '' and bold == True:
+        return(input(colorize(message, fg=color, opts=('bold',))))
+    elif color != '' and bold == False:
+        return(input(colorize(message, fg=color)))
+    elif color == '' and bold == True:
+        return(input(colorize(message, opts=('bold',))))
+    elif color == '' and bold == False:
+        log.error('You should just use input here.', kill=False)
+    
+    return(input(colorize(message)))
 
 
 def get_argparser() -> argparse.ArgumentParser:
@@ -20,7 +37,7 @@ def get_argparser() -> argparse.ArgumentParser:
 
 
 def confirm_url(url: str) -> bool:
-    """ Confirm that the string tested is a URL """
+    """Confirm that the string tested is a URL"""
     if re.findall(URL, url):
         return(True)
     return(False)
@@ -28,34 +45,34 @@ def confirm_url(url: str) -> bool:
 
 def verify_url(url: str) -> str:
     if not confirm_url(url):
-        dhri_error('-d must provide a valid URL to a DHRI repository.')
+        log.error(f'You must provide a valid URL to a DHRI repository. {url} was not accepted.', raise_error=UnresolvedNameOrBranch)
     if not 'github' in url.lower():
-        dhri_error(f'Your URL seems to not originate with Github. Currently, our curriculum only works with Github as backend.') # Set to kill out of the program
-    dhri_log(f'URL accepted: {url}')
+        log.error(f'Your URL seems to not originate with Github. Currently, our curriculum only works with Github as backend.', raise_error=NotImplementedError)
+    log.log(f'URL accepted: {url}')
     return(url)
 
 
 def load_data(path: str) -> dict:
-  dhri_log(f'Loading {path}')
+  log.log(f'Loading {path}')
 
   if not Path(path).exists():
-    dhri_error(f'Could not find JSON file on path: {path}')
+    log.error(f'Could not find JSON file on path: {path}')
 
   data = json.loads(Path(path).read_text())
   return(data)
 
 
 def test_path(path: str) -> bool:
-    """ Tests the pathname """
+    """Tests the pathname"""
     if not path.endswith('.json'):
-        dhri_warning(f'The data file ({path}) is not saved as a .json file. It will work but it might be confusing.')
+        log.warning(f'The data file ({path}) is not saved as a .json file. It will work but it might be confusing.')
     return(True)
 
 
 def save_data(path: str, data: dict) -> bool:
     test_path(path)
     Path(path).write_text(json.dumps(data))
-    dhri_log(f'File saved to {path}')
+    log.log(f'File saved to {path}')
     return(True)
 
 
@@ -65,7 +82,7 @@ def delete_data(path, auto=False):
       if _continue.lower() != 'y':
         exit()
     else:
-      dhri_warning('Deleting file (DELETE_FILE set to True)...')
+      log.warning('Deleting file (DELETE_FILE set to True)...')
     
     Path(path).unlink()
 
@@ -92,13 +109,13 @@ def reset_all(kill=True) -> None:
       if _continue.lower() != 'y':
         exit()
     else:
-      dhri_warning('Resetting database (AUTO_RESET set to True)...')
+      log.warning('Resetting database (AUTO_RESET set to True)...')
 
     
     from dhri.backend import Workshop, Frontmatter, Project, Resource, Reading, Contributor, Answer, Question, QuestionType
     for _ in [Workshop, Frontmatter, Project, Resource, Reading, Contributor, Answer, Question, QuestionType]:
         _.objects.all().delete()
-        dhri_log(f'All {_.__name__} deleted.', kill=not AUTO_RESET)
+        log.log(f'All {_.__name__} deleted.', kill=not AUTO_RESET)
     
     p = Path(__file__).resolve()
     p = p.parent.parent
@@ -110,14 +127,14 @@ def reset_all(kill=True) -> None:
         path = Path(app_path) / f'{app}/migrations/'
         for file in path.glob("*.py"):
             if not "__" in file.name: 
-                dhri_warning(f'Deleting file {file.name}')
+                log.warning(f'Deleting file {file.name}')
                 file.unlink()
     
     '''
     try:
         sql.unlink()
     except FileNotFoundError:
-        dhri_warning("Could not find database file for deletion...")
+        log.warning("Could not find database file for deletion...")
 
     commands = [
         f'python {manage} makemigrations',

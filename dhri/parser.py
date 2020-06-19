@@ -1,11 +1,13 @@
 from pathlib import Path
 import re
 
-from .log import dhri_error, dhri_log, dhri_warning
+from dhri.logger import Logger
 from .constants import _test, NORMALIZING_SECTIONS, REQUIRED_SECTIONS
 from dhri.utils.regex import NUMBERS
 
 # Data integrity tests
+
+log = Logger()
 
 def test_for_keys(key_set=None, dictionary=None, dictionary_name='', lower=True, exact=True):
   """ Checks whether a dictionary has all keys.
@@ -22,7 +24,7 @@ def test_for_keys(key_set=None, dictionary=None, dictionary_name='', lower=True,
     missing_sections = list(key_set - set(check_keys))
   
     for section in missing_sections:
-      dhri_error(f'`{section}` section missing in dictionary ({dictionary_name}).')
+      log.error(f'`{section}` section missing in dictionary ({dictionary_name}).')
   
   elif exact == False:
     for section in list(key_set - set(check_keys)):
@@ -30,7 +32,7 @@ def test_for_keys(key_set=None, dictionary=None, dictionary_name='', lower=True,
       for _ in check_keys:
         if section in _: ok = True
       if ok == False:
-        dhri_error(f'`{section}` section missing in dictionary ({dictionary_name}).')
+        log.error(f'`{section}` section missing in dictionary ({dictionary_name}).')
 
 
 def test_integrity(data):
@@ -69,7 +71,7 @@ def normalize_number(assumed_integer):
 
 
 def parse(data, data_type: str) -> dict:
-  dhri_log(f'Parsing {data_type} for workshop...')
+  log.log(f'Parsing {data_type} for workshop...')
   
   data = normalize_data(data, data_type)
   

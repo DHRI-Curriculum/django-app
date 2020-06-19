@@ -1,12 +1,13 @@
 import requests
 from requests.exceptions import HTTPError
 
-from .log import dhri_log, dhri_error
-from .constants import _test, REMOVE_EMPTY_HEADINGS, BULLETPOINTS_TO_LISTS, BRANCH_AUTO
-
+from dhri.constants import _test, REMOVE_EMPTY_HEADINGS, BULLETPOINTS_TO_LISTS, BRANCH_AUTO
+from dhri.logger import Logger
 
 # TODO: add a constant FORCE_BULLETPOINTS that uses regex to extract whatever bulletpoints exist in a section and skip other content.
 
+
+log = Logger()
 
 def verify_repo(string):
     """ Verifies that a provided repository string is correct. Returns a string with corrected information """
@@ -14,13 +15,13 @@ def verify_repo(string):
     # TODO: This function doubles up with verify_url() from .meta
 
     if string == None:
-        dhri_error('No repository URL provided.', raise_error=RuntimeError)
+        log.error('No repository URL provided.', raise_error=RuntimeError)
 
     if string.endswith('/'):
         string = string[:-1]
 
     if len(string.split('/')) != 5:
-        dhri_error('Cannot interpret repository URL. Are you sure it is a simple https://github.com/user-name/repo link?', raise_error=RuntimeError)
+        log.error('Cannot interpret repository URL. Are you sure it is a simple https://github.com/user-name/repo link?', raise_error=RuntimeError)
 
     return(string)
 
@@ -33,7 +34,7 @@ def get_text_from_url(url):
     try:
         r.raise_for_status()
     except HTTPError as e:
-        dhri_error(f'The URL ({url}) could not be used. Verify that you are using the correct repository, and that the branch that you provide is correct.')
+        log.error(f'The URL ({url}) could not be used. Verify that you are using the correct repository, and that the branch that you provide is correct.')
     
     return(r.text)
 

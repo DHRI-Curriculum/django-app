@@ -1,13 +1,16 @@
-import sys, os, django
-from .log import dhri_error, dhri_log, dhri_warning, dhri_input
+from dhri.logger import Logger
+from dhri.meta import dhri_input
+log = Logger()
 
-dhri_log(f'Setting up database interaction...')
+log.log(f'Setting up database interaction...')
 
+import django, os, sys
 sys.path.append('./app')
 os.environ['DJANGO_SETTINGS_MODULE'] = 'app.settings'
 django.setup()
 
-from .models import *
+from dhri.models import *
+
 
 
 """ def validate_existing(name, model=Workshop): # not currently in use
@@ -23,7 +26,7 @@ from .models import *
 
   if message:
     validate = dhri_input(message, bold=True, color='')
-    if validate not in ['1', '2']: dhri_error('Cancelled.')
+    if validate not in ['1', '2']: log.error('Cancelled.')
     return(int(validate))
 """
 
@@ -70,168 +73,3 @@ def process_contributors(the_list):
       if obj.id not in ids: ids.append(obj.id)
 
   return(ids)
-
-
-
-def workshop_magic(data: dict) -> bool:
-  """ Returns False if workshop has been updated, False if no changes have been made. """
-  
-  # Process and create workshop
-
-  new = True
-  
-  name = data['meta']['name']
-  
-  dhri_log(f'Processing workshop {name}...')
-  
-  w = Workshop.objects.filter(name=name)
-  
-  if len(w):
-    new = False
-    _continue = dhri_input(f'Update latest existing Workshop {name} with frontmatter from json file? (y/N) ', bold=True, color='')
-    if _continue.lower() == 'n':
-      _continue = dhri_input(f'Add a new Workshop {name} with frontmatter from json file? (y/N) ', bold=True, color='')
-      if _continue.lower() == 'y':
-        new = True
-      else:
-        return(False)
-    else:
-      w = Workshop.objects.latest('created')
-
-  if new == True:
-    w = Workshop(**data['meta'])
-    w.save()
-  
-
-  # Process and create frontmatter
-
-  data['frontmatter']['workshop'] = w
-
-  lists = {}
-  for list_element, model in {'projects': Project, 'resources': Resource, 'readings': Reading}.items():
-    list_ = data['frontmatter'].pop(list_element)
-    ids = []
-    for name in list_:
-      e = model(name=name) # TODO: This does not yet test whether the list_element already exists, and provides the user with a test whether they want to update/create new
-      e.save()
-      if e.id not in ids: ids.append(e.id)
-    lists[list_element] = ids
-  
-  contributors = pre_process_contributors(data['frontmatter'].pop('contributors'))
-  ids = []
-  for contributor in contributors:
-    first_name, last_name = contributor
-    c = Contributor(first_name=first_name, last_name=last_name) # TODO: This does not yet test whether the list_element already exists, and provides the user with a test whether they want to update/create new
-    c.save()
-    if c.id not in ids: ids.append(c.id)
-  lists['contributors'] = ids
-  
-  f = Frontmatter.objects.create(**data['frontmatter'])
-
-  for list_element, ids in lists.items():
-    if list_element == 'projects': f.projects.set(ids)
-    elif list_element == 'resources': f.resources.set(ids)
-    elif list_element == 'readings': f.readings.set(ids)
-    elif list_element == 'contributors': f.contributors.set(ids)
-    else:
-      dhri_error('Encountered unknown list element.', raise_error=RuntimeError)
-
-  f.save()
-
-  
-  # Process theory-to-practice
-
-  # TODO alpha-1, after creating Django models: process and create
-
-  
-  # Process assessment
-    
-  # TODO alpha-1, after creating Django models: process and create
-
-
-def update_workshop(data):
-  w = Workshop.objects.latest('created')
-  
-  dhri_log(f'Updating workshop {w}')
-
-  w.parent_backend = data['meta']['parent_backend']
-  w.parent_repo = data['meta']['parent_repo']
-  w.parent_branch = data['meta']['parent_branch']
-
-  dhri_log(f'Adding frontmatter information for workshop {w}')
-
-  w.frontmatter.ethical_considerations = data['frontmatter']['ethical_considerations']
-
-  ids = process_list(data['frontmatter']['projects'], Project)
-  w.frontmatter.projects.set(ids)
-  dhri_log(f'Projects {ids} have been updated in frontmatter.')
-
-  ids = process_list(data['frontmatter']['resources'], Resource)
-  w.frontmatter.resources.set(ids)
-  dhri_log(f'Resources {ids} have been updated in frontmatter.')
-
-  ids = process_list(data['frontmatter']['readings'], Reading)
-  w.frontmatter.readings.set(ids)
-  dhri_log(f'Readings {ids} have been updated in frontmatter.')
-
-  contributors = pre_process_contributors(data['frontmatter']['contributors'])
-  ids = process_contributors(contributors)
-  w.frontmatter.contributors.set(ids)
-  dhri_log(f'Contributors {ids} have been updated in frontmatter.')
-
-  w.save()
-
-  dhri_log(f'{w} (id {w.id}) has been updated.')
-
-  return(w)
-
-
-def create_new_workshop(data):
-  name = data['meta']['name']
-  dhri_log(f'Creating {name}')
-  w = Workshop(
-        name = name,
-        parent_backend = data['meta']['parent_backend'],
-        parent_repo = data['meta']['parent_repo'],
-        parent_branch = data['meta']['parent_branch']
-      )
-  w.save()
-
-  dhri_log(f'{w} (id {w.id}) has been created.')
-
-  f = Frontmatter(
-        workshop = w,
-        abstract = data['frontmatter']['abstract'],
-        learning_objectives = data['frontmatter']['learning_objectives'],
-        ethical_considerations = data['frontmatter']['ethical_considerations'],
-        estimated_time = data['frontmatter']['estimated_time']
-      )
-  f.save()
-
-  dhri_log(f'{f} (id {f.id}) has been created.')
-
-  ids = process_list(data['frontmatter']['projects'], Project)
-  f.projects.set(ids)
-  dhri_log(f'Projects {ids} have been added to frontmatter.')
-
-  ids = process_list(data['frontmatter']['resources'], Resource)
-  f.resources.set(ids)
-  dhri_log(f'Resources {ids} have been added to frontmatter.')
-
-  ids = process_list(data['frontmatter']['readings'], Reading)
-  f.readings.set(ids)
-  dhri_log(f'Readings {ids} have been added to frontmatter.')
-
-  contributors = pre_process_contributors(data['frontmatter']['contributors'])
-  ids = process_contributors(contributors)
-  f.contributors.set(ids)
-  dhri_log(f'Contributors {ids} have been added to frontmatter.')
-
-  f.save()
-
-  dhri_log(f'{f} (id {f.id}) has been updated with all the necessary information.')
-
-  # Final warning about pre-requisites
-  dhri_warning(f'Pre-requisites are not programmatically added, but must be added through the Django admin interface.')
-
-  return(w)

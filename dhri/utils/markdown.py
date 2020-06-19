@@ -15,8 +15,11 @@ Overview:
                                         and the section contents as values, and returns as dictionary.
 """
 
-from dhri.utils.regex import *
-from dhri.log import dhri_error
+from dhri.utils.regex import re, MULTILINE_ITEM, ALL_BULLETS
+from dhri.logger import Logger
+
+
+log = Logger()
 
 def clear_emptylines(markdown:str) -> str:
     """ Returns markdown string without all empty lines removed """
@@ -59,7 +62,7 @@ def get_list(markdown:str, *args) -> list:
     try:
         return(re.findall(_regex, markdown, re.MULTILINE))
     except TypeError:
-        dhri_error(f"Cannot interpret the text {markdown}", raise_error=TypeError)
+        log.error(f"Cannot interpret the text {markdown}", raise_error=TypeError)
 
 
 def get_bulletpoints(markdown:str) -> list:

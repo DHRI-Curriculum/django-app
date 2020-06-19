@@ -1,8 +1,7 @@
-from dhri.log import dhri_input
 from dhri.parser import parse, test_integrity
 from dhri.markdown_parser import get_raw_content, split_md_into_sections_batch
-from dhri.meta import get_argparser, verify_url, load_data, save_data, delete_data, get_or_default, reset_all
-from dhri.constants import *
+from dhri.meta import dhri_input, get_argparser, verify_url, load_data, save_data, delete_data, get_or_default, reset_all
+from dhri.constants import BACKEND_AUTO, BRANCH_AUTO, AUTO_RESET, DELETE_FILE
 
 if __name__ == '__main__':
   # Process arguments

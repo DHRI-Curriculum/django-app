@@ -6,8 +6,11 @@ from dhri.utils.markdown import split_into_sections
 from dhri.constants import NORMALIZING_SECTIONS, BRANCH_AUTO, DOWNLOAD_CACHE_DIR, TEST_AGE, BACKEND_AUTO
 from dhri.backend import *
 from dhri.models import *
-from dhri.log import *
+from dhri.logger import Logger
+from dhri.utils.exceptions import UnresolvedNameOrBranch
 
+
+log = Logger()
 
 SECTIONS = {
     'frontmatter': {
@@ -26,7 +29,7 @@ SECTIONS = {
         'further_readings': Reading,
     },
     'assessment': {
-        # add here
+        # TODO: add here
     }
 }
 
@@ -170,8 +173,8 @@ class Loader():
 
         try:
             r.raise_for_status()
-        except HTTPError as e:
-            dhri_error(f'The URL ({url}) could not be used. Verify that you are using the correct repository, and that the branch that you provide is correct.', raise_error=RuntimeError)
+        except HTTPError:
+            log.error(f'The URL ({url}) could not be used. Verify that you are using the correct repository, and that the branch that you provide is correct.', raise_error=HTTPError)
         return(r.text)
 
     def _verify_repo(self):
@@ -179,14 +182,14 @@ class Loader():
 
         # TODO: This function doubles up with verify_url() from .meta
 
-        if self.repo == None:
-            dhri_error('No repository URL provided.', raise_error=RuntimeError)
+        if self.repo == None or self.repo=="" or not isinstance(self.repo, str):
+            log.error('No repository URL provided.', raise_error=UnresolvedNameOrBranch)
 
         if self.repo.endswith('/'):
             self.repo = self.repo[:-1]
 
         if len(self.repo.split('/')) != 5:
-            dhri_error(f'Cannot interpret repository URL {self.repo}. Are you sure it is a simple https://github.com/user-name/repo link?', raise_error=RuntimeError)
+            log.error(f'Cannot interpret repository URL {self.repo}. Are you sure it is a simple https://github.com/user-name/repo link?', raise_error=UnresolvedNameOrBranch)
 
     def __str__(self):
         return self.meta
@@ -219,7 +222,7 @@ class LoaderCache():
         now = datetime.today()
 
         if now - file_mod_time > TEST_AGE:
-            dhri_log(f"Cache has expired - older than {TEST_AGE} minutes... Removing.")
+            log.log(f"Cache has expired - older than {TEST_AGE} minutes... Removing.")
             self.path.unlink()
             return False
         else:
@@ -227,12 +230,12 @@ class LoaderCache():
         
         
     def load_cache(self):
-        dhri_log("loading cache...")
+        log.log("loading cache...")
         return(json.loads(self.path.read_text()))
         
         
     def save_cache(self, *args, **kwargs):
-        dhri_log("saving cache...")
+        log.log("saving cache...")
         if len(args) == 2:
             data = args[1]
             self.path.write_text(json.dumps(data))
