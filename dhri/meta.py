@@ -70,12 +70,18 @@ def delete_data(path, auto=False):
     Path(path).unlink()
 
 
-def get_or_default(message: str, default_variable: str) -> str:
-    _ = dhri_input(f'{message} (default "{default_variable}"): ')
+def get_or_default(message: str, default_variable: str, color='black', evaluate=str) -> str:
+    _ = dhri_input(f'{message} (default "{default_variable}"): ', color=color)
     if _ != '':
-        return(_)
+        try:
+            return(evaluate(_))
+        except:
+            return(_)
     else:
-        return(default_variable)
+        try:
+            return(evaluate(default_variable))
+        except:
+            return(_)
 
 
 def reset_all(kill=True) -> None:
