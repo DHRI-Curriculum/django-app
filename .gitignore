@@ -133,3 +133,6 @@ dmypy.json
 *.json
 dhri-test-repo.json
 *.ipynb
+.ipynb_checkpoints
+
+django_secret_key.txt
