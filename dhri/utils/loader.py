@@ -84,6 +84,8 @@ class Loader():
         self.user = self.repo.split('/')[3]
         self.repo_name = self.repo.split('/')[4]
         
+        self.name = self.repo_name.replace("-", " ").title()
+        
         self.cache = LoaderCache(self.repo_name)
         
         # Set up raw urls
@@ -169,7 +171,7 @@ class Loader():
         try:
             r.raise_for_status()
         except HTTPError as e:
-            dhri.error(f'The URL ({url}) could not be used. Verify that you are using the correct repository, and that the branch that you provide is correct.', raise_error=RuntimeError)
+            dhri_error(f'The URL ({url}) could not be used. Verify that you are using the correct repository, and that the branch that you provide is correct.', raise_error=RuntimeError)
         return(r.text)
 
     def _verify_repo(self):
