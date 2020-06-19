@@ -3,7 +3,6 @@ python3.7 -m venv venv
 source venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt 
-# source .envrc
 python ./app/manage.py makemigrations
 python ./app/manage.py migrate
 python ./app/manage.py loaddata ./app/fixtures.json
