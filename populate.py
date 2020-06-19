@@ -25,8 +25,8 @@ if __name__ == '__main__':
 
     log = Logger()
 
-    iteration, all_objects, done = 0, [], "n"
-    while done == "n":
+    iteration, all_objects, done = 0, [], 'n'
+    while done == 'n':
 
         iteration += 1
 
@@ -34,22 +34,22 @@ if __name__ == '__main__':
             repo = AUTO_REPOS[iteration-1]
             branch = AUTO_BRANCHES[iteration-1]
         except:
-            repo, branch = "", ""
-        
+            repo, branch = '', ''
+
         repo = get_or_default(f'What is the repo name (assuming DHRI-Curriculum as username) or whole GitHub link you want to import?', repo)
-        if repo == "":
-            log.error("No repository name, exiting...", kill=False)
-            done = "YES"
-            continue
-        
-        branch = get_or_default(f'What is the branch name you want to import?', branch)
-        if branch == "":
-            log.error("No branch name, exiting...", kill=False)
-            done = "YES"
+        if repo == '':
+            log.error('No repository name, exiting...', kill=None)
+            done = 'YES'
             continue
 
-        if not repo.startswith("https://github.com/"):
-            repo = f"https://github.com/DHRI-Curriculum/{repo}"
+        branch = get_or_default(f'What is the branch name you want to import?', branch)
+        if branch == '':
+            log.error('No branch name, exiting...', kill=None)
+            done = 'YES'
+            continue
+
+        if not repo.startswith('https://github.com/'):
+            repo = f'https://github.com/DHRI-Curriculum/{repo}'
 
 
         ###### Load in data from GitHub (handled by dhri.utils.loader.Loader)
@@ -87,17 +87,17 @@ if __name__ == '__main__':
                 try:
                     praxis.discussion_questions = l.praxis['discussion_questions']
                 except:
-                    log.warning(f"{l.parent_repo}/{l.parent_branch} does not seem to have the theory-to-practice.md section for discussion questions.")
+                    log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the theory-to-practice.md section for discussion questions.')
                 try:
                     praxis.next_steps = l.praxis['next_steps']
                 except:
-                    log.warning(f"{l.parent_repo}/{l.parent_branch} does not seem to have the theory-to-practice.md section for next steps.")
+                    log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the theory-to-practice.md section for next steps.')
                 praxis.save()
                 log.log(f'Praxis object {praxis.id} added for workshop {workshop}.')
 
             elif model == Tutorial:
                 if isinstance(l.praxis['tutorials'], str) and not is_exclusively_bullets(l.praxis['tutorials']):
-                    log.warning("The Tutorials section contains not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.")
+                    log.warning('The Tutorials section contains not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
                 
                 collector['tutorials'] = []
                 for item in l.praxis['tutorials']:
@@ -116,7 +116,7 @@ if __name__ == '__main__':
 
             elif model == Reading:
                 if isinstance(l.praxis['further_readings'], str) and not is_exclusively_bullets(l.praxis['further_readings']):
-                    log.warning("Further readings contains not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.")
+                    log.warning('Further readings contains not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
 
                 if isinstance(l.praxis['further_readings'], str):
                     l.praxis['further_readings'] = get_list(l.praxis['further_readings'])
@@ -133,7 +133,7 @@ if __name__ == '__main__':
                 log.log(f'Praxis {praxis.id} updated with further readings.')
 
             else:
-                log.error(f"Have no way of processing {model} for app `praxis`. The `populate` script must be adjusted accordingly.", kill=False)
+                log.error(f'Have no way of processing {model} for app `praxis`. The `populate` script must be adjusted accordingly.', kill=False)
 
 
 
@@ -155,14 +155,14 @@ if __name__ == '__main__':
             # frontmatter.LearningObjective
             elif model == LearningObjective:
                 if isinstance(l.frontmatter['learning_objectives'], str) and not is_exclusively_bullets(l.frontmatter['learning_objectives']):
-                    log.warning("Learning objectives contain not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.")
+                    log.warning('Learning objectives contain not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
                 
                 if isinstance(l.frontmatter['learning_objectives'], str):
                     l.frontmatter['learning_objectives'] = get_list(l.frontmatter['learning_objectives'])
                 
                 collector['learning_objectives'] = []
                 for item in l.frontmatter['learning_objectives']:
-                    label = "\n".join(item).strip()
+                    label = '\n'.join(item).strip()
                     o = LearningObjective(
                             frontmatter=frontmatter,
                             label=label
@@ -174,14 +174,14 @@ if __name__ == '__main__':
             # frontmatter.Project
             elif model == Project:
                 if isinstance(l.frontmatter['projects'], str) and not is_exclusively_bullets(l.frontmatter['projects']):
-                    log.warning("Projects contain not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.")
+                    log.warning('Projects contain not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
                 
                 collector['projects'] = []
                 if isinstance(l.frontmatter['projects'], str):
                     l.frontmatter['projects'] = get_list(l.frontmatter['projects'])
                 
                 for item in l.frontmatter['projects']:
-                    md = "\n".join(item).strip()
+                    md = '\n'.join(item).strip()
                     o = Project()
                     o.comment = md
                     hrefs = get_markdown_hrefs(md)
@@ -196,11 +196,11 @@ if __name__ == '__main__':
             # frontmatter.Reading
             elif model == Reading:
                 if isinstance(l.frontmatter['readings'], str) and not is_exclusively_bullets(l.frontmatter['readings']):
-                    log.warning("Readings contain not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.")
+                    log.warning('Readings contain not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
                 
                 collector['frontmatter_readings'] = []
                 for item in l.frontmatter['readings']:
-                    md = "\n".join(item).strip()
+                    md = '\n'.join(item).strip()
                     o = Reading()
                     o.comment = md
                     hrefs = get_markdown_hrefs(md)
@@ -215,38 +215,38 @@ if __name__ == '__main__':
             # frontmatter.Contributor
             elif model == Contributor:
                 if isinstance(l.frontmatter['contributors'], str) and not is_exclusively_bullets(l.frontmatter['contributors']):
-                    log.warning("Contributors contain not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.")
+                    log.warning('Contributors contain not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
                 
                 if isinstance(l.frontmatter['contributors'], str):
                     l.frontmatter['contributors'] = get_list(l.frontmatter['contributors'])
                 
                 collector['contributors'] = []
                 for item in l.frontmatter['contributors']:
-                    md = "\n".join(item).strip()
+                    md = '\n'.join(item).strip()
                     role = None
                     o = Contributor()
-                    if ":" in md:
-                        role, name = md.split(":")[0].strip(), " ".join(md.split(":")[1:]).strip()
+                    if ':' in md:
+                        role, name = md.split(':')[0].strip(), ' '.join(md.split(':')[1:]).strip()
                     else:
                         name = md
                     
-                    first_name, last_name = name.split(" ")[0].strip(), " ".join(name.split(" ")[1:]).strip()
+                    first_name, last_name = name.split(' ')[0].strip(), ' '.join(name.split(' ')[1:]).strip()
                     
-                    if name == None or name.strip() == "" or name.lower().strip() == "none" or first_name == "none" or last_name == "none":
+                    if name == None or name.strip() == '' or name.lower().strip() == 'none' or first_name == 'none' or last_name == 'none':
                         log.warning(f'Could not interpret name ("{name}") and chose to not insert the collaborators on the workshop {workshop.name}. Verify in admin tool later.')
                         continue
                     
-                    first_name = get_or_default(f"Confirm {first_name} {last_name}'s first name. Type NO to skip contributor.", first_name)
-                    if first_name == "NO":
-                        log.warning(f"Skipping contributor {name}.")
+                    first_name = get_or_default(f'Confirm {first_name} {last_name}\'s first name. Type NO to skip contributor.', first_name)
+                    if first_name == 'NO':
+                        log.warning(f'Skipping contributor {name}.')
                         continue
-                    last_name = get_or_default(f"Confirm {first_name} {last_name}'s last name. Type NO to skip contributor.", last_name)
-                    if last_name == "NO":
-                        log.warning(f"Skipping contributor {name}.")
+                    last_name = get_or_default(f'Confirm {first_name} {last_name}\'s last name. Type NO to skip contributor.', last_name)
+                    if last_name == 'NO':
+                        log.warning(f'Skipping contributor {name}.')
                         continue
-                    role = get_or_default(f"Confirm {first_name} {last_name}'s role. Type NO to skip contributor.", role)
-                    if role == "NO":
-                        log.warning(f"Skipping contributor {name}.")
+                    role = get_or_default(f'Confirm {first_name} {last_name}\'s role. Type NO to skip contributor.', role)
+                    if role == 'NO':
+                        log.warning(f'Skipping contributor {name}.')
                         continue
                     o.first_name, o.last_name, o.role = first_name, last_name, role
                     o.save()
@@ -256,7 +256,7 @@ if __name__ == '__main__':
                 log.log(f'Frontmatter {frontmatter.id} updated with {len(collector)} contributors.')
 
             else:
-                log.error(f"Have no way of processing {model} (for app `frontmatter`). The `populate` script must be adjusted accordingly.", kill=False)
+                log.error(f'Have no way of processing {model} (for app `frontmatter`). The `populate` script must be adjusted accordingly.', kill=False)
 
         # Create fixtures.json
         import json
@@ -265,16 +265,16 @@ if __name__ == '__main__':
         workshop_dict = json.loads(serializers.serialize('json', [workshop], ensure_ascii=False))[0]
         workshop_dict['fields'].pop('created')
         workshop_dict['fields'].pop('updated')
-        
+
         frontmatter_dict = json.loads(serializers.serialize('json', [frontmatter], ensure_ascii=False))[0]
         praxis_dict = json.loads(serializers.serialize('json', [praxis], ensure_ascii=False))[0]
-        
+
         all_objects.extend([workshop, frontmatter, praxis])
         for _ in collector.values():
             all_objects.extend([x for x in _])
 
-        done = get_or_default("Are you done? [y/N] ", done, color='red').lower()
-        
+        done = get_or_default('Are you done? [y/N] ', done, color='red').lower()
+
     # Create fixtures.json
     all_objects_dict = json.loads(serializers.serialize('json', all_objects, ensure_ascii=False))
 
