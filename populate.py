@@ -37,10 +37,16 @@ if __name__ == '__main__':
             repo, branch = "", ""
         
         repo = get_or_default(f'What is the repo name (assuming DHRI-Curriculum as username) or whole GitHub link you want to import?', repo)
-        if repo == "": log.error("No repository name, exiting...", UnresolvedNameOrBranch)
+        if repo == "":
+            log.error("No repository name, exiting...", kill=False)
+            done = "YES"
+            continue
         
         branch = get_or_default(f'What is the branch name you want to import?', branch)
-        if branch == "": log.error("No branch name, exiting...", UnresolvedNameOrBranch)
+        if branch == "":
+            log.error("No branch name, exiting...", kill=False)
+            done = "YES"
+            continue
 
         if not repo.startswith("https://github.com/"):
             repo = f"https://github.com/DHRI-Curriculum/{repo}"
