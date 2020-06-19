@@ -9,7 +9,7 @@ class Logger():
         message = colorize('--> ' + message, fg='green', opts=('',))
         print(message)
 
-    def error(self, message="", raise_error=False, kill=True):
+    def error(self, message="", raise_error=None, kill=True):
         if raise_error != None:
             raise(raise_error(message))
         message = colorize('Error: ' + message, fg='red', opts=('bold',))
