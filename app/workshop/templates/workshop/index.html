@@ -1,59 +1,20 @@
+{% extends 'workshop/base.html' %}
 {% load markdownify %}
 
-<h1>{{ workshop.name }}</h1>
-
-<p>{{ workshop.frontmatter.abstract | markdown | safe }}</p>
-
-<p>
-  ```py
-  print("Something here!")
-  ```
-</p>
-
-<p>{{ workshop.frontmatter.learning_objectives }}</p>
-
-<p><em>Minutes estimated for workshop</em>: {{ workshop.frontmatter.estimated_time }}</p>
-
-{% if workshop.frontmatter.projects.all %}
-  <h2>Projects</h2>
-  <ul>
-  {% for project in workshop.frontmatter.projects.all %}
-    <li>{{ project }}</li>
-  {% endfor %}
-  </ul>
-{% else %}
-  <p><em>Workshop has no projects.</em></p>
-{% endif %}
-
-{% if workshop.frontmatter.resources.all %}
-  <h2>Resources</h2>
-  <ul>
-  {% for resource in workshop.frontmatter.resources.all %}
-    <li>{{ resource }}</li>
-  {% endfor %}
-  </ul>
-{% else %}
-  <p><em>Workshop has no resources.</em></p>
-{% endif %}
-
-{% if workshop.frontmatter.readings.all %}
-  <h2>Readings</h2>
-  <ul>
-  {% for reading in workshop.frontmatter.readings.all %}
-    <li>{{ reading }}</li>
-  {% endfor %}
-  </ul>
-{% else %}
-  <p><em>Workshop has no readings.</em></p>
-{% endif %}
-
-{% if workshop.frontmatter.contributors.all %}
-  <h2>Contributors</h2>
-  <ul>
-  {% for contributor in workshop.frontmatter.contributors.all %}
-    <li>{{ contributor }}</li>
-  {% endfor %}
-  </ul>
-{% else %}
-  <p><em>Workshop has no contributors.</em></p>
-{% endif %}
+{% block body %}
+  <div class="container">
+    <div class="row">
+      {% for workshop in workshops %}
+        <div class="col-sm-6">
+            <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">{{ workshop.name }}</h5>
+                <p class="card-text">{{ workshop.frontmatter.abstract | markdown | safe }}</p>
+                <a href="{% url 'workshop:detail' slug=workshop.slug %}" class="btn btn-primary stretched-link">Start</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

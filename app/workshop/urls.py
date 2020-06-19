@@ -6,5 +6,5 @@ app_name = 'workshop'
 
 urlpatterns = [
   path('', views.index, name='index'),
-  path('<str:slug>/', views.index, name='index'),
+  path('<str:slug>/', views.detail, name='detail'),
 ]
