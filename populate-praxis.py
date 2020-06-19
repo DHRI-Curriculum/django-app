@@ -6,22 +6,36 @@ from dhri.backend import *
 from dhri.models import *
 from dhri.meta import reset_all, get_or_default
 
-
+# dev part - remove in production #############
 reset_all()
+AUTO_REPOS = [
+        'command-line',
+        'project-lab'
+    ]
+AUTO_BRANCHES = [
+        'v2.0-smorello-edits',
+        'v2.0rhody-edits'
+    ]
+###############################################
 
 done = "n"
 
+all_objects = []
+
+iteration = 0
+
 while done == "n":
 
+    iteration += 1
 
-    repo = get_or_default(f'What is the repo name (assuming DHRI-Curriculum as username) or whole GitHub link you want to import?', 'project-lab')
+    repo = get_or_default(f'What is the repo name (assuming DHRI-Curriculum as username) or whole GitHub link you want to import?', AUTO_REPOS[iteration-1])
 
     if repo.startswith("https://github.com/"):
         pass
     else:
         repo = f"https://github.com/DHRI-Curriculum/{repo}"
 
-    branch = get_or_default(f'What is the branch name you want to import?', 'v2.0rhody-edits')
+    branch = get_or_default(f'What is the branch name you want to import?', AUTO_BRANCHES[iteration-1])
 
     l = Loader(repo, branch)
 
@@ -40,55 +54,26 @@ while done == "n":
     workshop.save()
     dhri_log(f'Workshop object {workshop.name} added (ID {workshop.id}).')
 
-    '''
-    ##### This will be left here because this is how we can process frontmatter ########
-
-    for model in l.frontmatter_models:
-        if model == Contributor:
-            for section in l.frontmatter_models[model]:
-                print("***", section, "***")
-                print(l.frontmatter[section])
-            pass # process contributors
-        elif model == Project:
-            for section in l.frontmatter_models[model]:
-                print("***", section, "***")
-                print(l.frontmatter[section])
-            pass # process contributors
-        elif model == Reading:
-            for section in l.frontmatter_models[model]:
-                print("***", section, "***")
-                print(l.frontmatter[section])
-            pass # process contributors
-        elif model == Frontmatter:
-            for section in l.frontmatter_models[model]:
-                print("***", section, "***")
-                print(l.frontmatter[section])
-            pass # process frontmatter
-        else:
-            print(f"Have no way of processing {model}. The `populate` script must be adjusted accordingly.")
-
-        # I could also do things programmatically here...
-        for section in l.praxis_models[model]:
-            if isinstance(l.praxis[section], list):
-                for entry in l.praxis[section]:
-                    print('we have an entry:', entry, model)
-            elif isinstance(l.praxis[section], str):
-                print('we have a string')
-            else:
-                print(f"Have no way of processing a section of type {type(l.praxis[section])}. The `populate` script must be adjusted accordingly.")
-    '''
-
-
+    # Reset collector
+    collector = {}
 
     ###### PRAXIS MODELS ####################################
+
+    print(l.praxis)
 
     for model in l.praxis_models:
         if model == Praxis:
             praxis = Praxis(
                     workshop = workshop,
-                    discussion_questions = l.praxis['discussion_questions'],
-                    next_steps = l.praxis['next_steps']
                 )
+            try:
+                praxis.discussion_questions = l.praxis['discussion_questions']
+            except:
+                dhri_warning(f"{l.parent_repo}/{l.parent_branch} does not seem to have the theory-to-practice.md section for discussion questions.")
+            try:
+                praxis.next_steps = l.praxis['next_steps']
+            except:
+                dhri_warning(f"{l.parent_repo}/{l.parent_branch} does not seem to have the theory-to-practice.md section for next steps.")
             praxis.save()
             dhri_log(f'Praxis object {praxis.id} added for workshop {workshop}.')
 
@@ -96,7 +81,7 @@ while done == "n":
             if isinstance(l.praxis['tutorials'], str) and not is_exclusively_bullets(l.praxis['tutorials']):
                 dhri_warning("The Tutorials section contains not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.")
             
-            collector = []
+            collector['tutorials'] = []
             for item in l.praxis['tutorials']:
                 label, comment = item
                 o = Tutorial()
@@ -106,24 +91,28 @@ while done == "n":
                 if urls:
                     o.url = urls[0]
                 o.save()
-                collector.append(o)
+                collector['tutorials'].append(o)
                 dhri_log(f'Tutorial {o.id} added.')
-            praxis.tutorials.set(collector)
+            praxis.tutorials.set(collector['tutorials'])
             dhri_log(f'Praxis {praxis.id} updated with tutorials.')
 
         elif model == Reading:
             if isinstance(l.praxis['further_readings'], str) and not is_exclusively_bullets(l.praxis['further_readings']):
                 dhri_warning("Further readings contains not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.")
-            
-            collector = []
+
+            if isinstance(l.praxis['further_readings'], str):
+                l.praxis['further_readings'] = get_list(l.praxis['further_readings'])
+                        
+            collector['praxis_readings'] = []
             for item in l.praxis['further_readings']:
+                
                 title, _ = item # TODO: add field on reading for comment (and replace _)
                 o = Reading()
                 o.title = title
                 o.save()
-                collector.append(o)
+                collector['praxis_readings'].append(o)
                 dhri_log(f'Reading {o.id} added.')
-            praxis.further_readings.set(collector)
+            praxis.further_readings.set(collector['praxis_readings'])
             dhri_log(f'Praxis {praxis.id} updated with further readings.')
 
         else:
@@ -153,6 +142,8 @@ while done == "n":
             
             if isinstance(l.frontmatter['learning_objectives'], str):
                 l.frontmatter['learning_objectives'] = get_list(l.frontmatter['learning_objectives'])
+            
+            collector['learning_objectives'] = []
             for item in l.frontmatter['learning_objectives']:
                 label = "\n".join(item).strip()
                 o = LearningObjective(
@@ -160,6 +151,7 @@ while done == "n":
                         label=label
                     )
                 o.save()
+                collector['learning_objectives'].append(o)
                 dhri_log(f'Learning objective for frontmatter {frontmatter.id} added:\n    {o.label}.')
             
         # frontmatter.Project
@@ -167,7 +159,7 @@ while done == "n":
             if isinstance(l.frontmatter['projects'], str) and not is_exclusively_bullets(l.frontmatter['projects']):
                 dhri_warning("Projects contain not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.")
             
-            collector = []
+            collector['projects'] = []
             if isinstance(l.frontmatter['projects'], str):
                 l.frontmatter['projects'] = get_list(l.frontmatter['projects'])
             
@@ -179,17 +171,17 @@ while done == "n":
                 if hrefs:
                     o.title, o.url = hrefs[0]
                 o.save()
-                collector.append(o)
+                collector['projects'].append(o)
                 dhri_log(f'Project {o.title} added.')
-            frontmatter.projects.set(collector)
-            dhri_log(f'Frontmatter {frontmatter.id} updated with {len(collector)} projects.')
+            frontmatter.projects.set(collector['projects'])
+            dhri_log(f'Frontmatter {frontmatter.id} updated with {len(collector["projects"])} projects.')
 
         # frontmatter.Reading
         elif model == Reading:
             if isinstance(l.frontmatter['readings'], str) and not is_exclusively_bullets(l.frontmatter['readings']):
                 dhri_warning("Readings contain not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.")
             
-            collector = []
+            collector['frontmatter_readings'] = []
             for item in l.frontmatter['readings']:
                 md = "\n".join(item).strip()
                 o = Reading()
@@ -198,10 +190,10 @@ while done == "n":
                 if hrefs:
                     o.title, o.url = hrefs[0]
                 o.save()
-                collector.append(o)
+                collector['frontmatter_readings'].append(o)
                 dhri_log(f'Reading {o.title} added.')
-            frontmatter.readings.set(collector)
-            dhri_log(f'Frontmatter {frontmatter.id} updated with {len(collector)} readings.')
+            frontmatter.readings.set(collector['frontmatter_readings'])
+            dhri_log(f'Frontmatter {frontmatter.id} updated with {len(collector["frontmatter_readings"])} readings.')
 
         # frontmatter.Contributor
         elif model == Contributor:
@@ -211,7 +203,7 @@ while done == "n":
             if isinstance(l.frontmatter['contributors'], str):
                 l.frontmatter['contributors'] = get_list(l.frontmatter['contributors'])
             
-            collector = []
+            collector['contributors'] = []
             for item in l.frontmatter['contributors']:
                 md = "\n".join(item).strip()
                 role = None
@@ -241,12 +233,35 @@ while done == "n":
                     continue
                 o.first_name, o.last_name, o.role = first_name, last_name, role
                 o.save()
-                collector.append(o)
+                collector['contributors'].append(o)
                 dhri_log(f'Contributor {o.full_name} ({o.role}) added.')
-            frontmatter.contributors.set(collector)
+            frontmatter.contributors.set(collector['contributors'])
             dhri_log(f'Frontmatter {frontmatter.id} updated with {len(collector)} contributors.')
 
         else:
             print(f"Have no way of processing {model} (for app `frontmatter`). The `populate` script must be adjusted accordingly.")
 
+    # Create fixtures.json
+    import json
+    from django.core import serializers
+
+    workshop_dict = json.loads(serializers.serialize('json', [workshop], ensure_ascii=False))[0]
+    workshop_dict['fields'].pop('created')
+    workshop_dict['fields'].pop('updated')
+    
+    frontmatter_dict = json.loads(serializers.serialize('json', [frontmatter], ensure_ascii=False))[0]
+    praxis_dict = json.loads(serializers.serialize('json', [praxis], ensure_ascii=False))[0]
+    
+    all_objects.extend([workshop, frontmatter, praxis])
+    for _ in collector.values():
+        all_objects.extend([x for x in _])
+
     done = get_or_default("Are you done? [y/N] ", done, color='red').lower()
+    
+# Create fixtures.json
+all_objects_dict = json.loads(serializers.serialize('json', all_objects, ensure_ascii=False))
+
+print(all_objects_dict)
+from pathlib import Path
+Path('app/fixtures.json').write_text(json.dumps(all_objects_dict))
+
