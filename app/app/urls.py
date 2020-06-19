@@ -6,3 +6,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('assessment/', include('assessment.urls')),
 ]
+# handler404 = 'site.views.404'
