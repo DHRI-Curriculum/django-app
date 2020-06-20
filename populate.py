@@ -4,7 +4,7 @@ from dhri.interaction import Logger, get_or_default
 from dhri.settings import AUTO_PROCESS, FIXTURE_PATH
 from dhri.utils.exceptions import UnresolvedNameOrBranch
 from dhri.utils.loader import Loader
-from dhri.utils.markdown import get_bulletpoints, is_exclusively_bullets, get_list, get_contributors
+from dhri.utils.markdown import get_bulletpoints, is_exclusively_bullets, get_list, get_contributors, destructure_list
 from dhri.utils.text import get_urls, get_number, get_markdown_hrefs
 
 # dev part - remove in production #############
@@ -12,12 +12,12 @@ from dhri.meta import reset_all
 reset_all()
 ###############################################
 
+# Set up empty stuff ##########################
+log = Logger(name="populate")
+iteration, all_objects, done = 0, [], 'n'
+###############################################
+
 if __name__ == '__main__':
-
-
-    log = Logger(name="populate")
-
-    iteration, all_objects, done = 0, [], 'n'
     while done == 'n':
 
         iteration += 1
@@ -30,13 +30,13 @@ if __name__ == '__main__':
         repo = get_or_default(f'What is the repo name (assuming DHRI-Curriculum as username) or whole GitHub link you want to import?', repo)
         if repo == '':
             log.error('No repository name, exiting...', kill=None)
-            done = 'YES'
+            done = 'y'
             continue
 
         branch = get_or_default(f'What is the branch name you want to import?', branch)
         if branch == '':
             log.error('No branch name, exiting...', kill=None)
-            done = 'YES'
+            done = 'y'
             continue
 
         if not repo.startswith('https://github.com/'):
@@ -46,6 +46,11 @@ if __name__ == '__main__':
         ###### Load in data from GitHub (handled by dhri.utils.loader.Loader)
 
         l = Loader(repo, branch)
+
+
+        ###### Test for data consistency
+
+        # TODO: this section
 
 
         ###### Setup empty and standard variables
@@ -175,11 +180,11 @@ if __name__ == '__main__':
                     continue
 
                 collector['learning_objectives'] = []
-                if isinstance(l.frontmatter['learning_objectives'], str):
-                    l.frontmatter['learning_objectives'] = get_list(l.frontmatter['learning_objectives'])
 
-                for item in l.frontmatter['learning_objectives']:
-                    label = '\n'.join(item).strip()
+                for item in destructure_list(l.frontmatter['learning_objectives']):
+                    label, urls = item
+                    if urls:
+                        log.warning(f'Looks like the learning objectives have URLs but the database has no way to keep them.')
                     o = LearningObjective(
                             frontmatter=frontmatter,
                             label=label
@@ -198,24 +203,20 @@ if __name__ == '__main__':
                     continue
 
                 collector['projects'] = []
-                if isinstance(l.frontmatter['projects'], str):
-                    l.frontmatter['projects'] = get_list(l.frontmatter['projects'])
-
-                print(l.frontmatter['projects'])
-
-                for item in l.frontmatter['projects']:
-                    md = '\n'.join(item).strip()
+                for item in destructure_list(l.frontmatter['projects']):
+                    comment, urls = item
                     o = Project()
-                    o.comment = md
-                    urls = get_markdown_hrefs(md)
+                    o.comment = comment
                     for url in urls:
-                        print(url)
-                        o.title, o.url = url[:2]
-                        if len(urls) > 1: log.warning(f'One project seems to contain more than one URL, but only one ({url}) is captured:\n    {md}')
+                        o.title, o.url = url
+                        if len(urls) > 1: log.warning(f'One project seems to contain more than one URL, but only one ({url}) is captured:\n    {urls}')
                         continue
                     o.save()
                     collector['projects'].append(o)
-                    log.log(f'Project added:\n    {o.title}')
+                    if o.title == '':
+                        log.log(f'Project added:\n    {o.url} (title missing, but comment starts with: {o.comment[:60]}...)')
+                    else:
+                        log.log(f'Project added:\n    {o.title} ({o.url})')
                 frontmatter.projects.set(collector['projects'])
                 log.log(f'Frontmatter {frontmatter.id} updated with {len(collector["projects"])} projects.')
 

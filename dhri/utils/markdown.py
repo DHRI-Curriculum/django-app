@@ -165,6 +165,10 @@ def destructure_list(markdown:str, remove_simple_links=True, set_empty_url='') -
 
     """
 
+    if not isinstance(markdown, str):
+        log.warning(f'List is not provided as string but as {type(markdown)}. Trying to fix.')
+        markdown = _fix_markdown(markdown, type="")
+
     from dhri.utils.regex import is_md_link, md_list, all_links
 
     _ = []
@@ -198,19 +202,19 @@ def split_names(full_name:str) -> tuple:
     last_name = name.last
     return((first_name, last_name))
 
-def _fix_markdown(markdown) -> str:
+def _fix_markdown(markdown, type="") -> str:
     new_markdown = ""
     if isinstance(markdown, list):
-        for contributor in markdown:
-            if isinstance(contributor, str):
-                if contributor != '': new_markdown += "- " + contributor + "\n"
-            elif isinstance(contributor, tuple):
-                for c in contributor:
+        for item in markdown:
+            if isinstance(item, str):
+                if item != '': new_markdown += "- " + item + "\n"
+            elif isinstance(item, tuple):
+                for c in item:
                     if c != '': new_markdown += "- " + c + "\n"
             else:
-                log.warning(f'Could not fix. Please fix the contributor list for the repository.')
+                log.warning(f'Could not fix. Please fix the {type} list for the repository.')
     else:
-        log.warning(f'Could not fix. Please fix the contributor list for the repository.')
+        log.warning(f'Could not fix. Please fix the {type} list for the repository.')
     return new_markdown
 
 
@@ -224,7 +228,7 @@ def get_contributors(markdown:str) -> list:
 
     if not isinstance(markdown, str):
         log.warning(f'Contributors are not provided as string but as {type(markdown)}. Trying to fix.')
-        markdown = _fix_markdown(markdown)
+        markdown = _fix_markdown(markdown, type="contributor")
 
     _ = []
     collected = []

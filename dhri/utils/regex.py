@@ -35,8 +35,8 @@ MD_LIST_ELEMENTS = r'\- (.*)'
 md_list = re.compile(MD_LIST_ELEMENTS)
 
 
-URL = r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
-MD_LINK = r'\[([\w\s\d]+)\]\(((?:\/|https?:\/\/)[\w\d.\/?=#]+)\)'
+URL = r'http[s]?:\/\/(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
+MD_LINK = r'\[([\w\s\d\']+)\]\(((?:\/|https?:\/\/)?[\w\d.\/?=#-]+)\)'
 
 ###
 # returns a tuple of three elements: full_match (either URL or full markdown for URL), hyperlinked text, URL
