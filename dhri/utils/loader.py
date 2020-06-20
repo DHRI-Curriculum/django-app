@@ -11,7 +11,7 @@ from dhri.utils.exceptions import UnresolvedNameOrBranch
 from dhri.settings import NORMALIZING_SECTIONS, REPO_AUTO, BRANCH_AUTO, DOWNLOAD_CACHE_DIR, BACKEND_AUTO, FORCE_DOWNLOAD
 from dhri.constants import DOWNLOAD_CACHE_DIR, TEST_AGE
 
-log = Logger()
+log = Logger(name="loader")
 
 SECTIONS = {
     'frontmatter': {

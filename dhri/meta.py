@@ -6,7 +6,7 @@ from dhri.interaction import Logger, Input
 from dhri.utils.regex import URL
 from dhri.utils.exceptions import UnresolvedNameOrBranch
 
-log = Logger()
+log = Logger(name="meta")
 
 
 def get_argparser() -> argparse.ArgumentParser:
@@ -74,18 +74,6 @@ def delete_data(path, auto=False):
     Path(path).unlink()
 
 
-def get_or_default(message: str, default_variable: str, color='black', evaluate=str) -> str:
-    _ = Input.ask(f'{message} (default "{default_variable}"): ', color=color)
-    if _ != '':
-        try:
-            return(evaluate(_))
-        except:
-            return(_)
-    else:
-        try:
-            return(evaluate(default_variable))
-        except:
-            return(_)
 
 
 def reset_all(kill=True) -> None:

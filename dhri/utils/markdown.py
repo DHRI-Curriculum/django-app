@@ -19,7 +19,7 @@ from dhri.utils.regex import re, MULTILINE_ITEM, ALL_BULLETS
 from dhri.interaction import Logger
 
 
-log = Logger()
+log = Logger(name="markdown")
 
 def clear_emptylines(markdown:str) -> str:
     """ Returns markdown string without all empty lines removed """

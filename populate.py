@@ -1,21 +1,21 @@
 from dhri.django import django
 from dhri.django.models import *
-from dhri.meta import reset_all, get_or_default
+from dhri.interaction import Logger, get_or_default
+from dhri.settings import AUTO_PROCESS, FIXTURE_PATH
 from dhri.utils.exceptions import UnresolvedNameOrBranch
 from dhri.utils.loader import Loader
 from dhri.utils.markdown import get_bulletpoints, is_exclusively_bullets, get_list
 from dhri.utils.text import get_urls, get_number, get_markdown_hrefs
-from dhri.interaction import Logger
-from dhri.settings import AUTO_PROCESS, FIXTURE_PATH
 
 # dev part - remove in production #############
+from dhri.meta import reset_all
 reset_all()
 ###############################################
 
 if __name__ == '__main__':
 
 
-    log = Logger()
+    log = Logger(name="populate")
 
     iteration, all_objects, done = 0, [], 'n'
     while done == 'n':

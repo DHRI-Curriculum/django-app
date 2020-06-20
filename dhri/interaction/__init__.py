@@ -1,4 +1,5 @@
 from django.utils.termcolors import colorize
+from dhri.settings import VERBOSE
 
 import textwrap, re, os
 
@@ -35,24 +36,28 @@ def _fix_message(message='', quote='', first_line_add='--> ', indentation='    '
 
 class Logger():
     def __init__(self, *args, **kwargs):
-        pass
+        self.name = ''
+        if 'name' in kwargs:
+            self.name = kwargs['name']
 
     def log(self, message="", kill=False, color='green'):
         message = _fix_message(message)
         message = colorize(message, fg=color, opts=('',))
-        self.write(message)
+        self.output(message)
 
     def error(self, message="", raise_error=None, kill=True, color='red'):
         if raise_error != None:
             raise(raise_error(message))
         message = colorize('Error: ' + message, fg=color, opts=('bold',))
-        self.write(message, kill)
+        self.output(message, kill)
 
     def warning(self, message="", kill=False, color='yellow'):
         message = colorize('Warning: ' + message, fg=color, opts=('bold',))
-        self.write(message, kill)
+        self.output(message, kill)
 
-    def write(self, message:str, kill=False):
+    def output(self, message:str, kill=False):
+        if VERBOSE:
+            message += f" [{self.name}]"
         if kill == True:
             exit(message)
         else:
@@ -79,3 +84,17 @@ class Input:
 
         return(input(colorize(question)))
         '''
+
+
+def get_or_default(message: str, default_variable: str, color='black', evaluate=str) -> str:
+    _ = Input.ask(f'{message} (default "{default_variable}"): ', color=color)
+    if _ != '':
+        try:
+            return(evaluate(_))
+        except:
+            return(_)
+    else:
+        try:
+            return(evaluate(default_variable))
+        except:
+            return(_)

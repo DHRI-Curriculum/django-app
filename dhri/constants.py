@@ -18,7 +18,7 @@ from datetime import timedelta
 from pathlib import Path
 import os
 
-log = Logger()
+log = Logger(name="constants")
 
 def _test(constant=None, as_type=bool):
     if not isinstance(constant, as_type): log.error(f'{constant}` provided must be a {as_type}.', raise_error=ConstantError)

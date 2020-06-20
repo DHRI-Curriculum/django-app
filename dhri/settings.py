@@ -11,6 +11,9 @@ AUTO_PROCESS = [
         ('data-and-ethics', 'v2.0'),
     ]
 
+# if VERBOSE is set to True, every output message will display the source module (good for troubleshooting)
+VERBOSE = True
+
 FIXTURE_PATH = 'app/fixtures.json' # This is where the final fixtures JSON file will be saved
 
 FORCE_DOWNLOAD = True # If set to True, the script will bypass the cache every time (effectively disregarding TEST_AGE below)
