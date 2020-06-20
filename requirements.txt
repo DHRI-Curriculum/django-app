@@ -4,3 +4,4 @@ mistune~=0.8.4
 pygments~=2.6.1
 Pillow~=7.1.2
 requests~=2.23.0
+nameparser~=1.0.6

@@ -1,25 +1,12 @@
 import argparse, json, os, re
 from pathlib import Path
 
-from dhri.constants import AUTO_RESET
-from dhri.logger import Logger, colorize
+from dhri.settings import AUTO_RESET
+from dhri.interaction import Logger, Input
 from dhri.utils.regex import URL
 from dhri.utils.exceptions import UnresolvedNameOrBranch
 
-log = Logger()
-
-
-def dhri_input(message, bold=True, color=''):
-    if color != '' and bold == True:
-        return(input(colorize(message, fg=color, opts=('bold',))))
-    elif color != '' and bold == False:
-        return(input(colorize(message, fg=color)))
-    elif color == '' and bold == True:
-        return(input(colorize(message, opts=('bold',))))
-    elif color == '' and bold == False:
-        log.error('You should just use input here.', kill=False)
-    
-    return(input(colorize(message)))
+log = Logger(name="meta")
 
 
 def get_argparser() -> argparse.ArgumentParser:
@@ -78,7 +65,7 @@ def save_data(path: str, data: dict) -> bool:
 
 def delete_data(path, auto=False):
     if auto == False:
-      _continue = dhri_input(f'Are you sure you want to delete the data file ({path})? (y/N) ', bold=True, color='red')
+      _continue = Input.ask(f'Are you sure you want to delete the data file ({path})? (y/N) ', bold=True, color='red')
       if _continue.lower() != 'y':
         exit()
     else:
@@ -87,36 +74,24 @@ def delete_data(path, auto=False):
     Path(path).unlink()
 
 
-def get_or_default(message: str, default_variable: str, color='black', evaluate=str) -> str:
-    _ = dhri_input(f'{message} (default "{default_variable}"): ', color=color)
-    if _ != '':
-        try:
-            return(evaluate(_))
-        except:
-            return(_)
-    else:
-        try:
-            return(evaluate(default_variable))
-        except:
-            return(_)
 
 
 def reset_all(kill=True) -> None:
     ''' development function - DO NOT USE IN PRODUCTION, EVER. '''
 
     if AUTO_RESET == False:
-      _continue = dhri_input('Are you sure you want to reset the entire DHRI curriculum in the current Django database? (y/N) ', bold=True, color='red')
+      _continue = Input.ask('Are you sure you want to reset the entire DHRI curriculum in the current Django database? (y/N) ', bold=True, color='red')
       if _continue.lower() != 'y':
         exit()
     else:
       log.warning('Resetting database (AUTO_RESET set to True)...')
 
-    
-    from dhri.backend import Workshop, Frontmatter, Project, Resource, Reading, Contributor, Answer, Question, QuestionType
-    for _ in [Workshop, Frontmatter, Project, Resource, Reading, Contributor, Answer, Question, QuestionType]:
+    from dhri.django import django
+    from dhri.django.models import Workshop, Frontmatter, Project, Resource, Reading, Contributor, Question, Answer, QuestionType, LearningObjective, Praxis, Tutorial
+    for _ in [Workshop, Frontmatter, Project, Resource, Reading, Contributor, Question, Answer, QuestionType, LearningObjective, Praxis, Tutorial]:
         _.objects.all().delete()
         log.log(f'All {_.__name__} deleted.', kill=not AUTO_RESET)
-    
+
     p = Path(__file__).resolve()
     p = p.parent.parent
     app_path = Path(p) / 'app'

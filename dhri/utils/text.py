@@ -1,16 +1,16 @@
 # General text tools
-from dhri.utils.regex import re, URL, NUMBERS, MARKDOWN_HREF
+from dhri.utils.regex import re, URL, NUMBERS, MARKDOWN_HREF, COMPLEX_SEARCH_FOR_URLS
 
 
 def get_urls(markdown:str) -> list:
     """ Returns a list of URLs in a given string """
-    g = re.findall(URL, markdown)
+    g = re.findall(COMPLEX_SEARCH_FOR_URLS, markdown) # used to be MARKDOWN_HREF (but that's included in COMPLEX_SEARCH_FOR_URLS now)
     return(list(set([x[0] for x in g if x[0]])))
 
 
 def get_markdown_hrefs(markdown:str) -> list:
     """ Returns a list of URLs in a given string """
-    g = re.findall(MARKDOWN_HREF, markdown)
+    g = re.findall(MARKDOWN_HREF, markdown) # used to be  (but that's included in COMPLEX_SEARCH_FOR_URLS now)
     return(list(set([x for x in g if x]))) # returns unique
 
 

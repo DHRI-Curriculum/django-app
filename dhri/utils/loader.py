@@ -2,15 +2,16 @@ import requests, json
 from pathlib import Path
 from datetime import datetime, timedelta
 
+from dhri.django import django
+from dhri.django.models import *
+from dhri.interaction import Logger
 from dhri.utils.markdown import split_into_sections
-from dhri.constants import NORMALIZING_SECTIONS, BRANCH_AUTO, DOWNLOAD_CACHE_DIR, TEST_AGE, BACKEND_AUTO
-from dhri.backend import *
-from dhri.models import *
-from dhri.logger import Logger
 from dhri.utils.exceptions import UnresolvedNameOrBranch
 
+from dhri.settings import NORMALIZING_SECTIONS, REPO_AUTO, BRANCH_AUTO, DOWNLOAD_CACHE_DIR, BACKEND_AUTO, FORCE_DOWNLOAD
+from dhri.constants import DOWNLOAD_CACHE_DIR, TEST_AGE
 
-log = Logger()
+log = Logger(name="loader")
 
 SECTIONS = {
     'frontmatter': {
@@ -77,7 +78,7 @@ class Loader():
         praxis_models[model].append(section)
 
     
-    def __init__(self, repo='https://www.github.com/kallewesterling/dhri-test-repo', branch=BRANCH_AUTO, download=True):
+    def __init__(self, repo=REPO_AUTO, branch=BRANCH_AUTO, download=True, force_download=FORCE_DOWNLOAD):
         self.repo = repo
         self.branch = branch
         self.download = download
@@ -98,19 +99,17 @@ class Loader():
         self.praxis_path = f'{self._raw_url}/theory-to-practice.md'
         self.assessment_path = f'{self._raw_url}/assessment.md'
 
-        if not self.cache.exists:
+        if not self.cache.exists or force_download:
             if self.download:
                 self._raw_content = self._get_raw_content()
                 self.cache.save_cache(self.cache, self._raw_content)
         else:
             self._raw_content = self.cache.load_cache()
 
-                
         self.meta = self._raw_content['meta']
         self.parent_backend = BACKEND_AUTO
         self.parent_repo = f"{self.user}/{self.repo_name}"
         self.parent_branch = self.branch
-
         self.content = self._raw_content['content']
 
         self._frontmatter_raw = self.content.get('frontmatter')
@@ -120,7 +119,7 @@ class Loader():
         self._frontmatter = split_into_sections(self._frontmatter_raw)
         self._praxis = split_into_sections(self._praxis_raw)
         self._assessment = split_into_sections(self._assessment_raw)
-    
+
         self._frontmatter = normalize_data(self._frontmatter, 'frontmatter')
         self._praxis = normalize_data(self._praxis, 'theory-to-practice')
         self._assessment = normalize_data(self._assessment, 'assessment')
@@ -132,7 +131,6 @@ class Loader():
     @property
     def frontmatter_sections(self):
         return {x: self._frontmatter_sections[x] for x in self._frontmatter}
-        
 
     @property
     def praxis(self):
@@ -144,10 +142,29 @@ class Loader():
     @property
     def assessment(self):
         return self._assessment
-        
-        
+
+
     def _get_raw_content(self):
-        return({'meta': {
+        try:
+          frontmatter_data = self._get_live_text_from_url(self.frontmatter_path)
+        except:
+          log.warning(f"Could not load frontmatter data from repository {self.repo_name}. Please verify that its branch {self.branch} contains frontmatter.md.")
+          frontmatter_data = ""
+
+        try:
+          praxis_data = self._get_live_text_from_url(self.praxis_path)
+        except:
+          log.warning(f"Could not load theory-to-practice data from repository {self.repo_name}. Please verify that its branch {self.branch} contains theory-to-practice.md.")
+          praxis_data = ""
+
+        try:
+          assessment_data = self._get_live_text_from_url(self.assessment_path)
+        except:
+          log.warning(f"Could not load assessment data from repository {self.repo_name}. Please verify that its branch {self.branch} contains assessment.md.")
+          assessment_data = ""
+
+        return({
+            'meta': {
                 'raw_urls': {
                     'frontmatter': self.frontmatter_path,
                     'praxis': self.praxis_path,
@@ -159,11 +176,12 @@ class Loader():
                 'branch': self.branch,
             },
             'content': {
-                'frontmatter': self._get_live_text_from_url(self.frontmatter_path),
-                'theory-to-practice': self._get_live_text_from_url(self.praxis_path),
-                'assessment': self._get_live_text_from_url(self.assessment_path),
+                'frontmatter': frontmatter_data,
+                'theory-to-practice': praxis_data,
+                'assessment': assessment_data,
             }
         })
+
 
     def _get_live_text_from_url(self, url):
         """ # TODO: insert docstring here """

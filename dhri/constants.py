@@ -2,52 +2,6 @@ REQUIRED_SECTIONS = {}
 
 ##################################################################
 
-AUTO_RESET = True # reset all the DHRI curriculum database elements automatically before script runs (not recommended in production)
-DELETE_FILE = True # delete file after script is done
-
-BACKEND_AUTO = 'Github'
-BRANCH_AUTO = 'v2.0'
-
-
-REMOVE_EMPTY_HEADINGS = True    # removing empty headings from sectioning of markdown
-BULLETPOINTS_TO_LISTS = True    # remakes sections that ONLY contain bulletpoints into python lists
-
-
-NORMALIZING_SECTIONS = {
-    'frontmatter': {
-        'abstract': ['Abstract'],
-        'learning_objectives': ['Learning Objectives'],
-        'estimated_time': ['Estimated time'],
-        'contributors': ['Acknowledgements', 'Acknowledgement', 'Collaborator', 'Collaborators'],
-        'ethical_considerations': ['Ethical consideration', 'Ethical considerations', 'Ethics'],
-        'readings': ['Pre-reading suggestions', 'Prereading suggestions', 'Pre reading suggestions', 'Pre-readings', 'Pre readings', 'Prereadings', 'Pre-reading', 'Pre reading', 'Prereading'],
-        'projects': ['Project', 'Projects', 'Projects that use these skills', 'Projects which use these skills'],
-        'resources': ['Resources (optional)', 'Resource (optional)', 'Resources optional', 'Resource optional'],
-    },
-    'theory-to-practice': {
-        'discussion_questions': ['Discussion Questions'],
-        'tutorials': ['Other Tutorials'],
-        'further_projects': ['Projects or Challenges to Try'],
-        'further_readings': ['Suggested Further Readings'],
-        'next_steps': ['Next Steps']
-    },
-    'assessment': {
-        'qualitative_assessment': ['Qualitative Self-Assessment'],
-        'quantitative_assessment': ['Quantitative Self-Assessment'],
-    }
-}
-
-REQUIRED_SECTIONS['frontmatter'] = set(NORMALIZING_SECTIONS['frontmatter'].keys())
-REQUIRED_SECTIONS['theory-to-practice'] = set(NORMALIZING_SECTIONS['theory-to-practice'].keys())
-REQUIRED_SECTIONS['assessment'] = set(NORMALIZING_SECTIONS['assessment'].keys())
-
-
-
-DOWNLOAD_CACHE_DIR = './__loader-cache__'
-
-TEST_AGE = 60 # minutes
-
-
 
 
 
@@ -55,13 +9,16 @@ TEST_AGE = 60 # minutes
 
 # Make sure to set up a test of all of the constants
 
-from dhri.logger import Logger
+from dhri.interaction import Logger
 from dhri.utils.exceptions import ConstantError
+from dhri.settings import *
+
 from itertools import chain
 from datetime import timedelta
 from pathlib import Path
+import os
 
-log = Logger()
+log = Logger(name="constants")
 
 def _test(constant=None, as_type=bool):
     if not isinstance(constant, as_type): log.error(f'{constant}` provided must be a {as_type}.', raise_error=ConstantError)
@@ -87,3 +44,12 @@ TEST_AGE = timedelta(minutes=TEST_AGE)
 _check_normalizer()
 _test(constant=REMOVE_EMPTY_HEADINGS)
 _test(constant=BULLETPOINTS_TO_LISTS)
+
+
+try:
+    TERMINAL_WIDTH = os.popen('stty size', 'r').read().split()[1]
+    TERMINAL_WIDTH = int(TERMINAL_WIDTH)
+except:
+    TERMINAL_WIDTH = 70
+
+if TERMINAL_WIDTH > MAX_TERMINAL_WIDTH: TERMINAL_WIDTH = MAX_TERMINAL_WIDTH
