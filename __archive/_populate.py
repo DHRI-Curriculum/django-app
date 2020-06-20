@@ -1,7 +1,8 @@
-from dhri.parser import parse, test_integrity
+from dhri.interaction import Input
 from dhri.markdown_parser import get_raw_content, split_md_into_sections_batch
-from dhri.meta import dhri_input, get_argparser, verify_url, load_data, save_data, delete_data, get_or_default, reset_all
-from dhri.constants import BACKEND_AUTO, BRANCH_AUTO, AUTO_RESET, DELETE_FILE
+from dhri.meta import get_argparser, verify_url, load_data, save_data, delete_data, get_or_default, reset_all
+from dhri.parser import parse, test_integrity
+from dhri.settings import BACKEND_AUTO, BRANCH_AUTO, AUTO_RESET, DELETE_FILE
 
 if __name__ == '__main__':
   # Process arguments
@@ -37,7 +38,7 @@ if __name__ == '__main__':
 
     save_data(path, data)
 
-    _continue = dhri_input('Do you want to continue with this file? (Y/n) ', bold=True, color='yellow')
+    _continue = Input.ask('Do you want to continue with this file? (Y/n) ', bold=True, color='yellow')
     if _continue == '' or _continue.lower() == 'y':
       pass # we continue
     else:

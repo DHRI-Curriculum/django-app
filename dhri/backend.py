@@ -1,15 +1,5 @@
-from dhri.logger import Logger
-from dhri.meta import dhri_input
-log = Logger()
-
-log.log(f'Setting up database interaction...')
-
-import django, os, sys
-sys.path.append('./app')
-os.environ['DJANGO_SETTINGS_MODULE'] = 'app.settings'
-django.setup()
-
-from dhri.models import *
+from dhri.interaction import Logger, Input
+from dhri.django import models
 
 
 
@@ -25,7 +15,7 @@ from dhri.models import *
     message = f'Multiple `{name}` of type {model.__name__} already exist - do you want to update the latest one (1) or create a new one (2)? '
 
   if message:
-    validate = dhri_input(message, bold=True, color='')
+    validate = Input.ask(message, bold=True, color='')
     if validate not in ['1', '2']: log.error('Cancelled.')
     return(int(validate))
 """

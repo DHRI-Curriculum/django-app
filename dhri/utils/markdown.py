@@ -16,7 +16,7 @@ Overview:
 """
 
 from dhri.utils.regex import re, MULTILINE_ITEM, ALL_BULLETS
-from dhri.logger import Logger
+from dhri.interaction import Logger
 
 
 log = Logger()

@@ -1,8 +1,9 @@
 import requests
 from requests.exceptions import HTTPError
 
-from dhri.constants import _test, REMOVE_EMPTY_HEADINGS, BULLETPOINTS_TO_LISTS, BRANCH_AUTO
-from dhri.logger import Logger
+from dhri.settings import REMOVE_EMPTY_HEADINGS, BULLETPOINTS_TO_LISTS, BRANCH_AUTO
+from dhr.constants import _test
+from dhri.interaction import Logger
 
 # TODO: add a constant FORCE_BULLETPOINTS that uses regex to extract whatever bulletpoints exist in a section and skip other content.
 

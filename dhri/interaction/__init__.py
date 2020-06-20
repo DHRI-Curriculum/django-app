@@ -58,3 +58,24 @@ class Logger():
         else:
             print(message)
 
+
+
+class Input:
+
+    def __init__(*args, **kwargs):
+        pass
+
+    def ask(question, bold=True, color=''):
+        return(input(_fix_message(question) + '\n    '))
+        '''
+        if color != '' and bold == True:
+            return(input(colorize(question, fg=color, opts=('bold',))))
+        elif color != '' and bold == False:
+            return(input(colorize(question, fg=color)))
+        elif color == '' and bold == True:
+            return(input(colorize(question, opts=('bold',))))
+        elif color == '' and bold == False:
+            log.error('You should just use input here.', kill=False)
+
+        return(input(colorize(question)))
+        '''

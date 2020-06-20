@@ -1,9 +1,10 @@
 from pathlib import Path
 import re
 
-from dhri.logger import Logger
-from .constants import _test, NORMALIZING_SECTIONS, REQUIRED_SECTIONS
+from dhri.interaction import Logger
+from dhri.constants import _test
 from dhri.utils.regex import NUMBERS
+from dhri.settings import NORMALIZING_SECTIONS, REQUIRED_SECTIONS
 
 # Data integrity tests
 
