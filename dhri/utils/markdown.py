@@ -101,3 +101,87 @@ def split_into_sections(markdown:str) -> dict:
 
     return(sections)
 
+
+
+
+def destructure_list(markdown:str, remove_simple_links=True, set_empty_url='') -> list:
+    """Takes a markdown string and destructures it into a list consisting of
+    its list elements (marked by "- " in markdown).
+    
+    Then it searches each list element for links, either hard coded urls or
+    markdown links (marked by "[text](url)" in markdown).
+    
+    Returns a list of a tuple with two values from each list element:
+        1. the text from the list element
+        2. a list of tuples:
+             1. text used to link using markdown
+             2. the raw URL occurring in the link
+    
+    Note: disregards any lines in the markdown that are not list elements,
+    and does not create a warning for doing so.
+    
+    ######## Example #####################################
+    
+    markdown.md:
+        Here is a paragraph.
+        - here is a list element
+        - here is another list element with two raw URLs: http://www.apple.com and https://www.microsoft.com
+        - here is another list element
+        - and a fifth with a [link](http://www.apple.com) and [link](http://www.microsoft.com)
+    
+    output from running this text through destructure_list(markdown):
+        [
+            (
+                'here is a list element',
+                []
+            ),
+            (
+                'here is another list element with two raw URLs: http://www.apple.com and https://www.microsoft.com',
+                [(
+                    '',
+                    'http://www.apple.com'
+                ),
+                (
+                    '',
+                    'https://www.microsoft.com'
+                )]
+            ),
+            (
+                'here is another list element',
+                []
+            ),
+            (
+                'and a fifth with a [link](http://www.apple.com) and [link](http://www.microsoft.com)',
+                [(
+                    'link',
+                    'http://www.apple.com'
+                ),
+                (
+                    'link',
+                    'http://www.microsoft.com'
+                )]
+            )
+        ]
+
+    """
+
+    from dhri.utils.regex import is_md_link, md_list, all_links
+
+    _ = []
+    for list_element in md_list.findall(markdown):
+        text, link = list_element, set_empty_url
+        urls = []
+        for url in all_links.findall(list_element):
+            full_match, text, link = url
+            if is_md_link.match(full_match) == None:
+                link = full_match
+                text = ''
+            else:
+                text, link = is_md_link.match(full_match).groups()
+            urls.append((text, link))
+            continue
+        if link != '':
+            pass # do something with link
+        if list_element == text: text = ''
+        _.append((list_element, urls))
+    return(_)

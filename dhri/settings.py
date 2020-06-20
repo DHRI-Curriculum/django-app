@@ -2,8 +2,8 @@
 
 # Which repositories and branches should we do automatically?
 AUTO_PROCESS = [
-        ('command-line', 'v2.0-smorello-edits'),
         ('project-lab', 'v2.0rhody-edits'),
+        ('command-line', 'v2.0-smorello-edits'),
         ('python', 'v2.0-filipa-edits'),
         ('text-analysis', 'v2.0-rafa-edits'),
         ('html-css', 'v2.0-param-edits'),

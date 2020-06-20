@@ -107,12 +107,10 @@ class Loader():
         else:
             self._raw_content = self.cache.load_cache()
 
-                
         self.meta = self._raw_content['meta']
         self.parent_backend = BACKEND_AUTO
         self.parent_repo = f"{self.user}/{self.repo_name}"
         self.parent_branch = self.branch
-
         self.content = self._raw_content['content']
 
         self._frontmatter_raw = self.content.get('frontmatter')
@@ -122,7 +120,7 @@ class Loader():
         self._frontmatter = split_into_sections(self._frontmatter_raw)
         self._praxis = split_into_sections(self._praxis_raw)
         self._assessment = split_into_sections(self._assessment_raw)
-    
+
         self._frontmatter = normalize_data(self._frontmatter, 'frontmatter')
         self._praxis = normalize_data(self._praxis, 'theory-to-practice')
         self._assessment = normalize_data(self._assessment, 'assessment')
@@ -134,7 +132,6 @@ class Loader():
     @property
     def frontmatter_sections(self):
         return {x: self._frontmatter_sections[x] for x in self._frontmatter}
-        
 
     @property
     def praxis(self):
@@ -146,8 +143,8 @@ class Loader():
     @property
     def assessment(self):
         return self._assessment
-        
-        
+
+
     def _get_raw_content(self):
         try:
           frontmatter_data = self._get_live_text_from_url(self.frontmatter_path)
@@ -185,6 +182,7 @@ class Loader():
                 'assessment': assessment_data,
             }
         })
+
 
     def _get_live_text_from_url(self, url):
         """ # TODO: insert docstring here """
