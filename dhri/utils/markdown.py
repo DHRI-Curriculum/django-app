@@ -185,3 +185,52 @@ def destructure_list(markdown:str, remove_simple_links=True, set_empty_url='') -
         if list_element == text: text = ''
         _.append((list_element, urls))
     return(_)
+
+
+from nameparser import HumanName
+
+def split_names(full_name:str) -> tuple:
+    """Uses the `nameparser` library to interpret names."""
+    name = HumanName(full_name)
+    first_name = name.first
+    if name.middle:
+        first_name += " " + name.middle
+    last_name = name.last
+    return((first_name, last_name))
+
+
+def get_contributors(markdown:str) -> list:
+    """Parses a list of contributors and returns a list of tuples. Each tuple contains the following information:
+          1. first_name
+          2. last_name
+          3. role (optional, if not present an empty string)
+          4. link (optional, if not present an empty string)
+    """
+
+    _ = []
+    collected = []
+    for person, links in destructure_list(markdown):
+        link, role = '', ''
+        if ": " in person:
+            role, person = person.split(": ")[0], "".join([x for x in person.split(": ")[1:] if x])
+        if person == '' or person == 'none':
+            continue # we have an empty contributor, and might want to call a warning message here...
+        if "," in person:
+            person_split = person.split(", ")
+        else:
+            person_split = [person]
+
+        for person in person_split:
+            link = ''
+            if links:
+                for person_test, link_test in links:
+                    if not person_test == '': person = person_test
+                    if not link_test == '': link = link_test
+
+            first_name, last_name = split_names(person)
+
+            _.append((first_name, last_name, role, link))
+            if not (person, role) in collected: collected.append((person, role))
+            else:
+                pass # pass # we have already collected this contributor in the same role previously so we might want to raise a warning
+    return(_)

@@ -260,38 +260,9 @@ if __name__ == '__main__':
                     l.frontmatter['contributors'] = get_list(l.frontmatter['contributors'])
 
                 collector['contributors'] = []
-                for item in l.frontmatter['contributors']:
-                    md = '\n'.join(item).strip()
-                    role = None
+                for contributor in get_contributors(markdown):
                     o = Contributor()
-                    if ':' in md:
-                        role, name = md.split(':')[0].strip(), ' '.join(md.split(':')[1:]).strip()
-                    else:
-                        name = md
-
-                    first_name, last_name = name.split(' ')[0].strip(), ' '.join(name.split(' ')[1:]).strip()
-
-                    if name == None or name.strip() == '' or name.lower().strip() == 'none' or first_name == 'none' or last_name == 'none':
-                        log.warning(f'Could not interpret name ("{name}") and will not insert the collaborators on the workshop {workshop.name}. Verify in admin tool later.')
-                        continue
-
-                    first_name = get_or_default(f'Confirm {first_name} {last_name}\'s first name. Type NO to skip contributor.', first_name)
-                    if first_name.lower() == 'no':
-                        log.warning(f'Skipping contributor {name}.')
-                        continue
-
-                    last_name = get_or_default(f'Confirm {first_name} {last_name}\'s last name. Type NO to skip contributor.', last_name)
-                    if last_name.lower() == 'no':
-                        log.warning(f'Skipping contributor {name}.')
-                        continue
-
-                    role = get_or_default(f'Confirm {first_name} {last_name}\'s role. Type NO to skip contributor.', role)
-                    if role == 'NO':
-                        log.warning(f'Skipping contributor {name}.')
-                        continue
-                    elif role == 'None':
-                        role = None
-                    o.first_name, o.last_name, o.role = first_name, last_name, role
+                    o.first_name, o.last_name, o.role, o.link = contributor
                     o.save()
                     collector['contributors'].append(o)
                     log.log(f'Contributor added:\n    {o.full_name} ({o.role})')
