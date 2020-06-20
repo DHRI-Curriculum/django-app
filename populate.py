@@ -4,7 +4,7 @@ from dhri.interaction import Logger, get_or_default
 from dhri.settings import AUTO_PROCESS, FIXTURE_PATH
 from dhri.utils.exceptions import UnresolvedNameOrBranch
 from dhri.utils.loader import Loader
-from dhri.utils.markdown import get_bulletpoints, is_exclusively_bullets, get_list
+from dhri.utils.markdown import get_bulletpoints, is_exclusively_bullets, get_list, get_contributors
 from dhri.utils.text import get_urls, get_number, get_markdown_hrefs
 
 # dev part - remove in production #############
