@@ -9,7 +9,9 @@
             <div class="card">
             <div class="card-body">
                 <h5 class="card-title">{{ workshop.name }}</h5>
+                {% if workshop.frontmatter.abstract %}
                 <p class="card-text">{{ workshop.frontmatter.abstract | markdown | safe }}</p>
+                {% endif %}
                 <a href="{% url 'workshop:detail' slug=workshop.slug %}" class="btn btn-primary stretched-link">Start</a>
             </div>
           </div>

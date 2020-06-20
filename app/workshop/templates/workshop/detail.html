@@ -11,8 +11,9 @@
     <div class="row">
       <div class="col">
         <h2>{{ workshop.name }}</h2>
-
-        <p>{{ workshop.frontmatter.abstract | markdown | safe }}</p>
+        {% if workshop.frontmatter.abstract %}
+          <p>{{ workshop.frontmatter.abstract | markdown | safe }}</p>
+        {% endif %}
       </div>
     </div>
     <div class="row">

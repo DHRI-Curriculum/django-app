@@ -301,3 +301,12 @@ if __name__ == '__main__':
     from pathlib import Path
     Path(FIXTURE_PATH).write_text(json.dumps(all_objects_dict))
     log.log(f'Fixture file generated: {FIXTURE_PATH}')
+
+    '''
+    TODO: ask whether user wants to run automatically, the following commands:
+    `rm -rf ./app/db.sqlite3`
+    `python ./app/manage.py makemigrations`
+    `python ./app/manage.py migrate`
+    `python ./app/manage.py loaddata ./app/fixtures.json`
+    `python ./app/manage.py runserver`
+    '''
