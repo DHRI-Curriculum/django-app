@@ -6,15 +6,22 @@ FIXTURE_PATH = 'app/fixtures.json' # This is where the final fixtures JSON file 
 
 # Which repositories and branches should we do automatically?
 AUTO_PROCESS = [
-        ('command-line', 'v2.0-smorello-edits'),
-        ('project-lab', 'v2.0rhody-edits')
+        #('command-line', 'v2.0-smorello-edits'),
+        #('project-lab', 'v2.0rhody-edits'),
+        ('python', 'v2.0-filipa-edits'),
+        ('text-analysis', 'v2.0-rafa-edits'),
+        ('html-css', 'v2.0-param-edits'),
+        ('git', 'v2.0'),
+        ('data-and-ethics', 'v2.0'),
     ]
 
+FORCE_DOWNLOAD = True # If set to True, the script will bypass the cache every time (effectively disregarding TEST_AGE below)
 
 AUTO_RESET = True # reset all the DHRI curriculum database elements automatically before script runs (not recommended in production)
 DELETE_FILE = True # delete file after script is done
 
 BACKEND_AUTO = 'Github'
+REPO_AUTO = ''
 BRANCH_AUTO = 'v2.0'
 
 
