@@ -2,24 +2,27 @@ import argparse, json, os, re
 from pathlib import Path
 
 from dhri.constants import AUTO_RESET
-from dhri.logger import Logger, colorize
+from dhri.logger import Logger, _fix_message
 from dhri.utils.regex import URL
 from dhri.utils.exceptions import UnresolvedNameOrBranch
 
 log = Logger()
 
 
-def dhri_input(message, bold=True, color=''):
+def dhri_input(question, bold=True, color=''):
+    return(input(_fix_message(question) + '\n    '))
+    '''
     if color != '' and bold == True:
-        return(input(colorize(message, fg=color, opts=('bold',))))
+        return(input(colorize(question, fg=color, opts=('bold',))))
     elif color != '' and bold == False:
-        return(input(colorize(message, fg=color)))
+        return(input(colorize(question, fg=color)))
     elif color == '' and bold == True:
-        return(input(colorize(message, opts=('bold',))))
+        return(input(colorize(question, opts=('bold',))))
     elif color == '' and bold == False:
         log.error('You should just use input here.', kill=False)
-    
-    return(input(colorize(message)))
+
+    return(input(colorize(question)))
+    '''
 
 
 def get_argparser() -> argparse.ArgumentParser:

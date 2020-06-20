@@ -6,8 +6,8 @@ FIXTURE_PATH = 'app/fixtures.json' # This is where the final fixtures JSON file 
 
 # Which repositories and branches should we do automatically?
 AUTO_PROCESS = [
-        #('command-line', 'v2.0-smorello-edits'),
-        #('project-lab', 'v2.0rhody-edits'),
+        ('command-line', 'v2.0-smorello-edits'),
+        ('project-lab', 'v2.0rhody-edits'),
         ('python', 'v2.0-filipa-edits'),
         ('text-analysis', 'v2.0-rafa-edits'),
         ('html-css', 'v2.0-param-edits'),
@@ -64,6 +64,10 @@ DOWNLOAD_CACHE_DIR = './__loader-cache__'
 TEST_AGE = 60 # minutes
 
 
+MAX_TERMINAL_WIDTH = 140
+AUTO_TERMINAL_WIDTH = 70
+
+
 
 
 
@@ -76,6 +80,7 @@ from dhri.utils.exceptions import ConstantError
 from itertools import chain
 from datetime import timedelta
 from pathlib import Path
+import os
 
 log = Logger()
 
@@ -103,3 +108,12 @@ TEST_AGE = timedelta(minutes=TEST_AGE)
 _check_normalizer()
 _test(constant=REMOVE_EMPTY_HEADINGS)
 _test(constant=BULLETPOINTS_TO_LISTS)
+
+
+try:
+    TERMINAL_WIDTH = os.popen('stty size', 'r').read().split()[1]
+    TERMINAL_WIDTH = int(TERMINAL_WIDTH)
+except:
+    TERMINAL_WIDTH = 70
+
+if TERMINAL_WIDTH > MAX_TERMINAL_WIDTH: TERMINAL_WIDTH = MAX_TERMINAL_WIDTH

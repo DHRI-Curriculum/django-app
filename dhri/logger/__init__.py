@@ -1,13 +1,45 @@
 from django.utils.termcolors import colorize
-import textwrap
+
+import textwrap, re, os
+
+def _get_parts_of_log_message(message):
+    g = re.search(r'(.*)\:\s(.*)', message)
+    if not g:
+        return((message, ''))
+    else:
+        return((g.groups()[0], g.groups()[1]))
+
+
+def _fix_message(message='', quote='', first_line_add='--> ', indentation='    ', first_line_bold=True):
+    from dhri.constants import TERMINAL_WIDTH
+    if quote == '':
+        message, quote = _get_parts_of_log_message(message) # try
+
+    if quote != '': message += ':'
+    dedented_text = textwrap.dedent(message)
+    wrapped = textwrap.fill(dedented_text, width=TERMINAL_WIDTH-4)
+    message = textwrap.indent(wrapped, indentation)
+    if first_line_bold == True:
+        output = colorize(first_line_add + message.strip(), opts=('bold',))
+    else:
+        output = first_line_add + message.strip()
+
+    if quote != '':
+        dedented_text = textwrap.dedent(quote)
+        wrapped = textwrap.fill(dedented_text, width=TERMINAL_WIDTH-4)
+        quote = textwrap.indent(wrapped, indentation)
+        output += "\n" + quote
+
+    return(output)
+
 
 class Logger():
     def __init__(self, *args, **kwargs):
         pass
 
     def log(self, message="", kill=False, color='green'):
-        message = self._process_message(message)
-        message = colorize('--> ' + message, fg=color, opts=('',))
+        message = _fix_message(message)
+        message = colorize(message, fg=color, opts=('',))
         self.write(message)
 
     def error(self, message="", raise_error=None, kill=True, color='red'):
@@ -26,16 +58,3 @@ class Logger():
         else:
             print(message)
 
-    def _process_message(self, message):
-        message = message.split(": ")
-
-        if len(message) >= 2:
-            start_message = message[0]
-            message = "".join(message[1:])
-            message = "    " + "\n    ".join([x for x in textwrap.wrap(message, 66, break_long_words=False)])
-            message = start_message + ":\n" + message
-
-        elif len(message) == 1:
-            message = "\n    ".join([x for x in textwrap.wrap(message[0], 66, break_long_words=False)])
-
-        return(message)
