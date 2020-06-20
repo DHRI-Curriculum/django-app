@@ -82,7 +82,6 @@ class Loader():
         self.repo = repo
         self.branch = branch
         self.download = download
-        self.force_download = force_download
 
         self._verify_repo()
         
@@ -100,7 +99,7 @@ class Loader():
         self.praxis_path = f'{self._raw_url}/theory-to-practice.md'
         self.assessment_path = f'{self._raw_url}/assessment.md'
 
-        if not self.cache.exists or self.force_download:
+        if not self.cache.exists or force_download:
             if self.download:
                 self._raw_content = self._get_raw_content()
                 self.cache.save_cache(self.cache, self._raw_content)

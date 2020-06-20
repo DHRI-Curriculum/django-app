@@ -198,6 +198,21 @@ def split_names(full_name:str) -> tuple:
     last_name = name.last
     return((first_name, last_name))
 
+def _fix_markdown(markdown) -> str:
+    new_markdown = ""
+    if isinstance(markdown, list):
+        for contributor in markdown:
+            if isinstance(contributor, str):
+                if contributor != '': new_markdown += "- " + contributor + "\n"
+            elif isinstance(contributor, tuple):
+                for c in contributor:
+                    if c != '': new_markdown += "- " + c + "\n"
+            else:
+                log.warning(f'Could not fix. Please fix the contributor list for the repository.')
+    else:
+        log.warning(f'Could not fix. Please fix the contributor list for the repository.')
+    return new_markdown
+
 
 def get_contributors(markdown:str) -> list:
     """Parses a list of contributors and returns a list of tuples. Each tuple contains the following information:
@@ -207,6 +222,10 @@ def get_contributors(markdown:str) -> list:
           4. link (optional, if not present an empty string)
     """
 
+    if not isinstance(markdown, str):
+        log.warning(f'Contributors are not provided as string but as {type(markdown)}. Trying to fix.')
+        markdown = _fix_markdown(markdown)
+
     _ = []
     collected = []
     for person, links in destructure_list(markdown):
@@ -214,7 +233,8 @@ def get_contributors(markdown:str) -> list:
         if ": " in person:
             role, person = person.split(": ")[0], "".join([x for x in person.split(": ")[1:] if x])
         if person == '' or person == 'none':
-            continue # we have an empty contributor, and might want to call a warning message here...
+            log.warning(f'List of contributors contains a person with no name with role set to "{role}". Skipping this person.')
+            continue
         if "," in person:
             person_split = person.split(", ")
         else:
@@ -229,8 +249,9 @@ def get_contributors(markdown:str) -> list:
 
             first_name, last_name = split_names(person)
 
-            _.append((first_name, last_name, role, link))
-            if not (person, role) in collected: collected.append((person, role))
+            if not (person, role) in collected:
+                _.append((first_name, last_name, role, link))
+                collected.append((person, role))
             else:
-                pass # pass # we have already collected this contributor in the same role previously so we might want to raise a warning
+                log.warning('Contributors contain multiple occurrences of the same person in the same role. Will skip.')
     return(_)

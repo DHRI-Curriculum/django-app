@@ -256,11 +256,9 @@ if __name__ == '__main__':
                     log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the frontmatter.md section for contributors.')
                     continue
 
-                if isinstance(l.frontmatter['contributors'], str):
-                    l.frontmatter['contributors'] = get_list(l.frontmatter['contributors'])
-
+                print(l.frontmatter['contributors'])
                 collector['contributors'] = []
-                for contributor in get_contributors(markdown):
+                for contributor in get_contributors(l.frontmatter['contributors']):
                     o = Contributor()
                     o.first_name, o.last_name, o.role, o.link = contributor
                     o.save()
