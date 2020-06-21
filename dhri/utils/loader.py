@@ -123,6 +123,20 @@ class Loader():
         self._praxis = normalize_data(self._praxis, 'theory-to-practice')
         self._assessment = normalize_data(self._assessment, 'assessment')
 
+
+    @property
+    def has_frontmatter(self) -> bool:
+        return len(self._frontmatter) > 0
+
+    @property
+    def has_praxis(self) -> bool:
+        return len(self._praxis) > 0
+
+    @property
+    def has_assessment(self) -> bool:
+        return len(self._assessment) > 0
+
+
     @property
     def frontmatter(self):
         return self._frontmatter
@@ -156,8 +170,8 @@ class Loader():
         return self._frontmatter.get('readings')
 
     @property
-    def project(self):
-        return self._frontmatter.get('project')
+    def projects(self):
+        return self._frontmatter.get('projects')
 
 
     @property
