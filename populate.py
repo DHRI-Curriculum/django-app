@@ -8,12 +8,12 @@ from dhri.utils.markdown import get_bulletpoints, is_exclusively_bullets, get_li
 from dhri.utils.text import get_urls, get_number, get_markdown_hrefs
 
 # dev part - remove in production #############
-from dhri.meta import reset_all
+from dhri.meta import reset_all # FIXME: #47 Before launching v1.0 remove
 reset_all()
 ###############################################
 
 # Set up empty stuff ##########################
-log = Logger(name="populate")
+log = Logger(name="populate") # TODO: #48 More useful to move this into loop and have the name set to the workshop that we're working on
 iteration, all_objects, done, collect_workshop_slugs = 0, [], 'n', []
 ###############################################
 
