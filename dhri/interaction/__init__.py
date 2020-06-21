@@ -1,5 +1,6 @@
 from django.utils.termcolors import colorize
 from dhri.settings import VERBOSE
+from colorama import Fore, Back, Style
 
 import textwrap, re, os
 
@@ -41,7 +42,7 @@ class Logger():
             self.name = kwargs['name']
 
     def log(self, message="", kill=False, color='green'):
-        message = _fix_message(message)
+        message = self._fix_message(message)
         message = colorize(message, fg=color, opts=('',))
         self.output(message)
 
@@ -52,26 +53,34 @@ class Logger():
         self.output(message, kill)
 
     def warning(self, message="", kill=False, color='yellow'):
+        message = self._fix_message(message)
         message = colorize('Warning: ' + message, fg=color, opts=('bold',))
         self.output(message, kill)
 
     def output(self, message:str, kill=False):
         if VERBOSE:
-            message += f" [{self.name}]"
+            message = Style.DIM + f"[{self.name}] " + Style.RESET_ALL + message
         if kill == True:
             exit(message)
         else:
             print(message)
 
+    def _fix_message(self, message='', quote='', first_line_add='', indentation='    ', first_line_bold=True):
+        indentation = (len(self.name) + 3) * ' ' # +3 because name is put in brackets and a space is added
+        return(_fix_message(message=message, quote='', first_line_add='', indentation=indentation, first_line_bold=True))
+
 
 
 class Input:
 
-    def __init__(*args, **kwargs):
-        pass
+    def __init__(self, *args, **kwargs):
+        self.name = ''
+        if 'name' in kwargs:
+            self.name = kwargs['name']
 
-    def ask(question, bold=True, color=''):
-        return(input(_fix_message(question) + '\n    '))
+    def ask(self, question='', bold=True, color=''):
+        indentation = (len(self.name) + 3) * ' ' # +3 because name is put in brackets and a space is added
+        return(input(_fix_message(question, indentation=indentation) + '\n    '))
         '''
         if color != '' and bold == True:
             return(input(colorize(question, fg=color, opts=('bold',))))
@@ -87,7 +96,8 @@ class Input:
 
 
 def get_or_default(message: str, default_variable: str, color='black', evaluate=str) -> str:
-    _ = Input.ask(f'{message} (default "{default_variable}"): ', color=color)
+    inp = Input('')
+    _ = inp.ask(f'{message} (default "{default_variable}"): ', color=color)
     if _ != '':
         try:
             return(evaluate(_))

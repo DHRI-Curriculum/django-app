@@ -42,8 +42,6 @@ TEST_AGE = timedelta(minutes=TEST_AGE)
 # Run tests
 
 _check_normalizer()
-_test(constant=REMOVE_EMPTY_HEADINGS)
-_test(constant=BULLETPOINTS_TO_LISTS)
 
 
 try:

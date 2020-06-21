@@ -160,12 +160,12 @@ if __name__ == '__main__':
                 try:
                     frontmatter.ethical_considerations = l.frontmatter['ethical_considerations']
                 except KeyError:
-                    log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the frontmatter.md section for ethical considerations.')
+                    log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the frontmatter.md section for ethical considerations.', color='red')
 
                 try:
                     frontmatter.estimated_time = get_number(l.frontmatter['estimated_time'])
                 except KeyError:
-                    log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the frontmatter.md section for estimated time.')
+                    log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the frontmatter.md section for estimated time.', color='red')
 
                 frontmatter.save()
                 log.log(f'Frontmatter object {frontmatter.id} added for workshop {workshop}.')
@@ -208,15 +208,16 @@ if __name__ == '__main__':
                     o = Project()
                     o.comment = comment
                     for url in urls:
-                        o.title, o.url = url
-                        if len(urls) > 1: log.warning(f'One project seems to contain more than one URL, but only one ({url}) is captured:\n    {urls}')
-                        continue
+                        o.title, o.url = urls[0]
                     o.save()
                     collector['projects'].append(o)
                     if o.title == '':
                         log.log(f'Project added:\n    {o.url} (title missing, but comment starts with: {o.comment[:60]}...)')
                     else:
                         log.log(f'Project added:\n    {o.title} ({o.url})')
+                    if len(urls) > 1:
+                        all_urls = ", ".join([_[1] for _ in urls])
+                        log.warning(f'The project above seems to contain had {len(urls)} URLs, but only the first one has been captured:\n    {all_urls}')
                 frontmatter.projects.set(collector['projects'])
                 log.log(f'Frontmatter {frontmatter.id} updated with {len(collector["projects"])} projects.')
 
@@ -257,14 +258,15 @@ if __name__ == '__main__':
                     log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the frontmatter.md section for contributors.')
                     continue
 
-                print(l.frontmatter['contributors'])
                 collector['contributors'] = []
                 for contributor in get_contributors(l.frontmatter['contributors']):
                     o = Contributor()
                     o.first_name, o.last_name, o.role, o.link = contributor
                     o.save()
                     collector['contributors'].append(o)
-                    log.log(f'Contributor added:\n    {o.full_name} ({o.role})')
+                    msg = f'Contributor added:\n    {o.full_name}'
+                    if o.role != '': msg += ' ({o.role})'
+                    log.log(msg)
                 frontmatter.contributors.set(collector['contributors'])
                 log.log(f'Frontmatter {frontmatter.id} updated with {len(collector)} contributors.')
 

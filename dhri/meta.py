@@ -7,7 +7,7 @@ from dhri.utils.regex import URL
 from dhri.utils.exceptions import UnresolvedNameOrBranch
 
 log = Logger(name="meta")
-
+inp = Input(name="meta")
 
 def get_argparser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser()
@@ -65,7 +65,7 @@ def save_data(path: str, data: dict) -> bool:
 
 def delete_data(path, auto=False):
     if auto == False:
-      _continue = Input.ask(f'Are you sure you want to delete the data file ({path})? (y/N) ', bold=True, color='red')
+      _continue = inp.ask(f'Are you sure you want to delete the data file ({path})? (y/N) ', bold=True, color='red')
       if _continue.lower() != 'y':
         exit()
     else:
@@ -80,7 +80,7 @@ def reset_all(kill=True) -> None:
     ''' development function - DO NOT USE IN PRODUCTION, EVER. '''
 
     if AUTO_RESET == False:
-      _continue = Input.ask('Are you sure you want to reset the entire DHRI curriculum in the current Django database? (y/N) ', bold=True, color='red')
+      _continue = inp.ask(message='Are you sure you want to reset the entire DHRI curriculum in the current Django database? (y/N) ', bold=True, color='red')
       if _continue.lower() != 'y':
         exit()
     else:
@@ -115,9 +115,7 @@ def reset_all(kill=True) -> None:
         f'python {manage} makemigrations',
         f'python {manage} migrate',
     ]
-    print(commands[0])
     os.system(commands[0])
-    print(commands[1])
     os.system(commands[1])
     exit()
     '''

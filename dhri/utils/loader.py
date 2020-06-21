@@ -11,7 +11,7 @@ from dhri.utils.exceptions import UnresolvedNameOrBranch
 from dhri.settings import NORMALIZING_SECTIONS, REPO_AUTO, BRANCH_AUTO, DOWNLOAD_CACHE_DIR, BACKEND_AUTO, FORCE_DOWNLOAD
 from dhri.constants import DOWNLOAD_CACHE_DIR, TEST_AGE
 
-log = Logger(name="loader")
+log = Logger(name='loader')
 
 SECTIONS = {
     'frontmatter': {
@@ -66,7 +66,7 @@ class Loader():
     _frontmatter_sections = SECTIONS['frontmatter']
 
     _praxis_sections = SECTIONS['praxis']
-    
+
     frontmatter_models = {}
     for section, model in _frontmatter_sections.items():
         if not model in frontmatter_models: frontmatter_models[model] = []
@@ -77,21 +77,21 @@ class Loader():
         if not model in praxis_models: praxis_models[model] = []
         praxis_models[model].append(section)
 
-    
+
     def __init__(self, repo=REPO_AUTO, branch=BRANCH_AUTO, download=True, force_download=FORCE_DOWNLOAD):
         self.repo = repo
         self.branch = branch
         self.download = download
 
         self._verify_repo()
-        
+
         self.user = self.repo.split('/')[3]
         self.repo_name = self.repo.split('/')[4]
-        
-        self.name = self.repo_name.replace("-", " ").title()
-        
+
+        self.name = self.repo_name.replace('-', '').title().replace(" And ", "and")
+
         self.cache = LoaderCache(self.repo_name)
-        
+
         # Set up raw urls
         self._raw_url = f'https://raw.githubusercontent.com/{self.user}/{self.repo_name}/{self.branch}'
 
@@ -143,24 +143,23 @@ class Loader():
     def assessment(self):
         return self._assessment
 
-
     def _get_raw_content(self):
         try:
           frontmatter_data = self._get_live_text_from_url(self.frontmatter_path)
         except:
-          log.warning(f"Could not load frontmatter data from repository {self.repo_name}. Please verify that its branch {self.branch} contains frontmatter.md.")
+          log.warning(f"Could not load frontmatter data from repository {self.repo_name}. Please verify that its branch {self.branch} contains frontmatter.md.", color='red')
           frontmatter_data = ""
 
         try:
           praxis_data = self._get_live_text_from_url(self.praxis_path)
         except:
-          log.warning(f"Could not load theory-to-practice data from repository {self.repo_name}. Please verify that its branch {self.branch} contains theory-to-practice.md.")
+          log.warning(f"Could not load theory-to-practice data from repository {self.repo_name}. Please verify that its branch {self.branch} contains theory-to-practice.md.", color='red')
           praxis_data = ""
 
         try:
           assessment_data = self._get_live_text_from_url(self.assessment_path)
         except:
-          log.warning(f"Could not load assessment data from repository {self.repo_name}. Please verify that its branch {self.branch} contains assessment.md.")
+          log.warning(f"Could not load assessment data from repository {self.repo_name}. Please verify that its branch {self.branch} contains assessment.md.", color='red')
           assessment_data = ""
 
         return({
@@ -183,8 +182,8 @@ class Loader():
         })
 
 
-    def _get_live_text_from_url(self, url):
-        """ # TODO: insert docstring here """
+    def _get_live_text_from_url(self, url:str) -> str:
+        """Downloads the live text from a given URL and returns it."""
         from requests.exceptions import HTTPError
 
         r = requests.get(url)
@@ -196,9 +195,7 @@ class Loader():
         return(r.text)
 
     def _verify_repo(self):
-        """ Verifies that a provided repository string is correct. Returns a string with corrected information """
-
-        # TODO: This function doubles up with verify_url() from .meta
+        """ Verifies that a provided repository string is correct. Sets self.repo to a string with corrected information """
 
         if self.repo == None or self.repo=="" or not isinstance(self.repo, str):
             log.error('No repository URL provided.', raise_error=UnresolvedNameOrBranch)
@@ -219,21 +216,19 @@ class Loader():
 
 class LoaderCache():
     """ A file cache for the Loader class. """
-    
+
     def __init__(self, repo_name):
         self.repo_name = repo_name
         self.path = DOWNLOAD_CACHE_DIR / (self.repo_name + ".json")
         self.exists = self._check_age()
-        
-        
+
     @property
     def data(self):
         if self.exists:
             return self.load_cache()
         else:
             return False
-        
-        
+
     def _check_age(self) -> bool:
         if not self.path.exists(): return(False)
         file_mod_time = datetime.fromtimestamp(self.path.stat().st_ctime)
@@ -245,25 +240,19 @@ class LoaderCache():
             return False
         else:
             return True
-        
-        
+
     def load_cache(self):
         log.log("loading cache...")
         return(json.loads(self.path.read_text()))
-        
-        
+
     def save_cache(self, *args, **kwargs):
         log.log("saving cache...")
         if len(args) == 2:
             data = args[1]
             self.path.write_text(json.dumps(data))
 
-            
     def __str__(self):
         return str(self.path)
-    
-    
+
     def __repr__(self):
         return f'LoaderCache("{self.repo_name}")'
-    
-    

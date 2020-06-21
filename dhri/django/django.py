@@ -12,4 +12,4 @@ sys.path.append('./app')
 os.environ['DJANGO_SETTINGS_MODULE'] = 'app.settings'
 django.setup()
 
-from dhri.models import *
+from dhri.django.models import *

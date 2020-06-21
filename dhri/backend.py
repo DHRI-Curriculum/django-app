@@ -24,7 +24,6 @@ from dhri.django import models
 """ # Not currently in use
 def process_list(the_list: list, model):
   # Validates a list of list of names (the_list) against the database, asks the user whether to update with the new data or create a new database object with the same information. Return a list of the resulting ids, which can be inserted into a new database object.
-  print(type(model))
   ids = []
   for name in the_list:
     existing = validate_existing(name, model=model)
