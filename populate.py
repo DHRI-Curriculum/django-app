@@ -14,7 +14,7 @@ reset_all()
 
 # Set up empty stuff ##########################
 log = Logger(name="populate")
-iteration, all_objects, done = 0, [], 'n'
+iteration, all_objects, done, collect_workshop_slugs = 0, [], 'n', []
 ###############################################
 
 if __name__ == '__main__':
@@ -71,6 +71,7 @@ if __name__ == '__main__':
             )
         workshop.save()
         log.log(f'Workshop object {workshop.name} added (ID {workshop.id}).')
+        collect_workshop_slugs.append(workshop.slug)
 
 
         ###### PRAXIS MODELS ####################################
@@ -305,10 +306,7 @@ if __name__ == '__main__':
     log.log(f'Fixture file generated: {FIXTURE_PATH}')
 
     '''
-    TODO: ask whether user wants to run automatically, the following commands:
-    `rm -rf ./app/db.sqlite3`
-    `python ./app/manage.py makemigrations`
-    `python ./app/manage.py migrate`
-    `python ./app/manage.py loaddata ./app/fixtures.json`
-    `python ./app/manage.py runserver`
+    TODO: #39 ask whether user wants to run automatically, the following commands:
     '''
+    from dhri.setup import setup
+    setup(collect_workshop_slugs)

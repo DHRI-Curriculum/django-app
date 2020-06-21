@@ -22,6 +22,11 @@ AUTO_PROCESS = [
         ('data-and-ethics', 'v2.0'),
     ]
 
+# Django backend settings
+DJANGO_PATHS = {
+        'DB': './app/db.sqlite3',
+        'MANAGE': './app/manage.py'
+    }
 
 ##### Cache ##############################
 
@@ -72,3 +77,7 @@ REQUIRED_SECTIONS = {
     'theory-to-practice': set(NORMALIZING_SECTIONS['theory-to-practice'].keys()),
     'assessment': set(NORMALIZING_SECTIONS['assessment'].keys())
 }
+
+
+from pathlib import Path
+DJANGO_PATHS['DB'] = Path(DJANGO_PATHS['DB'])
