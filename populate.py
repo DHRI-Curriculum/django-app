@@ -1,3 +1,4 @@
+from dhri import debug
 from dhri.django import django
 from dhri.django.models import Workshop, Praxis, Tutorial, Reading, Frontmatter, LearningObjective, Project, Contributor
 from dhri.interaction import Logger, get_or_default
@@ -5,11 +6,6 @@ from dhri.settings import AUTO_PROCESS, FIXTURE_PATH
 from dhri.utils.loader import Loader
 from dhri.utils.markdown import get_bulletpoints, is_exclusively_bullets, get_list, get_contributors, destructure_list
 from dhri.utils.text import get_urls, get_number, get_markdown_hrefs
-
-# dev part - remove in production #############################
-from dhri.meta import reset_all # FIXME: #47 Before launching v1.0 remove, or set a DEBUG in dhri.settings perhaps
-reset_all()
-###############################################################
 
 # Set up empty stuff for entire loop ##########################
 log = Logger(name="populate")

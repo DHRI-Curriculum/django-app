@@ -40,6 +40,9 @@ FORCE_DOWNLOAD = True
 
 ##### Dev features ##############################
 
+# If set to True, the database will be erased and reset for each run
+DEBUG = True
+
 # If VERBOSE is set to True, every output message will display the source module (good for troubleshooting)
 VERBOSE = True
 
