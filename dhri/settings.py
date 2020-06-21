@@ -19,7 +19,7 @@ AUTO_PROCESS = [
         ('text-analysis', 'v2.0-rafa-edits'),
         ('html-css', 'v2.0-param-edits'),
         ('git', 'v2.0'),
-        ('data-and-ethics', 'v2.0'),
+        ('data-and-ethics', 'v2.0-di-edits'),
     ]
 
 # Django backend settings
