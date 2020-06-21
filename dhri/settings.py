@@ -25,7 +25,8 @@ AUTO_PROCESS = [
 # Django backend settings
 DJANGO_PATHS = {
         'DB': './app/db.sqlite3',
-        'MANAGE': './app/manage.py'
+        'MANAGE': './app/manage.py',
+        # TODO: Add a APP_PATH here with a exact path to ./app/
     }
 
 ##### Cache ##############################

@@ -30,7 +30,7 @@ def _check_normalizer(dictionary=NORMALIZING_SECTIONS):
 
         if max([all_.count(x) for x in set(all_)]) > 1:
             log.error('NORMALIZING_SECTIONS is confusing: multiple alternative strings for normalizing.', raise_error=ConstantError)
-    
+
     return(True)
 
 

@@ -85,13 +85,14 @@ class Input:
         if 'name' in kwargs:
             self.name = kwargs['name']
 
-    def ask(self, question='', bold=True, color='yellow'):
+    def ask(self, question='', bold=True, color='yellow', start_with_newline=True):
         indentation = (len(self.name) + 3) * ' ' # +3 because name is put in brackets and a space is added
-        message = _fix_message(question, indentation=indentation) + '\n    '
+        message = _fix_message(message=question, first_line_add='', indentation='') + ' '
         opts = ('',)
         if bold == True:
             opts = ('bold',)
         message = colorize(message, fg=color, opts=opts)
+        if start_with_newline: message = "\n" + message
         return(input(message))
 
 
