@@ -303,8 +303,5 @@ if __name__ == '__main__':
     Path(FIXTURE_PATH).write_text(json.dumps(all_objects_dict))
     log.log(f'Fixture file generated: {FIXTURE_PATH}')
 
-    '''
-    TODO: #39 ask whether user wants to run automatically, the following commands:
-    '''
     from dhri.setup import setup
     setup(collect_workshop_slugs)
