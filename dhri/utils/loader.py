@@ -1,11 +1,10 @@
-import requests, json
-from datetime import datetime
+import requests, json, datetime
 
 from dhri.django import django
 from dhri.django.models import Workshop, Praxis, Tutorial, Reading, Frontmatter, LearningObjective, Project, Contributor
 from dhri.interaction import Logger
 from dhri.utils.markdown import split_into_sections
-from dhri.utils.exceptions import UnresolvedNameOrBranch
+from dhri.utils.exceptions import UnresolvedNameOrBranch, MissingCurriculumFile, MissingRequiredSection
 
 from dhri.settings import NORMALIZING_SECTIONS, REPO_AUTO, BRANCH_AUTO, BACKEND_AUTO, FORCE_DOWNLOAD
 from dhri.constants import DOWNLOAD_CACHE_DIR, TEST_AGE
@@ -151,14 +150,14 @@ class Loader():
                         msg = f"category `{category}` in repository {self.repo_name}'s {category}.md contains no section `{section}`."
                         if required:
                             msg = msg.replace('`.', ' (required).')
-                            self.log.error(msg, kill=True)
+                            self.log.error(msg, raise_error=MissingRequiredSection)
                         else:
                             self.log.warning(msg)
                 else:
                     if category == 'praxis': category = 'theory-to-practice' # because it is differently named...
                     msg = f"`{category}.md` appears to not exist in the repository {self.repo_name}."
                     if required:
-                        self.log.error(msg, kill=True)
+                        self.log.error(msg, raise_error=MissingCurriculumFile)
                     else:
                         self.log.warning(msg)
 
@@ -382,8 +381,8 @@ class LoaderCache():
 
     def _check_age(self) -> bool:
         if not self.path.exists(): return(False)
-        file_mod_time = datetime.fromtimestamp(self.path.stat().st_ctime)
-        now = datetime.today()
+        file_mod_time = datetime.datetime.fromtimestamp(self.path.stat().st_ctime)
+        now = datetime.datetime.today()
 
         if now - file_mod_time > TEST_AGE:
             log.log(f"Cache has expired - older than {TEST_AGE} minutes... Removing.")
