@@ -87,19 +87,12 @@ class Input:
 
     def ask(self, question='', bold=True, color=''):
         indentation = (len(self.name) + 3) * ' ' # +3 because name is put in brackets and a space is added
-        return(input(_fix_message(question, indentation=indentation) + '\n    '))
-        '''
-        if color != '' and bold == True:
-            return(input(colorize(question, fg=color, opts=('bold',))))
-        elif color != '' and bold == False:
-            return(input(colorize(question, fg=color)))
-        elif color == '' and bold == True:
-            return(input(colorize(question, opts=('bold',))))
-        elif color == '' and bold == False:
-            log.error('You should just use input here.', kill=False)
-
-        return(input(colorize(question)))
-        '''
+        message = _fix_message(question, indentation=indentation) + '\n    ')
+        opts = ('',)
+        if bold == True:
+            opts = ('bold',)
+        message = colorize(message, fg=color, opts=opts)
+        return(input(message))
 
 
 def get_or_default(message: str, default_variable: str, color='black', evaluate=str) -> str:
