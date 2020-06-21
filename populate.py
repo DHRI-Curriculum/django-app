@@ -6,9 +6,10 @@ from dhri.settings import AUTO_PROCESS, FIXTURE_PATH
 from dhri.utils.loader import Loader
 from dhri.utils.markdown import get_bulletpoints, is_exclusively_bullets, get_list, get_contributors, destructure_list
 from dhri.utils.text import get_urls, get_number, get_markdown_hrefs
+from dhri.utils.exceptions import MissingCurriculumFile, MissingRequiredSection
 
 # Set up empty stuff for entire loop ##########################
-log = Logger(name="populate")
+log = Logger(name="main")
 iteration, all_objects, done, collect_workshop_slugs = 0, [], 'n', []
 ###############################################################
 
@@ -18,23 +19,25 @@ if __name__ == '__main__':
         iteration += 1
         collector = {}
 
-        try: # TODO: #49 Cleaning: Make this prettier by checking length of AUTO_PROCESS (and perhaps moving it to the section just above here)
-            repo, branch = AUTO_PROCESS[iteration-1]
-        except:
-            repo, branch = '', ''
+        repo, branch = '', ''
 
-        #49 Cleaning:  If we are in the AUTO_PROCESS loop, we might want to just skip ahead the repo's and branch's get_or_default
-        repo = get_or_default(f'What is the repo name (assuming DHRI-Curriculum as username) or whole GitHub link you want to import?', repo)
-        if repo == '':
-            log.error('No repository name, exiting...', kill=None)
-            done = 'y'
-            continue
+        if AUTO_PROCESS:
+            if not len(AUTO_PROCESS) == iteration:
+                repo, branch = AUTO_PROCESS[iteration-1]
 
-        branch = get_or_default(f'What is the branch name you want to import?', branch)
-        if branch == '':
-            log.error('No branch name, exiting...', kill=None)
-            done = 'y'
-            continue
+        else:
+            print('here')
+            repo = get_or_default(f'What is the repo name (assuming DHRI-Curriculum as username) or whole GitHub link you want to import?', repo)
+            if repo == '':
+                log.error('No repository name, exiting...', kill=None)
+                done = 'y'
+                continue
+
+            branch = get_or_default(f'What is the branch name you want to import?', branch)
+            if branch == '':
+                log.error('No branch name, exiting...', kill=None)
+                done = 'y'
+                continue
 
         if not repo.startswith('https://github.com/'): # FIXME: If we decide to move to a different backend
             repo = f'https://github.com/DHRI-Curriculum/{repo}'
@@ -42,10 +45,17 @@ if __name__ == '__main__':
 
         ###### Load in data from GitHub (handled by dhri.utils.loader.Loader)
 
-        l = Loader(repo, branch)
+        try:
+            l = Loader(repo, branch)
+        except MissingRequiredSection:
+            log.error("A required section could not be found.", kill=False)
 
-        repo = get_or_default('Repository', l.meta['repo_name'])
-        name = get_or_default('Workshop name', repo.replace('-', ' ').title())
+        if AUTO_PROCESS:
+            repo_name = l.meta['repo_name']
+        else:
+            repo_name = get_or_default('Repository', l.meta['repo_name'])
+
+        repo_name = get_or_default('Workshop name', repo_name.replace('-', ' ').title().replace('Html Css', 'HTML/CSS'))
         log.name = l.repo_name
 
 
@@ -60,7 +70,7 @@ if __name__ == '__main__':
         ###### WORKSHOP MODELS ####################################
 
         workshop = Workshop(
-                name = name,
+                name = repo_name,
                 parent_backend = l.parent_backend,
                 parent_repo = l.parent_repo,
                 parent_branch = l.parent_branch
