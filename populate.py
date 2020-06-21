@@ -58,9 +58,6 @@ if __name__ == '__main__':
             log.error("The repository has none of the required files present. The import of the entire repository will be skipped.", kill=None)
             done = 'y'
             continue
-        # TODO: #43 Perhaps we also want to add here a test whether there are empty sections. It would be easy enough...
-        print(l.abstract)
-        print(l.projects)
 
 
         ###### WORKSHOP MODELS ####################################

@@ -14,19 +14,19 @@ log = Logger(name='loader')
 
 SECTIONS = {
     'frontmatter': {
-        'abstract': Frontmatter,
-        'learning_objectives': LearningObjective,
-        'estimated_time': Frontmatter,
-        'contributors': Contributor,
-        'ethical_considerations': Frontmatter,
-        'readings': Reading,
-        'projects': Project,
+        'abstract': (Frontmatter, True),
+        'learning_objectives': (LearningObjective, False),
+        'estimated_time': (Frontmatter, False),
+        'contributors': (Contributor, False),
+        'ethical_considerations': (Frontmatter, False),
+        'readings': (Reading, False),
+        'projects': (Project, False),
     },
     'praxis': {
-        'discussion_questions': Praxis,
-        'next_steps': Praxis,
-        'tutorials': Tutorial,
-        'further_readings': Reading,
+        'discussion_questions': (Praxis, False),
+        'next_steps': (Praxis, False),
+        'tutorials': (Tutorial, False),
+        'further_readings': (Reading, False),
     },
     'assessment': {
         # FIXME #3: add here
@@ -62,17 +62,21 @@ class Loader():
     meta = {}
     content = {}
 
+    log = Logger(name='loader')
+
     _frontmatter_sections = SECTIONS['frontmatter']
 
     _praxis_sections = SECTIONS['praxis']
 
     frontmatter_models = {}
-    for section, model in _frontmatter_sections.items():
+    for section, item in _frontmatter_sections.items():
+        model, required = item
         if not model in frontmatter_models: frontmatter_models[model] = []
         frontmatter_models[model].append(section)
 
     praxis_models = {}
-    for section, model in _praxis_sections.items():
+    for section, item in _praxis_sections.items():
+        model, required = item
         if not model in praxis_models: praxis_models[model] = []
         praxis_models[model].append(section)
 
@@ -86,6 +90,8 @@ class Loader():
 
         self.user = self.repo.split('/')[3]
         self.repo_name = self.repo.split('/')[4]
+
+        self.log.name = self.repo_name + '-load'
 
         self.name = self.repo_name.replace('-', '').title().replace(" And ", "and")
 
@@ -109,11 +115,11 @@ class Loader():
         self.parent_backend = BACKEND_AUTO
         self.parent_repo = f"{self.user}/{self.repo_name}"
         self.parent_branch = self.branch
-        self.content = self._raw_content['content']
+        self._content_raw = self._raw_content['content']
 
-        self._frontmatter_raw = self.content.get('frontmatter')
-        self._praxis_raw = self.content.get('theory-to-practice')
-        self._assessment_raw = self.content.get('assessment')
+        self._frontmatter_raw = self._content_raw.get('frontmatter')
+        self._praxis_raw = self._content_raw.get('praxis')
+        self._assessment_raw = self._content_raw.get('assessment')
 
         self._frontmatter = split_into_sections(self._frontmatter_raw)
         self._praxis = split_into_sections(self._praxis_raw)
@@ -122,6 +128,39 @@ class Loader():
         self._frontmatter = normalize_data(self._frontmatter, 'frontmatter')
         self._praxis = normalize_data(self._praxis, 'theory-to-practice')
         self._assessment = normalize_data(self._assessment, 'assessment')
+
+        self.content = {
+            'frontmatter': self._frontmatter,
+            'praxis': self._praxis,
+            'assessment': self._assessment,
+        }
+
+        self._test_for_required_sections()
+
+
+    def _test_for_required_sections(self):
+        for category in SECTIONS:
+            for section, item in SECTIONS[category].items():
+                model, required = item
+                cat_data = self.content.get(category)
+                if cat_data != None:
+                    section_data = cat_data.get(section)
+                    if section_data:
+                        pass # we have section_data
+                    else:
+                        msg = f"category `{category}` in repository {self.repo_name}'s {category}.md contains no section `{section}`."
+                        if required:
+                            msg = msg.replace('`.', ' (required).')
+                            self.log.error(msg, kill=True)
+                        else:
+                            self.log.warning(msg)
+                else:
+                    if category == 'praxis': category = 'theory-to-practice' # because it is differently named...
+                    msg = f"`{category}.md` appears to not exist in the repository {self.repo_name}."
+                    if required:
+                        self.log.error(msg, kill=True)
+                    else:
+                        self.log.warning(msg)
 
 
     @property
@@ -150,28 +189,56 @@ class Loader():
         return self._frontmatter.get('abstract')
 
     @property
+    def has_abstract(self) -> bool:
+        return self._frontmatter.get('abstract') != None
+
+    @property
     def learning_objectives(self):
         return self._frontmatter.get('learning_objectives')
+
+    @property
+    def has_learning_objectives(self) -> bool:
+        return self._frontmatter.get('learning_objectives') != None
 
     @property
     def estimated_time(self):
         return self._frontmatter.get('estimated_time')
 
     @property
+    def has_estimated_time(self) -> bool:
+        return self._frontmatter.get('estimated_time') != None
+
+    @property
     def contributors(self):
         return self._frontmatter.get('contributors')
+
+    @property
+    def has_contributors(self) -> bool:
+        return self._frontmatter.get('contributors') != None
 
     @property
     def ethical_considerations(self):
         return self._frontmatter.get('ethical_considerations')
 
     @property
+    def has_ethical_considerations(self) -> bool:
+        return self._frontmatter.get('ethical_considerations') != None
+
+    @property
     def readings(self):
         return self._frontmatter.get('readings')
 
     @property
+    def has_readings(self) -> bool:
+        return self._frontmatter.get('readings') != None
+
+    @property
     def projects(self):
         return self._frontmatter.get('projects')
+
+    @property
+    def has_projects(self):
+        return self._frontmatter.get('projects') != None
 
 
     @property
@@ -186,16 +253,33 @@ class Loader():
         return self._frontmatter.get('discussion_questions')
 
     @property
+    def has_discussion_questions(self) -> bool:
+        return self._frontmatter.get('discussion_questions') != None
+
+    @property
     def next_steps(self):
+        return self._frontmatter.get('next_steps')
+
+    @property
+    def has_next_steps(self) -> bool:
+        return self._frontmatter.get('next_steps') != None
+
+    @property
+    def tutorials(self):
         return self._frontmatter.get('tutorials')
 
     @property
-    def discussion_questions(self):
-        return self._frontmatter.get('tutorials')
+    def has_tutorials(self) -> bool:
+        return self._frontmatter.get('tutorials') != None
 
     @property
     def further_readings(self):
         return self._frontmatter.get('further_readings')
+
+    @property
+    def has_further_readings(self) -> bool:
+        return self._frontmatter.get('further_readings') != None
+
 
     @property
     def assessment(self):
@@ -206,22 +290,23 @@ class Loader():
 
     def _get_raw_content(self):
         """Internal method to get all the sections and return a dict with all the relevant information for the repository"""
+
         try:
           frontmatter_data = self._get_live_text_from_url(self.frontmatter_path)
         except:
-          log.warning(f"Could not load frontmatter data from repository {self.repo_name}. Please verify that its branch {self.branch} contains frontmatter.md.", color='red')
+          self.log.warning(f"Could not load frontmatter data from repository {self.repo_name}. Please verify that its branch {self.branch} contains frontmatter.md.", color='red')
           frontmatter_data = ""
 
         try:
           praxis_data = self._get_live_text_from_url(self.praxis_path)
         except:
-          log.warning(f"Could not load theory-to-practice data from repository {self.repo_name}. Please verify that its branch {self.branch} contains theory-to-practice.md.", color='red')
+          self.log.warning(f"Could not load theory-to-practice data from repository {self.repo_name}. Please verify that its branch {self.branch} contains theory-to-practice.md.", color='red')
           praxis_data = ""
 
         try:
           assessment_data = self._get_live_text_from_url(self.assessment_path)
         except:
-          log.warning(f"Could not load assessment data from repository {self.repo_name}. Please verify that its branch {self.branch} contains assessment.md.", color='red')
+          self.log.warning(f"Could not load assessment data from repository {self.repo_name}. Please verify that its branch {self.branch} contains assessment.md.", color='red')
           assessment_data = ""
 
         return({
@@ -238,7 +323,7 @@ class Loader():
             },
             'content': {
                 'frontmatter': frontmatter_data,
-                'theory-to-practice': praxis_data,
+                'praxis': praxis_data,
                 'assessment': assessment_data,
             }
         })
@@ -253,7 +338,7 @@ class Loader():
         try:
             r.raise_for_status()
         except HTTPError:
-            log.error(f'The URL ({url}) could not be used. Verify that you are using the correct repository, and that the branch that you provide is correct.', raise_error=HTTPError)
+            self.log.error(f'The URL ({url}) could not be used. Verify that you are using the correct repository, and that the branch that you provide is correct.', raise_error=HTTPError)
 
         return(r.text)
 
@@ -262,13 +347,13 @@ class Loader():
         """ Verifies that a provided repository string is correct. Sets self.repo to a string with corrected information """
 
         if self.repo == None or self.repo=="" or not isinstance(self.repo, str):
-            log.error('No repository URL provided.', raise_error=UnresolvedNameOrBranch)
+            self.log.error('No repository URL provided.', raise_error=UnresolvedNameOrBranch)
 
         if self.repo.endswith('/'):
             self.repo = self.repo[:-1]
 
         if len(self.repo.split('/')) != 5:
-            log.error(f'Cannot interpret repository URL {self.repo}. Are you sure it is a simple https://github.com/user-name/repo link?', raise_error=UnresolvedNameOrBranch)
+            self.log.error(f'Cannot interpret repository URL {self.repo}. Are you sure it is a simple https://github.com/user-name/repo link?', raise_error=UnresolvedNameOrBranch)
 
 
     def __str__(self):
@@ -301,7 +386,7 @@ class LoaderCache():
         now = datetime.today()
 
         if now - file_mod_time > TEST_AGE:
-            log.log(f"Cache has expired - older than {TEST_AGE} minutes... Removing.")
+            self.log.log(f"Cache has expired - older than {TEST_AGE} minutes... Removing.")
             self.path.unlink()
             return False
         else:
