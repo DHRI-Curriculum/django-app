@@ -132,6 +132,35 @@ class Loader():
         return {x: self._frontmatter_sections[x] for x in self._frontmatter}
 
     @property
+    def abstract(self):
+        return self._frontmatter.get('abstract')
+
+    @property
+    def learning_objectives(self):
+        return self._frontmatter.get('learning_objectives')
+
+    @property
+    def estimated_time(self):
+        return self._frontmatter.get('estimated_time')
+
+    @property
+    def contributors(self):
+        return self._frontmatter.get('contributors')
+
+    @property
+    def ethical_considerations(self):
+        return self._frontmatter.get('ethical_considerations')
+
+    @property
+    def readings(self):
+        return self._frontmatter.get('readings')
+
+    @property
+    def project(self):
+        return self._frontmatter.get('project')
+
+
+    @property
     def praxis(self):
         return self._praxis
 
@@ -139,10 +168,30 @@ class Loader():
         return {x: self._praxis_sections[x] for x in self._praxis}
 
     @property
+    def discussion_questions(self):
+        return self._frontmatter.get('discussion_questions')
+
+    @property
+    def next_steps(self):
+        return self._frontmatter.get('tutorials')
+
+    @property
+    def discussion_questions(self):
+        return self._frontmatter.get('tutorials')
+
+    @property
+    def further_readings(self):
+        return self._frontmatter.get('further_readings')
+
+    @property
     def assessment(self):
         return self._assessment
 
+    # TODO: #3
+
+
     def _get_raw_content(self):
+        """Internal method to get all the sections and return a dict with all the relevant information for the repository"""
         try:
           frontmatter_data = self._get_live_text_from_url(self.frontmatter_path)
         except:
@@ -191,7 +240,9 @@ class Loader():
             r.raise_for_status()
         except HTTPError:
             log.error(f'The URL ({url}) could not be used. Verify that you are using the correct repository, and that the branch that you provide is correct.', raise_error=HTTPError)
+
         return(r.text)
+
 
     def _verify_repo(self):
         """ Verifies that a provided repository string is correct. Sets self.repo to a string with corrected information """
@@ -205,8 +256,10 @@ class Loader():
         if len(self.repo.split('/')) != 5:
             log.error(f'Cannot interpret repository URL {self.repo}. Are you sure it is a simple https://github.com/user-name/repo link?', raise_error=UnresolvedNameOrBranch)
 
+
     def __str__(self):
         return self.meta
+
 
     def __repr__(self):
         return f'Loader(repo="{self.repo}", branch="{self.branch}", download={self.download})'
@@ -240,18 +293,23 @@ class LoaderCache():
         else:
             return True
 
-    def load_cache(self):
+
+    def load_cache(self) -> dict:
         log.log("loading cache...")
         return(json.loads(self.path.read_text()))
 
-    def save_cache(self, *args, **kwargs):
+
+    def save_cache(self, *args, **kwargs) -> bool:
         log.log("saving cache...")
         if len(args) == 2:
             data = args[1]
             self.path.write_text(json.dumps(data))
+        return(True)
 
-    def __str__(self):
-        return str(self.path)
 
-    def __repr__(self):
+    def __str__(self) -> str:
+        return f"{self.path}"
+
+
+    def __repr__(self) -> str:
         return f'LoaderCache("{self.repo_name}")'
