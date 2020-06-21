@@ -85,9 +85,9 @@ class Input:
         if 'name' in kwargs:
             self.name = kwargs['name']
 
-    def ask(self, question='', bold=True, color=''):
+    def ask(self, question='', bold=True, color='yellow'):
         indentation = (len(self.name) + 3) * ' ' # +3 because name is put in brackets and a space is added
-        message = _fix_message(question, indentation=indentation) + '\n    ')
+        message = _fix_message(question, indentation=indentation) + '\n    '
         opts = ('',)
         if bold == True:
             opts = ('bold',)
@@ -95,7 +95,7 @@ class Input:
         return(input(message))
 
 
-def get_or_default(message: str, default_variable: str, color='black', evaluate=str) -> str:
+def get_or_default(message: str, default_variable: str, color='yellow', evaluate=str) -> str:
     inp = Input('')
     _ = inp.ask(f'{message} (default "{default_variable}"): ', color=color)
     if _ != '':
