@@ -11,7 +11,7 @@ REQUIRED_SECTIONS = {}
 
 from dhri.interaction import Logger
 from dhri.utils.exceptions import ConstantError
-from dhri.settings import *
+from dhri.settings import NORMALIZING_SECTIONS, DOWNLOAD_CACHE_DIR, TEST_AGE, MAX_TERMINAL_WIDTH
 
 from itertools import chain
 from datetime import timedelta
