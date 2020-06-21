@@ -27,7 +27,6 @@ DJANGO_PATHS = {
         'DJANGO': './app',
         'DB': './app/db.sqlite3',
         'MANAGE': './app/manage.py',
-        # TODO: #46 Add a APP_PATH here with a exact path to ./app/
     }
 
 ##### Cache ##############################
