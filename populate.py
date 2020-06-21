@@ -55,6 +55,8 @@ if __name__ == '__main__':
         ###### Test for data consistency
 
         # TODO: #43 Add test for each of the main sections. If all missing, exit.
+        
+        # TODO: #43 Perhaps we also want to add here a test whether there are empty sections. It would be easy enough...
 
 
         ###### WORKSHOP MODELS ####################################
