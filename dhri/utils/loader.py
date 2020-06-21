@@ -29,7 +29,7 @@ SECTIONS = {
         'further_readings': Reading,
     },
     'assessment': {
-        # TODO: add here
+        # FIXME #3: add here
     }
 }
 

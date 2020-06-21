@@ -1,7 +1,7 @@
 import re
 
 MULTILINE_ITEM = r"\s{3,10}"
-HAS_BULLETPOINTS = r"\n?-"
+# HAS_BULLETPOINTS = r"\n?-" # FIXME: In testing for now but should be removed eventually?
 GET_BULLETPOINTS = {
     'ALL': r'\n?- (.*)(?:(?=\s{2,8})\s{2,8}(.*))?',
     'THOSE_WITH_EXTRA_PARAGRAPH': r'\n?- (.*)\n(?=  )\s+(.*)\n?',
@@ -9,11 +9,6 @@ GET_BULLETPOINTS = {
 }
 GET_NUMBERED_LISTS = {
     'ALL': r'\n?[1-9]\. (.*)(?>(?=\s{2,8})\s{2,8}(.*))?',
-}
-GET_QUESTIONS = {
-    'ALL': r'', # TODO: this one is hard for my head right now
-    'ONLY_QUESTIONS': r'\n|^(?(?!- ).*)',
-    'ONLY_ANSWERS': r'\n|^(?(?=- ).*)',
 }
 
 ALL_BULLETS = GET_BULLETPOINTS['ALL']
@@ -40,7 +35,7 @@ MD_LINK = r'\[([\w\s\d\']+)\]\(((?:\/|https?:\/\/)?[\w\d.\/?=#-]+)\)'
 
 ###
 # returns a tuple of three elements: full_match (either URL or full markdown for URL), hyperlinked text, URL
-# - example use:
+# For example use, see dhri.markdown.destructure_list function
 
 all_links = re.compile(f"({URL}|{MD_LINK})")
 is_md_link = re.compile(MD_LINK)

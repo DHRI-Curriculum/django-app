@@ -34,16 +34,14 @@ def lines_as_list(markdown:str, clean_emptylines=True) -> list:
 
 def has_multiline_item(markdown:str) -> bool:
     """ Returns bool showing whether markdown has multiline elements """
-    # TODO: replaces test_markdown_for_multiline()
     if re.search(MULTILINE_ITEM, markdown): return(True)
     return False
 
 
 def is_exclusively_bullets(markdown:str) -> bool:
     """ Returns bool showing whether markdown contains exclusively bulletpoints (incl. multi-line ones) """
-    # TODO: replaces section_is_bulletpoints()
     return re.sub(ALL_BULLETS, "", markdown) == ''
-    
+
 
 def get_list(markdown:str, *args) -> list:
     """
@@ -55,7 +53,7 @@ def get_list(markdown:str, *args) -> list:
             BULLETS_EXTRA_P: All bulletpoints in markdown that have an extra paragraph
             BULLETS_NO_EXTRA_P: All bulletpoints in markdown that do not have an extra paragraph
     """
-    if not len(args): 
+    if not len(args):
         _regex = ALL_BULLETS
     else:
         _regex = args[0]
@@ -66,7 +64,7 @@ def get_list(markdown:str, *args) -> list:
 
 
 def get_bulletpoints(markdown:str) -> list:
-    """ 
+    """
     Returns a list of all bulletpoints from a markdown string.
     [Alias function for get_list(markdown, ALL_BULLETS).]
     """
@@ -191,10 +189,12 @@ def destructure_list(markdown:str, remove_simple_links=True, set_empty_url='') -
     return(_)
 
 
-from nameparser import HumanName
 
 def split_names(full_name:str) -> tuple:
     """Uses the `nameparser` library to interpret names."""
+
+    from nameparser import HumanName
+
     name = HumanName(full_name)
     first_name = name.first
     if name.middle:
@@ -230,8 +230,8 @@ def get_contributors(markdown:str) -> list:
         log.warning(f'Contributors are not provided as string but as {type(markdown)}. Trying to fix.')
         markdown = _fix_markdown(markdown, type="contributor")
 
-    _ = []
-    collected = []
+    _, collected = [], []
+
     for person, links in destructure_list(markdown):
         link, role = '', ''
         if ": " in person:
@@ -258,4 +258,5 @@ def get_contributors(markdown:str) -> list:
                 collected.append((person, role))
             else:
                 log.warning('Contributors contain multiple occurrences of the same person in the same role. Will skip.')
+
     return(_)
