@@ -21,9 +21,10 @@ if __name__ == '__main__':
 
         repo, branch = '', ''
 
-        if AUTO_PROCESS:
-            if not len(AUTO_PROCESS) == iteration:
-                repo, branch = AUTO_PROCESS[iteration-1]
+        AUTO_PROCESS_done = len(AUTO_PROCESS) == iteration
+
+        if AUTO_PROCESS and not AUTO_PROCESS_done:
+            repo, branch = AUTO_PROCESS[iteration-1]
 
         else:
             print('here')
@@ -295,14 +296,11 @@ if __name__ == '__main__':
         for _ in collector.values():
             all_objects.extend([x for x in _])
 
-        # TODO: #45 Make function to check continuation
-        if iteration == len(AUTO_PROCESS):
-          done = 'y'
-          msg = 'Are you done? [Y/n] '
-        else:
-          done = 'n'
-          msg = 'Are you done? [y/N] '
-        done = get_or_default(msg, done, color='red').lower()
+        if AUTO_PROCESS and AUTO_PROCESS_done:
+          done, msg = 'y', 'Are you done? [Y/n] '
+        elif AUTO_PROCESS:
+          done, msg = 'n', 'Are you done? [y/N] '
+          done = get_or_default(msg, done, color='red').lower()
 
     # Create fixtures.json
     # TODO: #51 Move fixture creation to dhri.utils to not be dependent on so many packages in populate.py
