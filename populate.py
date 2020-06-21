@@ -136,7 +136,7 @@ if __name__ == '__main__':
                 if isinstance(l.praxis['further_readings'], str):
                     l.praxis['further_readings'] = get_list(l.praxis['further_readings']) # FIXME: #52 Remove dependencies on get_list for destructure_list
 
-                for item in l.praxis['further_readings']: # TODO: move to destruct_list?
+                for item in l.praxis['further_readings']:
                     title, _ = item # TODO: #44 add field on reading for comment (and replace _)
                     o = Reading()
                     o.title = title
