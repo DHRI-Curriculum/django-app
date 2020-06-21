@@ -141,7 +141,7 @@ class Loader():
     def _test_for_required_sections(self):
         for category in SECTIONS:
             for section, item in SECTIONS[category].items():
-                model, required = item
+                _, required = item
                 cat_data = self.content.get(category)
                 if cat_data != None:
                     section_data = cat_data.get(section)
