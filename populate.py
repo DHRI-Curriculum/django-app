@@ -50,6 +50,7 @@ if __name__ == '__main__':
 
         repo = get_or_default('Repository', l.meta['repo_name'])
         name = get_or_default('Workshop name', repo.replace('-', ' ').title())
+        log.name = l.repo_name
 
 
         ###### Test for data consistency
@@ -265,7 +266,7 @@ if __name__ == '__main__':
                     o.save()
                     collector['contributors'].append(o)
                     msg = f'Contributor added:\n    {o.full_name}'
-                    if o.role != '': msg += ' ({o.role})'
+                    if o.role != '': msg += f' ({o.role})'
                     log.log(msg)
                 frontmatter.contributors.set(collector['contributors'])
                 log.log(f'Frontmatter {frontmatter.id} updated with {len(collector)} contributors.')
