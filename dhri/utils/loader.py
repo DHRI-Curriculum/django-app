@@ -1,6 +1,5 @@
 import requests, json
-from pathlib import Path
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from dhri.django import django
 from dhri.django.models import *
@@ -8,7 +7,7 @@ from dhri.interaction import Logger
 from dhri.utils.markdown import split_into_sections
 from dhri.utils.exceptions import UnresolvedNameOrBranch
 
-from dhri.settings import NORMALIZING_SECTIONS, REPO_AUTO, BRANCH_AUTO, DOWNLOAD_CACHE_DIR, BACKEND_AUTO, FORCE_DOWNLOAD
+from dhri.settings import NORMALIZING_SECTIONS, REPO_AUTO, BRANCH_AUTO, BACKEND_AUTO, FORCE_DOWNLOAD
 from dhri.constants import DOWNLOAD_CACHE_DIR, TEST_AGE
 
 log = Logger(name='loader')
