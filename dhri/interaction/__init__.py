@@ -13,13 +13,20 @@ def _get_parts_of_log_message(message):
 
 
 def _fix_message(message='', quote='', first_line_add='--> ', indentation='    ', first_line_bold=True):
-    from dhri.constants import TERMINAL_WIDTH
     if quote == '':
         message, quote = _get_parts_of_log_message(message) # try
 
     if quote != '': message += ':'
+
+    # Fix terminal width
+    from dhri.constants import TERMINAL_WIDTH
+    if len(first_line_add) >= len(indentation):
+        width = TERMINAL_WIDTH - len(first_line_add)
+    else:
+        width = TERMINAL_WIDTH - len(indentation)
+
     dedented_text = textwrap.dedent(message)
-    wrapped = textwrap.fill(dedented_text, width=TERMINAL_WIDTH-4)
+    wrapped = textwrap.fill(dedented_text, width=width) # TODO: #41 Fix the intendation and terminal width
     message = textwrap.indent(wrapped, indentation)
     if first_line_bold == True:
         output = colorize(first_line_add + message.strip(), opts=('bold',))
@@ -28,7 +35,7 @@ def _fix_message(message='', quote='', first_line_add='--> ', indentation='    '
 
     if quote != '':
         dedented_text = textwrap.dedent(quote)
-        wrapped = textwrap.fill(dedented_text, width=TERMINAL_WIDTH-4)
+        wrapped = textwrap.fill(dedented_text, width=width)
         quote = textwrap.indent(wrapped, indentation)
         output += "\n" + quote
 
@@ -48,13 +55,13 @@ class Logger():
 
     def error(self, message="", raise_error=None, kill=True, color='red'):
         if raise_error != None:
-            raise(raise_error(message))
-        message = colorize('Error: ' + message, fg=color, opts=('bold',))
+            raise(raise_error('Error: ' + message))
+        message = colorize(message, fg=color, opts=('bold',))
         self.output(message, kill)
 
     def warning(self, message="", kill=False, color='yellow'):
-        message = self._fix_message(message)
-        message = colorize('Warning: ' + message, fg=color, opts=('bold',))
+        message = self._fix_message('Warning: ' + message)
+        message = colorize(message, fg=color, opts=('bold',))
         self.output(message, kill)
 
     def output(self, message:str, kill=False):
