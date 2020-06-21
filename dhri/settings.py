@@ -26,7 +26,7 @@ AUTO_PROCESS = [
 DJANGO_PATHS = {
         'DB': './app/db.sqlite3',
         'MANAGE': './app/manage.py',
-        # TODO: Add a APP_PATH here with a exact path to ./app/
+        # TODO: #46 Add a APP_PATH here with a exact path to ./app/
     }
 
 ##### Cache ##############################

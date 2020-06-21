@@ -131,7 +131,7 @@ if __name__ == '__main__':
                     l.praxis['further_readings'] = get_list(l.praxis['further_readings'])
 
                 for item in l.praxis['further_readings']:
-                    title, _ = item # TODO: add field on reading for comment (and replace _)
+                    title, _ = item # TODO: #44 add field on reading for comment (and replace _)
                     o = Reading()
                     o.title = title
                     o.save()
@@ -289,6 +289,7 @@ if __name__ == '__main__':
         for _ in collector.values():
             all_objects.extend([x for x in _])
 
+        # TODO: #45 Make function to check continuation
         if iteration == len(AUTO_PROCESS):
           done = 'y'
           msg = 'Are you done? [Y/n] '
@@ -297,8 +298,8 @@ if __name__ == '__main__':
           msg = 'Are you done? [y/N] '
         done = get_or_default(msg, done, color='red').lower()
 
-    log.log(f'Generating fixtures file for Django...')
     # Create fixtures.json
+    log.log(f'Generating fixtures file for Django...')
     all_objects_dict = json.loads(serializers.serialize('json', all_objects, ensure_ascii=False))
 
     from pathlib import Path
