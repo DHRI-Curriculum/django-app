@@ -285,7 +285,7 @@ class Loader():
     def assessment(self):
         return self._assessment
 
-    # TODO: #3
+    # FIXME: #3
 
 
     def _get_raw_content(self):
