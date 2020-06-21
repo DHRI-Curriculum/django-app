@@ -7,26 +7,28 @@ from dhri.utils.loader import Loader
 from dhri.utils.markdown import get_bulletpoints, is_exclusively_bullets, get_list, get_contributors, destructure_list
 from dhri.utils.text import get_urls, get_number, get_markdown_hrefs
 
-# dev part - remove in production #############
-from dhri.meta import reset_all # FIXME: #47 Before launching v1.0 remove
+# dev part - remove in production #############################
+from dhri.meta import reset_all # FIXME: #47 Before launching v1.0 remove, or set a DEBUG in dhri.settings perhaps
 reset_all()
-###############################################
+###############################################################
 
-# Set up empty stuff ##########################
+# Set up empty stuff for entire loop ##########################
 log = Logger(name="populate") # TODO: #48 More useful to move this into loop and have the name set to the workshop that we're working on
 iteration, all_objects, done, collect_workshop_slugs = 0, [], 'n', []
-###############################################
+###############################################################
 
 if __name__ == '__main__':
     while done == 'n':
 
         iteration += 1
+        collector = {}
 
-        try:
+        try: # TODO: #49 Cleaning: Make this prettier by checking length of AUTO_PROCESS (and perhaps moving it to the section just above here)
             repo, branch = AUTO_PROCESS[iteration-1]
         except:
             repo, branch = '', ''
 
+        #49 Cleaning:  If we are in the AUTO_PROCESS loop, we might want to just skip ahead the repo's and branch's get_or_default
         repo = get_or_default(f'What is the repo name (assuming DHRI-Curriculum as username) or whole GitHub link you want to import?', repo)
         if repo == '':
             log.error('No repository name, exiting...', kill=None)
@@ -39,7 +41,7 @@ if __name__ == '__main__':
             done = 'y'
             continue
 
-        if not repo.startswith('https://github.com/'):
+        if not repo.startswith('https://github.com/'): # FIXME: If we decide to move to a different backend
             repo = f'https://github.com/DHRI-Curriculum/{repo}'
 
 
@@ -47,18 +49,13 @@ if __name__ == '__main__':
 
         l = Loader(repo, branch)
 
+        repo = get_or_default('Repository', l.meta['repo_name'])
+        name = get_or_default('Workshop name', repo.replace('-', ' ').title())
+
 
         ###### Test for data consistency
 
         # TODO: #43 Add test for each of the main sections. If all missing, exit.
-
-
-        ###### Setup empty and standard variables
-
-        collector = {}
-
-        repo = get_or_default('Repository', l.meta['repo_name'])
-        name = get_or_default('Workshop name', repo.replace('-', ' ').title())
 
 
         ###### WORKSHOP MODELS ####################################
@@ -82,11 +79,11 @@ if __name__ == '__main__':
                         workshop = workshop,
                     )
                 try:
-                    praxis.discussion_questions = l.praxis['discussion_questions']
+                    praxis.discussion_questions = l.praxis['discussion_questions'] # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
                 except KeyError:
                     log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the theory-to-practice.md section for discussion questions.')
                 try:
-                    praxis.next_steps = l.praxis['next_steps']
+                    praxis.next_steps = l.praxis['next_steps'] # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
                 except KeyError:
                     log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the theory-to-practice.md section for next steps.')
                 praxis.save()
@@ -94,7 +91,7 @@ if __name__ == '__main__':
 
             elif model == Tutorial:
                 try:
-                  if isinstance(l.praxis['tutorials'], str) and not is_exclusively_bullets(l.praxis['tutorials']):
+                  if isinstance(l.praxis['tutorials'], str) and not is_exclusively_bullets(l.praxis['tutorials']): # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
                       log.warning('The Tutorials section contains not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
                 except KeyError:
                     log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the theory-to-practice.md section for tutorials.')
@@ -120,7 +117,7 @@ if __name__ == '__main__':
 
             elif model == Reading:
                 try:
-                  if isinstance(l.praxis['further_readings'], str) and not is_exclusively_bullets(l.praxis['further_readings']):
+                  if isinstance(l.praxis['further_readings'], str) and not is_exclusively_bullets(l.praxis['further_readings']): # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
                       log.warning('Further readings contains not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
                 except KeyError:
                     log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the theory-to-practice.md section for further readings.')
@@ -130,7 +127,7 @@ if __name__ == '__main__':
                 if isinstance(l.praxis['further_readings'], str):
                     l.praxis['further_readings'] = get_list(l.praxis['further_readings'])
 
-                for item in l.praxis['further_readings']:
+                for item in l.praxis['further_readings']: # TODO: move to destruct_list?
                     title, _ = item # TODO: #44 add field on reading for comment (and replace _)
                     o = Reading()
                     o.title = title
@@ -154,17 +151,17 @@ if __name__ == '__main__':
                 frontmatter = Frontmatter(workshop = workshop)
 
                 try:
-                    frontmatter.abstract = l.frontmatter['abstract']
+                    frontmatter.abstract = l.frontmatter['abstract'] # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
                 except KeyError:
                     log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the frontmatter.md section for abstract.', color='red') # red because it is a significant thing to be missing
 
                 try:
-                    frontmatter.ethical_considerations = l.frontmatter['ethical_considerations']
+                    frontmatter.ethical_considerations = l.frontmatter['ethical_considerations'] # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
                 except KeyError:
                     log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the frontmatter.md section for ethical considerations.', color='red')
 
                 try:
-                    frontmatter.estimated_time = get_number(l.frontmatter['estimated_time'])
+                    frontmatter.estimated_time = get_number(l.frontmatter['estimated_time']) # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
                 except KeyError:
                     log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the frontmatter.md section for estimated time.', color='red')
 
@@ -174,7 +171,7 @@ if __name__ == '__main__':
             # frontmatter.LearningObjective
             elif model == LearningObjective:
                 try:
-                  if isinstance(l.frontmatter['learning_objectives'], str) and not is_exclusively_bullets(l.frontmatter['learning_objectives']):
+                  if isinstance(l.frontmatter['learning_objectives'], str) and not is_exclusively_bullets(l.frontmatter['learning_objectives']): # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
                       log.warning('Learning objectives contain not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
                 except KeyError:
                     log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the frontmatter.md section for learning objectives.')
@@ -197,7 +194,7 @@ if __name__ == '__main__':
             # frontmatter.Project
             elif model == Project:
                 try:
-                    if isinstance(l.frontmatter['projects'], str) and not is_exclusively_bullets(l.frontmatter['projects']):
+                    if isinstance(l.frontmatter['projects'], str) and not is_exclusively_bullets(l.frontmatter['projects']): # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
                         log.warning('Projects contain not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
                 except KeyError:
                     log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the frontmatter.md section for projects.')
@@ -225,7 +222,7 @@ if __name__ == '__main__':
             # frontmatter.Reading
             elif model == Reading:
                 try:
-                    if isinstance(l.frontmatter['readings'], str) and not is_exclusively_bullets(l.frontmatter['readings']):
+                    if isinstance(l.frontmatter['readings'], str) and not is_exclusively_bullets(l.frontmatter['readings']): # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
                         log.warning('Readings contain not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
                 except KeyError:
                     log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the frontmatter.md section for readings.')
@@ -253,7 +250,7 @@ if __name__ == '__main__':
             # frontmatter.Contributor
             elif model == Contributor:
                 try:
-                    if isinstance(l.frontmatter['contributors'], str) and not is_exclusively_bullets(l.frontmatter['contributors']):
+                    if isinstance(l.frontmatter['contributors'], str) and not is_exclusively_bullets(l.frontmatter['contributors']): # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
                         log.warning('Contributors contain not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
                 except KeyError:
                     log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the frontmatter.md section for contributors.')
