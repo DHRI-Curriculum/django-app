@@ -2,7 +2,6 @@ from dhri.django import django
 from dhri.django.models import Workshop, Praxis, Tutorial, Reading, Frontmatter, LearningObjective, Project, Contributor
 from dhri.interaction import Logger, get_or_default
 from dhri.settings import AUTO_PROCESS, FIXTURE_PATH
-from dhri.utils.exceptions import UnresolvedNameOrBranch
 from dhri.utils.loader import Loader
 from dhri.utils.markdown import get_bulletpoints, is_exclusively_bullets, get_list, get_contributors, destructure_list
 from dhri.utils.text import get_urls, get_number, get_markdown_hrefs
@@ -99,7 +98,7 @@ if __name__ == '__main__':
 
                 collector['tutorials'] = []
                 if isinstance(l.praxis['tutorials'], str):
-                    l.praxis['tutorials'] = get_list(l.praxis['tutorials'])
+                    l.praxis['tutorials'] = get_list(l.praxis['tutorials']) # FIXME: #53 #52 Remove dependencies on get_list for destructure_list
 
                 for item in l.praxis['tutorials']:
                     label, comment = item
@@ -125,7 +124,7 @@ if __name__ == '__main__':
 
                 collector['praxis_readings'] = []
                 if isinstance(l.praxis['further_readings'], str):
-                    l.praxis['further_readings'] = get_list(l.praxis['further_readings'])
+                    l.praxis['further_readings'] = get_list(l.praxis['further_readings']) # FIXME: #53 #52 Remove dependencies on get_list for destructure_list
 
                 for item in l.praxis['further_readings']: # TODO: move to destruct_list?
                     title, _ = item # TODO: #44 add field on reading for comment (and replace _)
@@ -230,7 +229,7 @@ if __name__ == '__main__':
 
                 collector['frontmatter_readings'] = []
                 if isinstance(l.frontmatter['readings'], str):
-                    l.frontmatter['readings'] = get_list(l.frontmatter['readings'])
+                    l.frontmatter['readings'] = get_list(l.frontmatter['readings']) # FIXME: #53 #52 Remove dependencies on get_list for destructure_list
 
                 for item in l.frontmatter['readings']:
                     md = '\n'.join(item).strip()
@@ -296,6 +295,7 @@ if __name__ == '__main__':
         done = get_or_default(msg, done, color='red').lower()
 
     # Create fixtures.json
+    # TODO: #51 Move fixture creation to dhri.utils to not be dependent on so many packages in populate.py
     log.log(f'Generating fixtures file for Django...')
     all_objects_dict = json.loads(serializers.serialize('json', all_objects, ensure_ascii=False))
 
