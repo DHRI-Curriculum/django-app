@@ -386,7 +386,7 @@ class LoaderCache():
         now = datetime.today()
 
         if now - file_mod_time > TEST_AGE:
-            self.log.log(f"Cache has expired - older than {TEST_AGE} minutes... Removing.")
+            log.log(f"Cache has expired - older than {TEST_AGE} minutes... Removing.")
             self.path.unlink()
             return False
         else:
