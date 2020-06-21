@@ -12,7 +12,7 @@ reset_all()
 ###############################################################
 
 # Set up empty stuff for entire loop ##########################
-log = Logger(name="populate") # TODO: #48 More useful to move this into loop and have the name set to the workshop that we're working on
+log = Logger(name="populate")
 iteration, all_objects, done, collect_workshop_slugs = 0, [], 'n', []
 ###############################################################
 
