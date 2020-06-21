@@ -98,7 +98,7 @@ if __name__ == '__main__':
 
                 collector['tutorials'] = []
                 if isinstance(l.praxis['tutorials'], str):
-                    l.praxis['tutorials'] = get_list(l.praxis['tutorials']) # FIXME: #53 #52 Remove dependencies on get_list for destructure_list
+                    l.praxis['tutorials'] = get_list(l.praxis['tutorials']) # FIXME: #52 Remove dependencies on get_list for destructure_list
 
                 for item in l.praxis['tutorials']:
                     label, comment = item
@@ -124,7 +124,7 @@ if __name__ == '__main__':
 
                 collector['praxis_readings'] = []
                 if isinstance(l.praxis['further_readings'], str):
-                    l.praxis['further_readings'] = get_list(l.praxis['further_readings']) # FIXME: #53 #52 Remove dependencies on get_list for destructure_list
+                    l.praxis['further_readings'] = get_list(l.praxis['further_readings']) # FIXME: #52 Remove dependencies on get_list for destructure_list
 
                 for item in l.praxis['further_readings']: # TODO: move to destruct_list?
                     title, _ = item # TODO: #44 add field on reading for comment (and replace _)
@@ -229,7 +229,7 @@ if __name__ == '__main__':
 
                 collector['frontmatter_readings'] = []
                 if isinstance(l.frontmatter['readings'], str):
-                    l.frontmatter['readings'] = get_list(l.frontmatter['readings']) # FIXME: #53 #52 Remove dependencies on get_list for destructure_list
+                    l.frontmatter['readings'] = get_list(l.frontmatter['readings']) # FIXME: #52 Remove dependencies on get_list for destructure_list
 
                 for item in l.frontmatter['readings']:
                     md = '\n'.join(item).strip()
