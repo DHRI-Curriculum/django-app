@@ -26,7 +26,7 @@ def _fix_message(message='', quote='', first_line_add='--> ', indentation='    '
         width = TERMINAL_WIDTH - len(indentation)
 
     dedented_text = textwrap.dedent(message)
-    wrapped = textwrap.fill(dedented_text, width=width) # TODO: #41 Fix the intendation and terminal width
+    wrapped = textwrap.fill(dedented_text, width=width)
     message = textwrap.indent(wrapped, indentation)
     if first_line_bold == True:
         output = colorize(first_line_add + message.strip(), opts=('bold',))
