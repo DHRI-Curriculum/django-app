@@ -1,5 +1,5 @@
 from dhri.interaction import Logger, Input
-from dhri.django import models
+from dhri.django.models import Contributor
 
 
 

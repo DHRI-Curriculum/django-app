@@ -1,5 +1,5 @@
 from dhri.django import django
-from dhri.django.models import *
+from dhri.django.models import Workshop, Praxis, Tutorial, Reading, Frontmatter, LearningObjective, Project, Contributor
 from dhri.interaction import Logger, get_or_default
 from dhri.settings import AUTO_PROCESS, FIXTURE_PATH
 from dhri.utils.exceptions import UnresolvedNameOrBranch
@@ -50,7 +50,7 @@ if __name__ == '__main__':
 
         ###### Test for data consistency
 
-        # TODO: this section
+        # TODO: #43 Add test for each of the main sections. If all missing, exit.
 
 
         ###### Setup empty and standard variables

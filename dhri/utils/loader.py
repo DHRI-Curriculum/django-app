@@ -2,7 +2,7 @@ import requests, json
 from datetime import datetime
 
 from dhri.django import django
-from dhri.django.models import *
+from dhri.django.models import Workshop, Praxis, Tutorial, Reading, Frontmatter, LearningObjective, Project, Contributor
 from dhri.interaction import Logger
 from dhri.utils.markdown import split_into_sections
 from dhri.utils.exceptions import UnresolvedNameOrBranch
