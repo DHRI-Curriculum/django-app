@@ -3,7 +3,7 @@ import requests, json, datetime
 from dhri.django import django
 from dhri.django.models import Workshop, Praxis, Tutorial, Reading, Frontmatter, LearningObjective, Project, Contributor
 from dhri.interaction import Logger
-from dhri.utils.markdown import split_into_sections
+from dhri.utils.markdown import split_into_sections, destructure_list, get_contributors
 from dhri.utils.exceptions import UnresolvedNameOrBranch, MissingCurriculumFile, MissingRequiredSection
 
 from dhri.settings import NORMALIZING_SECTIONS, REPO_AUTO, BRANCH_AUTO, BACKEND_AUTO, FORCE_DOWNLOAD
@@ -193,7 +193,16 @@ class Loader():
 
     @property
     def learning_objectives(self):
-        return self._frontmatter.get('learning_objectives')
+        if self.has_learning_objectives:
+            learning_objectives = self._frontmatter.get('learning_objectives')
+            if isinstance(learning_objectives, list):
+                return(learning_objectives)
+            else:
+                # TODO: Test for no-bulletpoints here before this message... Could just be a list of bulletpoints as string at this point
+                log.warning('The Learning objectives section contains not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
+                return(destructure_list(learning_objectives))
+        else:
+            return([])
 
     @property
     def has_learning_objectives(self) -> bool:
@@ -209,7 +218,16 @@ class Loader():
 
     @property
     def contributors(self):
-        return self._frontmatter.get('contributors')
+        if self.has_contributors:
+            contributors = self._frontmatter.get('contributors')
+            if isinstance(contributors, list):
+                return(contributors)
+            else:
+                # TODO: Test for no-bulletpoints here before this message... Could just be a list of bulletpoints as string at this point
+                log.warning('The Contributors section contains not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
+                return(get_contributors(contributors))
+        else:
+            return([])
 
     @property
     def has_contributors(self) -> bool:
@@ -225,7 +243,16 @@ class Loader():
 
     @property
     def readings(self):
-        return self._frontmatter.get('readings')
+        if self.has_readings:
+            readings = self._frontmatter.get('readings')
+            if isinstance(readings, list):
+                return(readings)
+            else:
+                # TODO: Test for no-bulletpoints here before this message... Could just be a list of bulletpoints as string at this point
+                log.warning('The Readings section contains not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
+                return(destructure_list(readings))
+        else:
+            return([])
 
     @property
     def has_readings(self) -> bool:
@@ -233,7 +260,16 @@ class Loader():
 
     @property
     def projects(self):
-        return self._frontmatter.get('projects')
+        if self.has_projects:
+            projects = self._frontmatter.get('projects')
+            if isinstance(projects, list):
+                return(projects)
+            else:
+                # TODO: Test for no-bulletpoints here before this message... Could just be a list of bulletpoints as string at this point
+                log.warning('The Projects section contains not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
+                return(destructure_list(projects))
+        else:
+            return([])
 
     @property
     def has_projects(self):
@@ -264,8 +300,15 @@ class Loader():
         return self._frontmatter.get('next_steps') != None
 
     @property
-    def tutorials(self):
-        return self._frontmatter.get('tutorials')
+    def tutorials(self) -> list: # should return list
+        if self.has_tutorials:
+            tutorials = self._frontmatter.get('tutorials')
+            if isinstance(tutorials, list):
+                return(tutorials)
+            else:
+                log.warning('The Tutorials section contains not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
+                return(destructure_list(tutorials))
+        else: return([])
 
     @property
     def has_tutorials(self) -> bool:
@@ -273,7 +316,16 @@ class Loader():
 
     @property
     def further_readings(self):
-        return self._frontmatter.get('further_readings')
+        if self.has_further_readings:
+            further_readings = self._frontmatter.get('further_readings')
+            if isinstance(further_readings, list):
+                return(further_readings)
+            else:
+                log.warning('The Further Readings section contains not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
+                print(further_readings) # do something with destructure_list here instead
+                exit()
+        else:
+            return([])
 
     @property
     def has_further_readings(self) -> bool:

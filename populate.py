@@ -87,20 +87,9 @@ if __name__ == '__main__':
                 log.log(f'Praxis object {praxis.id} added for workshop {workshop}.')
 
             elif model == Tutorial:
-                print()
-                try:
-                  if isinstance(l.praxis['tutorials'], str) and not is_exclusively_bullets(l.praxis['tutorials']): # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
-                      log.warning('The Tutorials section contains not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
-                except KeyError:
-                    log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the theory-to-practice.md section for tutorials.')
-                    continue
-
                 collector['tutorials'] = []
-                if isinstance(l.praxis['tutorials'], str):
-                    l.praxis['tutorials'] = get_list(l.praxis['tutorials']) # FIXME: #52 Remove dependencies on get_list for destructure_list
-
-                for item in l.praxis['tutorials']:
-                    label, comment = item
+                for item in l.tutorials:
+                    label, comment = item # TODO: We might need to come back to this #52 as few repos have those yet...
                     o = Tutorial()
                     o.label = label
                     o.comment = comment
@@ -111,24 +100,15 @@ if __name__ == '__main__':
                     collector['tutorials'].append(o)
                     log.log(f'Tutorial {o.id} added:\n    {o.label}')
                 praxis.tutorials.set(collector['tutorials'])
-                log.log(f'Praxis {praxis.id} updated with tutorials.')
+                log.log(f'Praxis {praxis.id} updated with {len(collector["tutorials"])} tutorials.')
 
             elif model == Reading:
-                try:
-                  if isinstance(l.praxis['further_readings'], str) and not is_exclusively_bullets(l.praxis['further_readings']): # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
-                      log.warning('Further readings contains not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
-                except KeyError:
-                    log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the theory-to-practice.md section for further readings.')
-                    continue
-
                 collector['praxis_readings'] = []
-                if isinstance(l.praxis['further_readings'], str):
-                    l.praxis['further_readings'] = get_list(l.praxis['further_readings']) # FIXME: #52 Remove dependencies on get_list for destructure_list
-
-                for item in l.praxis['further_readings']:
-                    title, _ = item # TODO: #44 add field on reading for comment (and replace _)
+                for item in l.further_readings:
+                    title, comment = item
                     o = Reading()
                     o.title = title
+                    o.comment = comment
                     o.save()
                     collector['praxis_readings'].append(o)
                     log.log(f'Reading {o.id} added:\n    {o.title}')
@@ -147,37 +127,16 @@ if __name__ == '__main__':
             # frontmatter.Frontmatter
             if model == Frontmatter:
                 frontmatter = Frontmatter(workshop = workshop)
-
-                try:
-                    frontmatter.abstract = l.frontmatter['abstract'] # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
-                except KeyError:
-                    log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the frontmatter.md section for abstract.', color='red') # red because it is a significant thing to be missing
-
-                try:
-                    frontmatter.ethical_considerations = l.frontmatter['ethical_considerations'] # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
-                except KeyError:
-                    log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the frontmatter.md section for ethical considerations.', color='red')
-
-                try:
-                    frontmatter.estimated_time = get_number(l.frontmatter['estimated_time']) # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
-                except KeyError:
-                    log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the frontmatter.md section for estimated time.', color='red')
-
+                frontmatter.abstract = l.abstract
+                frontmatter.ethical_considerations = l.ethical_considerations
+                frontmatter.estimated_time = get_number(l.frontmatter['estimated_time'])
                 frontmatter.save()
                 log.log(f'Frontmatter object {frontmatter.id} added for workshop {workshop}.')
 
             # frontmatter.LearningObjective
             elif model == LearningObjective:
-                try:
-                  if isinstance(l.frontmatter['learning_objectives'], str) and not is_exclusively_bullets(l.frontmatter['learning_objectives']): # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
-                      log.warning('Learning objectives contain not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
-                except KeyError:
-                    log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the frontmatter.md section for learning objectives.')
-                    continue
-
                 collector['learning_objectives'] = []
-
-                for item in destructure_list(l.frontmatter['learning_objectives']):
+                for item in l.learning_objectives:
                     label, urls = item
                     if urls:
                         log.warning(f'Looks like the learning objectives have URLs but the database has no way to keep them.')
@@ -187,19 +146,12 @@ if __name__ == '__main__':
                         )
                     o.save()
                     collector['learning_objectives'].append(o)
-                    log.log(f'Learning objective for frontmatter {frontmatter.id} added:\n    {o.label}.')
+                    log.log(f'Learning objective for frontmatter {frontmatter.id} added:\n{o.label}.')
 
             # frontmatter.Project
             elif model == Project:
-                try:
-                    if isinstance(l.frontmatter['projects'], str) and not is_exclusively_bullets(l.frontmatter['projects']): # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
-                        log.warning('Projects contain not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
-                except KeyError:
-                    log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the frontmatter.md section for projects.')
-                    continue
-
                 collector['projects'] = []
-                for item in destructure_list(l.frontmatter['projects']):
+                for item in l.projects:
                     comment, urls = item
                     o = Project()
                     o.comment = comment
@@ -208,9 +160,9 @@ if __name__ == '__main__':
                     o.save()
                     collector['projects'].append(o)
                     if o.title == '':
-                        log.log(f'Project added:\n    {o.url} (title missing, but comment starts with: {o.comment[:60]}...)')
+                        log.log(f'Project added:\n{o.url} (title missing, but comment starts with: {o.comment[:60]}...)')
                     else:
-                        log.log(f'Project added:\n    {o.title} ({o.url})')
+                        log.log(f'Project added:\n{o.title} ({o.url})')
                     if len(urls) > 1:
                         all_urls = ", ".join([_[1] for _ in urls])
                         log.warning(f'The project above seems to contain had {len(urls)} URLs, but only the first one has been captured:\n    {all_urls}')
@@ -219,18 +171,8 @@ if __name__ == '__main__':
 
             # frontmatter.Reading
             elif model == Reading:
-                try:
-                    if isinstance(l.frontmatter['readings'], str) and not is_exclusively_bullets(l.frontmatter['readings']): # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
-                        log.warning('Readings contain not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
-                except KeyError:
-                    log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the frontmatter.md section for readings.')
-                    continue
-
                 collector['frontmatter_readings'] = []
-                if isinstance(l.frontmatter['readings'], str):
-                    l.frontmatter['readings'] = get_list(l.frontmatter['readings']) # FIXME: #52 Remove dependencies on get_list for destructure_list
-
-                for item in l.frontmatter['readings']:
+                for item in l.readings:
                     md = '\n'.join(item).strip()
                     o = Reading()
                     o.comment = md
@@ -247,15 +189,8 @@ if __name__ == '__main__':
 
             # frontmatter.Contributor
             elif model == Contributor:
-                try:
-                    if isinstance(l.frontmatter['contributors'], str) and not is_exclusively_bullets(l.frontmatter['contributors']): # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
-                        log.warning('Contributors contain not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
-                except KeyError:
-                    log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the frontmatter.md section for contributors.')
-                    continue
-
                 collector['contributors'] = []
-                for contributor in get_contributors(l.frontmatter['contributors']):
+                for contributor in get_contributors(l.contributors): # TODO: This is a mystery that I need to look into (get_contributors is already run inside the Loader...)
                     o = Contributor()
                     o.first_name, o.last_name, o.role, o.link = contributor
                     o.save()
