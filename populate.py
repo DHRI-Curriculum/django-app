@@ -16,17 +16,12 @@ fixtures = Fixture(name='fixtures')
 
 if __name__ == '__main__':
     while done == 'n':
-
         iteration += 1
-        collector = {}
-
-        repo, branch = '', ''
-
+        repo, branch, collector = '', '', {}
         AUTO_PROCESS_done = len(AUTO_PROCESS) == iteration
 
         if AUTO_PROCESS and not AUTO_PROCESS_done:
             repo, branch = AUTO_PROCESS[iteration-1]
-
         else:
             repo = get_or_default(f'What is the repo name (assuming DHRI-Curriculum as username) or whole GitHub link you want to import?', repo)
             if repo == '':
