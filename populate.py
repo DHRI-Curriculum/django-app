@@ -289,9 +289,8 @@ if __name__ == '__main__':
         elif AUTO_PROCESS:
           done, msg = 'n', 'Are you done? [y/N] '
           done = get_or_default(msg, done, color='red').lower()
-
-    # Create fixtures.json
-    # TODO: #51 Move fixture creation to dhri.utils to not be dependent on so many packages in populate.py
+        else:
+          done = 'y'
 
     fixtures.save()
 
