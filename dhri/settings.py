@@ -24,9 +24,9 @@ AUTO_PROCESS = [
 
 # Django backend settings
 DJANGO_PATHS = {
-        'DJANGO': './app',
-        'DB': './app/db.sqlite3',
-        'MANAGE': './app/manage.py',
+        'DJANGO': 'app/',
+        'DB': 'app/db.sqlite3',
+        'MANAGE': 'app/manage.py',
     }
 
 ##### Cache ##############################
@@ -85,3 +85,6 @@ REQUIRED_SECTIONS = {
 
 from pathlib import Path
 DJANGO_PATHS['DB'] = Path(DJANGO_PATHS['DB'])
+
+for path in DJANGO_PATHS:
+    DJANGO_PATHS[path] = Path(__file__).absolute().parent.parent / DJANGO_PATHS[path]

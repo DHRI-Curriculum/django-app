@@ -1,4 +1,4 @@
-from dhri.settings import DEBUG, AUTO_RESET
+from dhri.settings import DEBUG, AUTO_RESET, DJANGO_PATHS
 from dhri.interaction import Logger
 from pathlib import Path
 
@@ -55,4 +55,7 @@ def reset_all(kill=True) -> None:
 
 
 if DEBUG == True:
+    for path in DJANGO_PATHS:
+        if not Path(DJANGO_PATHS[path]).exists():
+            log.warning(f"File/directory {DJANGO_PATHS[path]} must exist.")
     reset_all()
