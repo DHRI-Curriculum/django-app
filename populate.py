@@ -1,5 +1,5 @@
 from dhri import debug
-from dhri.django import django
+from dhri.django import django, Fixture
 from dhri.django.models import Workshop, Praxis, Tutorial, Reading, Frontmatter, LearningObjective, Project, Contributor
 from dhri.interaction import Logger, get_or_default
 from dhri.settings import AUTO_PROCESS, FIXTURE_PATH
@@ -11,6 +11,7 @@ from dhri.utils.exceptions import MissingCurriculumFile, MissingRequiredSection
 # Set up empty stuff for entire loop ##########################
 log = Logger(name="main")
 iteration, all_objects, done, collect_workshop_slugs = 0, [], 'n', []
+fixtures = Fixture(name='fixtures')
 ###############################################################
 
 if __name__ == '__main__':
@@ -281,20 +282,7 @@ if __name__ == '__main__':
             else:
                 log.error(f'Have no way of processing {model} (for app `frontmatter`). The `populate` script must be adjusted accordingly.', kill=False)
 
-        # Create fixtures.json
-        import json
-        from django.core import serializers
-
-        workshop_dict = json.loads(serializers.serialize('json', [workshop], ensure_ascii=False))[0]
-        workshop_dict['fields'].pop('created')
-        workshop_dict['fields'].pop('updated')
-
-        frontmatter_dict = json.loads(serializers.serialize('json', [frontmatter], ensure_ascii=False))[0]
-        praxis_dict = json.loads(serializers.serialize('json', [praxis], ensure_ascii=False))[0]
-
-        all_objects.extend([workshop, frontmatter, praxis])
-        for _ in collector.values():
-            all_objects.extend([x for x in _])
+        fixtures.add(workshop=workshop, frontmatter=frontmatter, praxis=praxis, collector=collector)
 
         if AUTO_PROCESS and AUTO_PROCESS_done:
           done, msg = 'y', 'Are you done? [Y/n] '
@@ -304,12 +292,8 @@ if __name__ == '__main__':
 
     # Create fixtures.json
     # TODO: #51 Move fixture creation to dhri.utils to not be dependent on so many packages in populate.py
-    log.log(f'Generating fixtures file for Django...')
-    all_objects_dict = json.loads(serializers.serialize('json', all_objects, ensure_ascii=False))
 
-    from pathlib import Path
-    Path(FIXTURE_PATH).write_text(json.dumps(all_objects_dict))
-    log.log(f'Fixture file generated: {FIXTURE_PATH}')
+    fixtures.save()
 
     from dhri.setup import setup
     setup(collect_workshop_slugs)
