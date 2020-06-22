@@ -81,19 +81,13 @@ if __name__ == '__main__':
         for model in l.praxis_models:
             if model == Praxis:
                 praxis = Praxis(workshop = workshop)
-
-                try:
-                    praxis.discussion_questions = l.praxis['discussion_questions'] # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
-                except KeyError:
-                    log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the theory-to-practice.md section for discussion questions.')
-                try:
-                    praxis.next_steps = l.praxis['next_steps'] # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
-                except KeyError:
-                    log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the theory-to-practice.md section for next steps.')
+                praxis.discussion_questions = l.discussion_questions
+                praxis.next_steps = l.next_steps
                 praxis.save()
                 log.log(f'Praxis object {praxis.id} added for workshop {workshop}.')
 
             elif model == Tutorial:
+                print()
                 try:
                   if isinstance(l.praxis['tutorials'], str) and not is_exclusively_bullets(l.praxis['tutorials']): # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
                       log.warning('The Tutorials section contains not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
