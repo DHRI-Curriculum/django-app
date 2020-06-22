@@ -39,3 +39,10 @@ MD_LINK = r'\[([\w\s\d\']+)\]\(((?:\/|https?:\/\/)?[\w\d.\/?=#-]+)\)'
 
 all_links = re.compile(f"({URL}|{MD_LINK})")
 is_md_link = re.compile(MD_LINK)
+
+
+MD_LINKS_FIXED = r'(?:\[(.*?)\]\((.*?)\))'
+md_links = re.compile(MD_LINKS_FIXED)
+
+URLS = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
+urls_general = re.compile(URLS)

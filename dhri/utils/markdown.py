@@ -15,7 +15,7 @@ Overview:
                                         and the section contents as values, and returns as dictionary.
 """
 
-from dhri.utils.regex import re, MULTILINE_ITEM, ALL_BULLETS
+from dhri.utils.regex import re, MULTILINE_ITEM, ALL_BULLETS, md_links, urls_general
 from dhri.interaction import Logger
 
 LIST_ELEMENTS = r'- (.*)(?:\n\s{2,4})?(.*)'
@@ -70,17 +70,8 @@ class Markdown():
         return([Markdown(text=f'{x[0]}\n{x[1]}'.strip()) for x in as_list])
 
     def _find_links(self):
-        from dhri.utils.regex import URL, re, is_md_link
-        urls = re.compile(URL)
-
         FORBIDDEN_URL = r'^[,.()]*|[.,()/]*$'
         forbidden_chars = re.compile(FORBIDDEN_URL)
-
-        MD_LINKS_FIXED = r'(?:\[(.*?)\]\((.*?)\))'
-        md_links = re.compile(MD_LINKS_FIXED)
-
-        URLS = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
-        urls_general = re.compile(URLS)
 
         _ = []
 
@@ -140,7 +131,11 @@ class Markdown():
 
     @property
     def no_link(self):
-        return(self.raw_text) # TODO: Strip link here
+        text = self.raw_text
+        text = md_links.sub("", text)
+        text = urls_general.sub("", text)
+        text = text.strip()
+        return(text)
 
     @property
     def one_line(self):
