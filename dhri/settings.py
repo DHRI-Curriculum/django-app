@@ -32,10 +32,10 @@ DJANGO_PATHS = {
 ##### Cache ##############################
 
 DOWNLOAD_CACHE_DIR = './__loader-cache__'
-TEST_AGE = 60 # minutes
+TEST_AGE = 20 # minutes
 
 # If set to True, the script will bypass the cache every time (effectively disregarding TEST_AGE above)
-FORCE_DOWNLOAD = True
+FORCE_DOWNLOAD = False
 
 
 ##### Dev features ##############################

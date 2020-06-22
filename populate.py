@@ -45,7 +45,7 @@ if __name__ == '__main__':
         try:
             l = Loader(repo, branch)
         except MissingRequiredSection:
-            log.error("A required section could not be found.", kill=False)
+            log.error("One or more required section(s) could not be found.", kill=False)
 
         if AUTO_PROCESS:
             repo_name = l.meta['repo_name']
