@@ -80,9 +80,8 @@ if __name__ == '__main__':
 
         for model in l.praxis_models:
             if model == Praxis:
-                praxis = Praxis(
-                        workshop = workshop,
-                    )
+                praxis = Praxis(workshop = workshop)
+
                 try:
                     praxis.discussion_questions = l.praxis['discussion_questions'] # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
                 except KeyError:
