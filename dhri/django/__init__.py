@@ -6,7 +6,7 @@ from dhri.settings import FIXTURE_PATH
 
 class Fixture():
 
-    log = Logger(name='autoname')
+    log = Logger(name='autoname', bypass_verbose=True)
 
     def __init__(self, *args, **kwargs):
         self.objects = []

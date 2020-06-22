@@ -45,8 +45,11 @@ def _fix_message(message='', quote='', first_line_add='--> ', indentation='    '
 class Logger():
     def __init__(self, *args, **kwargs):
         self.name = ''
+        self.bypass_verbose = False
         if 'name' in kwargs:
             self.name = kwargs['name']
+        if 'bypass_verbose' in kwargs:
+            self.bypass_verbose = kwargs['bypass_verbose']
 
     def log(self, message="", kill=False, color='green'):
         message = self._fix_message(message)
@@ -65,8 +68,7 @@ class Logger():
         self.output(message, kill)
 
     def output(self, message:str, kill=False):
-        if VERBOSE:
-            message = Style.DIM + f"[{self.name}] " + Style.RESET_ALL + message
+        message = Style.DIM + f"[{self.name}] " + Style.RESET_ALL + message
         if kill == True:
             exit(message)
         else:

@@ -1,6 +1,7 @@
 import re
 
 MULTILINE_ITEM = r"\s{3,10}"
+
 GET_BULLETPOINTS = {
     'ALL': r'\n?- (.*)(?:(?=\s{2,8})\s{2,8}(.*))?',
     'THOSE_WITH_EXTRA_PARAGRAPH': r'\n?- (.*)\n(?=  )\s+(.*)\n?',

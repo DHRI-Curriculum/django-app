@@ -3,7 +3,7 @@ import requests, json, datetime
 from dhri.django import django
 from dhri.django.models import Workshop, Praxis, Tutorial, Reading, Frontmatter, LearningObjective, Project, Contributor
 from dhri.interaction import Logger
-from dhri.utils.markdown import split_into_sections, destructure_list, get_contributors
+from dhri.utils.markdown import split_into_sections, destructure_list, get_contributors, Markdown
 from dhri.utils.exceptions import UnresolvedNameOrBranch, MissingCurriculumFile, MissingRequiredSection
 
 from dhri.settings import NORMALIZING_SECTIONS, REPO_AUTO, BRANCH_AUTO, BACKEND_AUTO, FORCE_DOWNLOAD
@@ -92,9 +92,12 @@ class Loader():
 
         self.log.name = self.repo_name + '-load'
 
+        print()
+        self.log.log(f"Loading content {self.repo_name}...")
+
         self.name = self.repo_name.replace('-', '').title().replace(" And ", "and")
 
-        self.cache = LoaderCache(self.repo_name)
+        self.cache = LoaderCache(self.repo_name, self)
 
         # Set up raw urls
         self._raw_url = f'https://raw.githubusercontent.com/{self.user}/{self.repo_name}/{self.branch}'
@@ -168,7 +171,7 @@ class Loader():
 
     @property
     def has_praxis(self) -> bool:
-        return len(self._praxis) > 0
+        return len(self.praxis) > 0
 
     @property
     def has_assessment(self) -> bool:
@@ -185,95 +188,59 @@ class Loader():
 
     @property
     def abstract(self):
-        return self._frontmatter.get('abstract')
+        return self.frontmatter.get('abstract', '')
 
     @property
     def has_abstract(self) -> bool:
-        return self._frontmatter.get('abstract') != None
+        return self.abstract != None and self.abstract != []
 
     @property
     def learning_objectives(self):
-        if self.has_learning_objectives:
-            learning_objectives = self._frontmatter.get('learning_objectives')
-            if isinstance(learning_objectives, list):
-                return(learning_objectives)
-            else:
-                # TODO: Test for no-bulletpoints here before this message... Could just be a list of bulletpoints as string at this point
-                log.warning('The Learning objectives section contains not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
-                return(destructure_list(learning_objectives))
-        else:
-            return([])
+        return(Markdown(text=self.frontmatter.get('learning_objectives', ''))) # I believe this now handles being an "empty list" if iterated through empty
 
     @property
     def has_learning_objectives(self) -> bool:
-        return self._frontmatter.get('learning_objectives') != None
+        return self.learning_objectives != None and self.learning_objectives != []
 
     @property
     def estimated_time(self):
-        return self._frontmatter.get('estimated_time')
+        return self.frontmatter.get('estimated_time', '')
 
     @property
     def has_estimated_time(self) -> bool:
-        return self._frontmatter.get('estimated_time') != None
+        return self.estimated_time != None and self.estimated_time != []
 
     @property
     def contributors(self):
-        if self.has_contributors:
-            contributors = self._frontmatter.get('contributors')
-            if isinstance(contributors, list):
-                return(contributors)
-            else:
-                # TODO: Test for no-bulletpoints here before this message... Could just be a list of bulletpoints as string at this point
-                log.warning('The Contributors section contains not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
-                return(get_contributors(contributors))
-        else:
-            return([])
+        return(Markdown(text=self.frontmatter.get('contributors', '')).as_contributors())
 
     @property
     def has_contributors(self) -> bool:
-        return self._frontmatter.get('contributors') != None
+        return self.contributors != None and self.contributors != []
 
     @property
     def ethical_considerations(self):
-        return self._frontmatter.get('ethical_considerations')
+        return self.frontmatter.get('ethical_considerations', '')
 
     @property
     def has_ethical_considerations(self) -> bool:
-        return self._frontmatter.get('ethical_considerations') != None
+        return self.ethical_considerations != None and self.ethical_considerations != []
 
     @property
     def readings(self):
-        if self.has_readings:
-            readings = self._frontmatter.get('readings')
-            if isinstance(readings, list):
-                return(readings)
-            else:
-                # TODO: Test for no-bulletpoints here before this message... Could just be a list of bulletpoints as string at this point
-                log.warning('The Readings section contains not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
-                return(destructure_list(readings))
-        else:
-            return([])
+        return(Markdown(text=self.frontmatter.get('readings', '')))
 
     @property
     def has_readings(self) -> bool:
-        return self._frontmatter.get('readings') != None
+        return self.readings != None and self.readings != []
 
     @property
     def projects(self):
-        if self.has_projects:
-            projects = self._frontmatter.get('projects')
-            if isinstance(projects, list):
-                return(projects)
-            else:
-                # TODO: Test for no-bulletpoints here before this message... Could just be a list of bulletpoints as string at this point
-                log.warning('The Projects section contains not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
-                return(destructure_list(projects))
-        else:
-            return([])
+        return(Markdown(text=self.frontmatter.get('projects', ''))) # I believe this now handles being an "empty list" if iterated through empty
 
     @property
     def has_projects(self):
-        return self._frontmatter.get('projects') != None
+        return self.projects != None and self.projects != []
 
 
     @property
@@ -285,51 +252,37 @@ class Loader():
 
     @property
     def discussion_questions(self):
-        return self._frontmatter.get('discussion_questions')
+        return(Markdown(text=self.praxis.get('discussion_questions', '')))
+        # return self.praxis.get('discussion_questions', '')
 
     @property
     def has_discussion_questions(self) -> bool:
-        return self._frontmatter.get('discussion_questions') != None
+        return self.discussion_questions != None and self.discussion_questions != []
 
     @property
     def next_steps(self):
-        return self._frontmatter.get('next_steps')
+        return(Markdown(text=self.praxis.get('next_steps', '')))
+        # return self.praxis.get('next_steps', '')
 
     @property
     def has_next_steps(self) -> bool:
-        return self._frontmatter.get('next_steps') != None
+        return self.next_steps != None and self.next_steps != []
 
     @property
-    def tutorials(self) -> list: # should return list
-        if self.has_tutorials:
-            tutorials = self._frontmatter.get('tutorials')
-            if isinstance(tutorials, list):
-                return(tutorials)
-            else:
-                log.warning('The Tutorials section contains not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
-                return(destructure_list(tutorials))
-        else: return([])
+    def tutorials(self) -> list:
+        return(Markdown(text=self.praxis.get('tutorials', '')).as_list()) # I believe this now handles being an "empty list" if iterated through empty
 
     @property
     def has_tutorials(self) -> bool:
-        return self._frontmatter.get('tutorials') != None
+        return self.tutorials != None and self.tutorials != []
 
     @property
     def further_readings(self):
-        if self.has_further_readings:
-            further_readings = self._frontmatter.get('further_readings')
-            if isinstance(further_readings, list):
-                return(further_readings)
-            else:
-                log.warning('The Further Readings section contains not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
-                print(further_readings) # do something with destructure_list here instead
-                exit()
-        else:
-            return([])
+        return(Markdown(text=self.praxis.get('further_readings', ''))) # I believe this now handles being an "empty list" if iterated through empty
 
     @property
     def has_further_readings(self) -> bool:
-        return self._frontmatter.get('further_readings') != None
+        return self.further_readings != None and self.further_readings != []
 
 
     @property
@@ -419,10 +372,11 @@ class Loader():
 class LoaderCache():
     """ A file cache for the Loader class. """
 
-    def __init__(self, repo_name):
+    def __init__(self, repo_name:str, loader:Loader):
         self.repo_name = repo_name
         self.path = DOWNLOAD_CACHE_DIR / (self.repo_name + ".json")
         self.exists = self._check_age()
+        self.parent = loader
 
     @property
     def data(self):
@@ -437,7 +391,7 @@ class LoaderCache():
         now = datetime.datetime.today()
 
         if now - file_mod_time > TEST_AGE:
-            log.log(f"Cache has expired - older than {TEST_AGE} minutes... Removing.")
+            self.parent.log.log(f"Cache has expired - older than {TEST_AGE} minutes... Removing.")
             self.path.unlink()
             return False
         else:
@@ -445,12 +399,12 @@ class LoaderCache():
 
 
     def load_cache(self) -> dict:
-        log.log("loading cache...")
+        self.parent.log.log("Loading cache from local file.")
         return(json.loads(self.path.read_text()))
 
 
     def save_cache(self, *args, **kwargs) -> bool:
-        log.log("saving cache...")
+        self.parent.log.log(f"Saving cache locally: Cache path is {self.path}")
         if len(args) == 2:
             data = args[1]
             self.path.write_text(json.dumps(data))
