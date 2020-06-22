@@ -51,7 +51,7 @@ if __name__ == '__main__':
         else:
             repo_name = get_or_default('Repository', l.meta['repo_name'])
 
-        repo_name = get_or_default('Workshop name', repo_name.replace('-', ' ').title().replace('Html Css', 'HTML/CSS'))
+        repo_name = get_or_default('Workshop name', repo_name.replace('-', ' ').title().replace('Html Css', 'HTML/CSS')) # TODO: Add an autocorrection in settings
         log.name = l.repo_name
 
 
