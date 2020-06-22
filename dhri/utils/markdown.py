@@ -255,13 +255,6 @@ def split_into_sections(markdown:str) -> dict:
                     sections[header] += '\n' + nextline
                 sections[header] = sections[header].strip()
 
-                '''
-                if is_exclusively_bullets(sections[header]):
-                    sections[header] = get_bulletpoints(sections[header])
-                else:
-                    sections[header] = clear_emptylines(sections[header])
-                ''' # we handle this differently now in #52
-
     return(sections)
 
 
