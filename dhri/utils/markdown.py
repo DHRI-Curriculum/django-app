@@ -34,7 +34,7 @@ class Markdown():
             if self._index <= len(self.as_list)-1:
                 _ = self.as_list[self._index]
                 self._index += 1
-                return(_)
+                return _
             raise StopIteration
 
 
@@ -48,24 +48,28 @@ class Markdown():
 
         self.raw_text = self._pre_process()
 
+        self._links = []
+
     def _pre_process(self):
-        newlines = []
-        for line in self.raw_text.splitlines():
-            if line == '':
-                continue
-            if line.strip().startswith('-'): # cannot handle nested lists right now
-                newlines.append(line.strip())
-                continue
-            else:
-                newlines.append(line)
-        return("\n".join(newlines))
-    
+        if isinstance(self.raw_text, str):
+            newlines = []
+            for line in self.raw_text.splitlines():
+                if line == '':
+                    continue
+                if line.strip().startswith('-'): # cannot handle nested lists right now
+                    newlines.append(line.strip())
+                    continue
+                else:
+                    newlines.append(line)
+            return("\n".join(newlines))
+        return(self.raw_text)
+
     def as_list(self):
         """Returns the raw markdown as a python list for iteration but disregards any extra text"""
         as_list = all_list_elements.findall(self.raw_text) # has each line in a tuple
-        return([f'{x[0]}\n{x[1]}'.strip() for x in as_list])
-    
-    def find_links(self):
+        return([Markdown(text=f'{x[0]}\n{x[1]}'.strip()) for x in as_list])
+
+    def _find_links(self):
         from dhri.utils.regex import URL, re, is_md_link
         urls = re.compile(URL)
 
@@ -75,24 +79,28 @@ class Markdown():
         MD_LINKS_FIXED = r'(?:\[(.*?)\]\((.*?)\))'
         md_links = re.compile(MD_LINKS_FIXED)
 
+        URLS = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
+        urls_general = re.compile(URLS)
+
         _ = []
 
-        all_urls = md_links.findall(self.raw_text)
+        text = str(self.raw_text)
+        all_urls = md_links.findall(text)
         for i, data in enumerate(all_urls):
-            # TODO: add the check for forbidden_chars here as well
-            _.append(data)
+            text = data[0]
+            url = forbidden_chars.sub('', data[1])
+            _.append((text, url))
+            text = text.replace(f"[{data[0]}]({data[1]})","")
 
-        all_urls = urls.findall(self.raw_text)
-        for i, url in enumerate(all_urls):
-            all_urls[i] = forbidden_chars.sub('', url)
-        all_urls = list(set(all_urls))
+        text = text.strip()
 
-        _.extend([('',x) for x in all_urls])
-
-        # TODO: Need a better way here to check whether the URL is already collected
-        _ = list(set(_))
+        for data in urls_general.findall(text):
+            if data[0] != '':
+                url = forbidden_chars.sub('', data[0])
+                if not url in [x[1] for x in _]: _.append(('', url))
 
         return(_)
+
 
     @property
     def bulletpoints(self):
@@ -112,13 +120,23 @@ class Markdown():
 
     @property
     def links(self):
-        return(self.find_links())
+        if not self._links:
+            self._links = self._find_links()
+        return(self._links)
+
+    @property
+    def has_links(self):
+        return len(self.links) > 0
+
+    @property
+    def has_multiple_links(self):
+        return len(self.links) > 1
 
     def __iter__(self):
         return(self.MarkdownIterator(self.as_list()))
 
     def __str__(self):
-        return(self.raw_text)
+        return(str(self.raw_text))
 
     @property
     def no_link(self):
@@ -139,6 +157,9 @@ class Markdown():
                 role, names = separate_role.split(str(line))
                 for name in names.split(','):
                     name = name.strip()
+                    if not name or name.lower().strip() == 'none':
+                        log.warning("Found a contributor with no name — skipping.")
+                        continue
                     as_md = Markdown(text=name)
                     if as_md.links:
                         name = as_md.links[0][0]
@@ -153,6 +174,9 @@ class Markdown():
                 else:
                     name = str(line)
             first_name, last_name = split_names(name)
+            if not first_name or not last_name or name.lower().strip() == 'none':
+                log.warning("Found a contributor with no name — skipping.")
+                continue
             _.append((first_name, last_name, role, link))
         return(_)
 

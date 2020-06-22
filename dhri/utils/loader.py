@@ -1,13 +1,15 @@
 import requests, json, datetime
-
 from dhri.django import django
 from dhri.django.models import Workshop, Praxis, Tutorial, Reading, Frontmatter, LearningObjective, Project, Contributor
 from dhri.interaction import Logger
-from dhri.utils.markdown import split_into_sections, destructure_list, get_contributors, Markdown
+from dhri.utils.markdown import split_into_sections, get_contributors, Markdown
 from dhri.utils.exceptions import UnresolvedNameOrBranch, MissingCurriculumFile, MissingRequiredSection
 
 from dhri.settings import NORMALIZING_SECTIONS, REPO_AUTO, BRANCH_AUTO, BACKEND_AUTO, FORCE_DOWNLOAD
 from dhri.constants import DOWNLOAD_CACHE_DIR, TEST_AGE
+
+from django.utils.text import slugify
+from pathlib import Path
 
 log = Logger(name='loader')
 
@@ -92,7 +94,6 @@ class Loader():
 
         self.log.name = self.repo_name + '-load'
 
-        print()
         self.log.log(f"Loading content {self.repo_name}...")
 
         self.name = self.repo_name.replace('-', '').title().replace(" And ", "and")
@@ -253,7 +254,6 @@ class Loader():
     @property
     def discussion_questions(self):
         return(Markdown(text=self.praxis.get('discussion_questions', '')))
-        # return self.praxis.get('discussion_questions', '')
 
     @property
     def has_discussion_questions(self) -> bool:
@@ -270,7 +270,7 @@ class Loader():
 
     @property
     def tutorials(self) -> list:
-        return(Markdown(text=self.praxis.get('tutorials', '')).as_list()) # I believe this now handles being an "empty list" if iterated through empty
+        return(Markdown(text=self.praxis.get('tutorials', ''))) # I believe this now handles being an "empty list" if iterated through empty
 
     @property
     def has_tutorials(self) -> bool:
@@ -391,7 +391,10 @@ class LoaderCache():
         now = datetime.datetime.today()
 
         if now - file_mod_time > TEST_AGE:
-            self.parent.log.log(f"Cache has expired - older than {TEST_AGE} minutes... Removing.")
+            try:
+                self.parent.log.log(f"Cache has expired - older than {TEST_AGE} minutes... Removing.")
+            except:
+                log.log(f"Cache has expired - older than {TEST_AGE} minutes... Removing.")
             self.path.unlink()
             return False
         else:
@@ -399,14 +402,21 @@ class LoaderCache():
 
 
     def load_cache(self) -> dict:
-        self.parent.log.log("Loading cache from local file.")
+        try:
+            self.parent.log.log("Loading cache from local file.")
+        except:
+            log.log("Loading cache from local file.")
         return(json.loads(self.path.read_text()))
 
 
     def save_cache(self, *args, **kwargs) -> bool:
-        self.parent.log.log(f"Saving cache locally: Cache path is {self.path}")
+        try:
+            self.parent.log.log(f"Saving cache locally: Cache path is {self.path}")
+        except:
+            log.log(f"Saving cache locally: Cache path is {self.path}")
         if len(args) == 2:
             data = args[1]
+            if not self.path.parent.exists(): self.path.parent.mkdir(parents=True)
             self.path.write_text(json.dumps(data))
         return(True)
 
@@ -417,3 +427,56 @@ class LoaderCache():
 
     def __repr__(self) -> str:
         return f'LoaderCache("{self.repo_name}")'
+
+
+
+class WebCache(LoaderCache):
+
+    def __init__(self, url:str, force_download=FORCE_DOWNLOAD):
+
+        self.url = url
+        self.title = None
+        self.force_download = FORCE_DOWNLOAD
+
+        if str(url).lower().strip() != "none":
+            self.path = DOWNLOAD_CACHE_DIR / (slugify(url[:100])+".txt")
+            self.path = Path(self.path)
+
+            self._check_age()
+
+            if not self.path.exists():
+                title = self.try_title_element_from_url()
+                self.path.write_text(title)
+
+            if self.path.exists():
+                self.title = self.path.read_text()
+
+    def try_title_element_from_url(self):
+        import requests
+        from bs4 import BeautifulSoup
+
+        if str(self.url).lower().strip() == "none":
+            return(None)
+        else:
+            log.warning(f"Trying to download title from web page...")
+            #try:
+            r = requests.get(self.url)
+            soup = BeautifulSoup(r.text, 'lxml')
+            return(soup.find('title').text)
+            #except:
+            #    return(None)
+
+    def _check_age(self) -> bool:
+        if not self.path.exists() or self.force_download == True: return(False)
+        file_mod_time = datetime.datetime.fromtimestamp(self.path.stat().st_ctime)
+        now = datetime.datetime.today()
+
+        if now - file_mod_time > TEST_AGE:
+            try:
+                self.parent.log.log(f"Cache has expired - older than {TEST_AGE} minutes... Removing.")
+            except:
+                log.log(f"Cache has expired - older than {TEST_AGE} minutes... Removing.")
+            self.path.unlink()
+            return False
+        else:
+            return True

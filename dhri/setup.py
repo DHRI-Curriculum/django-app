@@ -21,3 +21,8 @@ def setup(collect_workshop_slugs:list):
         log.warning(f"If the commands do not work, you can run them on the command line like this:\n{commands}")
         log.warning(f"One reason why they might not work is because you have not activated the correct virtual environment.")
         os.system(commands)
+        log.log(f"You should now be able to run the command: python ./{MANAGE} runserver")
+        if len(collect_workshop_slugs):
+            all_urls = "\n- http://localhost:8000/workshop/" + ("\n- http://localhost:8000/workshop/".join(collect_workshop_slugs))
+            log.log(f"Once the server is up and running, you can visit:")
+            print(all_urls)

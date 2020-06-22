@@ -3,8 +3,8 @@ from dhri.django import django, Fixture
 from dhri.django.models import Workshop, Praxis, Tutorial, Reading, Frontmatter, LearningObjective, Project, Contributor
 from dhri.interaction import Logger, get_or_default
 from dhri.settings import AUTO_PROCESS, FIXTURE_PATH
-from dhri.utils.loader import Loader
-from dhri.utils.markdown import get_bulletpoints, is_exclusively_bullets, get_list, get_contributors, destructure_list, Markdown
+from dhri.utils.loader import Loader, WebCache
+from dhri.utils.markdown import get_bulletpoints, is_exclusively_bullets, get_list, get_contributors, Markdown
 from dhri.utils.text import get_urls, get_number, get_markdown_hrefs
 from dhri.utils.exceptions import MissingCurriculumFile, MissingRequiredSection
 
@@ -52,8 +52,9 @@ if __name__ == '__main__':
         else:
             repo_name = get_or_default('Repository', l.meta['repo_name'])
 
-        repo_name = get_or_default('Workshop name', repo_name.replace('-', ' ').title().replace('Html Css', 'HTML/CSS')) # TODO: Add an autocorrection in settings
+        repo_name = get_or_default('Workshop name?', repo_name.replace('-', ' ').title().replace('Html Css', 'HTML/CSS')) # TODO: Add an autocorrection in settings
         log.name = l.repo_name
+        log.original_name = log.name
 
 
         ###### Test for data consistency
@@ -64,8 +65,9 @@ if __name__ == '__main__':
             continue
 
 
-        ###### WORKSHOP MODELS ####################################
+        ###### WORKSHOP MODEL ####################################
 
+        log.name = log.original_name + "-workshop"
         workshop = Workshop(
                 name = repo_name,
                 parent_backend = l.parent_backend,
@@ -77,120 +79,78 @@ if __name__ == '__main__':
         collect_workshop_slugs.append(workshop.slug)
 
 
-        ###### PRAXIS MODELS ####################################
-
-        for model in l.praxis_models:
-            if model == Praxis:
-                praxis = Praxis(workshop = workshop)
-                praxis.discussion_questions = l.discussion_questions
-                praxis.next_steps = l.next_steps
-                praxis.save()
-                log.log(saved_prefix + f'Theory-to-practice object {praxis.id} added for workshop {workshop}.')
-
-            elif model == Tutorial:
-                collector['tutorials'] = []
-                for line in l.tutorials:
-                    md = Markdown(text=line)
-                    o = Tutorial()
-                    o.comment = str(line[0])
-                    if len(md.links) >= 1:
-                        o.label, o.url = md.links[0]
-                    if len(md.links) > 1:
-                        log.warning(f'One tutorial seems to contain more than one URL, but only one ({o.url}) is captured: {", ".join([x[1] for x in md.links])}')
-                    o.save()
-                    collector['tutorials'].append(o)
-                    log.log(f'Tutorial {o.id} added: {o.label}')
-                if len(collector['tutorials']):
-                    praxis.tutorials.set(collector['tutorials'])
-                    log.log(saved_prefix + f'Praxis {praxis.id} updated with {len(collector["tutorials"])} tutorials.')
-
-            elif model == Reading:
-                collector['praxis_readings'] = []
-                for line in l.further_readings:
-                    md = Markdown(text=line)
-                    o = Reading()
-                    o.comment = str(line)
-                    if len(md.links) >= 1:
-                        o.title, o.url = md.links[0]
-                    if len(md.links) > 1:
-                        log.warning(f'One reading (theory-to-practice) seems to contain more than one URL, but only one ({o.url}) is captured: {", ".join([x[1] for x in md.links])}')
-                    print(o.title)
-                    o.save()
-                    collector['praxis_readings'].append(o)
-                    log.log(f'Reading {o.id} added with title ({o.title}), URL ({o.url}) and comment ({o.comment[:30]}...)')
-                if len(collector['praxis_readings']):
-                    praxis.further_readings.set(collector['praxis_readings'])
-                    log.log(saved_prefix + f'Praxis {praxis.id} updated with {len(collector["praxis_readings"])} further readings.')
-
-            else:
-                log.error(f'Have no way of processing {model} for app `praxis`. The `populate` script must be adjusted accordingly.', kill=False)
-
-
-
         ###### FRONTMATTER MODELS ####################################
 
         for model in l.frontmatter_models:
 
             # frontmatter.Frontmatter
             if model == Frontmatter:
+                log.name = log.original_name + "-frontmatter"
+                log.log("------ FRONTMATTER ------------------------------------------")
                 frontmatter = Frontmatter(workshop = workshop)
                 frontmatter.abstract = l.abstract
                 frontmatter.ethical_considerations = l.ethical_considerations
                 frontmatter.estimated_time = get_number(l.frontmatter['estimated_time'])
                 frontmatter.save()
-                log.log(saved_prefix + f'Frontmatter object {frontmatter.id} added for workshop {workshop}.')
+                log.log(saved_prefix + f'Frontmatter object {frontmatter.id} added to workshop {workshop}.')
 
             # frontmatter.LearningObjective
             elif model == LearningObjective:
+                log.name = log.original_name + "-learning-obj"
                 collector['learning_objectives'] = []
                 if l.learning_objectives.links: log.warning(f'Looks like the learning objectives have URLs but the database has no way to keep them.')
                 for line in l.learning_objectives:
-                    md = Markdown(text=line)
-                    label = md.one_line
+                    label = str(line)
                     o = LearningObjective(frontmatter=frontmatter, label=label)
                     o.save()
                     collector['learning_objectives'].append(o)
                 if len(collector['learning_objectives']):
-                    log.log(saved_prefix + f'Frontmatter {frontmatter.id} updated with {len(collector["learning_objectives"])} learning objectives.')
+                    log.log(f'Summary: Frontmatter {frontmatter.id} updated with {len(collector["learning_objectives"])} learning objectives.')
 
             # frontmatter.Project
             elif model == Project:
+                log.name = log.original_name + "-projects"
                 collector['projects'] = []
                 for line in l.projects:
-                    md = Markdown(text=line)
                     o = Project()
                     o.comment = str(line)
-                    if len(md.links) >= 1:
-                        o.title, o.url = md.links[0]
-                    if len(md.links) > 1:
-                        log.warning(f'One project seems to contain more than one URL, but only one ({o.url}) is captured: {", ".join([x[1] for x in md.links])}')
+                    if line.has_links: o.title, o.url = line.links[0]
+                    if line.has_multiple_links: log.warning(f'One project seems to contain more than one URL, but only one ({o.url}) is captured: {line.links}')
+                    if o.title.lower().strip() == '':
+                        log.error(f"Project has no title. The comment is set to: {o.comment}", kill=None)
+                        o.title = WebCache(o.url).title
+                        o.title = get_or_default('Set a title for the project with the comment above', o.title, color='red')
                     o.save()
                     collector['projects'].append(o)
-                    log.log(f'Project added: {o.title} ({o.url})')
+                    log.log(f'Project added: "{o.title}" ({o.url})')
                 frontmatter.projects.set(collector['projects'])
-                log.log(saved_prefix + f'Frontmatter {frontmatter.id} updated with {len(collector["projects"])} projects.')
+                log.log(f'Summary: Frontmatter {frontmatter.id} updated with {len(collector["projects"])} projects.')
 
             # frontmatter.Reading
             elif model == Reading:
+                log.name = log.original_name + "-readings"
                 collector['frontmatter_readings'] = []
-                for line in l.projects:
-                    md = Markdown(text=line)
+                for line in l.readings:
                     o = Reading()
-                    o.comment = line
-                    if len(md.links) >= 1:
-                        o.title, o.url = md.links[0]
-                    if len(md.links) > 1:
-                        log.warning(f'One reading seems to contain more than one URL, but only one ({o.url}) is captured: {", ".join([x[1] for x in md.links])}')
+                    o.comment = str(line)
+                    if line.has_links: o.title, o.url = line.links[0]
+                    if line.has_multiple_links: log.warning(f'One reading seems to contain more than one URL, but only one ({o.url}) is captured: {line.links}')
+                    if o.title.lower().strip() == '':
+                        log.error(f"Reading has no title. The comment is set to: {o.comment}", kill=None)
+                        o.title = WebCache(o.url).title
+                        o.title = get_or_default('Set a title for the reading with the comment above', o.title, color='red')
                     o.save()
                     collector['frontmatter_readings'].append(o)
-                    log.log(f'Reading added: {o.title}')
+                    log.log(f'Reading added: "{o.title}" ({o.url})')
                 frontmatter.readings.set(collector['frontmatter_readings'])
-                log.log(saved_prefix + f'Frontmatter {frontmatter.id} updated with {len(collector["frontmatter_readings"])} readings.')
+                log.log(f'Summary: Frontmatter {frontmatter.id} updated with {len(collector["frontmatter_readings"])} readings.')
 
             # frontmatter.Contributor
             elif model == Contributor:
+                log.name = log.original_name + "-contributors"
                 collector['contributors'] = []
                 for contributor in l.contributors:
+                    first_name, last_name, role, link = contributor
                     o = Contributor()
                     o.first_name, o.last_name, o.role, o.link = contributor
                     o.save()
@@ -199,10 +159,66 @@ if __name__ == '__main__':
                     if o.role != '': msg = msg.replace('added', f'({o.role}) added')
                     log.log(msg)
                 frontmatter.contributors.set(collector['contributors'])
-                log.log(saved_prefix + f'Frontmatter {frontmatter.id} updated with {len(collector)} contributors.')
+                log.log(f'Summary: Frontmatter {frontmatter.id} updated with {len(collector["contributors"])} contributors.')
 
             else:
                 log.error(f'Have no way of processing {model} (for app `frontmatter`). The `populate` script must be adjusted accordingly.', kill=False)
+
+
+        ###### PRAXIS MODELS ####################################
+
+        for model in l.praxis_models:
+            if model == Praxis:
+                log.name = log.original_name + "-praxis"
+                log.log("------ PRAXIS ------------------------------------------")
+                praxis = Praxis(workshop = workshop)
+                praxis.discussion_questions = l.discussion_questions
+                praxis.next_steps = l.next_steps
+                praxis.save()
+                log.log(saved_prefix + f'Theory-to-practice object {praxis.id} added to workshop {workshop}.')
+
+            elif model == Tutorial:
+                log.name = log.original_name + "-tutorials"
+                collector['tutorials'] = []
+                for line in l.tutorials:
+                    o = Tutorial()
+                    o.comment = str(line)
+                    if line.has_links: o.label, o.url = line.links[0]
+                    if line.has_multiple_links: log.warning(f'One tutorial seems to contain more than one URL, but only one ({o.url}) is captured: {line.links}')
+                    if o.label.lower().strip() == '':
+                        log.error(f"Tutorial has no label. The comment is set to: {o.comment}", kill=None)
+                        o.label = WebCache(o.url).title
+                        o.label = get_or_default('Set a label for the tutorial with the comment above', o.label, color='red')
+                    o.save()
+                    collector['tutorials'].append(o)
+                    log.log(f'Tutorial added: "{o.label}" ({o.url})')
+                if len(collector['tutorials']):
+                    praxis.tutorials.set(collector['tutorials'])
+                    log.log(f'Summary: Praxis {praxis.id} updated with {len(collector["tutorials"])} tutorials.')
+
+            elif model == Reading:
+                log.name = log.original_name + "-readings"
+                collector['praxis_readings'] = []
+                for line in l.further_readings:
+                    o = Reading()
+                    o.comment = str(line)
+                    if line.has_links: o.title, o.url = line.links[0]
+                    if line.has_multiple_links: log.warning(f'One reading (theory-to-practice) seems to contain more than one URL, but only one ({o.url}) is captured: {line.links}')
+                    if o.title.lower().strip() == '':
+                        log.error(f"Reading has no title. The comment is set to: {o.comment}", kill=None)
+                        o.title = WebCache(o.url).title
+                        o.title = get_or_default('Set a title for the reading with the comment above', o.title, color='red')
+                    o.save()
+                    collector['praxis_readings'].append(o)
+                    log.log(f'Reading added: "{o.title}" ({o.url})')
+                if len(collector['praxis_readings']):
+                    praxis.further_readings.set(collector['praxis_readings'])
+                    log.log(f'Summary: Praxis {praxis.id} updated with {len(collector["praxis_readings"])} further readings.')
+
+            else:
+                log.error(f'Have no way of processing {model} for app `praxis`. The `populate` script must be adjusted accordingly.', kill=False)
+
+
 
         fixtures.add(workshop=workshop, frontmatter=frontmatter, praxis=praxis, collector=collector)
 

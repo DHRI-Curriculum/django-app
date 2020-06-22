@@ -59,6 +59,7 @@ class Logger():
     def error(self, message="", raise_error=None, kill=True, color='red'):
         if raise_error != None:
             raise(raise_error('Error: ' + message))
+        message = self._fix_message('Error: ' + message)
         message = colorize(message, fg=color, opts=('bold',))
         self.output(message, kill)
 
@@ -95,12 +96,12 @@ class Input:
             opts = ('bold',)
         message = colorize(message, fg=color, opts=opts)
         if start_with_newline: message = "\n" + message
-        return(input(message))
+        return(input(message+"\n"))
 
 
 def get_or_default(message: str, default_variable: str, color='yellow', evaluate=str) -> str:
     inp = Input('')
-    _ = inp.ask(f'{message} (default "{default_variable}"): ', color=color)
+    _ = inp.ask(f'{message} [default "{default_variable}"]: ', color=color)
     if _ != '':
         try:
             return(evaluate(_))
