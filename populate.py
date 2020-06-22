@@ -51,7 +51,7 @@ if __name__ == '__main__':
         else:
             repo_name = get_or_default('Repository', l.meta['repo_name'])
 
-        repo_name = get_or_default('Workshop name', repo_name.replace('-', ' ').title().replace('Html Css', 'HTML/CSS')) # TODO: Add an autocorrection in settings
+        repo_name = get_or_default('Workshop name', repo_name.replace('-', ' ').title().replace('Html Css', 'HTML/CSS')) # TODO: #61 Add an autocorrection in settings
         log.name = l.repo_name
 
 
@@ -133,9 +133,10 @@ if __name__ == '__main__':
                     l.praxis['further_readings'] = get_list(l.praxis['further_readings']) # FIXME: #52 Remove dependencies on get_list for destructure_list
 
                 for item in l.praxis['further_readings']:
-                    title, _ = item # TODO: #44 add field on reading for comment (and replace _)
+                    title, comment = item
                     o = Reading()
                     o.title = title
+                    o.comment = comment
                     o.save()
                     collector['praxis_readings'].append(o)
                     log.log(f'Reading {o.id} added:\n    {o.title}')
