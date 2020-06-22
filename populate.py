@@ -28,7 +28,6 @@ if __name__ == '__main__':
             repo, branch = AUTO_PROCESS[iteration-1]
 
         else:
-            print('here')
             repo = get_or_default(f'What is the repo name (assuming DHRI-Curriculum as username) or whole GitHub link you want to import?', repo)
             if repo == '':
                 log.error('No repository name, exiting...', kill=None)
