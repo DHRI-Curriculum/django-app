@@ -29,6 +29,12 @@ DJANGO_PATHS = {
         'MANAGE': 'app/manage.py',
     }
 
+# Auto replacement in titles
+REPLACEMENTS = {
+    '-': ' ',
+    'Html Css': 'HTML/CSS',
+}
+
 ##### Cache ##############################
 
 DOWNLOAD_CACHE_DIR = './__loader-cache__'

@@ -1,6 +1,6 @@
 # General text tools
 from dhri.utils.regex import re, URL, NUMBERS, MARKDOWN_HREF, COMPLEX_SEARCH_FOR_URLS
-
+from dhri.settings import REPLACEMENTS
 
 def get_urls(markdown:str) -> list:
     """ Returns a list of URLs in a given string """
@@ -26,3 +26,16 @@ def get_number(markdown:str) -> int:
     else:
         assumed_integer = 0
     return(assumed_integer)
+
+
+def auto_replace(string:str) -> str:
+    '''
+    try:
+        if not isinstance(REPLACEMENTS, dict):
+            return string
+    except:
+        return string
+    '''
+    for k, v in REPLACEMENTS.items():
+        string = string.replace(k, v)
+    return string

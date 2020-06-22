@@ -2,10 +2,10 @@ from dhri import debug
 from dhri.django import django, Fixture
 from dhri.django.models import Workshop, Praxis, Tutorial, Reading, Frontmatter, LearningObjective, Project, Contributor
 from dhri.interaction import Logger, get_or_default
-from dhri.settings import AUTO_PROCESS, FIXTURE_PATH
+from dhri.settings import AUTO_PROCESS, FIXTURE_PATH, REPLACEMENTS
 from dhri.utils.loader import Loader, WebCache
 from dhri.utils.markdown import get_bulletpoints, is_exclusively_bullets, get_list, get_contributors, Markdown
-from dhri.utils.text import get_urls, get_number, get_markdown_hrefs
+from dhri.utils.text import get_urls, get_number, get_markdown_hrefs, auto_replace
 from dhri.utils.exceptions import MissingCurriculumFile, MissingRequiredSection
 
 # Set up empty stuff for entire loop ##########################
@@ -52,7 +52,7 @@ if __name__ == '__main__':
         else:
             repo_name = get_or_default('Repository', l.meta['repo_name'])
 
-        repo_name = get_or_default('Workshop name', repo_name.replace('-', ' ').title().replace('Html Css', 'HTML/CSS')) # TODO: #61 Add an autocorrection in settings
+        repo_name = get_or_default('Workshop name', auto_replace(repo_name.title()))
         log.name = l.repo_name
         log.original_name = log.name
 
