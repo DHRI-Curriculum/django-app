@@ -18,6 +18,168 @@ Overview:
 from dhri.utils.regex import re, MULTILINE_ITEM, ALL_BULLETS
 from dhri.interaction import Logger
 
+LIST_ELEMENTS = r'- (.*)(?:\n\s{2,4})?(.*)'
+all_list_elements = re.compile(LIST_ELEMENTS)
+
+
+class Markdown():
+
+    class MarkdownIterator:
+
+        def __init__(self, as_list):
+            self.as_list = as_list
+            self._index = 0
+
+        def __next__(self):
+            if self._index <= len(self.as_list)-1:
+                _ = self.as_list[self._index]
+                self._index += 1
+                return _
+            raise StopIteration
+
+
+    log = Logger(name='markdown-interpreter')
+
+    def __init__(self, verbose=False, *args, **kwargs) -> None:
+        self.verbose = verbose
+
+        if 'text' in kwargs:
+            self.raw_text = kwargs['text']
+
+        self.raw_text = self._pre_process()
+
+        self._links = []
+
+    def _pre_process(self):
+        if isinstance(self.raw_text, str):
+            newlines = []
+            for line in self.raw_text.splitlines():
+                if line == '':
+                    continue
+                if line.strip().startswith('-'): # cannot handle nested lists right now
+                    newlines.append(line.strip())
+                    continue
+                else:
+                    newlines.append(line)
+            return("\n".join(newlines))
+        return(self.raw_text)
+
+    def as_list(self):
+        """Returns the raw markdown as a python list for iteration but disregards any extra text"""
+        as_list = all_list_elements.findall(self.raw_text) # has each line in a tuple
+        return([Markdown(text=f'{x[0]}\n{x[1]}'.strip()) for x in as_list])
+
+    def _find_links(self):
+        from dhri.utils.regex import URL, re, is_md_link
+        urls = re.compile(URL)
+
+        FORBIDDEN_URL = r'^[,.()]*|[.,()/]*$'
+        forbidden_chars = re.compile(FORBIDDEN_URL)
+
+        MD_LINKS_FIXED = r'(?:\[(.*?)\]\((.*?)\))'
+        md_links = re.compile(MD_LINKS_FIXED)
+
+        URLS = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
+        urls_general = re.compile(URLS)
+
+        _ = []
+
+        text = str(self.raw_text)
+        all_urls = md_links.findall(text)
+        for i, data in enumerate(all_urls):
+            text = data[0]
+            url = forbidden_chars.sub('', data[1])
+            _.append((text, url))
+            text = text.replace(f"[{data[0]}]({data[1]})","")
+
+        text = text.strip()
+
+        for data in urls_general.findall(text):
+            if data[0] != '':
+                url = forbidden_chars.sub('', data[0])
+                if not url in [x[1] for x in _]: _.append(('', url))
+
+        return(_)
+
+
+    @property
+    def bulletpoints(self):
+        return(len([x for x in self.raw_text.splitlines() if x.strip().startswith('-')]))
+
+    @property
+    def is_only_bulletpoints(self):
+        is_only_bulletpoints = re.sub(ALL_BULLETS, "", self.raw_text) == ''
+        if self.verbose:
+            if is_only_bulletpoints == False:
+                log.warning(f'Markdown does not only contain bulletpoints: {self.linecount} lines but {self.bulletpoints} bulletpoints.')
+        return is_only_bulletpoints
+
+    @property
+    def linecount(self):
+        return(len(self.raw_text.splitlines()))
+
+    @property
+    def links(self):
+        if not self._links:
+            self._links = self._find_links()
+        return(self._links)
+
+    @property
+    def has_links(self):
+        return len(self.links) > 0
+
+    @property
+    def has_multiple_links(self):
+        return len(self.links) > 1
+
+    def __iter__(self):
+        return(self.MarkdownIterator(self.as_list()))
+
+    def __str__(self):
+        return(str(self.raw_text))
+
+    @property
+    def no_link(self):
+        return(self.raw_text) # TODO: Strip link here
+
+    @property
+    def one_line(self):
+        return(self.raw_text.replace("\n", " "))
+
+    def as_contributors(self):
+        as_list = [Markdown(text=x) for x in self.as_list()]
+        separate_role = re.compile(r':\s')
+        _ = []
+        for line in as_list:
+            name, link, role = '', '', ''
+
+            if separate_role.findall(str(line)):
+                role, names = separate_role.split(str(line))
+                for name in names.split(','):
+                    name = name.strip()
+                    if not name or name.lower().strip() == 'none':
+                        log.warning("Found a contributor with no name — skipping.")
+                        continue
+                    as_md = Markdown(text=name)
+                    if as_md.links:
+                        name = as_md.links[0][0]
+                        link = as_md.links[0][1]
+                    first_name, last_name = split_names(name)
+                    _.append((first_name, last_name, role, link))
+                continue
+            else:
+                if line.links:
+                    name = line.links[0][0]
+                    link = line.links[0][1]
+                else:
+                    name = str(line)
+            first_name, last_name = split_names(name)
+            if not first_name or not last_name or name.lower().strip() == 'none':
+                log.warning("Found a contributor with no name — skipping.")
+                continue
+            _.append((first_name, last_name, role, link))
+        return(_)
+
 
 log = Logger(name="markdown")
 
@@ -83,6 +245,7 @@ def split_into_sections(markdown:str) -> dict:
     for linenumber, line in enumerate(lines):
         if line.startswith('### ') or line.startswith('## ') or line.startswith('# '):
             header = ''.join([x for x in line.split('#') if x]).strip()
+            # TODO: Move normalize_data to here?
             if header not in sections:
                 sections[header] = ''
                 skip_ahead = False
@@ -92,11 +255,6 @@ def split_into_sections(markdown:str) -> dict:
                     sections[header] += '\n' + nextline
                 sections[header] = sections[header].strip()
 
-                if is_exclusively_bullets(sections[header]):
-                    sections[header] = get_bulletpoints(sections[header])
-                else:
-                    sections[header] = clear_emptylines(sections[header])
-
     return(sections)
 
 
@@ -105,28 +263,28 @@ def split_into_sections(markdown:str) -> dict:
 def destructure_list(markdown:str, remove_simple_links=True, set_empty_url='') -> list:
     """Takes a markdown string and destructures it into a list consisting of
     its list elements (marked by "- " in markdown).
-    
+
     Then it searches each list element for links, either hard coded urls or
     markdown links (marked by "[text](url)" in markdown).
-    
+
     Returns a list of a tuple with two values from each list element:
         1. the text from the list element
         2. a list of tuples:
              1. text used to link using markdown
              2. the raw URL occurring in the link
-    
+
     Note: disregards any lines in the markdown that are not list elements,
     and does not create a warning for doing so.
-    
+
     ######## Example #####################################
-    
+
     markdown.md:
         Here is a paragraph.
         - here is a list element
         - here is another list element with two raw URLs: http://www.apple.com and https://www.microsoft.com
         - here is another list element
         - and a fifth with a [link](http://www.apple.com) and [link](http://www.microsoft.com)
-    
+
     output from running this text through destructure_list(markdown):
         [
             (

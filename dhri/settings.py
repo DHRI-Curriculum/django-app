@@ -13,10 +13,10 @@ AUTO_TERMINAL_WIDTH = 70
 
 # Which repositories and branches should we do automatically?
 AUTO_PROCESS = [
+        ('text-analysis', 'v2.0-rafa-edits'),
         ('command-line', 'v2.0-smorello-edits'),
         ('project-lab', 'v2.0rhody-edits'),
         ('python', 'v2.0-filipa-edits'),
-        ('text-analysis', 'v2.0-rafa-edits'),
         ('html-css', 'v2.0-param-edits'),
         ('git', 'v2.0'),
         ('data-and-ethics', 'v2.0-di-edits'),
@@ -32,10 +32,10 @@ DJANGO_PATHS = {
 ##### Cache ##############################
 
 DOWNLOAD_CACHE_DIR = './__loader-cache__'
-TEST_AGE = 60 # minutes
+TEST_AGE = 20 # minutes
 
 # If set to True, the script will bypass the cache every time (effectively disregarding TEST_AGE above)
-FORCE_DOWNLOAD = True
+FORCE_DOWNLOAD = False
 
 
 ##### Dev features ##############################
@@ -44,7 +44,7 @@ FORCE_DOWNLOAD = True
 DEBUG = True
 
 # If VERBOSE is set to True, every output message will display the source module (good for troubleshooting)
-VERBOSE = True
+VERBOSE = False
 
 # If set to True, resets all the DHRI curriculum database elements automatically before script runs (not recommended in production)
 AUTO_RESET = True

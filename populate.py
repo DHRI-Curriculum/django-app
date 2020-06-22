@@ -3,8 +3,8 @@ from dhri.django import django, Fixture
 from dhri.django.models import Workshop, Praxis, Tutorial, Reading, Frontmatter, LearningObjective, Project, Contributor
 from dhri.interaction import Logger, get_or_default
 from dhri.settings import AUTO_PROCESS, FIXTURE_PATH
-from dhri.utils.loader import Loader
-from dhri.utils.markdown import get_bulletpoints, is_exclusively_bullets, get_list, get_contributors, destructure_list
+from dhri.utils.loader import Loader, WebCache
+from dhri.utils.markdown import get_bulletpoints, is_exclusively_bullets, get_list, get_contributors, Markdown
 from dhri.utils.text import get_urls, get_number, get_markdown_hrefs
 from dhri.utils.exceptions import MissingCurriculumFile, MissingRequiredSection
 
@@ -12,6 +12,7 @@ from dhri.utils.exceptions import MissingCurriculumFile, MissingRequiredSection
 log = Logger(name="main")
 iteration, all_objects, done, collect_workshop_slugs = 0, [], 'n', []
 fixtures = Fixture(name='fixtures')
+saved_prefix = '-----> '
 ###############################################################
 
 if __name__ == '__main__':
@@ -44,7 +45,7 @@ if __name__ == '__main__':
         try:
             l = Loader(repo, branch)
         except MissingRequiredSection:
-            log.error("A required section could not be found.", kill=False)
+            log.error("One or more required section(s) could not be found.", kill=False)
 
         if AUTO_PROCESS:
             repo_name = l.meta['repo_name']
@@ -53,6 +54,7 @@ if __name__ == '__main__':
 
         repo_name = get_or_default('Workshop name', repo_name.replace('-', ' ').title().replace('Html Css', 'HTML/CSS')) # TODO: #61 Add an autocorrection in settings
         log.name = l.repo_name
+        log.original_name = log.name
 
 
         ###### Test for data consistency
@@ -63,8 +65,9 @@ if __name__ == '__main__':
             continue
 
 
-        ###### WORKSHOP MODELS ####################################
+        ###### WORKSHOP MODEL ####################################
 
+        log.name = log.original_name + "-workshop"
         workshop = Workshop(
                 name = repo_name,
                 parent_backend = l.parent_backend,
@@ -72,80 +75,8 @@ if __name__ == '__main__':
                 parent_branch = l.parent_branch
             )
         workshop.save()
-        log.log(f'Workshop object {workshop.name} added (ID {workshop.id}).')
+        log.log(saved_prefix + f'Workshop object {workshop.name} added (ID {workshop.id}).')
         collect_workshop_slugs.append(workshop.slug)
-
-
-        ###### PRAXIS MODELS ####################################
-
-        for model in l.praxis_models:
-            if model == Praxis:
-                praxis = Praxis(
-                        workshop = workshop,
-                    )
-                try:
-                    praxis.discussion_questions = l.praxis['discussion_questions'] # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
-                except KeyError:
-                    log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the theory-to-practice.md section for discussion questions.')
-                try:
-                    praxis.next_steps = l.praxis['next_steps'] # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
-                except KeyError:
-                    log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the theory-to-practice.md section for next steps.')
-                praxis.save()
-                log.log(f'Praxis object {praxis.id} added for workshop {workshop}.')
-
-            elif model == Tutorial:
-                try:
-                  if isinstance(l.praxis['tutorials'], str) and not is_exclusively_bullets(l.praxis['tutorials']): # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
-                      log.warning('The Tutorials section contains not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
-                except KeyError:
-                    log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the theory-to-practice.md section for tutorials.')
-                    continue
-
-                collector['tutorials'] = []
-                if isinstance(l.praxis['tutorials'], str):
-                    l.praxis['tutorials'] = get_list(l.praxis['tutorials']) # FIXME: #52 Remove dependencies on get_list for destructure_list
-
-                for item in l.praxis['tutorials']:
-                    label, comment = item
-                    o = Tutorial()
-                    o.label = label
-                    o.comment = comment
-                    urls = get_urls(label)
-                    if urls:
-                        o.url = urls[0]
-                    o.save()
-                    collector['tutorials'].append(o)
-                    log.log(f'Tutorial {o.id} added:\n    {o.label}')
-                praxis.tutorials.set(collector['tutorials'])
-                log.log(f'Praxis {praxis.id} updated with tutorials.')
-
-            elif model == Reading:
-                try:
-                  if isinstance(l.praxis['further_readings'], str) and not is_exclusively_bullets(l.praxis['further_readings']): # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
-                      log.warning('Further readings contains not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
-                except KeyError:
-                    log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the theory-to-practice.md section for further readings.')
-                    continue
-
-                collector['praxis_readings'] = []
-                if isinstance(l.praxis['further_readings'], str):
-                    l.praxis['further_readings'] = get_list(l.praxis['further_readings']) # FIXME: #52 Remove dependencies on get_list for destructure_list
-
-                for item in l.praxis['further_readings']:
-                    title, comment = item
-                    o = Reading()
-                    o.title = title
-                    o.comment = comment
-                    o.save()
-                    collector['praxis_readings'].append(o)
-                    log.log(f'Reading {o.id} added:\n    {o.title}')
-                praxis.further_readings.set(collector['praxis_readings'])
-                log.log(f'Praxis {praxis.id} updated with further readings.')
-
-            else:
-                log.error(f'Have no way of processing {model} for app `praxis`. The `populate` script must be adjusted accordingly.', kill=False)
-
 
 
         ###### FRONTMATTER MODELS ####################################
@@ -154,128 +85,140 @@ if __name__ == '__main__':
 
             # frontmatter.Frontmatter
             if model == Frontmatter:
+                log.name = log.original_name + "-frontmatter"
+                log.log("------ FRONTMATTER ------------------------------------------")
                 frontmatter = Frontmatter(workshop = workshop)
-
-                try:
-                    frontmatter.abstract = l.frontmatter['abstract'] # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
-                except KeyError:
-                    log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the frontmatter.md section for abstract.', color='red') # red because it is a significant thing to be missing
-
-                try:
-                    frontmatter.ethical_considerations = l.frontmatter['ethical_considerations'] # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
-                except KeyError:
-                    log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the frontmatter.md section for ethical considerations.', color='red')
-
-                try:
-                    frontmatter.estimated_time = get_number(l.frontmatter['estimated_time']) # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
-                except KeyError:
-                    log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the frontmatter.md section for estimated time.', color='red')
-
+                frontmatter.abstract = l.abstract
+                frontmatter.ethical_considerations = l.ethical_considerations
+                frontmatter.estimated_time = get_number(l.frontmatter['estimated_time'])
                 frontmatter.save()
-                log.log(f'Frontmatter object {frontmatter.id} added for workshop {workshop}.')
+                log.log(saved_prefix + f'Frontmatter object {frontmatter.id} added to workshop {workshop}.')
 
             # frontmatter.LearningObjective
             elif model == LearningObjective:
-                try:
-                  if isinstance(l.frontmatter['learning_objectives'], str) and not is_exclusively_bullets(l.frontmatter['learning_objectives']): # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
-                      log.warning('Learning objectives contain not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
-                except KeyError:
-                    log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the frontmatter.md section for learning objectives.')
-                    continue
-
+                log.name = log.original_name + "-learning-obj"
                 collector['learning_objectives'] = []
-
-                for item in destructure_list(l.frontmatter['learning_objectives']):
-                    label, urls = item
-                    if urls:
-                        log.warning(f'Looks like the learning objectives have URLs but the database has no way to keep them.')
-                    o = LearningObjective(
-                            frontmatter=frontmatter,
-                            label=label
-                        )
+                if l.learning_objectives.links: log.warning(f'Looks like the learning objectives have URLs but the database has no way to keep them.')
+                for line in l.learning_objectives:
+                    label = str(line)
+                    o = LearningObjective(frontmatter=frontmatter, label=label)
                     o.save()
                     collector['learning_objectives'].append(o)
-                    log.log(f'Learning objective for frontmatter {frontmatter.id} added:\n    {o.label}.')
+                if len(collector['learning_objectives']):
+                    log.log(f'Summary: Frontmatter {frontmatter.id} updated with {len(collector["learning_objectives"])} learning objectives.')
 
             # frontmatter.Project
             elif model == Project:
-                try:
-                    if isinstance(l.frontmatter['projects'], str) and not is_exclusively_bullets(l.frontmatter['projects']): # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
-                        log.warning('Projects contain not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
-                except KeyError:
-                    log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the frontmatter.md section for projects.')
-                    continue
-
+                log.name = log.original_name + "-projects"
                 collector['projects'] = []
-                for item in destructure_list(l.frontmatter['projects']):
-                    comment, urls = item
+                for line in l.projects:
                     o = Project()
-                    o.comment = comment
-                    for url in urls:
-                        o.title, o.url = urls[0]
+                    o.comment = str(line)
+                    if line.has_links: o.title, o.url = line.links[0]
+                    if line.has_multiple_links: log.warning(f'One project seems to contain more than one URL, but only one ({o.url}) is captured: {line.links}')
+                    if o.title.lower().strip() == '':
+                        log.error(f"Project has no title. The comment is set to: {o.comment}", kill=None)
+                        o.title = WebCache(o.url).title
+                        o.title = get_or_default('Set a title for the project with the comment above', o.title, color='red')
                     o.save()
                     collector['projects'].append(o)
-                    if o.title == '':
-                        log.log(f'Project added:\n    {o.url} (title missing, but comment starts with: {o.comment[:60]}...)')
-                    else:
-                        log.log(f'Project added:\n    {o.title} ({o.url})')
-                    if len(urls) > 1:
-                        all_urls = ", ".join([_[1] for _ in urls])
-                        log.warning(f'The project above seems to contain had {len(urls)} URLs, but only the first one has been captured:\n    {all_urls}')
+                    log.log(f'Project added: "{o.title}" ({o.url})')
                 frontmatter.projects.set(collector['projects'])
-                log.log(f'Frontmatter {frontmatter.id} updated with {len(collector["projects"])} projects.')
+                log.log(f'Summary: Frontmatter {frontmatter.id} updated with {len(collector["projects"])} projects.')
 
             # frontmatter.Reading
             elif model == Reading:
-                try:
-                    if isinstance(l.frontmatter['readings'], str) and not is_exclusively_bullets(l.frontmatter['readings']): # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
-                        log.warning('Readings contain not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
-                except KeyError:
-                    log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the frontmatter.md section for readings.')
-                    continue
-
+                log.name = log.original_name + "-readings"
                 collector['frontmatter_readings'] = []
-                if isinstance(l.frontmatter['readings'], str):
-                    l.frontmatter['readings'] = get_list(l.frontmatter['readings']) # FIXME: #52 Remove dependencies on get_list for destructure_list
-
-                for item in l.frontmatter['readings']:
-                    md = '\n'.join(item).strip()
+                for line in l.readings:
                     o = Reading()
-                    o.comment = md
-                    urls = get_markdown_hrefs(md)
-                    for url in urls:
-                        o.title, o.url = url[:2]
-                        if len(urls) > 1: log.warning(f'One reading seems to contain more than one URL, but only one ({url}) is captured:\n    {md}')
-                        continue
+                    o.comment = str(line)
+                    if line.has_links: o.title, o.url = line.links[0]
+                    if line.has_multiple_links: log.warning(f'One reading seems to contain more than one URL, but only one ({o.url}) is captured: {line.links}')
+                    if o.title.lower().strip() == '':
+                        log.error(f"Reading has no title. The comment is set to: {o.comment}", kill=None)
+                        o.title = WebCache(o.url).title
+                        o.title = get_or_default('Set a title for the reading with the comment above', o.title, color='red')
                     o.save()
                     collector['frontmatter_readings'].append(o)
-                    log.log(f'Reading added:\n    {o.title}')
+                    log.log(f'Reading added: "{o.title}" ({o.url})')
                 frontmatter.readings.set(collector['frontmatter_readings'])
-                log.log(f'Frontmatter {frontmatter.id} updated with {len(collector["frontmatter_readings"])} readings.')
+                log.log(f'Summary: Frontmatter {frontmatter.id} updated with {len(collector["frontmatter_readings"])} readings.')
 
             # frontmatter.Contributor
             elif model == Contributor:
-                try:
-                    if isinstance(l.frontmatter['contributors'], str) and not is_exclusively_bullets(l.frontmatter['contributors']): # FIXME: #50 Move into the dhri.utils.loader.Loader object and make them accessible as properties
-                        log.warning('Contributors contain not exclusively bulletpoints. Will import as list, and exclude elements that are not bulletpoints.')
-                except KeyError:
-                    log.warning(f'{l.parent_repo}/{l.parent_branch} does not seem to have the frontmatter.md section for contributors.')
-                    continue
-
+                log.name = log.original_name + "-contributors"
                 collector['contributors'] = []
-                for contributor in get_contributors(l.frontmatter['contributors']):
+                for contributor in l.contributors:
+                    first_name, last_name, role, link = contributor
                     o = Contributor()
                     o.first_name, o.last_name, o.role, o.link = contributor
                     o.save()
                     collector['contributors'].append(o)
-                    msg = f'Contributor added:\n    {o.full_name}'
-                    if o.role != '': msg += f' ({o.role})'
+                    msg = saved_prefix + f'Contributor {o.full_name} added.'
+                    if o.role != '': msg = msg.replace('added', f'({o.role}) added')
                     log.log(msg)
                 frontmatter.contributors.set(collector['contributors'])
-                log.log(f'Frontmatter {frontmatter.id} updated with {len(collector)} contributors.')
+                log.log(f'Summary: Frontmatter {frontmatter.id} updated with {len(collector["contributors"])} contributors.')
 
             else:
                 log.error(f'Have no way of processing {model} (for app `frontmatter`). The `populate` script must be adjusted accordingly.', kill=False)
+
+
+        ###### PRAXIS MODELS ####################################
+
+        for model in l.praxis_models:
+            if model == Praxis:
+                log.name = log.original_name + "-praxis"
+                log.log("------ PRAXIS ------------------------------------------")
+                praxis = Praxis(workshop = workshop)
+                praxis.discussion_questions = l.discussion_questions
+                praxis.next_steps = l.next_steps
+                praxis.save()
+                log.log(saved_prefix + f'Theory-to-practice object {praxis.id} added to workshop {workshop}.')
+
+            elif model == Tutorial:
+                log.name = log.original_name + "-tutorials"
+                collector['tutorials'] = []
+                for line in l.tutorials:
+                    o = Tutorial()
+                    o.comment = str(line)
+                    if line.has_links: o.label, o.url = line.links[0]
+                    if line.has_multiple_links: log.warning(f'One tutorial seems to contain more than one URL, but only one ({o.url}) is captured: {line.links}')
+                    if o.label.lower().strip() == '':
+                        log.error(f"Tutorial has no label. The comment is set to: {o.comment}", kill=None)
+                        o.label = WebCache(o.url).title
+                        o.label = get_or_default('Set a label for the tutorial with the comment above', o.label, color='red')
+                    o.save()
+                    collector['tutorials'].append(o)
+                    log.log(f'Tutorial added: "{o.label}" ({o.url})')
+                if len(collector['tutorials']):
+                    praxis.tutorials.set(collector['tutorials'])
+                    log.log(f'Summary: Praxis {praxis.id} updated with {len(collector["tutorials"])} tutorials.')
+
+            elif model == Reading:
+                log.name = log.original_name + "-readings"
+                collector['praxis_readings'] = []
+                for line in l.further_readings:
+                    o = Reading()
+                    o.comment = str(line)
+                    if line.has_links: o.title, o.url = line.links[0]
+                    if line.has_multiple_links: log.warning(f'One reading (theory-to-practice) seems to contain more than one URL, but only one ({o.url}) is captured: {line.links}')
+                    if o.title.lower().strip() == '':
+                        log.error(f"Reading has no title. The comment is set to: {o.comment}", kill=None)
+                        o.title = WebCache(o.url).title
+                        o.title = get_or_default('Set a title for the reading with the comment above', o.title, color='red')
+                    o.save()
+                    collector['praxis_readings'].append(o)
+                    log.log(f'Reading added: "{o.title}" ({o.url})')
+                if len(collector['praxis_readings']):
+                    praxis.further_readings.set(collector['praxis_readings'])
+                    log.log(f'Summary: Praxis {praxis.id} updated with {len(collector["praxis_readings"])} further readings.')
+
+            else:
+                log.error(f'Have no way of processing {model} for app `praxis`. The `populate` script must be adjusted accordingly.', kill=False)
+
+
 
         fixtures.add(workshop=workshop, frontmatter=frontmatter, praxis=praxis, collector=collector)
 

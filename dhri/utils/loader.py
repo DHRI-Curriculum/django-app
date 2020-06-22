@@ -1,13 +1,15 @@
 import requests, json, datetime
-
 from dhri.django import django
 from dhri.django.models import Workshop, Praxis, Tutorial, Reading, Frontmatter, LearningObjective, Project, Contributor
 from dhri.interaction import Logger
-from dhri.utils.markdown import split_into_sections
+from dhri.utils.markdown import split_into_sections, get_contributors, Markdown
 from dhri.utils.exceptions import UnresolvedNameOrBranch, MissingCurriculumFile, MissingRequiredSection
 
 from dhri.settings import NORMALIZING_SECTIONS, REPO_AUTO, BRANCH_AUTO, BACKEND_AUTO, FORCE_DOWNLOAD
 from dhri.constants import DOWNLOAD_CACHE_DIR, TEST_AGE
+
+from django.utils.text import slugify
+from pathlib import Path
 
 log = Logger(name='loader')
 
@@ -92,9 +94,11 @@ class Loader():
 
         self.log.name = self.repo_name + '-load'
 
+        self.log.log(f"Loading content {self.repo_name}...")
+
         self.name = self.repo_name.replace('-', '').title().replace(" And ", "and")
 
-        self.cache = LoaderCache(self.repo_name)
+        self.cache = LoaderCache(self.repo_name, self)
 
         # Set up raw urls
         self._raw_url = f'https://raw.githubusercontent.com/{self.user}/{self.repo_name}/{self.branch}'
@@ -168,7 +172,7 @@ class Loader():
 
     @property
     def has_praxis(self) -> bool:
-        return len(self._praxis) > 0
+        return len(self.praxis) > 0
 
     @property
     def has_assessment(self) -> bool:
@@ -185,59 +189,59 @@ class Loader():
 
     @property
     def abstract(self):
-        return self._frontmatter.get('abstract')
+        return self.frontmatter.get('abstract', '')
 
     @property
     def has_abstract(self) -> bool:
-        return self._frontmatter.get('abstract') != None
+        return self.abstract != None and self.abstract != []
 
     @property
     def learning_objectives(self):
-        return self._frontmatter.get('learning_objectives')
+        return(Markdown(text=self.frontmatter.get('learning_objectives', ''))) # I believe this now handles being an "empty list" if iterated through empty
 
     @property
     def has_learning_objectives(self) -> bool:
-        return self._frontmatter.get('learning_objectives') != None
+        return self.learning_objectives != None and self.learning_objectives != []
 
     @property
     def estimated_time(self):
-        return self._frontmatter.get('estimated_time')
+        return self.frontmatter.get('estimated_time', '')
 
     @property
     def has_estimated_time(self) -> bool:
-        return self._frontmatter.get('estimated_time') != None
+        return self.estimated_time != None and self.estimated_time != []
 
     @property
     def contributors(self):
-        return self._frontmatter.get('contributors')
+        return(Markdown(text=self.frontmatter.get('contributors', '')).as_contributors())
 
     @property
     def has_contributors(self) -> bool:
-        return self._frontmatter.get('contributors') != None
+        return self.contributors != None and self.contributors != []
 
     @property
     def ethical_considerations(self):
-        return self._frontmatter.get('ethical_considerations')
+        return self.frontmatter.get('ethical_considerations', '')
 
     @property
     def has_ethical_considerations(self) -> bool:
-        return self._frontmatter.get('ethical_considerations') != None
+        return self.ethical_considerations != None and self.ethical_considerations != []
 
     @property
     def readings(self):
-        return self._frontmatter.get('readings')
+        return(Markdown(text=self.frontmatter.get('readings', '')))
 
     @property
     def has_readings(self) -> bool:
-        return self._frontmatter.get('readings') != None
+        return self.readings != None and self.readings != []
 
     @property
     def projects(self):
-        return self._frontmatter.get('projects')
+        return(Markdown(text=self.frontmatter.get('projects', ''))) # I believe this now handles being an "empty list" if iterated through empty
 
     @property
     def has_projects(self):
-        return self._frontmatter.get('projects') != None
+        return self.projects != None and self.projects != []
 
 
     @property
@@ -249,35 +253,36 @@ class Loader():
 
     @property
     def discussion_questions(self):
-        return self._frontmatter.get('discussion_questions')
+        return(Markdown(text=self.praxis.get('discussion_questions', '')))
 
     @property
     def has_discussion_questions(self) -> bool:
-        return self._frontmatter.get('discussion_questions') != None
+        return self.discussion_questions != None and self.discussion_questions != []
 
     @property
     def next_steps(self):
-        return self._frontmatter.get('next_steps')
+        return(Markdown(text=self.praxis.get('next_steps', '')))
+        # return self.praxis.get('next_steps', '')
 
     @property
     def has_next_steps(self) -> bool:
-        return self._frontmatter.get('next_steps') != None
+        return self.next_steps != None and self.next_steps != []
 
     @property
-    def tutorials(self):
-        return self._frontmatter.get('tutorials')
+    def tutorials(self) -> list:
+        return(Markdown(text=self.praxis.get('tutorials', ''))) # I believe this now handles being an "empty list" if iterated through empty
 
     @property
     def has_tutorials(self) -> bool:
-        return self._frontmatter.get('tutorials') != None
+        return self.tutorials != None and self.tutorials != []
 
     @property
     def further_readings(self):
-        return self._frontmatter.get('further_readings')
+        return(Markdown(text=self.praxis.get('further_readings', ''))) # I believe this now handles being an "empty list" if iterated through empty
 
     @property
     def has_further_readings(self) -> bool:
-        return self._frontmatter.get('further_readings') != None
+        return self.further_readings != None and self.further_readings != []
 
 
     @property
@@ -367,10 +372,11 @@ class Loader():
 class LoaderCache():
     """ A file cache for the Loader class. """
 
-    def __init__(self, repo_name):
+    def __init__(self, repo_name:str, loader:Loader):
         self.repo_name = repo_name
         self.path = DOWNLOAD_CACHE_DIR / (self.repo_name + ".json")
         self.exists = self._check_age()
+        self.parent = loader
 
     @property
     def data(self):
@@ -385,7 +391,10 @@ class LoaderCache():
         now = datetime.datetime.today()
 
         if now - file_mod_time > TEST_AGE:
-            log.log(f"Cache has expired - older than {TEST_AGE} minutes... Removing.")
+            try:
+                self.parent.log.log(f"Cache has expired - older than {TEST_AGE} minutes... Removing.")
+            except:
+                log.log(f"Cache has expired - older than {TEST_AGE} minutes... Removing.")
             self.path.unlink()
             return False
         else:
@@ -393,14 +402,21 @@ class LoaderCache():
 
 
     def load_cache(self) -> dict:
-        log.log("loading cache...")
+        try:
+            self.parent.log.log("Loading cache from local file.")
+        except:
+            log.log("Loading cache from local file.")
         return(json.loads(self.path.read_text()))
 
 
     def save_cache(self, *args, **kwargs) -> bool:
-        log.log("saving cache...")
+        try:
+            self.parent.log.log(f"Saving cache locally: Cache path is {self.path}")
+        except:
+            log.log(f"Saving cache locally: Cache path is {self.path}")
         if len(args) == 2:
             data = args[1]
+            if not self.path.parent.exists(): self.path.parent.mkdir(parents=True)
             self.path.write_text(json.dumps(data))
         return(True)
 
@@ -411,3 +427,56 @@ class LoaderCache():
 
     def __repr__(self) -> str:
         return f'LoaderCache("{self.repo_name}")'
+
+
+
+class WebCache(LoaderCache):
+
+    def __init__(self, url:str, force_download=FORCE_DOWNLOAD):
+
+        self.url = url
+        self.title = None
+        self.force_download = FORCE_DOWNLOAD
+
+        if str(url).lower().strip() != "none":
+            self.path = DOWNLOAD_CACHE_DIR / (slugify(url[:100])+".txt")
+            self.path = Path(self.path)
+
+            self._check_age()
+
+            if not self.path.exists():
+                title = self.try_title_element_from_url()
+                self.path.write_text(title)
+
+            if self.path.exists():
+                self.title = self.path.read_text()
+
+    def try_title_element_from_url(self):
+        import requests
+        from bs4 import BeautifulSoup
+
+        if str(self.url).lower().strip() == "none":
+            return(None)
+        else:
+            log.warning(f"Trying to download title from web page...")
+            #try:
+            r = requests.get(self.url)
+            soup = BeautifulSoup(r.text, 'lxml')
+            return(soup.find('title').text)
+            #except:
+            #    return(None)
+
+    def _check_age(self) -> bool:
+        if not self.path.exists() or self.force_download == True: return(False)
+        file_mod_time = datetime.datetime.fromtimestamp(self.path.stat().st_ctime)
+        now = datetime.datetime.today()
+
+        if now - file_mod_time > TEST_AGE:
+            try:
+                self.parent.log.log(f"Cache has expired - older than {TEST_AGE} minutes... Removing.")
+            except:
+                log.log(f"Cache has expired - older than {TEST_AGE} minutes... Removing.")
+            self.path.unlink()
+            return False
+        else:
+            return True
