@@ -18,10 +18,12 @@ saved_prefix = '-----> '
 if __name__ == '__main__':
     while done == 'n':
         iteration += 1
-        repo, branch, collector = '', '', {}
+        repo, repo_name, branch, collector = '', '', '', {}
         AUTO_PROCESS_done = len(AUTO_PROCESS) == iteration
 
         if AUTO_PROCESS and not AUTO_PROCESS_done:
+            log.name = 'populate'
+            log.warning(f'In AUTO_PROCESS mode: Current iteration {iteration}/{len(AUTO_PROCESS)}. Finished workshops: {collect_workshop_slugs}')
             repo, branch = AUTO_PROCESS[iteration-1]
         else:
             repo = get_or_default(f'What is the repo name (assuming DHRI-Curriculum as username) or whole GitHub link you want to import?', repo)
@@ -47,6 +49,15 @@ if __name__ == '__main__':
         except MissingRequiredSection:
             log.error("One or more required section(s) could not be found.", kill=False)
 
+
+        ###### Test for data consistency
+        print(l.has_frontmatter, l.has_praxis, l.has_assessment)
+        if sum([l.has_frontmatter, l.has_praxis, l.has_assessment]) <= 2:
+            log.error("The repository does not have enough required files present. The import of the entire repository will be skipped.", kill=None)
+            done = 'y'
+            continue
+
+
         if AUTO_PROCESS:
             repo_name = l.meta['repo_name']
         else:
@@ -55,14 +66,6 @@ if __name__ == '__main__':
         repo_name = get_or_default('Workshop name', auto_replace(repo_name.title()))
         log.name = l.repo_name
         log.original_name = log.name
-
-
-        ###### Test for data consistency
-
-        if not l.has_frontmatter and not l.has_praxis and not l.has_assessment:
-            log.error("The repository has none of the required files present. The import of the entire repository will be skipped.", kill=None)
-            done = 'y'
-            continue
 
 
         ###### WORKSHOP MODEL ####################################

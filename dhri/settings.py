@@ -18,7 +18,7 @@ AUTO_PROCESS = [
         ('project-lab', 'v2.0rhody-edits'),
         ('python', 'v2.0-filipa-edits'),
         ('html-css', 'v2.0-param-edits'),
-        ('git', 'v2.0'),
+        ('git', 'v2.0-kristen-edits'),
         ('data-and-ethics', 'v2.0-di-edits'),
     ]
 
