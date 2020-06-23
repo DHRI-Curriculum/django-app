@@ -51,7 +51,6 @@ if __name__ == '__main__':
 
 
         ###### Test for data consistency
-        print(l.has_frontmatter, l.has_praxis, l.has_assessment)
         if sum([l.has_frontmatter, l.has_praxis, l.has_assessment]) <= 2:
             log.error("The repository does not have enough required files present. The import of the entire repository will be skipped.", kill=None)
             done = 'y'
