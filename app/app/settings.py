@@ -32,17 +32,17 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    'workshop',
-    'frontmatter',
-    'assessment',
-    'praxis',
-    'adminsortable',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'workshop.apps.WorkshopConfig',
+    'frontmatter.apps.FrontmatterConfig',
+    'assessment.apps.AssessmentConfig',
+    'praxis.apps.PraxisConfig',
+    'adminsortable',
 ]
 
 MIDDLEWARE = [
@@ -125,3 +125,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILE_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]

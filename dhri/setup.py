@@ -23,6 +23,6 @@ def setup(collect_workshop_slugs:list):
         os.system(commands)
         log.log(f"You should now be able to run the command: python ./{MANAGE} runserver")
         if len(collect_workshop_slugs):
-            all_urls = "\n- http://localhost:8000/workshop/" + ("\n- http://localhost:8000/workshop/".join(collect_workshop_slugs))
+            all_urls = "\n- http://localhost:8000/workshops/" + ("\n- http://localhost:8000/workshops/".join(collect_workshop_slugs))
             log.log(f"Once the server is up and running, you can visit:")
             print(all_urls)

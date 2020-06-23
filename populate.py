@@ -17,15 +17,13 @@ saved_prefix = '-----> '
 
 if __name__ == '__main__':
     while done == 'n':
-        iteration += 1
         repo, repo_name, branch, collector = '', '', '', {}
-        AUTO_PROCESS_done = len(AUTO_PROCESS) == iteration
 
-        if AUTO_PROCESS and not AUTO_PROCESS_done:
+        try:
+            repo, branch = AUTO_PROCESS.pop(0)
             log.name = 'populate'
-            log.warning(f'In AUTO_PROCESS mode: Current iteration {iteration}/{len(AUTO_PROCESS)}. Finished workshops: {collect_workshop_slugs}')
-            repo, branch = AUTO_PROCESS[iteration-1]
-        else:
+            log.warning(f'In AUTO_PROCESS mode: Current iteration {iteration}. Processing {repo}/{branch}, Remaining: {len(AUTO_PROCESS)}. Finished workshops: {collect_workshop_slugs}')
+        except IndexError:
             repo = get_or_default(f'What is the repo name (assuming DHRI-Curriculum as username) or whole GitHub link you want to import?', repo)
             if repo == '':
                 log.error('No repository name, exiting...', kill=None)
@@ -47,13 +45,13 @@ if __name__ == '__main__':
         try:
             l = Loader(repo, branch)
         except MissingRequiredSection:
-            log.error("One or more required section(s) could not be found.", kill=False)
+            log.error(f"One or more required section(s) could not be found in {l.repo_name}.", kill=False)
 
 
         ###### Test for data consistency
         if sum([l.has_frontmatter, l.has_praxis, l.has_assessment]) <= 2:
-            log.error("The repository does not have enough required files present. The import of the entire repository will be skipped.", kill=None)
-            done = 'y'
+            log.error(f"The repository {l.repo_name} does not have enough required files present. The import of the entire repository will be skipped.", kill=None)
+            iteration += 1
             continue
 
 
@@ -224,13 +222,13 @@ if __name__ == '__main__':
 
         fixtures.add(workshop=workshop, frontmatter=frontmatter, praxis=praxis, collector=collector)
 
-        if AUTO_PROCESS and AUTO_PROCESS_done:
-          done, msg = 'y', 'Are you done? [Y/n] '
-        elif AUTO_PROCESS:
+        if AUTO_PROCESS:
           done, msg = 'n', 'Are you done? [y/N] '
           done = get_or_default(msg, done, color='red').lower()
         else:
           done = 'y'
+
+        iteration += 1
 
     fixtures.save()
 

@@ -1,5 +1,6 @@
 from dhri.settings import DEBUG, AUTO_RESET, DJANGO_PATHS
 from dhri.interaction import Logger
+from django.db.utils import OperationalError
 from pathlib import Path
 
 log = Logger(name='debug')
@@ -16,9 +17,20 @@ def reset_all(kill=True) -> None:
 
     from dhri.django import django
     from dhri.django.models import Workshop, Frontmatter, Project, Resource, Reading, Contributor, Question, Answer, QuestionType, LearningObjective, Praxis, Tutorial
+    from dhri.settings import DJANGO_PATHS
+    import os
     for _ in [Workshop, Frontmatter, Project, Resource, Reading, Contributor, Question, Answer, QuestionType, LearningObjective, Praxis, Tutorial]:
-        _.objects.all().delete()
-        log.log(f'All {_.__name__} deleted.', kill=not AUTO_RESET)
+        try:
+            _.objects.all().delete()
+            log.log(f'All {_.__name__} deleted.', kill=not AUTO_RESET)
+        except OperationalError:
+            MANAGE = DJANGO_PATHS.get("MANAGE")
+            log.error(f"Could not remove {_}.", kill=False)
+            log.warning("Trying to run migrations... If it fails, run them manually")
+            me = Path(__file__).absolute().parent.parent
+            MANAGE = MANAGE.relative_to(me)
+            commands = f"python ./{MANAGE} makemigrations; python ./{MANAGE} migrate"
+            os.system(commands)
 
     p = Path(__file__).resolve()
     p = p.parent.parent

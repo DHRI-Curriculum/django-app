@@ -1,0 +1,35 @@
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Titillium Web'
+}
+
+.bg-super-light {
+    background-color: #f7f7f8 !important;
+}
+
+.on-hover-bg-light:hover {
+    background-color: #ecf0f1 !important;
+}
+
+.bg-dark {
+    background-color: #324144 !important;
+}
+
+.disabled:hover {
+    cursor:not-allowed !important;
+}
+
+blockquote {
+    padding-left: 1.5rem !important;
+}
+
+.linked-comment {
+    border-left: 0.5rem solid #ecf0f1 !important;
+}
+
+.dhri-hero {
+    color: #d1d6d7 !important;
+}
+
+.dhri-hero:hover {
+    color: #d1d6d7 !important;
+}
