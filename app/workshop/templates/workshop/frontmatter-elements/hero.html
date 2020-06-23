@@ -1,0 +1,11 @@
+{% load markdownify %}
+
+<h3><a href="/" class="dhri-hero text-decoration-none">Digital Humanities Research Institute Curriculum Website</a></h3>
+<h1>{{ workshop.name }}</h1>
+<div class="lead mt-4">
+    {{ workshop.frontmatter.abstract | markdown | safe }}
+</div>
+<div class="d-flex align-items-end flex-column">
+    <a href="{% url 'workshop:frontmatter' workshop.slug %}lessons/1" type="button" class="btn btn-success btn-lg text-light">Get started</a>
+    <span class="align-text-bottom mt-2 text-muted small">This workshop is estimated to take {{ frontmatter.estimated_time }} hours to complete.</span>
+</div>

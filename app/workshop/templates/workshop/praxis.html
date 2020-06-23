@@ -1,0 +1,77 @@
+{% extends 'website/base.html' %}
+{% load markdownify %}
+
+{% block header %}
+    {% include 'workshop/workshop-wide-elements/navbar.html' %}
+{% endblock %}
+
+{% block hero %}
+<div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-left">
+  <div id="hero">
+    {% include 'workshop/praxis-elements/hero.html' %}
+    <div class="lead mt-4">
+      On the other hand, we denounce with righteous indignation and dislike men who are so beguiled and demoralized by the charms of pleasure of the moment, so blinded by desire, that they cannot foresee the pain and trouble that are bound to ensue; and equal blame belongs to those who fail in their duty through weakness of will, which is the same as saying through shrinking from toil and pain. These cases are perfectly simple and easy to distinguish. In a free hour, when our power of choice is untrammelled and when nothing prevents our being able to do what we like best, every pleasure is to be welcomed and every pain avoided. But in certain circumstances and owing to the claims of duty or the obligations of business it will frequently occur that pleasures have to be repudiated and annoyances accepted. The wise man therefore always holds in these matters to this principle of selection: he rejects pleasures to secure other greater pleasures, or else he endures pains to avoid worse pains.
+    </div>
+  </div><!-- /hero -->
+</div>
+{% endblock %}
+
+
+{% block main %}
+
+<div class="row pt-5">
+
+  {% if praxis.next_steps %}
+  <div class="col-12 mt-5">
+    <h3>Next Steps</h3>
+    <hr />
+    <div class="lead mt-4">
+      {{ praxis.next_steps | markdown | safe }}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if praxis.discussion_questions %}
+  <div class="col-12 mt-5">
+    <h3>Discussion Questions</h3>
+    <hr />
+    <div class="lead mt-4">
+      {{ praxis.discussion_questions | markdown | safe }}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if praxis.tutorials.count %}
+  <div class="col-12 mt-5">
+    <h3>Tutorials</h3>
+    <hr />
+    <div class="lead mt-4">
+      {% for tutorial in praxis.tutorials.all %}
+        <div class="p-2 my-3 rounded-lg linked-comment">
+          <p class="font-weight-bold"><a href="{{ tutorial.url }}">{{ tutorial }}</a></p>
+          <p class="small">{{ tutorial.comment | markdown | safe }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if praxis.further_readings.count %}
+  <div class="col-12 mt-5">
+    <h3>Further Readings</h3>
+    <hr />
+    <div class="lead mt-4">
+      {% for reading in praxis.further_readings.all %}
+        <div class="p-2 my-3 rounded-lg linked-comment">
+          <p class="font-weight-bold"><a href="{{ reading.url }}">{{ reading }}</a></p>
+          <p class="small">{{ reading.comment | markdown | safe }}</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+
+
+{% endblock %}

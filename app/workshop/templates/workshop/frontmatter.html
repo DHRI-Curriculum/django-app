@@ -1,0 +1,149 @@
+{% extends 'website/base.html' %}
+{% load markdownify %}
+
+{% block header %}
+  {% include 'workshop/workshop-wide-elements/navbar.html' %}
+{% endblock %}
+
+{% block hero %}
+<div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-left">
+  <div id="hero">
+    {% include 'workshop/frontmatter-elements/hero.html' %}
+  </div><!-- /hero -->
+</div>
+{% endblock %}
+
+
+{% block main %}
+
+{% if frontmatter.prerequisites.count and frontmatter.resources.count %}
+<div class="row pt-5">
+
+  <div class="col-12">
+    <h3>Before you start</h3>
+    <div class="lead mt-4">
+      Here is an introduction to the section "Before you start," and something about what it means.
+    </div>
+    <hr />
+  </div>
+
+  <div class="col-6">
+    {% if frontmatter.prerequisites.count %}
+    <h4>Prerequisites</h4>
+    <p style="font-size:1.05rem;">Here is an introductory paragraph about what a prerequisite means. This should go in the new site model probably.</p>
+      {% for prerequisite in frontmatter.prerequisites.all %}
+        {{ prerequisite }}
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  <div class="col-6">
+    {% if frontmatter.resources.count %}
+    <h4>Requirements</h4>
+    <p style="font-size:1.05rem;">Here is an introductory paragraph about what a requirement means. This should go in the new site model probably.</p>
+      {% for resource in frontmatter.resources.all %}
+        {{ resource }}
+      {% endfor %}
+    {% endif %}
+  </div>
+
+</div>
+{% endif %}
+
+
+<div class="row pt-5">
+  <div class="col-12">
+    <h3>Contexts</h3>
+    <div class="lead mt-4">
+      Here is an introduction to the section "Contexts," and something about what it means.
+    </div>
+    <hr />
+  </div>
+  {% if frontmatter.ethical_considerations %}
+    <div class="col-12 col-sm-4 mt-4 mt-md-2 overflow-hidden">
+      <h4>Ethical considerations</h4>
+      <hr />
+      <p style="font-size:1.05rem;">Here is an introductory paragraph about what ethical considerations mean. It might contain <a href="">a link</a> to more information about why we include information about ethics on this level of the website.</p>
+      {{ frontmatter.ethical_considerations | markdown | safe }}<!-- # TODO: Make ethical considations into its own field -->
+    </div>
+  {% endif %}
+
+  {% if frontmatter.readings.count %}
+    <div class="col-12 col-sm-4 mt-4 mt-md-2 overflow-hidden">
+      <h4>Readings</h4>
+      <hr />
+      <p style="font-size:1.05rem;">Here is an introductory paragraph about what the following readings are. It might contain <a href="">a link</a> to our "library" for the curriculum website, which can contain all kinds of information.</p>
+      {% for reading in frontmatter.readings.all %}
+        <div class="p-2 my-3 rounded-lg linked-comment">
+          <a class="text-decoration-none" target="_blank" href="{{ reading.url }}">
+            {{ reading.title }}
+            <svg class="ml-2 bi bi-arrow-up-right-circle" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/> <path fill-rule="evenodd" d="M10.5 5h-4a.5.5 0 0 0 0 1h2.793l-4.147 4.146a.5.5 0 0 0 .708.708L10 6.707V9.5a.5.5 0 0 0 1 0v-4a.5.5 0 0 0-.5-.5z"/> </svg>
+          </a>
+          {% if reading.comment %}<div class="small"><strong>Comment:</strong> {{ reading.comment | markdown | safe | striptags }}</div>{% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if frontmatter.projects.count %}
+    <div class="col-12 col-sm-4 mt-4 mt-md-2 overflow-hidden">
+      <h4>Project related to {{ workshop.name }}</h4>
+      <hr />
+      <p style="font-size:1.05rem;">Here is an introductory paragraph about what the following projects are and why they are listed here. It might contain <a href="">a link</a> to our "library" for the curriculum website, which can contain all kinds of information.</p>
+      {% for project in frontmatter.projects.all %}
+        <div class="p-2 my-3 rounded-lg linked-comment">
+          <a class="text-decoration-none" target="_blank" href="{{ project.url }}">
+            {{ project.title }}
+            <svg class="ml-2 bi bi-arrow-up-right-circle" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/> <path fill-rule="evenodd" d="M10.5 5h-4a.5.5 0 0 0 0 1h2.793l-4.147 4.146a.5.5 0 0 0 .708.708L10 6.707V9.5a.5.5 0 0 0 1 0v-4a.5.5 0 0 0-.5-.5z"/> </svg>
+          </a>
+          {% if project.comment %}<div class="small"><strong>Comment:</strong> {{ project.comment | markdown | safe | striptags }}</div>{% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+
+<div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-left">
+
+</div>
+
+<div id="dashboard" class="row justify-content-center small bg-super-light py-2 rounded-lg">
+
+  <div id="github" class="py-2 col-12 col-sm-2">
+    <h6>
+      <a target="_blank" href="http://www.github.com/{{ workshop.parent_repo }}/tree/{{ workshop.parent_branch }}" class="text-decoration-none">
+      <svg class="bi bi-server" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"> <path d="M13 2c0-1.105-2.239-2-5-2S3 .895 3 2s2.239 2 5 2 5-.895 5-2z"/> <path d="M13 3.75c-.322.24-.698.435-1.093.593C10.857 4.763 9.475 5 8 5s-2.857-.237-3.907-.657A4.881 4.881 0 0 1 3 3.75V6c0 1.105 2.239 2 5 2s5-.895 5-2V3.75z"/> <path d="M13 7.75c-.322.24-.698.435-1.093.593C10.857 8.763 9.475 9 8 9s-2.857-.237-3.907-.657A4.881 4.881 0 0 1 3 7.75V10c0 1.105 2.239 2 5 2s5-.895 5-2V7.75z"/> <path d="M13 11.75c-.322.24-.698.435-1.093.593-1.05.42-2.432.657-3.907.657s-2.857-.237-3.907-.657A4.883 4.883 0 0 1 3 11.75V14c0 1.105 2.239 2 5 2s5-.895 5-2v-2.25z"/> </svg>
+      <span class="pl-1">GitHub</span>
+      </a>
+    </h6>
+  </div>
+
+  <div id="updated" class="py-2 col-12 col-sm-3">
+    <h6>
+      Last updated
+    </h6>
+    <span class="font-weight-bolder">
+      <span class="badge badge-dark text-light lead">{{ workshop.updated }}</span>
+    </span>
+    by
+    <span class="font-weight-bolder">
+      <svg class="bi bi-person-lines-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm7 1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm2 9a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z"/> </svg>
+      <span class="pl-1">Firstname Lastname</span>
+    </span>
+  </div>
+
+  <div id="contributors" class="py-2 col-12 col-sm-3">
+    <h6>
+      <svg class="bi bi-people-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/> </svg>
+      <span class="pl-1">All collaborators</span>
+    </h6>
+    <ul>
+      {% for contributor in frontmatter.contributors.all %}
+        <li>{% if contributor.url %}<a href="{{ contributor.url }}" target="_blank">{% endif %}{{ contributor.full_name }}{% if contributor.role %} ({{ contributor.role }}){% endif %}{% if contributor.url %}</a>{% endif %}</li>
+      {% endfor %}
+    </ul>
+
+  </div>
+
+</div><!-- /dashboard -->
+{% endblock %}
