@@ -6,6 +6,7 @@ def add_to_all_contexts(request):
     context_data = dict()
 
     user_agent = request.META['HTTP_USER_AGENT'].lower()
+    context_data['meta'] = str(request.META)
     context_data['user_agent'] = user_agent
     context_data['is_trident'] = 'trident' in user_agent
     context_data['is_msie'] = 'msie' in user_agent
