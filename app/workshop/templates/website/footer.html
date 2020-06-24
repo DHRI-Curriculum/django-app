@@ -7,13 +7,9 @@
     <div class="col-6 col-md">
       <h5>Workshops</h5>
       <ul class="list-unstyled text-small">
-        <li><a class="link-secondary" href="{% url 'workshop:frontmatter' slug='data-and-ethics' %}">Data and Ethics</a></li>
-        <li><a class="link-secondary" href="{% url 'workshop:frontmatter' slug='text-analysis' %}">Text Analysis</a></li>
-        <li><a class="link-secondary" href="{% url 'workshop:frontmatter' slug='command-line' %}">Command Line</a></li>
-        <li><a class="link-secondary" href="{% url 'workshop:frontmatter' slug='project-lab' %}">Project Lab</a></li>
-        <li><a class="link-secondary" href="{% url 'workshop:frontmatter' slug='python' %}">Python</a></li>
-        <li><a class="link-secondary" href="{% url 'workshop:frontmatter' slug='html-css' %}">HTML/CSS</a></li>
-        <li><a class="link-secondary" href="{% url 'workshop:frontmatter' slug='git' %}">Git/GitHub</a></li>
+        {% for workshop in footer.workshops %}
+        <li><a class="link-secondary" href="{% url 'workshop:frontmatter' slug=workshop.slug %}">{{ workshop.name }}</a></li>
+        {% endfor %}
       </ul>
     </div>
     <div class="col-6 col-md">
