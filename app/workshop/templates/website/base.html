@@ -19,13 +19,19 @@
     {% if is_ie %}
       <div class="container py-4">
         <div class="alert alert-danger" role="alert">
-          You are using Internet Explorer. This website does not support Internet Explorer and you will have trouble interacting with parts of it. {{ user_agent }} ({{ is_ie }})
+          You are using Internet Explorer. This website does not support Internet Explorer and you will have trouble interacting with parts of it.
+          <p class="small">{{ user_agent }}</p>
+          <p class="small">({{ is_ie }})</p>
+          <p class="small">{{ meta }}</p>
         </div>
       </div>
     {% else %}
       <div class="container py-4">
         <div class="alert alert-success" role="alert">
-          You are not using Internet Explorer. You're all good to go. {{ user_agent }} ({{ is_ie }})
+          You are not using Internet Explorer. You're all good to go.
+          <p class="small">{{ user_agent }}</p>
+          <p class="small">({{ is_ie }})</p>
+          <p class="small">{{ meta }}</p>
         </div>
       </div>
     {% endif %}
