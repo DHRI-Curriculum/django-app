@@ -15,6 +15,13 @@
   </head>
   <body>
 
+  {% if request.is_ie %}
+    <div class="alert alert-danger" role="alert">
+      You are using Internet Explorer. This website does not support Internet Explorer and you will have trouble interacting with parts of it.
+    </div>
+  {% else %}
+
+  {% endif %}
   {% include "website/navbar.html" %}
 
     <div id="content" class="container mx-auto">
