@@ -456,15 +456,16 @@ class WebCache(LoaderCache):
         from bs4 import BeautifulSoup
 
         if str(self.url).lower().strip() == "none":
-            return(None)
+            return('')
         else:
             log.warning(f"Trying to download title from web page...")
             #try:
             r = requests.get(self.url)
             soup = BeautifulSoup(r.text, 'lxml')
-            return(soup.find('title').text)
-            #except:
-            #    return(None)
+            try:
+                return(soup.find('title').text)
+            except:
+                return('')
 
     def _check_age(self) -> bool:
         if not self.path.exists() or self.force_download == True: return(False)
