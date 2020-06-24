@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'website.apps.AssessmentConfig',
+    'website.apps.WebsiteConfig',
     'workshop.apps.WorkshopConfig',
     'frontmatter.apps.FrontmatterConfig',
     'assessment.apps.AssessmentConfig',
