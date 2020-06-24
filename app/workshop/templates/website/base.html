@@ -15,18 +15,22 @@
   </head>
   <body>
 
-  {% if is_ie %}
-    <div class="alert alert-danger" role="alert">
-      You are using Internet Explorer. This website does not support Internet Explorer and you will have trouble interacting with parts of it.
-    </div>
-  {% else %}
-  <div class="alert alert-success" role="alert">
-    You are not using Internet Explorer. You're all good to go.
-  </div>
-{% endif %}
+    {% include "website/navbar.html" %}
+    {% if is_ie %}
+      <div class="container py-4">
+        <div class="alert alert-danger" role="alert">
+          You are using Internet Explorer. This website does not support Internet Explorer and you will have trouble interacting with parts of it.
+        </div>
+      </div>
+    {% else %}
+      <div class="container py-4">
+        <div class="alert alert-success" role="alert">
+          You are not using Internet Explorer. You're all good to go.
+        </div>
+      </div>
+    {% endif %}
 
 
-  {% include "website/navbar.html" %}
 
     <div id="content" class="container mx-auto">
       {% block header %}{% endblock %}
