@@ -22,7 +22,7 @@
           You are using Internet Explorer. This website does not support Internet Explorer and you will have trouble interacting with parts of it.
           <p class="small">{{ user_agent }}</p>
           <p class="small">({{ is_ie }})</p>
-          <p class="small">{{ meta }}</p>
+          <p class="small">{{ request.META }}</p>
         </div>
       </div>
     {% else %}
@@ -31,7 +31,7 @@
           You are not using Internet Explorer. You're all good to go.
           <p class="small">{{ user_agent }}</p>
           <p class="small">({{ is_ie }})</p>
-          <p class="small">{{ meta }}</p>
+          <p class="small">{{ request.META }}</p>
         </div>
       </div>
     {% endif %}
