@@ -23,15 +23,19 @@
           <p class="small">{{ user_agent }}</p>
           <p class="small">({{ is_ie }})</p>
           <p class="small">{{ request.META }}</p>
+          <p class="small">{{ request.META.HTTP_USER_AGENT }}</p>
+          <p class="small">{% if Trident in request.META.HTTP_USER_AGENT %}Yes%{% endif %}</p>
         </div>
       </div>
     {% else %}
       <div class="container py-4">
         <div class="alert alert-success" role="alert">
           You are not using Internet Explorer. You're all good to go.
-          <p class="small">{{ user_agent }}</p>
-          <p class="small">({{ is_ie }})</p>
-          <p class="small">{{ request.META }}</p>
+          <p class="small"><strong>user_agent:</strong> {{ user_agent }}</p>
+          <p class="small"><strong>is_ie:</strong> ({{ is_ie }})</p>
+          <p class="small"><strong>META:</strong> {{ request.META }}</p>
+          <p class="small"><strong>HTTP_USER_AGENT:</strong> {{ request.META.HTTP_USER_AGENT }}</p>
+          <p class="small"><strong>Trident in request.META.HTTP_USER_AGENT:</strong> {% if 'Trident' in request.META.HTTP_USER_AGENT %}Yes{% else %}No{% endif %}</p>
         </div>
       </div>
     {% endif %}
