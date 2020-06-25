@@ -7,7 +7,7 @@
     <div class="col-6 col-md">
       <h5>Workshops</h5>
       <ul class="list-unstyled text-small">
-        {% for workshop in website.all_workshops %}
+        {% for workshop in website.workshops %}
         <li><a class="link-secondary" href="{% url 'workshop:frontmatter' slug=workshop.slug %}">{{ workshop.name }}</a></li>
         {% endfor %}
       </ul>
