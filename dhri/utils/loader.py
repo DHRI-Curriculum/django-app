@@ -94,9 +94,9 @@ class Loader():
 
         self.log.name = self.repo_name + '-load'
 
-        self.log.log(f"Loading content {self.repo_name}...")
+        self.log.log(f'Loading content {self.repo_name}...')
 
-        self.name = self.repo_name.replace('-', '').title().replace(" And ", "and")
+        self.name = self.repo_name.replace('-', '').title().replace(' And ', ' and ')
 
         self.cache = LoaderCache(self.repo_name, self)
 
@@ -116,7 +116,7 @@ class Loader():
 
         self.meta = self._raw_content['meta']
         self.parent_backend = BACKEND_AUTO
-        self.parent_repo = f"{self.user}/{self.repo_name}"
+        self.parent_repo = f'{self.user}/{self.repo_name}'
         self.parent_branch = self.branch
         self._content_raw = self._raw_content['content']
 
@@ -159,7 +159,7 @@ class Loader():
                             self.log.warning(msg)
                 else:
                     if category == 'praxis': category = 'theory-to-practice' # because it is differently named...
-                    msg = f"`{category}.md` appears to not exist in the repository {self.repo_name}."
+                    msg = f'`{category}.md` appears to not exist in the repository {self.repo_name}.'
                     if required:
                         self.log.error(msg, raise_error=MissingCurriculumFile)
                     else:
@@ -298,20 +298,20 @@ class Loader():
         try:
           frontmatter_data = self._get_live_text_from_url(self.frontmatter_path)
         except:
-          self.log.warning(f"Could not load frontmatter data from repository {self.repo_name}. Please verify that its branch {self.branch} contains frontmatter.md.", color='red')
-          frontmatter_data = ""
+          self.log.warning(f'Could not load frontmatter data from repository {self.repo_name}. Please verify that its branch {self.branch} contains frontmatter.md.', color='red')
+          frontmatter_data = ''
 
         try:
           praxis_data = self._get_live_text_from_url(self.praxis_path)
         except:
-          self.log.warning(f"Could not load theory-to-practice data from repository {self.repo_name}. Please verify that its branch {self.branch} contains theory-to-practice.md.", color='red')
-          praxis_data = ""
+          self.log.warning(f'Could not load theory-to-practice data from repository {self.repo_name}. Please verify that its branch {self.branch} contains theory-to-practice.md.', color='red')
+          praxis_data = ''
 
         try:
           assessment_data = self._get_live_text_from_url(self.assessment_path)
         except:
-          self.log.warning(f"Could not load assessment data from repository {self.repo_name}. Please verify that its branch {self.branch} contains assessment.md.", color='red')
-          assessment_data = ""
+          self.log.warning(f'Could not load assessment data from repository {self.repo_name}. Please verify that its branch {self.branch} contains assessment.md.', color='red')
+          assessment_data = ''
 
         return({
             'meta': {
@@ -350,7 +350,7 @@ class Loader():
     def _verify_repo(self):
         """ Verifies that a provided repository string is correct. Sets self.repo to a string with corrected information """
 
-        if self.repo == None or self.repo=="" or not isinstance(self.repo, str):
+        if self.repo == None or self.repo=='' or not isinstance(self.repo, str):
             self.log.error('No repository URL provided.', raise_error=UnresolvedNameOrBranch)
 
         if self.repo.endswith('/'):
@@ -374,7 +374,7 @@ class LoaderCache():
 
     def __init__(self, repo_name:str, loader:Loader):
         self.repo_name = repo_name
-        self.path = DOWNLOAD_CACHE_DIR / (self.repo_name + ".json")
+        self.path = DOWNLOAD_CACHE_DIR / (self.repo_name + '.json')
         self.exists = self._check_age()
         self.parent = loader
 
@@ -392,9 +392,9 @@ class LoaderCache():
 
         if now - file_mod_time > TEST_AGE:
             try:
-                self.parent.log.log(f"Cache has expired - older than {TEST_AGE} minutes... Removing.")
+                self.parent.log.log(f'Cache has expired - older than {TEST_AGE} minutes... Removing.')
             except:
-                log.log(f"Cache has expired - older than {TEST_AGE} minutes... Removing.")
+                log.log(f'Cache has expired - older than {TEST_AGE} minutes... Removing.')
             self.path.unlink()
             return False
         else:
@@ -403,17 +403,17 @@ class LoaderCache():
 
     def load_cache(self) -> dict:
         try:
-            self.parent.log.log("Loading cache from local file.")
+            self.parent.log.log('Loading cache from local file.')
         except:
-            log.log("Loading cache from local file.")
+            log.log('Loading cache from local file.')
         return(json.loads(self.path.read_text()))
 
 
     def save_cache(self, *args, **kwargs) -> bool:
         try:
-            self.parent.log.log(f"Saving cache locally: Cache path is {self.path}")
+            self.parent.log.log(f'Saving cache locally: Cache path is {self.path}')
         except:
-            log.log(f"Saving cache locally: Cache path is {self.path}")
+            log.log(f'Saving cache locally: Cache path is {self.path}')
         if len(args) == 2:
             data = args[1]
             if not self.path.parent.exists(): self.path.parent.mkdir(parents=True)
@@ -422,7 +422,7 @@ class LoaderCache():
 
 
     def __str__(self) -> str:
-        return f"{self.path}"
+        return f'{self.path}'
 
 
     def __repr__(self) -> str:
@@ -438,8 +438,8 @@ class WebCache(LoaderCache):
         self.title = None
         self.force_download = FORCE_DOWNLOAD
 
-        if str(url).lower().strip() != "none":
-            self.path = DOWNLOAD_CACHE_DIR / (slugify(url[:100])+".txt")
+        if url != None and str(url).lower().strip() != 'none' and str(url).lower().strip() != '':
+            self.path = DOWNLOAD_CACHE_DIR / (slugify(url[:100])+'.txt')
             self.path = Path(self.path)
 
             self._check_age()
@@ -455,10 +455,12 @@ class WebCache(LoaderCache):
         import requests
         from bs4 import BeautifulSoup
 
-        if str(self.url).lower().strip() == "none":
+        if self.url != None and str(self.url).lower().strip() == 'none' and str(self.url).lower().strip() == '':
             return('')
         else:
-            log.warning(f"Trying to download title from web page...")
+            log.warning(f'Trying to download title from web page...')
+            if not self.url.startswith('http'):
+                self.url = f'http://{self.url}'
             #try:
             r = requests.get(self.url)
             soup = BeautifulSoup(r.text, 'lxml')
@@ -474,9 +476,9 @@ class WebCache(LoaderCache):
 
         if now - file_mod_time > TEST_AGE:
             try:
-                self.parent.log.log(f"Cache has expired - older than {TEST_AGE} minutes... Removing.")
+                self.parent.log.log(f'Cache has expired - older than {TEST_AGE} minutes... Removing.')
             except:
-                log.log(f"Cache has expired - older than {TEST_AGE} minutes... Removing.")
+                log.log(f'Cache has expired - older than {TEST_AGE} minutes... Removing.')
             self.path.unlink()
             return False
         else:
