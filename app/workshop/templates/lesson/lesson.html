@@ -10,14 +10,64 @@
 
 {% block main %}
   <div class="row pt-5">
-    <div class="col-12">
-      <h2>Contents for lesson here!</h2>
 
-      <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>
-      <p>But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and I will give you a complete account of the system, and expound the actual teachings of the great explorer of the truth, the master-builder of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it is pleasure, but because those who do not know how to pursue pleasure rationally encounter consequences that are extremely painful. Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but because occasionally circumstances occur in which toil and pain can procure him some great pleasure. To take a trivial example, which of us ever undertakes laborious physical exercise, except to obtain some advantage from it? But who has any right to find fault with a man who chooses to enjoy a pleasure that has no annoying consequences, or one who avoids a pain that produces no resultant pleasure?</p>
+    <div class="col-12 py-3">
+      <h2>Conditionals</h2>
+
+      <div class="lesson-text py-3">
+        <p>Conditionals allow programs to change their behavior based on whether some statement is true or false. Let's try this out by writing a script that will give different outputs based on the weather:</p>
+
+        <blockquote>
+          <code>
+            <p>weather = "sunny"</p>
+
+            <p>if weather == "sunny":</p>
+            <p>&nbsp;&nbsp;print("Bring your shades")</p>
+            <p>else:</p>
+            <p>&nbsp;&nbsp;print("I don't know what you should bring! I'm just a little program...")</p>
+          </code>
+        </blockquote>
+
+        <p>In our first line, we set a variable <kbd>weather</kbd>  to the string "sunny," representing what the weather is like outside. The <kbd>if</kbd> statement checks whether the variable weather is set to "sunny." If it is, the code in the block beneath is executed, so the text "Bring your shades" will be printed.</p>
+
+        <p>The <kbd>else</kbd> statement handles any inputs that aren't "sunny"—the program merely prints out that it doesn't know what you should bring. Try this script out both with the variable set to "sunny" and the variable set to some other value.</p>
+
+        <p>What if we want our program to handle other kinds of weather, giving different messages for each one? Other cases after the first <kbd>if</kbd> statement are handled with <kbd>elif</kbd>:</p>
+
+        <blockquote>
+          <code>
+            <p>weather = "sunny"</p>
+
+            <p>if weather == "sunny":</p>
+            <p>&nbsp;&nbsp;print("Bring your shades")
+            <p>elif weather == "rainy":</p>
+            <p>&nbsp;&nbsp;print("Bring your umbrella")
+            <p>elif weather == "snowy":</p>
+            <p>&nbsp;&nbsp;print("Bring your wooly muffler")
+            <p>else:</p>
+            <p>&nbsp;&nbsp;print("I don't know what you should bring! I'm just a little program...")</p>
+          </code>
+        </blockquote>
+
+        <p>You can add as many <kbd>elif</kbd> statements as you need, meaning that conditionals in Python have one <kbd>if</kbd> statement, any number of <kbd>elif</kbd> statements, and one <kbd>else</kbd> statement that catches any input not covered by <kbd>if</kbd> or <kbd>elif</kbd>. Over the next sections, we'll work on improving this little application, making it able to handle user input directly.</p>
+
+        <h3 class="pt-4">Challenge</h3>
+
+        <p>Add two more <kbd>elif</kbd> statements to this program to make it better able to handle different kinds of weather.</p>
+      </div>
     </div>
+
   </div>
 
   {% include 'lesson/lesson-elements/pagination.html' %}
+  <div class="row pt-5">
+
+    <div class="col-12 py-3">
+      <h4 class="small uppercase">Workshop overall progress</h4>
+      <div class="progress">
+        <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+    </div>
+  </div>
 
 {% endblock %}
