@@ -11,6 +11,7 @@ import requests, json, datetime, shutil
 from django.utils.text import slugify
 from pathlib import Path
 from bs4 import BeautifulSoup
+from requests.exceptions import ProxyError
 
 log = Logger(name='loader')
 
@@ -487,12 +488,15 @@ class WebCache(LoaderCache):
             log.warning(f'Trying to download title from web page...')
             if not self.url.startswith('http'):
                 self.url = f'http://{self.url}'
-            #try:
-            r = requests.get(self.url)
-            soup = BeautifulSoup(r.text, 'lxml')
             try:
-                return(soup.find('title').text)
-            except:
+                r = requests.get(self.url)
+                soup = BeautifulSoup(r.text, 'lxml')
+                try:
+                    return(soup.find('title').text)
+                except:
+                    return('')
+            except ProxyError as e:
+                log.warning(f'Could not access {self.url} because of a proxy error: {e}')
                 return('')
 
     def _check_age(self) -> bool:
