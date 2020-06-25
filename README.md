@@ -2,8 +2,8 @@
 
 This is the alpha 1 version of the DHRI's curriculum website (created as a django app), together with a script that can independently import data from a JSON file and populate the website.
 
-Belongs to: Sprint 1  
-Deadline: June 25
+Belongs to: [Sprint 2](/DHRI-Curriculum/django-app/milestone/2)  
+Deadline: July 9
 
 ## Documentation
 
