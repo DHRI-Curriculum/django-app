@@ -24,8 +24,7 @@ def _check_age(path, age_checker=TEST_AGE) -> bool:
     now = datetime.datetime.today()
 
     if now - file_mod_time > age_checker:
-        log.warning(f'Cache has expired for {path} - older than {age_checker}... Removing.')
-        path.unlink()
+        log.warning(f'Cache has expired for {path} - older than {age_checker}...')
         return False
     else:
         # log.log(f'Cache is fine for {path} - not older than {age_checker}....')
@@ -34,11 +33,11 @@ def _check_age(path, age_checker=TEST_AGE) -> bool:
 # First things first: Clear out the cache folder
 for file in DOWNLOAD_CACHE_DIR.glob('*.txt'):
     if _check_age(file, TEST_AGE_WEB) == False:
-        print(f'ok, go ahead and delete {file}')
+        file.unlink()
 
 for file in DOWNLOAD_CACHE_DIR.glob('*.json'):
     if _check_age(file, TEST_AGE) == False:
-        print(f'ok, go ahead and delete {file}')
+        file.unlink()
 
 SECTIONS = {
     'frontmatter': {
