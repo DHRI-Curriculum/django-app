@@ -19,7 +19,7 @@
 {% if frontmatter.prerequisites.count and frontmatter.resources.count %}
 <div class="row pt-5">
 
-  <div class="col-12">
+  <div class="col-12 pb-2">
     <h3>Before you start</h3>
     <div class="lead mt-4">
       Here is an introduction to the section "Before you start," and something about what it means.
@@ -51,8 +51,8 @@
 {% endif %}
 
 
-<div class="row pt-5">
-  <div class="col-12">
+<div class="row pt-5 rounded-sm">
+  <div class="col-12 pb-2">
     <h3>Contexts</h3>
     <div class="lead mt-4">
       Here is an introduction to the section "Contexts," and something about what it means.
@@ -70,7 +70,7 @@
 
   {% if frontmatter.readings.count %}
     <div class="col-12 col-sm-4 mt-4 mt-md-2 overflow-hidden">
-      <h4>Readings</h4>
+      <h4>Readings before you get started</h4>
       <hr />
       <p style="font-size:1.05rem;">Here is an introductory paragraph about what the following readings are. It might contain <a href="">a link</a> to our "library" for the curriculum website, which can contain all kinds of information.</p>
       {% for reading in frontmatter.readings.all %}
@@ -87,7 +87,7 @@
 
   {% if frontmatter.projects.count %}
     <div class="col-12 col-sm-4 mt-4 mt-md-2 overflow-hidden">
-      <h4>Project related to {{ workshop.name }}</h4>
+      <h4>Projects related to {{ workshop.name }}</h4>
       <hr />
       <p style="font-size:1.05rem;">Here is an introductory paragraph about what the following projects are and why they are listed here. It might contain <a href="">a link</a> to our "library" for the curriculum website, which can contain all kinds of information.</p>
       {% for project in frontmatter.projects.all %}

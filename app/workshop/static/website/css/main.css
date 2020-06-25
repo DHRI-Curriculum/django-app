@@ -33,3 +33,38 @@ blockquote {
 .dhri-hero:hover {
     color: #d1d6d7 !important;
 }
+
+.special-link {
+    background-color: #2C3E50 !important;
+}
+
+.special-link:hover {
+    background-color: #2c3e5097 !important;
+}
+
+.special-link-disabled {
+    background-color: #2c3e5097 !important;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.lesson-text {
+    font-size:1.2rem;
+    line-height:2rem;
+}
+
+.lesson-text code {
+    padding-left: 0.15em;
+    padding-right: 0.15em;
+    padding-top: 0em;
+    padding-bottom: 0em;
+    margin: 0;
+    display: inline-block;
+    background-color: rgba(255, 0, 255, 0.01) !important;
+}
+
+.lesson-text kbd {
+    background-color: rgba(17, 45, 45, 0.529);
+}

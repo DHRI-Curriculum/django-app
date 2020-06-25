@@ -8,4 +8,5 @@ app_name = 'website'
 
 urlpatterns = [
   path('', views.index, name='index'),
+  path('<str:page_slug>/', views.page, name='page'),
 ]

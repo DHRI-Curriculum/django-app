@@ -5,6 +5,19 @@
 <div class="lead mt-4">
     {{ workshop.frontmatter.abstract | markdown | safe }}
 </div>
+
+
+{% if frontmatter.learning_objectives %}
+<div class="my-5">
+    <hr class="pt-1" />
+    <h4>In this workshop, you will learn how to</h4>
+    {% for objective in frontmatter.learning_objectives.all %}
+        <li>{{ objective }}</li>
+    {% endfor %}
+</div>
+{% endif %}
+
+
 <div class="d-flex align-items-end flex-column">
     <a href="{% url 'workshop:frontmatter' workshop.slug %}lessons/1" type="button" class="btn btn-success btn-lg text-light">Get started</a>
     <span class="align-text-bottom mt-2 text-muted small">This workshop is estimated to take {{ frontmatter.estimated_time }} hours to complete.</span>

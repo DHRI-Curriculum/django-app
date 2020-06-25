@@ -1,6 +1,7 @@
 from django.shortcuts import render, HttpResponse, get_object_or_404
 from django.core.exceptions import MultipleObjectsReturned
 from .models import Workshop
+from website.models import Page
 
 
 def _flexible_get(model=None, slug_or_int=''):
