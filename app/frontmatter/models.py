@@ -17,7 +17,7 @@ class Frontmatter(models.Model):
 
 
 class LearningObjective(models.Model):
-  frontmatter = models.ForeignKey(Frontmatter, on_delete=models.CASCADE)
+  frontmatter = models.ForeignKey(Frontmatter, on_delete=models.CASCADE, related_name="learning_objectives")
   label = models.TextField(max_length=500)
 
   def __str__(self):
