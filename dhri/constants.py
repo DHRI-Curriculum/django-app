@@ -38,6 +38,7 @@ DOWNLOAD_CACHE_DIR = Path(DOWNLOAD_CACHE_DIR)
 if not DOWNLOAD_CACHE_DIR.exists(): DOWNLOAD_CACHE_DIR.mkdir()
 
 TEST_AGE = timedelta(minutes=TEST_AGE)
+TEST_AGE_WEB = timedelta(minutes=5) # Test age for WebCache is set to 30 days.
 
 # Run tests
 
