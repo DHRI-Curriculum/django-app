@@ -1,4 +1,3 @@
-import requests, json, datetime
 from dhri.django import django
 from dhri.django.models import Workshop, Praxis, Tutorial, Reading, Frontmatter, LearningObjective, Project, Contributor
 from dhri.interaction import Logger
@@ -6,12 +5,39 @@ from dhri.utils.markdown import split_into_sections, get_contributors, Markdown
 from dhri.utils.exceptions import UnresolvedNameOrBranch, MissingCurriculumFile, MissingRequiredSection
 
 from dhri.settings import NORMALIZING_SECTIONS, REPO_AUTO, BRANCH_AUTO, BACKEND_AUTO, FORCE_DOWNLOAD
-from dhri.constants import DOWNLOAD_CACHE_DIR, TEST_AGE
+from dhri.constants import DOWNLOAD_CACHE_DIR, TEST_AGE, TEST_AGE_WEB
 
+import requests, json, datetime, shutil
 from django.utils.text import slugify
 from pathlib import Path
+from bs4 import BeautifulSoup
 
 log = Logger(name='loader')
+
+
+def _check_age(path, age_checker=TEST_AGE) -> bool:
+    if isinstance(path, str): path = Path(path)
+    log = Logger(name='cache-age-check')
+    if not path.exists() or FORCE_DOWNLOAD == True: return(False)
+    file_mod_time = datetime.datetime.fromtimestamp(path.stat().st_ctime)
+    now = datetime.datetime.today()
+
+    if now - file_mod_time > age_checker:
+        log.warning(f'Cache has expired for {path} - older than {age_checker}... Removing.')
+        path.unlink()
+        return False
+    else:
+        # log.log(f'Cache is fine for {path} - not older than {age_checker}....')
+        return True
+
+# First things first: Clear out the cache folder
+for file in DOWNLOAD_CACHE_DIR.glob('*.txt'):
+    if _check_age(file, TEST_AGE_WEB) == False:
+        print(f'ok, go ahead and delete {file}')
+
+for file in DOWNLOAD_CACHE_DIR.glob('*.json'):
+    if _check_age(file, TEST_AGE) == False:
+        print(f'ok, go ahead and delete {file}')
 
 SECTIONS = {
     'frontmatter': {
@@ -450,10 +476,10 @@ class WebCache(LoaderCache):
 
             if self.path.exists():
                 self.title = self.path.read_text()
+        else:
+            self.title = ''
 
     def try_title_element_from_url(self):
-        import requests
-        from bs4 import BeautifulSoup
 
         if self.url != None and str(self.url).lower().strip() == 'none' and str(self.url).lower().strip() == '':
             return('')
@@ -474,11 +500,11 @@ class WebCache(LoaderCache):
         file_mod_time = datetime.datetime.fromtimestamp(self.path.stat().st_ctime)
         now = datetime.datetime.today()
 
-        if now - file_mod_time > TEST_AGE:
+        if now - file_mod_time > TEST_AGE_WEB:
             try:
-                self.parent.log.log(f'Cache has expired - older than {TEST_AGE} minutes... Removing.')
+                self.parent.log.log(f'Cache has expired - older than {TEST_AGE_WEB} minutes... Removing.')
             except:
-                log.log(f'Cache has expired - older than {TEST_AGE} minutes... Removing.')
+                log.log(f'Cache has expired - older than {TEST_AGE_WEB} minutes... Removing.')
             self.path.unlink()
             return False
         else:
