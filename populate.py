@@ -152,7 +152,7 @@ if __name__ == '__main__':
                 for contributor in l.contributors:
                     first_name, last_name, role, link = contributor
                     o = Contributor()
-                    o.first_name, o.last_name, o.role, o.link = contributor
+                    o.first_name, o.last_name, o.role, o.url = contributor
                     o.save()
                     collector['contributors'].append(o)
                     msg = saved_prefix + f'Contributor {o.full_name} added.'

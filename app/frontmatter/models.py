@@ -55,7 +55,7 @@ class Contributor(models.Model):
   first_name = models.TextField(max_length=100)
   last_name = models.TextField(max_length=100)
   role = models.TextField(max_length=100, null=True, blank=True)
-  # TODO: Add a field for url and ensure it is filled out by populate.py
+  url = models.TextField(max_length=200, null=True, blank=True)
 
   def _fullname(self):
     return self.first_name + ' ' + self.last_name
