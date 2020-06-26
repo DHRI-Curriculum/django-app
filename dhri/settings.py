@@ -13,13 +13,13 @@ AUTO_TERMINAL_WIDTH = 70
 
 # Which repositories and branches should we do automatically?
 AUTO_PROCESS = [
-        ('data-and-ethics', 'v2.0-di-edits'),
-        ('text-analysis', 'v2.0-rafa-edits'),
-        ('command-line', 'v2.0-smorello-edits'),
-        ('project-lab', 'v2.0rhody-edits'),
-        ('python', 'v2.0-filipa-edits'),
-        ('html-css', 'v2.0-param-edits'),
-        ('git', 'v2.0-kristen-edits'),
+        #('data-and-ethics', 'v2.0-di-edits'),
+        #('text-analysis', 'v2.0-rafa-edits'),
+        #('command-line', 'v2.0-smorello-edits'),
+        ('project-lab', 'v2.0-kalle-testing-lessons'),
+        #('python', 'v2.0-filipa-edits'),
+        #('html-css', 'v2.0-param-edits'),
+        #('git', 'v2.0-kristen-edits'),
     ]
 
 # Django backend settings
@@ -41,7 +41,7 @@ DOWNLOAD_CACHE_DIR = './__loader-cache__'
 TEST_AGE = 20 # minutes
 
 # If set to True, the script will bypass the cache every time (effectively disregarding TEST_AGE above)
-FORCE_DOWNLOAD = False
+FORCE_DOWNLOAD = True
 
 
 ##### Dev features ##############################

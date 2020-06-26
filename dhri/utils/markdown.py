@@ -17,6 +17,7 @@ Overview:
 
 from dhri.utils.regex import re, MULTILINE_ITEM, ALL_BULLETS, md_links, urls_general
 from dhri.interaction import Logger
+from collections import OrderedDict
 
 LIST_ELEMENTS = r'- (.*)(?:\n\s{2,4})?(.*)'
 all_list_elements = re.compile(LIST_ELEMENTS)
@@ -228,24 +229,39 @@ def get_bulletpoints(markdown:str) -> list:
     return(get_list(markdown, ALL_BULLETS))
 
 
-def split_into_sections(markdown:str) -> dict:
+def split_into_sections(markdown:str, level_granularity=3, keep_levels=False) -> dict:
     """
     Splits a markdown file into a dictionary with the headings as keys and the section contents as values, and returns the dictionary.
+    Takes two arguments:
+      - level_granularity that can be set to 1, 2, or 3, determining the depth of search for children
+      - keep_level which maintains the number of octothorps before the header
     """
 
     lines = [x for x in markdown.splitlines() if x] # cleans out any empty lines
 
-    sections = {}
+    sections = OrderedDict()
+
+    def is_header(line:str, granularity=level_granularity):
+        if granularity == 1:
+            if line.startswith("# "): return(True)
+        elif granularity == 2:
+            if line.startswith("# ") or line.startswith("## "): return(True)
+        elif granularity == 3:
+            if line.startswith("# ") or line.startswith("## ") or line.startswith("### "): return(True)
+        return(False)
 
     for linenumber, line in enumerate(lines):
-        if line.startswith('### ') or line.startswith('## ') or line.startswith('# '):
+        if is_header(line):
             header = ''.join([x for x in line.split('#') if x]).strip()
-            # TODO: Move normalize_data to here?
+            if keep_levels:
+                level = line.strip()[:3].count("#")
+                header = f"{'#' * level} {header}"
+
             if header not in sections:
                 sections[header] = ''
                 skip_ahead = False
                 for nextline in lines[linenumber + 1:]:
-                    if nextline.startswith('#'): skip_ahead = True
+                    if is_header(nextline): skip_ahead = True
                     if skip_ahead: continue
                     sections[header] += '\n' + nextline
                 sections[header] = sections[header].strip()
