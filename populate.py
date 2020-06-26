@@ -1,6 +1,6 @@
 from dhri import debug
 from dhri.django import django, Fixture
-from dhri.django.models import Workshop, Praxis, Tutorial, Reading, Frontmatter, LearningObjective, Project, Contributor
+from dhri.django.models import Workshop, Praxis, Tutorial, Reading, Frontmatter, LearningObjective, Project, Contributor, Lesson, Challenge, Solution
 from dhri.interaction import Logger, get_or_default
 from dhri.settings import AUTO_PROCESS, FIXTURE_PATH, REPLACEMENTS
 from dhri.utils.loader import Loader, WebCache
@@ -78,6 +78,40 @@ if __name__ == '__main__':
         log.log(saved_prefix + f'Workshop object {workshop.name} added (ID {workshop.id}).')
         collect_workshop_slugs.append(workshop.slug)
 
+
+        ###### LESSONS ####################################
+
+        if l.has_lessons:
+            order = 1
+            for title, body in l.lessons.items():
+                if title.lower().replace("#", "").strip() == "challenge":
+                    clean_title = title.replace("#", "").strip()
+                    challenge = Challenge(lesson=lesson, title=clean_title, text=body)
+                    challenge.save()
+                    print(challenge)
+                if title.lower().replace("#", "").strip() == "solution":
+                    clean_title = title.replace("#", "").strip()
+                    solution = Solution(challenge=challenge, title=clean_title, text=body)
+                    solution.save()
+                    print(solution)
+                else:
+                    if title.startswith("# "):
+                        try:
+                            lesson.text = all_text
+                            lesson.save()
+                            print(lesson)
+                        except:
+                            pass
+                        lesson = Lesson(workshop=workshop, title=title.strip()[2:])
+                        all_text = body
+                        lesson.save()
+                    elif title.startswith("## "):
+                        all_text += f"\n{title.strip()[3:]}\n{body}"
+                    elif title.startswith("### "):
+                        all_text += f"\n{title.strip()[4:]}\n{body}"
+        lesson.text = all_text
+        lesson.save()
+        print(lesson)
 
         ###### FRONTMATTER MODELS ####################################
 
