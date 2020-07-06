@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'frontmatter.apps.FrontmatterConfig',
     'assessment.apps.AssessmentConfig',
     'praxis.apps.PraxisConfig',
+    'library.apps.LibraryConfig',
     'adminsortable',
 ]
 

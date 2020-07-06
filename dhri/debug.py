@@ -38,7 +38,7 @@ def reset_all(kill=True) -> None:
     manage = Path(app_path) / 'manage.py'
     sql = Path(app_path) / '/db.sqlite3'
 
-    for app in ['assessment', 'frontmatter', 'praxis', 'workshop']:
+    for app in ['assessment', 'frontmatter', 'praxis', 'workshop', 'library']:
         path = Path(app_path) / f'{app}/migrations/'
         for file in path.glob("*.py"):
             if not "__" in file.name:

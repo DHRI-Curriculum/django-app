@@ -6,9 +6,9 @@ class Frontmatter(models.Model):
   abstract = models.TextField(max_length=1000, blank=True, null=True)
   ethical_considerations = models.TextField(max_length=1000, blank=True, null=True)
   estimated_time = models.PositiveSmallIntegerField(blank=True, null=True, help_text="assign full minutes")
-  projects = models.ManyToManyField('frontmatter.Project', related_name="frontmatters", blank=True)
-  resources = models.ManyToManyField('frontmatter.Resource', related_name="frontmatters", blank=True)
-  readings = models.ManyToManyField('frontmatter.Reading', related_name="frontmatters", blank=True)
+  projects = models.ManyToManyField('library.Project', related_name="frontmatters", blank=True)
+  resources = models.ManyToManyField('library.Resource', related_name="frontmatters", blank=True)
+  readings = models.ManyToManyField('library.Reading', related_name="frontmatters", blank=True)
   contributors = models.ManyToManyField('frontmatter.Contributor', related_name="frontmatters", blank=True)
   prerequisites = models.ManyToManyField('workshop.Workshop', related_name="prerequisites", blank=True)
 
@@ -23,35 +23,6 @@ class LearningObjective(models.Model):
   def __str__(self):
     return self.label
 
-
-class Project(models.Model):
-  title = models.TextField(max_length=500)
-  url = models.TextField(max_length=500, null=True, blank=True)
-  comment = models.TextField(max_length=3000, null=True, blank=True)
-  zotero_item = models.TextField(max_length=500, null=True, blank=True)
-
-  def __str__(self):
-    return self.title
-
-
-class Resource(models.Model):
-  title = models.TextField(max_length=500)
-  url = models.TextField(max_length=500)
-  comment = models.TextField(max_length=3000, null=True, blank=True)
-  zotero_item = models.TextField(max_length=500, null=True, blank=True)
-
-  def __str__(self):
-    return self.title
-
-
-class Reading(models.Model):
-  title = models.TextField(max_length=500)
-  url = models.TextField(max_length=500)
-  comment = models.TextField(max_length=3000, null=True, blank=True)
-  zotero_item = models.TextField(max_length=500, null=True, blank=True)
-
-  def __str__(self):
-    return self.title
 
 
 class Contributor(models.Model):
