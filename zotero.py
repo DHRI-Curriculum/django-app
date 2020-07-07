@@ -74,7 +74,7 @@ for collection in zotero.collections:
                 obj.label = title
 
             obj.url = add_to_database.get('url')
-            obj.comment = add_to_database.get('abstract')
+            obj.annotation = add_to_database.get('abstract')
             obj.zotero_item = zotero_url
 
             obj.save()

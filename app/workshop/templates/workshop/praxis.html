@@ -49,8 +49,8 @@
       {% for tutorial in praxis.tutorials.all %}
         <div class="p-2 my-3 rounded-lg linked-comment">
           <p class="font-weight-bold"><a href="{{ tutorial.url }}">{{ tutorial }}</a></p>
-          {% if tutorial.comment %}
-            <p class="small">{{ tutorial.comment | stringformat:"s" | markdown | safe }}</p>
+          {% if tutorial.annotation %}
+            <p class="small">{{ tutorial.annotation | stringformat:"s" | markdown | safe }}</p>
           {% endif %}
         </div>
       {% endfor %}
@@ -66,8 +66,8 @@
       {% for reading in praxis.further_readings.all %}
         <div class="p-2 my-3 rounded-lg linked-comment">
           <p class="font-weight-bold"><a href="{{ reading.url }}">{{ reading }}</a></p>
-          {% if reading.comment %}
-            <p class="small">{{ reading.comment | stringformat:"s" | markdown | safe }}</p>
+          {% if reading.annotation %}
+            <p class="small">{{ reading.annotation | stringformat:"s" | markdown | safe }}</p>
           {% endif %}
         </div>
       {% endfor %}
@@ -83,8 +83,8 @@
       {% for project in praxis.more_projects.all %}
         <div class="p-2 my-3 rounded-lg linked-comment">
           <p class="font-weight-bold"><a href="{{ project.url }}">{{ project }}</a></p>
-          {% if project.comment %}
-            <p class="small">{{ project.comment | stringformat:"s" | markdown | safe }}</p>
+          {% if project.annotation %}
+            <p class="small">{{ project.annotation | stringformat:"s" | markdown | safe }}</p>
           {% endif %}
         </div>
       {% endfor %}
@@ -100,8 +100,8 @@
       {% for resource in praxis.more_resources.all %}
         <div class="p-2 my-3 rounded-lg linked-comment">
           <p class="font-weight-bold"><a href="{{ resource.url }}">{{ resource }}</a></p>
-          {% if resource.comment %}
-            <p class="small">{{ resource.comment | stringformat:"s" | markdown | safe }}</p>
+          {% if resource.annotation %}
+            <p class="small">{{ resource.annotation | stringformat:"s" | markdown | safe }}</p>
           {% endif %}
         </div>
       {% endfor %}
