@@ -80,7 +80,7 @@ if __name__ == '__main__':
 
 
         ###### LESSONS ####################################
-
+        '''
         if l.has_lessons:
             order = 1
             for title, body in l.lessons.items():
@@ -112,6 +112,7 @@ if __name__ == '__main__':
         lesson.text = all_text
         lesson.save()
         print(lesson)
+        '''
 
         ###### FRONTMATTER MODELS ####################################
 
@@ -147,11 +148,11 @@ if __name__ == '__main__':
                 collector['projects'] = []
                 for line in l.projects:
                     o = Project()
-                    o.comment = str(line)
+                    o.annotation = str(line)
                     if line.has_links: o.title, o.url = line.links[0]
                     if line.has_multiple_links: log.warning(f'One project seems to contain more than one URL, but only one ({o.url}) is captured: {line.links}')
                     if o.title.lower().strip() == '':
-                        log.error(f"Project has no title. The comment is set to: {o.comment}", kill=None)
+                        log.error(f"Project has no title. The annotation is set to: {o.annotation}", kill=None)
                         o.title = WebCache(o.url).title
                         o.title = get_or_default('Set a title for the project with the comment above', o.title, color='red')
                     o.save()
@@ -166,13 +167,13 @@ if __name__ == '__main__':
                 collector['frontmatter_readings'] = []
                 for line in l.readings:
                     o = Reading()
-                    o.comment = str(line)
+                    o.annotation = str(line)
                     if line.has_links: o.title, o.url = line.links[0]
                     if line.has_multiple_links: log.warning(f'One reading seems to contain more than one URL, but only one ({o.url}) is captured: {line.links}')
                     if o.title.lower().strip() == '':
-                        log.error(f"Reading has no title. The comment is set to: {o.comment}", kill=None)
+                        log.error(f"Reading has no title. The annotation is set to: {o.annotation}", kill=None)
                         o.title = WebCache(o.url).title
-                        o.title = get_or_default('Set a title for the reading with the comment above', o.title, color='red')
+                        o.title = get_or_default('Set a title for the reading with the annotation above', o.title, color='red')
                     o.save()
                     collector['frontmatter_readings'].append(o)
                     log.log(f'Reading added: "{o.title}" ({o.url})')
@@ -216,13 +217,13 @@ if __name__ == '__main__':
                 collector['tutorials'] = []
                 for line in l.tutorials:
                     o = Tutorial()
-                    o.comment = str(line)
+                    o.annotation = str(line)
                     if line.has_links: o.label, o.url = line.links[0]
                     if line.has_multiple_links: log.warning(f'One tutorial seems to contain more than one URL, but only one ({o.url}) is captured: {line.links}')
                     if o.label.lower().strip() == '':
-                        log.error(f"Tutorial has no label. The comment is set to: {o.comment}", kill=None)
+                        log.error(f"Tutorial has no label. The annotation is set to: {o.annotation}", kill=None)
                         o.label = WebCache(o.url).title
-                        o.label = get_or_default('Set a label for the tutorial with the comment above', o.label, color='red')
+                        o.label = get_or_default('Set a label for the tutorial with the annotation above', o.label, color='red')
                     o.save()
                     collector['tutorials'].append(o)
                     log.log(f'Tutorial added: "{o.label}" ({o.url})')
@@ -235,13 +236,13 @@ if __name__ == '__main__':
                 collector['praxis_readings'] = []
                 for line in l.further_readings:
                     o = Reading()
-                    o.comment = str(line)
+                    o.annotation = str(line)
                     if line.has_links: o.title, o.url = line.links[0]
                     if line.has_multiple_links: log.warning(f'One reading (theory-to-practice) seems to contain more than one URL, but only one ({o.url}) is captured: {line.links}')
                     if o.title.lower().strip() == '':
-                        log.error(f"Reading has no title. The comment is set to: {o.comment}", kill=None)
+                        log.error(f"Reading has no title. The annotation is set to: {o.annotation}", kill=None)
                         o.title = WebCache(o.url).title
-                        o.title = get_or_default('Set a title for the reading with the comment above', o.title, color='red')
+                        o.title = get_or_default('Set a title for the reading with the annotation above', o.title, color='red')
                     o.save()
                     collector['praxis_readings'].append(o)
                     log.log(f'Reading added: "{o.title}" ({o.url})')

@@ -4,7 +4,7 @@ from django.db import models
 class Tutorial(models.Model):
   label = models.TextField(max_length=1000, blank=True, null=True)
   url = models.TextField(max_length=500, blank=True, null=True)
-  comment = models.TextField(max_length=3000, blank=True, null=True)
+  annotation = models.TextField(max_length=3000, blank=True, null=True)
   zotero_item = models.TextField(max_length=500, null=True, blank=True)
 
   def __str__(self):
@@ -14,7 +14,7 @@ class Tutorial(models.Model):
 class Project(models.Model):
   title = models.TextField(max_length=500)
   url = models.TextField(max_length=500, null=True, blank=True)
-  comment = models.TextField(max_length=3000, null=True, blank=True)
+  annotation = models.TextField(max_length=3000, null=True, blank=True)
   zotero_item = models.TextField(max_length=500, null=True, blank=True)
 
   def __str__(self):
@@ -24,7 +24,7 @@ class Project(models.Model):
 class Resource(models.Model):
   title = models.TextField(max_length=500)
   url = models.TextField(max_length=500)
-  comment = models.TextField(max_length=3000, null=True, blank=True)
+  annotation = models.TextField(max_length=3000, null=True, blank=True)
   zotero_item = models.TextField(max_length=500, null=True, blank=True)
 
   def __str__(self):
@@ -34,7 +34,7 @@ class Resource(models.Model):
 class Reading(models.Model):
   title = models.TextField(max_length=500)
   url = models.TextField(max_length=500)
-  comment = models.TextField(max_length=3000, null=True, blank=True)
+  annotation = models.TextField(max_length=3000, null=True, blank=True)
   zotero_item = models.TextField(max_length=500, null=True, blank=True)
 
   def __str__(self):
