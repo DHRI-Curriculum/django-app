@@ -132,7 +132,7 @@ dmypy.json
 .vscode
 *.json
 dhri-test-repo.json
-*.ipynb
+
 .ipynb_checkpoints
 
 *key.txt
