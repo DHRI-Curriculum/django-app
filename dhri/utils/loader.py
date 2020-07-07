@@ -57,6 +57,9 @@ SECTIONS = {
     },
     'assessment': {
         # FIXME #3: add here
+    },
+    'lessons': {
+        # TODO: Not sure if necessary?
     }
 }
 
@@ -92,8 +95,9 @@ class Loader():
     log = Logger(name='loader')
 
     _frontmatter_sections = SECTIONS['frontmatter']
-
     _praxis_sections = SECTIONS['praxis']
+    _assessment_sections = SECTIONS['assessment']
+    _lessons_sections = SECTIONS['lessons']
 
     frontmatter_models = {}
     for section, item in _frontmatter_sections.items():
@@ -132,6 +136,7 @@ class Loader():
         self.frontmatter_path = f'{self._raw_url}/frontmatter.md'
         self.praxis_path = f'{self._raw_url}/theory-to-practice.md'
         self.assessment_path = f'{self._raw_url}/assessment.md'
+        self.lessons_path = f'{self._raw_url}/lessons.md'
 
         if not self.cache.exists or force_download:
             if self.download:
@@ -149,19 +154,23 @@ class Loader():
         self._frontmatter_raw = self._content_raw.get('frontmatter')
         self._praxis_raw = self._content_raw.get('praxis')
         self._assessment_raw = self._content_raw.get('assessment')
+        self._lessons_raw = self._content_raw.get('lessons')
 
         self._frontmatter = split_into_sections(self._frontmatter_raw)
         self._praxis = split_into_sections(self._praxis_raw)
         self._assessment = split_into_sections(self._assessment_raw)
+        self._lessons = split_into_sections(self._lessons_raw, keep_levels=True)
 
         self._frontmatter = normalize_data(self._frontmatter, 'frontmatter')
         self._praxis = normalize_data(self._praxis, 'theory-to-practice')
         self._assessment = normalize_data(self._assessment, 'assessment')
+        # Normalize data for lessons here but I don't know that we want to do that
 
         self.content = {
             'frontmatter': self._frontmatter,
             'praxis': self._praxis,
             'assessment': self._assessment,
+            'lessons': self._lessons,
         }
 
         self._test_for_required_sections()
@@ -198,11 +207,20 @@ class Loader():
 
     @property
     def has_praxis(self) -> bool:
-        return len(self.praxis) > 0
+        return len(self._praxis) > 0
 
     @property
     def has_assessment(self) -> bool:
         return len(self._assessment) > 0
+
+    @property
+    def has_lessons(self) -> bool:
+        return len(self._lessons) > 0
+
+
+    @property
+    def lessons(self):
+        return self._lessons
 
 
     @property
@@ -339,12 +357,19 @@ class Loader():
           self.log.warning(f'Could not load assessment data from repository {self.repo_name}. Please verify that its branch {self.branch} contains assessment.md.', color='red')
           assessment_data = ''
 
+        try:
+          lessons_data = self._get_live_text_from_url(self.lessons_path)
+        except:
+          self.log.warning(f'Could not load lessons data from repository {self.repo_name}. Please verify that its branch {self.branch} contains lessons.md.', color='red')
+          lessons_data = ''
+
         return({
             'meta': {
                 'raw_urls': {
                     'frontmatter': self.frontmatter_path,
                     'praxis': self.praxis_path,
-                    'assessment': self.assessment_path
+                    'assessment': self.assessment_path,
+                    'lessons': self.lessons_path
                 },
                 'repo_url': self.repo,
                 'user': self.user,
@@ -355,6 +380,7 @@ class Loader():
                 'frontmatter': frontmatter_data,
                 'praxis': praxis_data,
                 'assessment': assessment_data,
+                'lessons': lessons_data,
             }
         })
 

@@ -5,6 +5,21 @@ from pathlib import Path
 
 log = Logger(name='debug')
 
+
+def erase_migrations():
+    p = Path(__file__).resolve()
+    p = p.parent.parent
+    app_path = Path(p) / 'app'
+    manage = Path(app_path) / 'manage.py'
+    sql = Path(app_path) / '/db.sqlite3'
+
+    for app in ['assessment', 'frontmatter', 'praxis', 'workshop', 'lesson']:
+        path = Path(app_path) / f'{app}/migrations/'
+        for file in path.glob("*.py"):
+            if not "__" in file.name:
+                log.warning(f'Deleting file {file.name}')
+                file.unlink()
+
 def reset_all(kill=True) -> None:
     ''' development function - DO NOT USE IN PRODUCTION, EVER. '''
 
@@ -16,10 +31,10 @@ def reset_all(kill=True) -> None:
       log.warning('Resetting database (AUTO_RESET and DEBUG set to True in dhri.settings)...')
 
     from dhri.django import django
-    from dhri.django.models import Workshop, Frontmatter, Project, Resource, Reading, Contributor, Question, Answer, QuestionType, LearningObjective, Praxis, Tutorial
+    from dhri.django.models import Workshop, Frontmatter, Project, Resource, Reading, Contributor, Question, Answer, QuestionType, LearningObjective, Praxis, Tutorial, Lesson, Challenge, Solution
     from dhri.settings import DJANGO_PATHS
     import os
-    for _ in [Workshop, Frontmatter, Project, Resource, Reading, Contributor, Question, Answer, QuestionType, LearningObjective, Praxis, Tutorial]:
+    for _ in [Workshop, Frontmatter, Project, Resource, Reading, Contributor, Question, Answer, QuestionType, LearningObjective, Praxis, Tutorial, Lesson, Challenge, Solution]:
         try:
             _.objects.all().delete()
             log.log(f'All {_.__name__} deleted.', kill=not AUTO_RESET)
@@ -31,20 +46,6 @@ def reset_all(kill=True) -> None:
             MANAGE = MANAGE.relative_to(me)
             commands = f"python ./{MANAGE} makemigrations; python ./{MANAGE} migrate"
             os.system(commands)
-
-    p = Path(__file__).resolve()
-    p = p.parent.parent
-    app_path = Path(p) / 'app'
-    manage = Path(app_path) / 'manage.py'
-    sql = Path(app_path) / '/db.sqlite3'
-
-    for app in ['assessment', 'frontmatter', 'praxis', 'workshop', 'library']:
-        path = Path(app_path) / f'{app}/migrations/'
-        for file in path.glob("*.py"):
-            if not "__" in file.name:
-                log.warning(f'Deleting file {file.name}')
-                file.unlink()
-
     '''
     try:
         sql.unlink()

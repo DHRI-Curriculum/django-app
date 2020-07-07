@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'assessment.apps.AssessmentConfig',
     'praxis.apps.PraxisConfig',
     'library.apps.LibraryConfig',
+    'lesson.apps.LessonConfig',
     'adminsortable',
 ]
 
