@@ -22,7 +22,7 @@ if __name__ == '__main__':
         try:
             repo, branch = AUTO_PROCESS.pop(0)
             log.name = 'populate'
-            log.warning(f'In AUTO_PROCESS mode: Current iteration {iteration}. Processing {repo}/{branch}, Remaining: {len(AUTO_PROCESS)}. Finished workshops: {collect_workshop_slugs}')
+            log.log(f'In AUTO_PROCESS mode: Current iteration {iteration}. Processing {repo}/{branch}, Remaining: {len(AUTO_PROCESS)}. Finished workshops: {collect_workshop_slugs}')
         except IndexError:
             repo = get_or_default(f'What is the repo name (assuming DHRI-Curriculum as username) or whole GitHub link you want to import?', repo)
             if repo == '':
