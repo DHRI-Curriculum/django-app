@@ -49,7 +49,9 @@
       {% for tutorial in praxis.tutorials.all %}
         <div class="p-2 my-3 rounded-lg linked-comment">
           <p class="font-weight-bold"><a href="{{ tutorial.url }}">{{ tutorial }}</a></p>
-          <p class="small">{{ tutorial.comment | stringformat:"s" | markdown | safe }}</p>
+          {% if tutorial.comment %}
+            <p class="small">{{ tutorial.comment | stringformat:"s" | markdown | safe }}</p>
+          {% endif %}
         </div>
       {% endfor %}
     </div>
@@ -64,7 +66,43 @@
       {% for reading in praxis.further_readings.all %}
         <div class="p-2 my-3 rounded-lg linked-comment">
           <p class="font-weight-bold"><a href="{{ reading.url }}">{{ reading }}</a></p>
-          <p class="small">{{ reading.comment | stringformat:"s" | markdown | safe }}</p>
+          {% if reading.comment %}
+            <p class="small">{{ reading.comment | stringformat:"s" | markdown | safe }}</p>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if praxis.more_projects.count %}
+  <div class="col-12 mt-5">
+    <h3>More Projects</h3>
+    <hr />
+    <div class="lead mt-4">
+      {% for project in praxis.more_projects.all %}
+        <div class="p-2 my-3 rounded-lg linked-comment">
+          <p class="font-weight-bold"><a href="{{ project.url }}">{{ project }}</a></p>
+          {% if project.comment %}
+            <p class="small">{{ project.comment | stringformat:"s" | markdown | safe }}</p>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if praxis.more_resources.count %}
+  <div class="col-12 mt-5">
+    <h3>More Resources</h3>
+    <hr />
+    <div class="lead mt-4">
+      {% for resource in praxis.more_resources.all %}
+        <div class="p-2 my-3 rounded-lg linked-comment">
+          <p class="font-weight-bold"><a href="{{ resource.url }}">{{ resource }}</a></p>
+          {% if resource.comment %}
+            <p class="small">{{ resource.comment | stringformat:"s" | markdown | safe }}</p>
+          {% endif %}
         </div>
       {% endfor %}
     </div>
