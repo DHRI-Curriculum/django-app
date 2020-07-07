@@ -135,5 +135,5 @@ dhri-test-repo.json
 *.ipynb
 .ipynb_checkpoints
 
-django_secret_key.txt
+*key.txt
 __loader-cache__

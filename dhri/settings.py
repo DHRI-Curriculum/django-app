@@ -29,6 +29,11 @@ DJANGO_PATHS = {
         'MANAGE': 'app/manage.py',
     }
 
+# Zotero API key
+with open('./zotero-api-key.txt', 'r') as f:
+    ZOTERO_API_KEY = f.read()
+
+
 # Auto replacement in titles
 REPLACEMENTS = {
     '-': ' ',
@@ -39,6 +44,9 @@ REPLACEMENTS = {
 
 DOWNLOAD_CACHE_DIR = './__loader-cache__'
 TEST_AGE = 20 # minutes
+
+ZOTERO_CACHE_DIR = './__loader-cache__/zotero/'
+ZOTERO_TEST_AGE = 14 # days
 
 # If set to True, the script will bypass the cache every time (effectively disregarding TEST_AGE above)
 FORCE_DOWNLOAD = True

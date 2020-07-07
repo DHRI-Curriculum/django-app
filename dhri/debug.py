@@ -46,8 +46,6 @@ def reset_all(kill=True) -> None:
             MANAGE = MANAGE.relative_to(me)
             commands = f"python ./{MANAGE} makemigrations; python ./{MANAGE} migrate"
             os.system(commands)
-
-    
     '''
     try:
         sql.unlink()
