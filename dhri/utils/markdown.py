@@ -250,8 +250,16 @@ def split_into_sections(markdown:str, level_granularity=3, keep_levels=False) ->
             if line.startswith("# ") or line.startswith("## ") or line.startswith("### "): return(True)
         return(False)
 
+    in_code = False
     for linenumber, line in enumerate(lines):
-        if is_header(line):
+        code = line.startswith('```')
+        if code == True:
+            if in_code == False:
+                in_code = True
+            elif in_code == True:
+                in_code = False
+                
+        if is_header(line) and in_code == False:
             header = ''.join([x for x in line.split('#') if x]).strip()
             if keep_levels:
                 level = line.strip()[:3].count("#")
@@ -260,14 +268,20 @@ def split_into_sections(markdown:str, level_granularity=3, keep_levels=False) ->
             if header not in sections:
                 sections[header] = ''
                 skip_ahead = False
+                nextline_in_code = False
                 for nextline in lines[linenumber + 1:]:
-                    if is_header(nextline): skip_ahead = True
+                    nextline_code = nextline.startswith('```')
+                    if nextline_code == True:
+                        if nextline_in_code == False:
+                            nextline_in_code = True
+                        elif nextline_in_code == True:
+                            nextline_in_code = False
+                    if is_header(nextline) and not nextline_in_code: skip_ahead = True
                     if skip_ahead: continue
                     sections[header] += '\n' + nextline
                 sections[header] = sections[header].strip()
 
     return(sections)
-
 
 
 
