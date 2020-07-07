@@ -1,15 +1,22 @@
 {% extends 'website/base.html' %}
 {% load markdownify %}
+{% load static %}
 
 {% block header %}
   {% include 'workshop/workshop-wide-elements/navbar.html' %}
+  <div class="row pb-5 justify-content-end" style="padding: 1rem 1rem;">
+    <div class="col-4 text-right">
+      {% include 'lesson/lesson-elements/zen-settings.html' %}
+    </div>
+  </div>
 {% endblock %}
 
 {% block hero %}
 {% endblock %}
 
+
 {% block main %}
-  <div class="row pt-5">
+  <div class="row">
 
     <div class="col-12 py-3">
       <h2>Conditionals</h2>
@@ -73,9 +80,9 @@
   </div>
 
   {% include 'lesson/lesson-elements/pagination.html' %}
-  <div class="row pt-5">
+  <div class="row py-3">
 
-    <div class="col-12 py-3">
+    <div class="col-12">
       <h4 class="small uppercase">Workshop overall progress</h4>
       <div class="progress">
         <div class="progress-bar progress-bar-striped" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
@@ -83,4 +90,11 @@
     </div>
   </div>
 
+{% endblock %}
+
+
+
+
+{% block javascript %}
+<script src="{% static 'lesson/js/zen.js' %}" crossorigin="anonymous"></script>
 {% endblock %}
