@@ -4,7 +4,9 @@ from pygments import highlight
 from pygments.lexers import get_lexer_by_name
 from pygments.formatters import HtmlFormatter
 
+
 register = template.Library()
+
 
 class HighlightRenderer(mistune.Renderer):
     def block_code(self, code, lang):
@@ -15,16 +17,18 @@ class HighlightRenderer(mistune.Renderer):
         formatter = HtmlFormatter()
         return highlight(code, lexer, formatter)
 
+
 @register.filter
 def markdown(value):
     renderer = HighlightRenderer()
     markdown = mistune.Markdown(renderer=renderer)
     return markdown(value)
 
+
 @register.filter
 def transpose_md_headers(value):
     """Transposes markdown headers down one degree in given string"""
-    return value.replace("### ", "#### ").replace("## ", "### ").replace("# ", "## ")
+    return value.replace("\n# ", "\n## ").replace("\n### ", "\n#### ").replace("\n## ", "\n### ")
 
 
 @register.filter
