@@ -7,6 +7,7 @@ from dhri.utils.loader import Loader, WebCache
 from dhri.utils.markdown import get_bulletpoints, is_exclusively_bullets, get_list, get_contributors, Markdown
 from dhri.utils.text import get_urls, get_number, get_markdown_hrefs, auto_replace
 from dhri.utils.exceptions import MissingCurriculumFile, MissingRequiredSection
+from dhri.utils.regex import all_images
 
 # Set up empty stuff for entire loop ##########################
 log = Logger(name="main")
@@ -88,8 +89,45 @@ if __name__ == '__main__':
             collector['solutions'] = []
 
             order = 1
+
+            from pathlib import Path
+            import requests
+
+            static_images = Path('./app/workshop/static/images/lessons/')
+            repo_clear = "".join(repo.split("https://github.com/DHRI-Curriculum/")[1:])
+
             for lesson_data in l.lessons.data:
                 lesson = Lesson(workshop=workshop)
+                for image in all_images.findall(lesson_data['text']):
+                    filename = image[0].split('/')[-1]
+                    url = f'https://raw.githubusercontent.com/DHRI-Curriculum/{repo_clear}/{branch}/images/{filename}'
+                    local_file = static_images / Path(repo_clear) / filename
+                    if not local_file.parent.exists(): local_file.parent.mkdir(parents=True)
+                    if not local_file.exists():
+                        r = requests.get(url)
+                        if r.status_code == 200:
+                            with open(local_file, 'wb+') as f:
+                                for chunk in r:
+                                    f.write(chunk)
+                        elif r.status_code == 404:
+                            url = f'https://raw.githubusercontent.com/DHRI-Curriculum/{repo_clear}/{branch}/sections/images/{filename}' # secondary, search in sections directory
+                            r = requests.get(url)
+                            if r.status_code == 200:
+                                with open(local_file, 'wb+') as f:
+                                    for chunk in r:
+                                        f.write(chunk)
+                            elif r.status_code == 404:
+                                log.warning(f"Could not download image {filename} (not found): {url}")
+                            elif r.status_code == 403:
+                                log.warning(f"Could not download image {filename} (not allowed)")
+                        elif r.status_code == 403:
+                            log.warning(f"Could not download image {filename} (not allowed)")
+
+                for image in all_images.findall(lesson_data['text']):
+                    filename = image[0].split('/')[-1]
+                    local_url = f'/static/images/lessons/{repo_clear}/{filename}'
+                    lesson_data['text'] = lesson_data['text'].replace(image[0], local_url)
+
                 lesson.title = lesson_data['title']
                 lesson.text = lesson_data['text']
                 lesson.order = order
