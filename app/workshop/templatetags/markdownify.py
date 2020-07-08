@@ -28,7 +28,7 @@ def markdown(value):
 @register.filter
 def transpose_md_headers(value):
     """Transposes markdown headers down one degree in given string"""
-    return value.replace("### ", "#### ").replace("## ", "### ").replace("# ", "## ")
+    return value.replace("\n# ", "\n## ").replace("\n### ", "\n#### ").replace("\n## ", "\n### ")
 
 
 @register.filter
