@@ -53,10 +53,12 @@
     {% endif %}
 
 
-
     <div id="content" class="container mx-auto">
       {% block header %}{% endblock %}
       {% block hero %}{% endblock %}
+      {% if request.user.is_authenticated and request.user.is_staff %}
+      {% block admin_edit %}{% endblock %}
+      {% endif %}
       {% block main %}{% endblock %}
     </div>
 
