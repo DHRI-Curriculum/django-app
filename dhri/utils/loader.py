@@ -3,6 +3,7 @@ from dhri.django.models import Workshop, Praxis, Tutorial, Reading, Frontmatter,
 from dhri.interaction import Logger
 from dhri.utils.markdown import split_into_sections, get_contributors, Markdown
 from dhri.utils.exceptions import UnresolvedNameOrBranch, MissingCurriculumFile, MissingRequiredSection
+from dhri.utils.parse_lesson import LessonParser
 
 from dhri.settings import NORMALIZING_SECTIONS, REPO_AUTO, BRANCH_AUTO, BACKEND_AUTO, FORCE_DOWNLOAD
 from dhri.constants import DOWNLOAD_CACHE_DIR, TEST_AGE, TEST_AGE_WEB
@@ -57,9 +58,6 @@ SECTIONS = {
     },
     'assessment': {
         # FIXME #3: add here
-    },
-    'lessons': {
-        # TODO: Not sure if necessary?
     }
 }
 
@@ -97,7 +95,6 @@ class Loader():
     _frontmatter_sections = SECTIONS['frontmatter']
     _praxis_sections = SECTIONS['praxis']
     _assessment_sections = SECTIONS['assessment']
-    _lessons_sections = SECTIONS['lessons']
 
     frontmatter_models = {}
     for section, item in _frontmatter_sections.items():
@@ -111,6 +108,7 @@ class Loader():
         if not model in praxis_models: praxis_models[model] = []
         praxis_models[model].append(section)
 
+    # TODO: Include _assessment_sections test here?
 
     def __init__(self, repo=REPO_AUTO, branch=BRANCH_AUTO, download=True, force_download=FORCE_DOWNLOAD):
         self.repo = repo
@@ -159,12 +157,11 @@ class Loader():
         self._frontmatter = split_into_sections(self._frontmatter_raw)
         self._praxis = split_into_sections(self._praxis_raw)
         self._assessment = split_into_sections(self._assessment_raw)
-        self._lessons = split_into_sections(self._lessons_raw, keep_levels=True)
+        self._lessons = LessonParser(self._lessons_raw)
 
         self._frontmatter = normalize_data(self._frontmatter, 'frontmatter')
         self._praxis = normalize_data(self._praxis, 'theory-to-practice')
         self._assessment = normalize_data(self._assessment, 'assessment')
-        # Normalize data for lessons here but I don't know that we want to do that
 
         self.content = {
             'frontmatter': self._frontmatter,

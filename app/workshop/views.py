@@ -1,7 +1,9 @@
 from django.shortcuts import render, HttpResponse, get_object_or_404
 from django.core.exceptions import MultipleObjectsReturned
+from django.core.paginator import Paginator
 from .models import Workshop
 from website.models import Page
+from lesson.models import Lesson
 
 
 def _flexible_get(model=None, slug_or_int=''):
@@ -34,10 +36,13 @@ def index(request):
   workshops = Workshop.objects.all()
   return render(request, 'workshop/workshop-list.html', {'workshops': workshops})
 
+
 def frontmatter(request, slug=None):
   _, obj = _flexible_get(Workshop, slug)
+  lessons = Lesson.objects.filter(workshop=obj)
   frontmatter = obj.frontmatter
-  return render(request, 'workshop/frontmatter.html', {'workshop': obj, 'frontmatter': frontmatter})
+  return render(request, 'workshop/frontmatter.html', {'workshop': obj, 'frontmatter': frontmatter, 'lessons': lessons})
+
 
 def praxis(request, slug=None):
   _, obj = _flexible_get(Workshop, slug)
@@ -45,7 +50,31 @@ def praxis(request, slug=None):
   praxis = obj.praxis
   return render(request, 'workshop/praxis.html', {'workshop': obj, 'frontmatter': frontmatter, 'praxis': praxis})
 
-def lesson(request, slug=None, lesson_slug=None):
+'''
+def lesson(request, slug=None, lesson_id=None):
   _, obj = _flexible_get(Workshop, slug)
-  frontmatter = obj.frontmatter
-  return render(request, 'lesson/lesson.html', {'workshop': obj, 'frontmatter': frontmatter})
+  lessons = Lesson.objects.filter(workshop=obj)
+  lesson = get_object_or_404(Lesson, pk=lesson_id)
+  next_lesson = lesson.next
+  return render(request, 'lesson/lesson.html', {'workshop': obj, 'frontmatter': frontmatter, 'lessons': lessons, 'lesson': lesson, 'next_lesson': next_lesson})
+'''
+
+
+def lesson(request, slug=None, lesson_id=None):
+  _, obj = _flexible_get(Workshop, slug)
+  lessons = Lesson.objects.filter(workshop=obj)
+  paginator = Paginator(lessons, 1)
+
+  page_number = request.GET.get('page')
+
+  try:
+    page_number = int(page_number)
+  except: # TODO: should make this exception explicit
+    page_number = 1
+
+  page_obj = paginator.get_page(page_number)
+
+  percentage = round(page_number / paginator.num_pages * 100)
+
+  lesson = page_obj.object_list[0]
+  return render(request, 'lesson/lesson.html', {'workshop': obj, 'lessons': lessons, 'lesson': lesson, 'page_obj': page_obj, 'percentage': percentage})

@@ -80,39 +80,41 @@ if __name__ == '__main__':
 
 
         ###### LESSONS ####################################
-        '''
         if l.has_lessons:
+            log.name = log.original_name + "-lessons"
+            log.log("------ LESSONS ------------------------------------------")
+            collector['lessons'] = []
+            collector['challenges'] = []
+            collector['solutions'] = []
+
             order = 1
-            for title, body in l.lessons.items():
-                if title.lower().replace("#", "").strip() == "challenge":
-                    clean_title = title.replace("#", "").strip()
-                    challenge = Challenge(lesson=lesson, title=clean_title, text=body)
+            for lesson_data in l.lessons.data:
+                lesson = Lesson(workshop=workshop)
+                lesson.title = lesson_data['title']
+                lesson.text = lesson_data['text']
+                lesson.order = order
+                lesson.save()
+                collector['lessons'].append(lesson)
+                order += 1
+                if lesson_data['challenge']:
+                    challenge = Challenge(lesson=lesson)
+                    challenge.text = lesson_data['challenge']
                     challenge.save()
-                    print(challenge)
-                if title.lower().replace("#", "").strip() == "solution":
-                    clean_title = title.replace("#", "").strip()
-                    solution = Solution(challenge=challenge, title=clean_title, text=body)
+                    collector['challenges'].append(challenge)
+                if lesson_data['solution']:
+                    solution = Solution(challenge=challenge)
+                    solution.text = lesson_data['solution']
                     solution.save()
-                    print(solution)
-                else:
-                    if title.startswith("# "):
-                        try:
-                            lesson.text = all_text
-                            lesson.save()
-                            print(lesson)
-                        except:
-                            pass
-                        lesson = Lesson(workshop=workshop, title=title.strip()[2:])
-                        all_text = body
-                        lesson.save()
-                    elif title.startswith("## "):
-                        all_text += f"\n{title.strip()[3:]}\n{body}"
-                    elif title.startswith("### "):
-                        all_text += f"\n{title.strip()[4:]}\n{body}"
-        lesson.text = all_text
-        lesson.save()
-        print(lesson)
-        '''
+                    collector['solutions'].append(solution)
+
+            if len(collector['lessons']):
+                log.log(f'Summary: Workshop {workshop.name} updated with {len(collector["lessons"])} lessons.')
+
+            if len(collector['challenges']):
+                log.log(f'Summary: Lessons had {len(collector["challenges"])} challenges added to them.')
+
+            if len(collector['solutions']):
+                log.log(f'Summary: Lessons had {len(collector["solutions"])} challenges added to them.')
 
         ###### FRONTMATTER MODELS ####################################
 
