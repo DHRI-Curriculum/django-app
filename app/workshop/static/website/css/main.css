@@ -55,6 +55,11 @@ blockquote {
     line-height:2rem;
 }
 
+.lesson-text img {
+    max-width:100% !important;
+    border: 0.01rem solid #ecf0f1 !important;
+}
+
 .lesson-text code {
     color: black !important;
     padding-left: 0.15em;

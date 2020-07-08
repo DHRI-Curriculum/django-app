@@ -46,3 +46,6 @@ md_links = re.compile(MD_LINKS_FIXED)
 
 URLS = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
 urls_general = re.compile(URLS)
+
+IMAGES = r'!\[[^\]]*\]\((.*?)(?=\"|\))(\".*\")?\)'
+all_images = re.compile(IMAGES)
