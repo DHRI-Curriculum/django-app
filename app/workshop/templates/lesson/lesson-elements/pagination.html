@@ -1,26 +1,17 @@
+{% load markdownify %}
+
 <nav aria-label="Lesson navigation">
-  <ul class="pagination justify-content-center justify-content-sm-end">
-    <li class="page-item disabled">
-      <a class="page-link special-link-disabled" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+  <ul class="pagination justify-content-center justify-content-lg-end">
+
+    <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+      <a class="zen-add page-link special-link {% if not page_obj.has_previous %}disabled{% endif %}" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}" tabindex="-1" aria-disabled="true" data-toggle="off">Previous</a>
     </li>
-    <li class="page-item">
-      <a class="page-link special-link" href="#">1</a></li>
-    <li class="page-item">
-      <a class="page-link special-link" href="#">2</a></li>
-    <li class="page-item">
-      <a class="page-link special-link" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link special-link" href="#">4</a></li>
-    <li class="page-item">
-      <a class="page-link special-link" href="#">5</a></li>
-    <li class="page-item">
-      <a class="page-link special-link" href="#">6</a></li>
-    <li class="page-item">
-      <a class="page-link special-link" href="#">7</a></li>
-    <li class="page-item">
-      <a class="page-link special-link" href="#">8</a></li>
-    <li class="page-item">
-      <a class="page-link special-link" href="#">Next</a>
+    {% for page_number in page_obj.number|page_window:page_obj.paginator.num_pages  %}
+      <li class="page-item">
+        <a class="zen-add page-link special-link" href="?page={{ page_number }}" data-toggle="off">{{ page_number }}</a></li>
+    {% endfor %}
+    <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+      <a class="zen-add page-link special-link {% if not page_obj.has_next %}disabled{% endif %}" href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% endif %}" data-toggle="off">Next</a>
     </li>
   </ul>
 </nav>

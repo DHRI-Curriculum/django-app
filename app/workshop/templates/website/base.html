@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="{% static 'website/css/bootstrap-style.min.css' %}">
     <link rel="stylesheet" href="{% static 'website/css/icons.css' %}">
 
+    {% block extra_head_material %}{% endblock %}
+
     <script type="text/javascript">
       // A CSRF token is required when making post requests in Django
       // To be used for making AJAX requests

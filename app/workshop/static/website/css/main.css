@@ -56,13 +56,32 @@ blockquote {
 }
 
 .lesson-text code {
+    color: black !important;
     padding-left: 0.15em;
     padding-right: 0.15em;
     padding-top: 0em;
     padding-bottom: 0em;
     margin: 0;
     display: inline-block;
-    background-color: rgba(255, 0, 255, 0.01) !important;
+    background-color: rgba(255, 255, 0, 0.1) !important;
+}
+
+.lesson-text h3 {
+    padding-top:1em;
+}
+
+.lesson-text h4 {
+    padding-top:1em;
+}
+
+.lesson-text h5 {
+    padding-top:1em;
+}
+
+div .highlight {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    padding-left: 0.5em;
 }
 
 .lesson-text kbd {

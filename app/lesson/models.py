@@ -5,8 +5,15 @@ class Lesson(models.Model):
   title = models.CharField(max_length=200)
   created = models.DateTimeField(auto_now_add=True)
   updated = models.DateTimeField(auto_now=True)
-  workshop = models.OneToOneField(Workshop, on_delete=models.CASCADE)
+  workshop = models.ForeignKey(Workshop, on_delete=models.CASCADE)
   text = models.TextField()
+  order = models.PositiveSmallIntegerField(default=0)
+
+  class Meta:
+    ordering = ['order']
+
+  def __str__(self):
+    return str(self.title)
 
 
 class Challenge(models.Model):

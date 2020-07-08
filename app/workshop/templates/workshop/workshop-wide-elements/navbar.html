@@ -15,20 +15,9 @@
             Lessons
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="{% url 'workshop:frontmatter' workshop.slug %}lessons/1">1. Topic</a>
-            <a class="dropdown-item" href="{% url 'workshop:frontmatter' workshop.slug %}lessons/2">2. Topic</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="{% url 'workshop:frontmatter' workshop.slug %}lessons/3">3. Topic</a>
-            <a class="dropdown-item" href="{% url 'workshop:frontmatter' workshop.slug %}lessons/4">4. Topic</a>
-            <a class="dropdown-item" href="{% url 'workshop:frontmatter' workshop.slug %}lessons/5">5. Topic</a>
-            <a class="dropdown-item" href="{% url 'workshop:frontmatter' workshop.slug %}lessons/6">6. Topic</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="{% url 'workshop:frontmatter' workshop.slug %}lessons/7">7. Topic</a>
-            <a class="dropdown-item" href="{% url 'workshop:frontmatter' workshop.slug %}lessons/8">8. Topic</a>
-            <a class="dropdown-item" href="{% url 'workshop:frontmatter' workshop.slug %}lessons/9">9. Topic</a>
-            <a class="dropdown-item" href="{% url 'workshop:frontmatter' workshop.slug %}lessons/10">10. Topic</a>
-            <a class="dropdown-item" href="{% url 'workshop:frontmatter' workshop.slug %}lessons/11">11. Topic</a>
-            <a class="dropdown-item" href="{% url 'workshop:frontmatter' workshop.slug %}lessons/12">12. Topic</a>
+            {% for lesson in lessons %}
+              <a class="dropdown-item" href="{% url 'workshop:lesson' slug=workshop.slug %}?page={{ lesson.order }}">{{ lesson.order }}. {{ lesson }}</a>
+            {% endfor %}
           </div>
         </li>
         <li class="nav-item disabled">
