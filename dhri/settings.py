@@ -16,7 +16,7 @@ AUTO_PROCESS = [
         ('data-and-ethics', 'v2.0-di-edits'),
         ('text-analysis', 'v2.0-rafa-edits'),
         ('command-line', 'v2.0-smorello-edits'),
-        ('project-lab', 'v2.0-kalle-testing-lessons'),
+        ('project-lab', 'v2.0rhody-edits'),
         ('python', 'v2.0-filipa-edits'),
         ('html-css', 'v2.0-param-edits'),
         ('git', 'v2.0-kristen-edits'),
