@@ -20,7 +20,6 @@ const show_class = function(classname){
 
 const zen_switch = function(e) {
     if (e.target.id != "zen") {
-        console.log(e.target.parentElement);
         button = e.target.parentElement;
     } else {
         button = e.target;
@@ -57,16 +56,11 @@ const zen_cookie = document.cookie
 
 const zen_button = document.getElementById('zen')
 
-console.log('zen_cookie', zen_cookie)
-console.log('zen_button.dataset', zen_button.dataset)
-
 if (zen_cookie == "off") {
-    console.log('in off');
     show_class('zen-hideaway');
     zen_button.innerHTML = zen_off;
     zen_button.dataset.toggle = 'off';
 } else if (zen_cookie == "on") {
-    console.log('in on');
     hide_class('zen-hideaway');
     zen_button.innerHTML = zen_on;
     zen_button.dataset.toggle = 'on';
