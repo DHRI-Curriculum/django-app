@@ -1,8 +1,8 @@
 {% load markdownify %}
 <div class="row pb-5 justify-content-end" style="padding: 1rem 1rem;">
-  <div class="col-4 text-right">
+  <div class="col-12 text-right">
     <nav aria-label="Lesson navigation">
-      <ul class="pagination pagination-sm justify-content-center justify-content-lg-end">
+      <ul class="pagination pagination-sm justify-content-end">
         <span class="mr-3">{% include 'lesson/lesson-elements/zen-settings.html' %}</span>
         <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
           <a class="zen-add page-link {% if not page_obj.has_previous %}disabled{% endif %}" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}" tabindex="-1" aria-disabled="true" data-toggle="off">Previous</a>
