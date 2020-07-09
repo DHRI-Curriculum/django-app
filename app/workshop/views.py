@@ -68,9 +68,9 @@ def lesson(request, slug=None, lesson_id=None):
   page_number = request.GET.get('page')
 
   try:
-    page_number = int(page_number)
+    page_number = int(request.GET.get('page'))
   except: # TODO: should make this exception explicit
-    page_number = 1
+    page_number = request.GET.get('page')
 
   page_obj = paginator.get_page(page_number)
 
