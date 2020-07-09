@@ -2983,8 +2983,25 @@
         "fields": {
             "name": "About",
             "slug": "about",
-            "text": "<p class=\"lead\">This is the about page.</p>",
-            "is_homepage": 0
+            "text": "<p class=\"lead\">This is the about page.</p>"
+        }
+    },
+    {
+        "model": "website.page",
+        "pk": 2,
+        "fields": {
+            "name": "Workshops",
+            "slug": "workshops",
+            "text": "<p class=\"lead\">This is the workshop page.</p>"
+        }
+    },
+    {
+        "model": "website.page",
+        "pk": 3,
+        "fields": {
+            "name": "Library",
+            "slug": "library",
+            "text": "<p class=\"lead\">This is the library page.</p>"
         }
     }
 ]

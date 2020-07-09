@@ -7,7 +7,7 @@ from . import views
 app_name = 'workshop'
 
 urlpatterns = [
-  path('', views.index, name='index'),
+  # path('', views.index, name='index'),
   path('<str:slug>/', views.frontmatter, name='frontmatter'),
   path('<str:slug>/theory-to-practice/', views.praxis, name='praxis'),
   path('<str:slug>/lessons/', views.lesson, name='lesson'),
