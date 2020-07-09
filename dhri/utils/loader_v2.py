@@ -291,8 +291,6 @@ class ContributorParser():
         self.md = md
         self.data = []
         self.process()
-        print(self.md)
-        print(self.data)
 
     def process(self):
         from dhri.utils.regex import all_links
