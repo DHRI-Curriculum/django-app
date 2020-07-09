@@ -1,32 +1,30 @@
-<footer class="pt-4 my-md-5 pt-md-5 border-top zen-hideaway">
-  <div class="row">
-    <div class="col-12 col-md">
-      <a href="//www.dhinstitutes.org"><img class="mb-2" src="http://www.dhinstitutes.org/assets/images/logos/dhri-round.png" alt="" width="125" height="125"></a>
-      <small class="d-block mb-3 text-muted">[Creative Commons logo]</small>
-    </div>
-    <div class="col-6 col-md">
-      <h5>Workshops</h5>
-      <ul class="list-unstyled text-small">
-        {% for workshop in website.workshops %}
-        <li><a class="link-secondary" href="{% url 'workshop:frontmatter' slug=workshop.slug %}">{{ workshop.name }}</a></li>
-        {% endfor %}
-      </ul>
-    </div>
-    <div class="col-6 col-md">
-      <h5>Library</h5>
-      <ul class="list-unstyled text-small">
-        <li><a class="link-secondary" href="#">All Tutorials</a></li>
-        <li><a class="link-secondary" href="#">All Literature</a></li>
-        <li><a class="link-secondary" href="#">Another resource</a></li>
-        <li><a class="link-secondary" href="#">Final resource</a></li>
-      </ul>
-    </div>
-    <div class="col-6 col-md">
-      <h5>About</h5>
-      <ul class="list-unstyled text-small">
-        <li><a class="link-secondary" href="#">Team</a></li>
-        <li><a class="link-secondary" href="#">XYZ</a></li>
-      </ul>
-    </div>
+<div class="row">
+  <div class="col-12 col-md">
+    <a href="/"><img class="mb-2" src="http://www.dhinstitutes.org/assets/images/logos/dhri-round.png" alt="" width="125" height="125"></a>
+    <small class="d-block mb-3 text-muted">[Creative Commons logo]</small>
   </div>
-</footer>
+  <div class="col-6 col-md">
+    <h5>Workshops</h5>
+    <ul class="list-unstyled text-small">
+      {% for workshop in website.workshops %}
+      <li><a class="link-secondary" href="{% url 'workshop:frontmatter' slug=workshop.slug %}">{{ workshop.name }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="col-6 col-md">
+    <h5>Library</h5>
+    <ul class="list-unstyled text-small">
+      <li><a class="link-secondary" href="#">All Tutorials</a></li>
+      <li><a class="link-secondary" href="#">All Literature</a></li>
+      <li><a class="link-secondary" href="#">Another resource</a></li>
+      <li><a class="link-secondary" href="#">Final resource</a></li>
+    </ul>
+  </div>
+  <div class="col-6 col-md">
+    <h5>About</h5>
+    <ul class="list-unstyled text-small">
+      <li><a class="link-secondary" href="#">Team</a></li>
+      <li><a class="link-secondary" href="#">XYZ</a></li>
+    </ul>
+  </div>
+</div>
