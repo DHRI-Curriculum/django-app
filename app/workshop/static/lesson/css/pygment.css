@@ -1,7 +1,7 @@
 .codehilite .hll { background-color: #ffffcc }
 .codehilite  { background: #ffffff; }
 .codehilite .c { color: #666666; font-style: italic } /* Comment */
-.codehilite .err { color: #ff00001a; background-color: #FFAAAA } /* Error */
+.codehilite .err { color: #333333; background-color: #ff00001a } /* Error */
 .codehilite .k { color: #228899; font-weight: bold } /* Keyword */
 .codehilite .o { color: #333333 } /* Operator */
 .codehilite .ch { color: #666666; font-style: italic } /* Comment.Hashbang */

@@ -68,7 +68,7 @@ blockquote {
     padding-bottom: 0em;
     margin: 0;
     display: inline-block;
-    background-color: rgba(255, 255, 0, 0.1) !important;
+    /* background-color: rgba(255, 255, 0, 0.1) !important; */
 }
 
 .lesson-text h3 {
