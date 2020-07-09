@@ -1,5 +1,3 @@
-console.log('here!')
-
 const website_wide_nav = document.getElementById('website-wide-nav')
 const website_wide_nav_ext = document.getElementById('navbarToggleExternalContent')
 website_wide_nav
@@ -20,21 +18,8 @@ website_wide_nav
             hide: true
         })
     });
-/*
-website_wide_nav_ext
-    .addEventListener('mouseout', function () {
-        var bsCollapse = new bootstrap.Collapse(website_wide_nav_ext, {
-            toggle: true
-        })
-    });
-*/
 
-/*
-const body = document.getElementsByTagName('body')[0]
-console.log(body);
-body
-    .addEventListener('mouseover', function (e) {
-        console.log(e.target.id);
-    }
-    );
-*/
+document.addEventListener("DOMContentLoaded",function(){
+    console.log('here!')
+    var bsCollapse = new bootstrap.Collapse(website_wide_nav_ext).hide = true;
+});
