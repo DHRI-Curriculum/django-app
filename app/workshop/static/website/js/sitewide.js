@@ -18,8 +18,9 @@ website_wide_nav
             hide: true
         })
     });
-
+/*
 document.addEventListener("DOMContentLoaded",function(){
     console.log('here!')
     var bsCollapse = new bootstrap.Collapse(website_wide_nav_ext).hide = true;
 });
+*/
