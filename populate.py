@@ -1,6 +1,6 @@
 from dhri import debug
 from dhri.django import django, Fixture
-from dhri.django.models import Workshop, Praxis, Tutorial, Reading, Frontmatter, LearningObjective, Project, Contributor, Lesson, Challenge, Solution
+from dhri.django.models import Workshop, Praxis, Tutorial, Reading, Frontmatter, LearningObjective, Project, Contributor, Lesson, Challenge, Solution, Page
 from dhri.interaction import Logger, get_or_default
 from dhri.settings import AUTO_PROCESS, FIXTURE_PATH, REPLACEMENTS
 from dhri.utils.loader import WebCache
@@ -297,6 +297,39 @@ if __name__ == '__main__':
           done = 'y'
 
         iteration += 1
+
+    # Add standard setup of pages
+    collector = dict()
+    collector['pages'] = []
+
+    p = Page(
+        name = 'Workshops',
+        slug = 'workshops',
+        text = '<p class="lead">This is the workshop page.</p>',
+        template = 'workshop/workshop-list.html'
+    )
+    p.save()
+    collector['pages'].append(p)
+
+    p = Page(
+        name = 'About',
+        slug = 'about',
+        text = '<p class="lead">This is the about page.</p>',
+        template = 'website/page.html'
+    )
+    p.save()
+    collector['pages'].append(p)
+
+    p = Page(
+        name = 'Library',
+        slug = 'library',
+        text = '<p class="lead">This is the library page.</p>',
+        template = 'library/all-library-items.html'
+    )
+    p.save()
+    collector['pages'].append(p)
+
+    fixtures.add(collector=collector)
 
     fixtures.save()
 
