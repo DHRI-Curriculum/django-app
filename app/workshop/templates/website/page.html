@@ -13,7 +13,7 @@
 {% block main %}
   <div class="row">
     <div class="col-12">
-      {{ page.text }}
+      {{ page.text | safe }}
     </div>
   </div>
 {% endblock %}
