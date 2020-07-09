@@ -34,24 +34,13 @@ blockquote {
     color: #d1d6d7 !important;
 }
 
-.special-link {
-    background-color: #2C3E50 !important;
-}
-
-.special-link:hover {
-    background-color: #2c3e5097 !important;
-}
-
-.special-link-disabled {
-    background-color: #2c3e5097 !important;
-}
-
 .uppercase {
     text-transform: uppercase;
 }
 
 .lesson-text {
-    font-size:1.2rem;
+    font-size:calc(1rem + 0.3vw);
+    /*font-size:1.2rem;*/
     line-height:2rem;
 }
 
@@ -71,16 +60,24 @@ blockquote {
     /* background-color: rgba(255, 255, 0, 0.1) !important; */
 }
 
+.lesson-text h2 {
+    margin-top:1em;
+    font-size:calc(1.325rem + .9vw)
+}
+
 .lesson-text h3 {
-    padding-top:1em;
+    margin-top:1em;
+    font-size:calc(1.3rem + .6vw)
 }
 
 .lesson-text h4 {
-    padding-top:1em;
+    margin-top:1em;
+    font-size:calc(1.275rem + .3vw)
 }
 
 .lesson-text h5 {
-    padding-top:1em;
+    margin-top:1em;
+    font-size:1.25rem;
 }
 
 div .codehilite {
@@ -109,4 +106,76 @@ div .codehilite {
 
 .zen-bi {
     pointer-events: none;
+}
+
+
+
+
+.page-link{
+    position:relative;
+    display:block;
+    color:#2C3E50 !important;
+    text-decoration:none;
+    background-color:#fff !important;
+    border:1px solid #dee2e6 !important
+}
+.page-link:hover{
+    z-index:2;
+    color:#000 !important;
+    background-color:#e9ecef !important;
+    border-color:#dee2e6 !important
+}
+.page-link:focus{
+    z-index:3;
+    outline:0;
+    box-shadow:0 0 0 .2rem #2c3e5021 !important
+}
+.page-item:not(:first-child) .page-link{
+    margin-left:-1px
+}
+.page-item.active .page-link{
+    z-index:3;
+    color:#fff;
+    background-color:#2C3E50 !important;
+    border-color:#2C3E50 !important
+}
+.page-item.disabled .page-link{
+    color:#939faa !important;
+    pointer-events:none;
+    background-color:#fff;
+    border-color:#dee2e6 !important
+}
+.page-link{
+    padding:.375rem .75rem
+}
+.page-item:first-child .page-link{
+    border-top-left-radius:.25rem;
+    border-bottom-left-radius:.25rem
+}
+.page-item:last-child .page-link{
+    border-top-right-radius:.25rem;
+    border-bottom-right-radius:.25rem
+}
+.pagination-lg .page-link{
+    padding:.75rem 1.5rem;
+    font-size:1.25rem
+}
+.pagination-lg .page-item:first-child .page-link{
+    border-top-left-radius:.3rem;
+    border-bottom-left-radius:.3rem
+}
+.pagination-lg .page-item:last-child .page-link{
+    border-top-right-radius:.3rem;border-bottom-right-radius:.3rem
+}
+.pagination-sm .page-link{
+    padding:.25rem .5rem;font-size:.875rem
+}
+.pagination-sm .page-item:first-child .page-link{
+    border-top-left-radius:.2rem;border-bottom-left-radius:.2rem
+}
+.pagination-sm .page-item:last-child .page-link{
+    border-top-right-radius:.2rem;border-bottom-right-radius:.2rem
+}
+.page-link.current {
+    font-weight: 900;
 }

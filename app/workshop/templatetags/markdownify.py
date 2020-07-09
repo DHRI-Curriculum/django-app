@@ -30,12 +30,6 @@ def markdown(value):
 
 
 @register.filter
-def transpose_md_headers(value):
-    """Transposes markdown headers down one degree in given string"""
-    return value.replace("\n# ", "\n## ").replace("\n### ", "\n#### ").replace("\n## ", "\n### ")
-
-
-@register.filter
 def page_window(page, last, size=7):
     if page < size // 2 + 1:
         return range(1, min(size+1, last + 1)) # remember the range function won't

@@ -1,17 +1,16 @@
 {% load markdownify %}
 
 <nav aria-label="Lesson navigation">
-  <ul class="pagination justify-content-center justify-content-lg-end">
-
+  <ul class="pagination pagination-sm justify-content-center justify-content-lg-end">
     <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
-      <a class="zen-add page-link special-link {% if not page_obj.has_previous %}disabled{% endif %}" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}" tabindex="-1" aria-disabled="true" data-toggle="off">Previous</a>
+      <a class="page-link {% if not page_obj.has_previous %}disabled{% endif %}" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}" tabindex="-1" aria-disabled="true">Previous</a>
     </li>
     {% for page_number in page_obj.number|page_window:page_obj.paginator.num_pages  %}
       <li class="page-item">
-        <a class="zen-add page-link special-link" href="?page={{ page_number }}" data-toggle="off">{{ page_number }}</a></li>
+        <a class="page-link {% ifequal request.GET.page page_number|slugify %}current{% endifequal %}" href="?page={{ page_number }}">{{ page_number }}</a></li>
     {% endfor %}
     <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
-      <a class="zen-add page-link special-link {% if not page_obj.has_next %}disabled{% endif %}" href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% endif %}" data-toggle="off">Next</a>
+      <a class="page-link {% if not page_obj.has_next %}disabled{% endif %}" href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% endif %}">Next</a>
     </li>
   </ul>
 </nav>
