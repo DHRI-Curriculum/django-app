@@ -45,14 +45,14 @@
 
     <div class="col-12 py-3">
 
-      <h2>{{ lesson.title }}</h2>
+      <h1>{{ lesson.order }} {{ lesson.title }}</h1>
 
       <div class="lesson-text py-3">
-        {{ lesson.text | transpose_md_headers | markdown | safe }}
+        {{ lesson.text | markdown | safe }}
 
         {% if lesson.challenge %}
           <h3 class="pt-4">Challenge{% if lesson.challenge.title %}: {{ lesson.challenge.title }}{% endif %}</h3>
-          {{ lesson.challenge.text | transpose_md_headers | markdown | safe }}
+          {{ lesson.challenge.text | markdown | safe }}
 
           {% if lesson.challenge.solution %}
             <p>
@@ -62,7 +62,7 @@
             </p>
             <div class="collapse" id="solution">
               <div class="card card-body">
-                {{ lesson.challenge.solution.text | transpose_md_headers | markdown | safe }}
+                {{ lesson.challenge.solution.text | markdown | safe }}
                 <p>Were you <button class="btn btn-success">right</button> or <button class="btn btn-danger">wrong</button>—let us know!</p>
               </div>
             </div>
