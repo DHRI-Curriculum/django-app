@@ -1,7 +1,36 @@
 from dhri.interaction import Logger
 from dhri.utils.markdown import split_into_sections
+from pathlib import Path
+import requests
+from requests.exceptions import HTTPError, MissingSchema
 
 log = Logger(name='lesson-parser')
+
+
+
+def download_image(url, local_file):
+    if not isinstance(local_file, Path): local_file = Path(local_file)
+    if not local_file.parent.exists(): local_file.parent.mkdir(parents=True)
+    if not local_file.exists():
+        r = requests.get(url)
+        if r.status_code == 200:
+            with open(local_file, 'wb+') as f:
+                for chunk in r:
+                    f.write(chunk)
+        elif r.status_code == 404:
+            url = url.replace('/images/', '/sections/images/')
+            r = requests.get(url)
+            if r.status_code == 200:
+                with open(local_file, 'wb+') as f:
+                    for chunk in r:
+                        f.write(chunk)
+            elif r.status_code == 404:
+                log.warning(f"Could not download image {local_file.name} (not found): {url}")
+            elif r.status_code == 403:
+                log.warning(f"Could not download image {local_file.name} (not allowed)")
+        elif r.status_code == 403:
+            log.warning(f"Could not download image {local_file.name} (not allowed)")
+
 
 
 class LessonParser():

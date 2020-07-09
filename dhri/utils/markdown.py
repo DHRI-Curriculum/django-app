@@ -23,6 +23,33 @@ LIST_ELEMENTS = r'- (.*)(?:\n\s{2,4})?(.*)'
 all_list_elements = re.compile(LIST_ELEMENTS)
 
 
+
+
+def extract_links(md:str):
+    FORBIDDEN_URL = r'^[,.()]*|[.,()/]*$'
+    forbidden_chars = re.compile(FORBIDDEN_URL)
+
+    _ = []
+
+    text = str(md)
+    all_urls = md_links.findall(text)
+    for i, data in enumerate(all_urls):
+        text = data[0]
+        url = forbidden_chars.sub('', data[1])
+        _.append((text, url))
+        text = text.replace(f"[{data[0]}]({data[1]})","")
+
+    text = text.strip()
+
+    for data in urls_general.findall(text):
+        if data[0] != '':
+            url = forbidden_chars.sub('', data[0])
+            if not url in [x[1] for x in _]: _.append(('', url))
+
+    return(_)
+
+
+
 class Markdown():
 
     class MarkdownIterator:
@@ -41,11 +68,13 @@ class Markdown():
 
     log = Logger(name='markdown-interpreter')
 
-    def __init__(self, verbose=False, *args, **kwargs) -> None:
-        self.verbose = verbose
+    def __init__(self, *args, **kwargs) -> None:
+        self.verbose = False
 
         if 'text' in kwargs:
             self.raw_text = kwargs['text']
+        elif len(args) == 1:
+            self.raw_text = args[0]
 
         self.raw_text = self._pre_process()
 

@@ -3,8 +3,9 @@ from dhri.django import django, Fixture
 from dhri.django.models import Workshop, Praxis, Tutorial, Reading, Frontmatter, LearningObjective, Project, Contributor, Lesson, Challenge, Solution
 from dhri.interaction import Logger, get_or_default
 from dhri.settings import AUTO_PROCESS, FIXTURE_PATH, REPLACEMENTS
-from dhri.utils.loader import Loader, WebCache
-from dhri.utils.markdown import get_bulletpoints, is_exclusively_bullets, get_list, get_contributors, Markdown
+from dhri.utils.loader import WebCache
+from dhri.utils.loader_v2 import Loader
+from dhri.utils.markdown import get_bulletpoints, is_exclusively_bullets, get_list, get_contributors, Markdown, extract_links
 from dhri.utils.text import get_urls, get_number, get_markdown_hrefs, auto_replace
 from dhri.utils.exceptions import MissingCurriculumFile, MissingRequiredSection
 from dhri.utils.regex import all_images
@@ -91,57 +92,43 @@ if __name__ == '__main__':
             order = 1
 
             from pathlib import Path
-            import requests
+            from dhri.utils.parse_lesson import download_image
+            from bs4 import BeautifulSoup
 
-            static_images = Path('./app/workshop/static/images/lessons/')
-            repo_clear = "".join(repo.split("https://github.com/DHRI-Curriculum/")[1:])
+            STATIC_IMAGES = Path('./app/workshop/static/images/lessons/')
+            REPO_CLEAR = "".join(repo.split("https://github.com/DHRI-Curriculum/")[1:])
 
-            for lesson_data in l.lessons.data:
-                lesson = Lesson(workshop=workshop)
-                for image in all_images.findall(lesson_data['text']):
-                    filename = image[0].split('/')[-1]
-                    url = f'https://raw.githubusercontent.com/DHRI-Curriculum/{repo_clear}/{branch}/images/{filename}'
-                    local_file = static_images / Path(repo_clear) / filename
-                    if not local_file.parent.exists(): local_file.parent.mkdir(parents=True)
-                    if not local_file.exists():
-                        r = requests.get(url)
-                        if r.status_code == 200:
-                            with open(local_file, 'wb+') as f:
-                                for chunk in r:
-                                    f.write(chunk)
-                        elif r.status_code == 404:
-                            url = f'https://raw.githubusercontent.com/DHRI-Curriculum/{repo_clear}/{branch}/sections/images/{filename}' # secondary, search in sections directory
-                            r = requests.get(url)
-                            if r.status_code == 200:
-                                with open(local_file, 'wb+') as f:
-                                    for chunk in r:
-                                        f.write(chunk)
-                            elif r.status_code == 404:
-                                log.warning(f"Could not download image {filename} (not found): {url}")
-                            elif r.status_code == 403:
-                                log.warning(f"Could not download image {filename} (not allowed)")
-                        elif r.status_code == 403:
-                            log.warning(f"Could not download image {filename} (not allowed)")
+            for lesson_data in l.as_html.lessons:
+                soup = BeautifulSoup(lesson_data['text'], 'lxml')
+                for image in soup.find_all("img"):
+                    filename = image['src'].split('/')[-1]
+                    url = f'https://raw.githubusercontent.com/DHRI-Curriculum/{REPO_CLEAR}/{branch}/images/{filename}'
+                    local_file = STATIC_IMAGES / Path(REPO_CLEAR) / filename
+                    download_image(url, local_file)
+                    local_url = f'/static/images/lessons/{REPO_CLEAR}/{filename}'
+                    image['src'] = local_url
 
-                for image in all_images.findall(lesson_data['text']):
-                    filename = image[0].split('/')[-1]
-                    local_url = f'/static/images/lessons/{repo_clear}/{filename}'
-                    lesson_data['text'] = lesson_data['text'].replace(image[0], local_url)
-
-                lesson.title = lesson_data['title']
-                lesson.text = lesson_data['text']
-                lesson.order = order
+                lesson = Lesson(
+                    workshop = workshop,
+                    title = lesson_data['title'],
+                    text = str(soup).replace('<html><body>', '').replace('</body></html>', ''),
+                    order = order
+                )
                 lesson.save()
                 collector['lessons'].append(lesson)
                 order += 1
                 if lesson_data['challenge']:
-                    challenge = Challenge(lesson=lesson)
-                    challenge.text = lesson_data['challenge']
+                    challenge = Challenge(
+                        lesson = lesson,
+                        text = lesson_data['challenge']
+                    )
                     challenge.save()
                     collector['challenges'].append(challenge)
                 if lesson_data['solution']:
-                    solution = Solution(challenge=challenge)
-                    solution.text = lesson_data['solution']
+                    solution = Solution(
+                        challenge = challenge,
+                        text = lesson_data['solution']
+                    )
                     solution.save()
                     collector['solutions'].append(solution)
 
@@ -173,7 +160,6 @@ if __name__ == '__main__':
             elif model == LearningObjective:
                 log.name = log.original_name + "-learning-obj"
                 collector['learning_objectives'] = []
-                if l.learning_objectives.links: log.warning(f'Looks like the learning objectives have URLs but the database has no way to keep them.')
                 for line in l.learning_objectives:
                     label = str(line)
                     o = LearningObjective(frontmatter=frontmatter, label=label)
@@ -189,8 +175,9 @@ if __name__ == '__main__':
                 for line in l.projects:
                     o = Project()
                     o.annotation = str(line)
-                    if line.has_links: o.title, o.url = line.links[0]
-                    if line.has_multiple_links: log.warning(f'One project seems to contain more than one URL, but only one ({o.url}) is captured: {line.links}')
+                    links = extract_links(line)
+                    if links: o.title, o.url = links[0]
+                    if len(links) > 1: log.warning(f'One project seems to contain more than one URL, but only one ({o.url}) is captured: {links}')
                     if o.title.lower().strip() == '':
                         log.error(f"Project has no title. The annotation is set to: {o.annotation}", kill=None)
                         o.title = WebCache(o.url).title
@@ -206,10 +193,11 @@ if __name__ == '__main__':
                 log.name = log.original_name + "-readings"
                 collector['frontmatter_readings'] = []
                 for line in l.readings:
+                    print(line)
                     o = Reading()
                     o.annotation = str(line)
-                    if line.has_links: o.title, o.url = line.links[0]
-                    if line.has_multiple_links: log.warning(f'One reading seems to contain more than one URL, but only one ({o.url}) is captured: {line.links}')
+                    if extract_links(line): o.title, o.url = extract_links(line)[0]
+                    if len(extract_links(line)) > 1: log.warning(f'One reading seems to contain more than one URL, but only one ({o.url}) is captured: {line.links}')
                     if o.title.lower().strip() == '':
                         log.error(f"Reading has no title. The annotation is set to: {o.annotation}", kill=None)
                         o.title = WebCache(o.url).title
@@ -258,8 +246,9 @@ if __name__ == '__main__':
                 for line in l.tutorials:
                     o = Tutorial()
                     o.annotation = str(line)
-                    if line.has_links: o.label, o.url = line.links[0]
-                    if line.has_multiple_links: log.warning(f'One tutorial seems to contain more than one URL, but only one ({o.url}) is captured: {line.links}')
+                    links = extract_links(line)
+                    if links: o.label, o.url = links[0]
+                    if len(links) > 1: log.warning(f'One tutorial seems to contain more than one URL, but only one ({o.url}) is captured: {links}')
                     if o.label.lower().strip() == '':
                         log.error(f"Tutorial has no label. The annotation is set to: {o.annotation}", kill=None)
                         o.label = WebCache(o.url).title
@@ -277,8 +266,9 @@ if __name__ == '__main__':
                 for line in l.further_readings:
                     o = Reading()
                     o.annotation = str(line)
-                    if line.has_links: o.title, o.url = line.links[0]
-                    if line.has_multiple_links: log.warning(f'One reading (theory-to-practice) seems to contain more than one URL, but only one ({o.url}) is captured: {line.links}')
+                    links = extract_links(line)
+                    if links: o.title, o.url = links[0]
+                    if len(links) > 1: log.warning(f'One reading (in the praxis section) seems to contain more than one URL, but only one ({o.url}) is captured: {links}')
                     if o.title.lower().strip() == '':
                         log.error(f"Reading has no title. The annotation is set to: {o.annotation}", kill=None)
                         o.title = WebCache(o.url).title
