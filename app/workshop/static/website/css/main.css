@@ -81,9 +81,16 @@ blockquote {
 }
 
 div .codehilite {
+    background-color: rgba(17, 45, 45, 0.03);
     padding-top: 0.5em;
     padding-bottom: 0.5em;
-    padding-left: 0.5em;
+    padding-left: 1em;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
+}
+
+div .codehilite pre {
+    margin: 0 !important;
 }
 
 .lesson-text kbd {
