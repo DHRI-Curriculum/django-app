@@ -9,14 +9,12 @@ const hide_class = function(classname) {
     }
 }
 
-
 const show_class = function(classname){
     var elements = document.getElementsByClassName(classname);
     for (var i = 0; i < elements.length; i++) {
         elements[i].classList.remove('d-none');
     }
 }
-
 
 const zen_switch = function(e) {
     if (e.target.id != "zen") {
@@ -47,16 +45,20 @@ const zen_switch = function(e) {
     e.stopPropagation();
 }
 
+var zen_cookie = 'auto-off';
 
-
-const zen_cookie = document.cookie
+try {
+    var zen_cookie = document.cookie
                         .split('; ')
                         .find(row => row.startsWith('zen'))
-                        .split('=')[1]
+                        .split('=')[1];
+} catch(e) {
+    // empty because we have already automatically specified zen_cookie above
+}
 
 const zen_button = document.getElementById('zen')
 
-if (zen_cookie == "off") {
+if (zen_cookie == "off" || zen_cookie == "auto-off") {
     show_class('zen-hideaway');
     zen_button.innerHTML = zen_off;
     zen_button.dataset.toggle = 'off';
@@ -65,8 +67,6 @@ if (zen_cookie == "off") {
     zen_button.innerHTML = zen_on;
     zen_button.dataset.toggle = 'on';
 }
-
-
 
 document.getElementById('zen')
     .addEventListener('click', function(e) { zen_switch(e); });
