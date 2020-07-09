@@ -72,6 +72,8 @@ def lesson(request, slug=None, lesson_id=None):
   except: # TODO: should make this exception explicit
     page_number = request.GET.get('page')
 
+  if not page_number: page_number = 1
+
   page_obj = paginator.get_page(page_number)
 
   percentage = round(page_number / paginator.num_pages * 100)
