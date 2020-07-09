@@ -13,6 +13,7 @@ class Page(models.Model):
     slug = models.CharField(max_length=200, blank=True)
     text = models.TextField()
     template = models.CharField(max_length=100, choices=Template.choices, default=Template.STANDARD)
+    is_homepage = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.name)
