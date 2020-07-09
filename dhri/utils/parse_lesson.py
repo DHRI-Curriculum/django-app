@@ -40,7 +40,7 @@ class LessonParser():
 
         self.data = []
 
-        for title, body in split_into_sections(self.markdown, level_granularity=1).items():
+        for title, body in split_into_sections(self.markdown, level_granularity=1, clear_empty_lines=False).items():
             droplines = []
 
             challenge = ""

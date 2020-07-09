@@ -291,12 +291,15 @@ class ContributorParser():
         self.md = md
         self.data = []
         self.process()
+        print(self.md)
+        print(self.data)
 
     def process(self):
         from dhri.utils.regex import all_links
         md_as_list = as_list(self.md)
         if not len(md_as_list):
             md_as_list = self.md.split("\n")
+
         for item in md_as_list:
             role = None
             g = all_links.search(item)
@@ -313,6 +316,26 @@ class ContributorParser():
                     'role': role,
                     'url': url,
                 })
+            else:
+                if ":" in item:
+                    elems = [_.strip() for _ in item.split(":")]
+                    role = elems[0]
+                    name = " ".join(elems[1:])
+                    first_name, last_name = self.split_names(name)
+                    self.data.append({
+                        'first_name': first_name,
+                        'last_name': last_name,
+                        'role': role,
+                        'url': None,
+                    })
+                else:
+                    first_name, last_name = self.split_names(item)
+                    self.data.append({
+                        'first_name': first_name,
+                        'last_name': last_name,
+                        'role': None,
+                        'url': None,
+                    })
 
     def split_names(self, full_name:str) -> tuple:
         """Uses the `nameparser` library to interpret names."""

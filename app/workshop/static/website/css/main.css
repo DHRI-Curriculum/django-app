@@ -39,7 +39,8 @@ blockquote {
 }
 
 .lesson-text {
-    font-size:1.2rem;
+    font-size:calc(1rem + 0.3vw);
+    /*font-size:1.2rem;*/
     line-height:2rem;
 }
 
@@ -59,16 +60,24 @@ blockquote {
     /* background-color: rgba(255, 255, 0, 0.1) !important; */
 }
 
+.lesson-text h2 {
+    margin-top:1em;
+    font-size:calc(1.325rem + .9vw)
+}
+
 .lesson-text h3 {
-    padding-top:1em;
+    margin-top:1em;
+    font-size:calc(1.3rem + .6vw)
 }
 
 .lesson-text h4 {
-    padding-top:1em;
+    margin-top:1em;
+    font-size:calc(1.275rem + .3vw)
 }
 
 .lesson-text h5 {
-    padding-top:1em;
+    margin-top:1em;
+    font-size:1.25rem;
 }
 
 div .codehilite {

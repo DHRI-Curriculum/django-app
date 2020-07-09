@@ -258,7 +258,7 @@ def get_bulletpoints(markdown:str) -> list:
     return(get_list(markdown, ALL_BULLETS))
 
 
-def split_into_sections(markdown:str, level_granularity=3, keep_levels=False) -> dict:
+def split_into_sections(markdown:str, level_granularity=3, keep_levels=False, clear_empty_lines=True) -> dict:
     """
     Splits a markdown file into a dictionary with the headings as keys and the section contents as values, and returns the dictionary.
     Takes two arguments:
@@ -266,7 +266,10 @@ def split_into_sections(markdown:str, level_granularity=3, keep_levels=False) ->
       - keep_level which maintains the number of octothorps before the header
     """
 
-    lines = [x for x in markdown.splitlines() if x] # cleans out any empty lines
+    if clear_empty_lines:
+        lines = [_ for _ in markdown.splitlines() if _] # cleans out any empty lines
+    else:
+        lines = markdown.splitlines()
 
     sections = OrderedDict()
 
@@ -289,7 +292,7 @@ def split_into_sections(markdown:str, level_granularity=3, keep_levels=False) ->
                 in_code = False
                 
         if is_header(line) and in_code == False:
-            header = ''.join([x for x in line.split('#') if x]).strip()
+            header = ''.join([_ for _ in line.split('#') if _]).strip()
             if keep_levels:
                 level = line.strip()[:3].count("#")
                 header = f"{'#' * level} {header}"

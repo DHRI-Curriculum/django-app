@@ -108,26 +108,30 @@ if __name__ == '__main__':
                     local_url = f'/static/images/lessons/{REPO_CLEAR}/{filename}'
                     image['src'] = local_url
 
+                clean_html = str(soup).replace('<html><body>', '').replace('</body></html>', '').replace('<br />', '</p><p>').replace('<br/>', '</p><p>').replace('<br>', '</p><p>')
+
                 lesson = Lesson(
                     workshop = workshop,
                     title = lesson_data['title'],
-                    text = str(soup).replace('<html><body>', '').replace('</body></html>', ''),
+                    text = clean_html,
                     order = order
                 )
                 lesson.save()
                 collector['lessons'].append(lesson)
                 order += 1
                 if lesson_data['challenge']:
+                    clean_html = lesson_data['challenge'].replace('<br />', '</p><p>').replace('<br/>', '</p><p>').replace('<br>', '</p><p>')
                     challenge = Challenge(
                         lesson = lesson,
-                        text = lesson_data['challenge']
+                        text = clean_html
                     )
                     challenge.save()
                     collector['challenges'].append(challenge)
                 if lesson_data['solution']:
+                    clean_html = lesson_data['solution'].replace('<br />', '</p><p>').replace('<br/>', '</p><p>').replace('<br>', '</p><p>')
                     solution = Solution(
                         challenge = challenge,
-                        text = lesson_data['solution']
+                        text = clean_html
                     )
                     solution.save()
                     collector['solutions'].append(solution)
@@ -193,7 +197,6 @@ if __name__ == '__main__':
                 log.name = log.original_name + "-readings"
                 collector['frontmatter_readings'] = []
                 for line in l.readings:
-                    print(line)
                     o = Reading()
                     o.annotation = str(line)
                     if extract_links(line): o.title, o.url = extract_links(line)[0]
@@ -213,9 +216,9 @@ if __name__ == '__main__':
                 log.name = log.original_name + "-contributors"
                 collector['contributors'] = []
                 for contributor in l.contributors:
-                    first_name, last_name, role, link = contributor
+                    first_name, last_name, role, url = contributor.get('first_name'), contributor.get('last_name'), contributor.get('role'), contributor.get('url')
                     o = Contributor()
-                    o.first_name, o.last_name, o.role, o.url = contributor
+                    o.first_name, o.last_name, o.role, o.url = first_name, last_name, role, url
                     o.save()
                     collector['contributors'].append(o)
                     msg = saved_prefix + f'Contributor {o.full_name} added.'
