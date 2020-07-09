@@ -11,7 +11,7 @@ REQUIRED_SECTIONS = {}
 
 from dhri.interaction import Logger
 from dhri.utils.exceptions import ConstantError
-from dhri.settings import NORMALIZING_SECTIONS, DOWNLOAD_CACHE_DIR, TEST_AGE, ZOTERO_TEST_AGE, MAX_TERMINAL_WIDTH
+from dhri.settings import NORMALIZING_SECTIONS, DOWNLOAD_CACHE_DIR, TEST_AGE, TEST_AGE_WEB, TEST_AGE_ZOTERO, MAX_TERMINAL_WIDTH
 
 from itertools import chain
 from datetime import timedelta
@@ -38,8 +38,8 @@ DOWNLOAD_CACHE_DIR = Path(DOWNLOAD_CACHE_DIR)
 if not DOWNLOAD_CACHE_DIR.exists(): DOWNLOAD_CACHE_DIR.mkdir()
 
 TEST_AGE = timedelta(minutes=TEST_AGE)
-TEST_AGE_WEB = timedelta(minutes=5) # Test age for WebCache is set to 30 days.
-ZOTERO_TEST_AGE = timedelta(days=ZOTERO_TEST_AGE) # every two days
+TEST_AGE_WEB = timedelta(minutes=TEST_AGE_WEB) # Test age for WebCache is set to 30 days.
+TEST_AGE_ZOTERO = timedelta(days=TEST_AGE_ZOTERO) # every two days
 
 # Run tests
 
