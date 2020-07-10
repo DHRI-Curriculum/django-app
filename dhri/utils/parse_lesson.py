@@ -102,9 +102,9 @@ class LessonParser():
             if solution == '': solution = None
 
             if solution and not challenge:
-                log.error(f"The lesson {title} has a solution but no challenge. The program has stopped.")
+                log.error(f"The lesson `{title}` has a solution but no challenge. The program has stopped.")
             elif challenge and not solution:
-                log.warning(f'The lesson {title} has a challenge with no solution.')
+                log.warning(f'The lesson `{title}` has a challenge with no solution.')
 
             data = {
                     'title': title,

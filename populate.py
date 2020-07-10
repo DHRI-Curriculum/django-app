@@ -108,6 +108,19 @@ if __name__ == '__main__':
                     local_url = f'/static/images/lessons/{REPO_CLEAR}/{filename}'
                     image['src'] = local_url
 
+                for link in soup.find_all("a"):
+                    href = link['href']
+                    c = WebCache(href)
+                    if "github.com/DHRI-Curriculum" in href:
+                        log.warning("Internal links in curriculum detected.")
+                    elif href.startswith('http'):
+                        if c.status_code != 200:
+                            log.warning(f"Link detected in lesson that generated a {c.status_code} status code: {href}")
+                    '''
+                    except:
+                        log.error(f"Fatal error when connecting to URL detected in lesson: {href}", kill=False)
+                    '''
+
                 clean_html = str(soup).replace('<html><body>', '').replace('</body></html>', '').replace('<br />', '</p><p>').replace('<br/>', '</p><p>').replace('<br>', '</p><p>')
 
                 lesson = Lesson(

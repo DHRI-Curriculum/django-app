@@ -26,3 +26,7 @@ def setup(collect_workshop_slugs:list):
             all_urls = "\n- http://localhost:8000/workshops/" + ("\n- http://localhost:8000/workshops/".join(collect_workshop_slugs))
             log.log(f"Once the server is up and running, you can visit:")
             print(all_urls)
+    else:
+        commands = f"python ./{MANAGE} makemigrations; python ./{MANAGE} migrate; python {MANAGE} loaddata ./app/fixtures.json; python ./{MANAGE} createsuperuser"
+        log.warning(f"You should now manually run these commands on your command line:"
+        print(commands)

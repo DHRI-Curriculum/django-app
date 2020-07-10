@@ -6,7 +6,7 @@ from dhri.utils.exceptions import UnresolvedNameOrBranch, MissingCurriculumFile,
 from dhri.utils.parse_lesson import LessonParser
 
 from dhri.settings import NORMALIZING_SECTIONS, REPO_AUTO, BRANCH_AUTO, BACKEND_AUTO, FORCE_DOWNLOAD
-from dhri.constants import DOWNLOAD_CACHE_DIR, TEST_AGE, TEST_AGE_WEB
+from dhri.constants import CACHE_DIRS, TEST_AGES
 
 import requests, json, datetime, shutil
 from django.utils.text import slugify
@@ -16,8 +16,8 @@ from requests.exceptions import ProxyError
 
 log = Logger(name='loader')
 
-
-def _check_age(path, age_checker=TEST_AGE) -> bool:
+'''
+def _check_age(path, age_checker=TEST_AGES) -> bool:
     if isinstance(path, str): path = Path(path)
     log = Logger(name='cache-age-check')
     if not path.exists() or FORCE_DOWNLOAD == True: return(False)
@@ -32,7 +32,8 @@ def _check_age(path, age_checker=TEST_AGE) -> bool:
         return True
 
 # First things first: Clear out the cache folder
-for file in DOWNLOAD_CACHE_DIR.glob('*.txt'):
+
+for file in CACHE_DIRS.glob('*.txt'):
     if _check_age(file, TEST_AGE_WEB) == False:
         file.unlink()
 
@@ -478,55 +479,77 @@ class LoaderCache():
         return f'LoaderCache("{self.repo_name}")'
 
 
-
-class WebCache(LoaderCache):
+'''
+class WebCache():
 
     def __init__(self, url:str, force_download=FORCE_DOWNLOAD):
 
         self.url = url
+        self.data = dict()
         self.title = None
+        self.status_code = None
         self.force_download = FORCE_DOWNLOAD
 
         if url != None and str(url).lower().strip() != 'none' and str(url).lower().strip() != '':
-            self.path = DOWNLOAD_CACHE_DIR / (slugify(url[:100])+'.txt')
+            slug_url = url
+            if slug_url.endswith('/'): slug_url = slug_url[:-1]
+            slug_url = slug_url.replace('https://', '').replace('http://', '').replace('www.', '').replace('/', '-')
+            self.path = CACHE_DIRS['WEB'] / (slugify(slug_url[:100])+'.json')
             self.path = Path(self.path)
 
             self._check_age()
 
             if not self.path.exists():
-                title = self.try_title_element_from_url()
-                self.path.write_text(title)
+                self.data = self.download()
+                self.save()
 
             if self.path.exists():
-                self.title = self.path.read_text()
+                self.data = self.load()
+                if isinstance(self.data, dict):
+                    self.title = self.data.get('title')
+                    self.status_code = self.data.get('status_code')
         else:
             self.title = ''
 
-    def try_title_element_from_url(self):
+    def save(self):
+        self.path.write_text(json.dumps(self.data))
+
+    def download(self):
 
         if self.url != None and str(self.url).lower().strip() == 'none' and str(self.url).lower().strip() == '':
             return('')
         else:
-            log.warning(f'Trying to download title from web page...')
+            log.warning(f'Trying to download cache for URL: {self.url}')
             if not self.url.startswith('http'):
-                self.url = f'http://{self.url}'
+                if not self.url.startswith('#'):
+                    self.url = f'http://{self.url}'
+                else:
+                    return ''
             try:
-                r = requests.get(self.url)
+                r = requests.get(self.url, timeout=3)
                 soup = BeautifulSoup(r.text, 'lxml')
                 try:
-                    return(soup.find('title').text)
+                    return {
+                        'title': soup.find('title').text,
+                        'status_code': r.status_code,
+                    }
                 except:
-                    return('')
+                    return ''
             except ProxyError as e:
                 log.warning(f'Could not access {self.url} because of a proxy error: {e}')
                 return('')
+            except Exception as e: # TODO: Be more explicit here?
+                log.warning(f'Could not access {self.url} because of a fatal error: {e}')
+
+    def load(self):
+        return json.loads(self.path.read_text())
 
     def _check_age(self) -> bool:
         if not self.path.exists() or self.force_download == True: return(False)
         file_mod_time = datetime.datetime.fromtimestamp(self.path.stat().st_ctime)
         now = datetime.datetime.today()
 
-        if now - file_mod_time > TEST_AGE_WEB:
+        if now - file_mod_time > TEST_AGES['WEB']:
             try:
                 self.parent.log.log(f'Cache has expired - older than {TEST_AGE_WEB} minutes... Removing.')
             except:
