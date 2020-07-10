@@ -11,7 +11,8 @@ class Workshop(models.Model):
   parent_branch = models.CharField(max_length=100, blank=True, null=True)
 
   def save(self, *args, **kwargs):
-      self.slug = slugify(self.name.replace('-',' '))
+      name = self.name.replace('-',' ').replace('/',' ')
+      self.slug = slugify(name)
       super(Workshop, self).save()
 
   def __str__(self):

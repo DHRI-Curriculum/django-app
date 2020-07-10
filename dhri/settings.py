@@ -13,13 +13,13 @@ AUTO_TERMINAL_WIDTH = 70
 
 # Which repositories and branches should we do automatically?
 AUTO_PROCESS = [
-        ('data-and-ethics', 'v2.0-di-edits'),
-        ('text-analysis', 'v2.0-rafa-edits'),
-        ('command-line', 'v2.0-smorello-edits'),
-        ('project-lab', 'v2.0rhody-edits'),
-        ('python', 'v2.0-filipa-edits'),
+        #('data-and-ethics', 'v2.0-di-edits'),
+        #('text-analysis', 'v2.0-rafa-edits'),
+        #('command-line', 'v2.0-smorello-edits'),
+        #('project-lab', 'v2.0rhody-edits'),
+        #('python', 'v2.0-filipa-edits'),
         ('html-css', 'v2.0-param-edits'),
-        ('git', 'v2.0-kristen-edits'),
+        #('git', 'v2.0-kristen-edits'),
     ]
 
 # Django backend settings
