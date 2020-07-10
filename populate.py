@@ -2,7 +2,7 @@ from dhri import debug
 from dhri.django import django, Fixture
 from dhri.django.models import Workshop, Praxis, Tutorial, Reading, Frontmatter, LearningObjective, Project, Contributor, Lesson, Challenge, Solution, Page
 from dhri.interaction import Logger, get_or_default
-from dhri.settings import AUTO_PROCESS, FIXTURE_PATH, REPLACEMENTS
+from dhri.settings import AUTO_PROCESS, FIXTURE_PATH, REPLACEMENTS, LESSON_TRANSPOSITIONS
 from dhri.utils.loader import WebCache
 from dhri.utils.loader_v2 import Loader
 from dhri.utils.markdown import get_bulletpoints, is_exclusively_bullets, get_list, get_contributors, Markdown, extract_links
@@ -94,12 +94,14 @@ if __name__ == '__main__':
             from pathlib import Path
             from dhri.utils.parse_lesson import download_image
             from bs4 import BeautifulSoup
+            from bs4 import Comment
 
             STATIC_IMAGES = Path('./app/workshop/static/images/lessons/')
             REPO_CLEAR = "".join(repo.split("https://github.com/DHRI-Curriculum/")[1:])
 
             for lesson_data in l.as_html.lessons:
                 soup = BeautifulSoup(lesson_data['text'], 'lxml')
+
                 for image in soup.find_all("img"):
                     filename = image['src'].split('/')[-1]
                     url = f'https://raw.githubusercontent.com/DHRI-Curriculum/{REPO_CLEAR}/{branch}/images/{filename}'
@@ -113,15 +115,23 @@ if __name__ == '__main__':
                     c = WebCache(href)
                     if "github.com/DHRI-Curriculum" in href:
                         log.warning("Internal links in curriculum detected.")
-                    elif href.startswith('http'):
-                        if c.status_code != 200:
-                            log.warning(f"Link detected in lesson that generated a {c.status_code} status code: {href}")
+                    if c.status_code != 200:
+                        log.warning(f"Link detected in lesson that generated a {c.status_code} status code: {href}")
                     '''
                     except:
                         log.error(f"Fatal error when connecting to URL detected in lesson: {href}", kill=False)
                     '''
 
-                clean_html = str(soup).replace('<html><body>', '').replace('</body></html>', '').replace('<br />', '</p><p>').replace('<br/>', '</p><p>').replace('<br>', '</p><p>')
+                string_soup = str(soup)
+                for transposition in LESSON_TRANSPOSITIONS:
+                    if (string_soup.find(transposition + '<br>'),
+                        string_soup.find(transposition + '<br/>'),
+                        string_soup.find(transposition + '<br />')):
+                        string_soup = string_soup.replace(transposition + '<br>', transposition).replace(transposition + '<br/>', transposition).replace(transposition + '<br />', transposition)
+                    string_soup = string_soup.replace(transposition, LESSON_TRANSPOSITIONS[transposition])
+                soup = string_soup
+
+                clean_html = soup.replace('<html><body>', '').replace('</body></html>', '').replace('<br />', '</p><p>').replace('<br/>', '</p><p>').replace('<br>', '</p><p>')
 
                 lesson = Lesson(
                     workshop = workshop,

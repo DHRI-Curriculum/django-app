@@ -482,19 +482,32 @@ class LoaderCache():
 '''
 class WebCache():
 
+    def _valid_url(self):
+        # TODO: better ways of testing this...
+        if self.url == None: return False
+        if str(self.url).lower().strip() == 'none': return False
+        if str(self.url).lower().strip() == '': return False
+        if not '/' in self.url: return False
+
     def __init__(self, url:str, force_download=FORCE_DOWNLOAD):
 
         self.url = url
+        self.valid_url = self._valid_url()
         self.data = dict()
         self.title = None
         self.status_code = None
         self.force_download = FORCE_DOWNLOAD
 
-        if url != None and str(url).lower().strip() != 'none' and str(url).lower().strip() != '':
-            slug_url = url
-            if slug_url.endswith('/'): slug_url = slug_url[:-1]
-            slug_url = slug_url.replace('https://', '').replace('http://', '').replace('www.', '').replace('/', '-')
-            self.path = CACHE_DIRS['WEB'] / (slugify(slug_url[:100])+'.json')
+        if not self.valid_url:
+            self.data = {
+                'title': '',
+                'status_code': None,
+            }
+
+        if self.valid_url:
+            slug_url = self.replace_trailing_slash(url)
+            slug_url = self.pre_clean_url(url)
+            self.path = CACHE_DIRS['WEB'] / (slugify(slug_url)+'.json')
             self.path = Path(self.path)
 
             self._check_age()
@@ -510,9 +523,18 @@ class WebCache():
                     self.status_code = self.data.get('status_code')
         else:
             self.title = ''
+            self.status_code = None
 
     def save(self):
         self.path.write_text(json.dumps(self.data))
+
+    def replace_trailing_slash(self, url:str):
+        if url.endswith('/'): url = url[:-1]
+        return url
+
+    def pre_clean_url(self, url:str):
+        url = url.replace('https://', '').replace('http://', '').replace('www.', '').replace('/', '-')
+        return url[:100]
 
     def download(self):
 

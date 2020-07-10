@@ -13,10 +13,10 @@ AUTO_TERMINAL_WIDTH = 70
 
 # Which repositories and branches should we do automatically?
 AUTO_PROCESS = [
+        ('project-lab', 'v2.0rhody-edits'),
         ('data-and-ethics', 'v2.0-di-edits'),
         ('text-analysis', 'v2.0-rafa-edits'),
         ('command-line', 'v2.0-smorello-edits'),
-        ('project-lab', 'v2.0rhody-edits'),
         ('python', 'v2.0-filipa-edits'),
         ('html-css', 'v2.0-param-edits'),
         ('git', 'v2.0-kristen-edits'),
@@ -108,3 +108,8 @@ DJANGO_PATHS['DB'] = Path(DJANGO_PATHS['DB'])
 
 for path in DJANGO_PATHS:
     DJANGO_PATHS[path] = Path(__file__).absolute().parent.parent / DJANGO_PATHS[path]
+
+
+LESSON_TRANSPOSITIONS = {
+    '<!-- context: terminal -->': '<img src="terminal.png" />'
+}
