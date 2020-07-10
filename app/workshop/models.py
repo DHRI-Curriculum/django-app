@@ -9,6 +9,7 @@ class Workshop(models.Model):
   parent_backend = models.CharField(max_length=100, blank=True, null=True)
   parent_repo = models.CharField(max_length=100, blank=True, null=True)
   parent_branch = models.CharField(max_length=100, blank=True, null=True)
+  views = models.PositiveSmallIntegerField(default=0)
 
   def save(self, *args, **kwargs):
       name = self.name.replace('-',' ').replace('/',' ')
