@@ -43,9 +43,9 @@ REPLACEMENTS = {
 ##### Cache ##############################
 
 CACHE_DIRS = {
-    'ROOT': './__loader-cache__/',
-    'WEB': './__loader-cache__/web/',
-    'ZOTERO': './__loader-cache__/zotero/'
+    'ROOT': '.loader-cache/',
+    'WEB': '.loader-cache/web/',
+    'ZOTERO': '.loader-cache/zotero/'
 }
 
 TEST_AGES = {
