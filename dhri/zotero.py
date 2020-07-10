@@ -18,13 +18,13 @@ from pyzotero import zotero
 from dhri.interaction import Logger
 from nameparser import HumanName
 from django.utils.text import slugify
-from dhri.settings import ZOTERO_API_KEY, ZOTERO_CACHE_DIR, FORCE_DOWNLOAD
-from dhri.constants import TEST_AGE_ZOTERO
+from dhri.settings import ZOTERO_API_KEY, FORCE_DOWNLOAD
+from dhri.constants import TEST_AGES, CACHE_DIRS
 
 log = Logger(name='ZoteroCache')
 
 
-def _check_age(path, age_checker=TEST_AGE_ZOTERO) -> bool:
+def _check_age(path, age_checker=TEST_AGES['ZOTERO']) -> bool:
     if isinstance(path, str): path = Path(path)
 
     if not path.exists() or FORCE_DOWNLOAD == True: return(False)
@@ -47,10 +47,10 @@ class LocalZoteroWebpageCache():
 
         filename = slugify(self.url[:50].replace("http://", "").replace("https://", "").replace("www.", "").replace("/", "-"))
         if filename.endswith("/"): filename = filename[:-1] # remove trailing slash
-        self.path = Path(ZOTERO_CACHE_DIR) / f"{filename}.json"
+        self.path = Path(CACHE_DIRS['ZOTERO']) / f"{filename}.json"
 
         # check age of cache
-        age_ok = _check_age(self.path, TEST_AGE_ZOTERO)
+        age_ok = _check_age(self.path, TEST_AGES['ZOTERO'])
 
         if age_ok == False or self.force_download == True:
             self.url_exists = self._url_exists()
@@ -94,10 +94,10 @@ class LocalZoteroCache():
         self.force_download = force_download
 
         # ensure we have a path
-        self.path = Path(ZOTERO_CACHE_DIR) / f'{self.group_id}.json'
+        self.path = Path(CACHE_DIRS['ZOTERO']) / f'{self.group_id}.json'
 
         # check age of cache file
-        age_ok = _check_age(self.path, TEST_AGE_ZOTERO)
+        age_ok = _check_age(self.path, TEST_AGES['ZOTERO'])
 
         if age_ok == False or self.force_download == True:
             # download data

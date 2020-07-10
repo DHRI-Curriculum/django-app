@@ -42,14 +42,19 @@ REPLACEMENTS = {
 
 ##### Cache ##############################
 
-DOWNLOAD_CACHE_DIR = './__loader-cache__'
-TEST_AGE = 20 # minutes
-TEST_AGE_WEB = 5 # minutes
+CACHE_DIRS = {
+    'ROOT': './__loader-cache__/',
+    'WEB': './__loader-cache__/web/',
+    'ZOTERO': './__loader-cache__/zotero/'
+}
 
-ZOTERO_CACHE_DIR = './__loader-cache__/zotero/'
-TEST_AGE_ZOTERO = 14 # days
+TEST_AGES = {
+    'ROOT': 20160, # 20,160 minutes = 14 days
+    'WEB': 20160, # 20,160 minutes = 14 days
+    'ZOTERO': 14, # days
+}
 
-# If set to True, the script will bypass the cache every time (effectively disregarding TEST_AGE above)
+# If set to True, the script will override the cache every time (effectively disregarding TEST_AGES above)
 FORCE_DOWNLOAD = False
 
 

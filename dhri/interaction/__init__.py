@@ -50,11 +50,13 @@ class Logger():
             self.name = kwargs['name']
         if 'bypass_verbose' in kwargs:
             self.bypass_verbose = kwargs['bypass_verbose']
+        if self.bypass_verbose == True:
+            VERBOSE = True
 
     def log(self, message="", kill=False, color='green'):
         message = self._fix_message(message)
         message = colorize(message, fg=color, opts=('',))
-        self.output(message)
+        if VERBOSE: self.output(message)
 
     def error(self, message="", raise_error=None, kill=True, color='red'):
         if raise_error != None:
