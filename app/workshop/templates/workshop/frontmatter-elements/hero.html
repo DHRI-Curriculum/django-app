@@ -4,6 +4,7 @@
 <h1>{{ workshop.name }}</h1>
 <div class="lead mt-4">
     {{ workshop.frontmatter.abstract | markdown | safe }}
+    <p><em>This workshop has been viewed {{ workshop.views }} times. {{ workshop.session_expiry }}</em></p>
 </div>
 
 

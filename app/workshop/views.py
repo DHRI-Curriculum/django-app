@@ -38,7 +38,18 @@ def index(request):
 
 
 def frontmatter(request, slug=None):
+  request.session.set_expiry(0) # expires at browser close
+
   _, obj = _flexible_get(Workshop, slug)
+  has_visited = request.session.get('has_visited', False)
+
+  if not has_visited:
+    obj.views += 1
+    obj.save()
+    request.session['has_visited'] = True
+
+  obj.has_visited = request.session.get('has_visited', False)
+
   lessons = Lesson.objects.filter(workshop=obj)
   frontmatter = obj.frontmatter
   return render(request, 'workshop/frontmatter.html', {'workshop': obj, 'frontmatter': frontmatter, 'lessons': lessons})
