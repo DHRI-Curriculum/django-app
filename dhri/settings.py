@@ -30,8 +30,11 @@ DJANGO_PATHS = {
     }
 
 # Zotero API key
-with open('./zotero-api-key.txt', 'r') as f:
-    ZOTERO_API_KEY = f.read()
+try:
+    with open('./zotero-api-key.txt', 'r') as f:
+        ZOTERO_API_KEY = f.read()
+except:
+    ZOTERO_API_KEY = None
 
 
 # Auto replacement in titles

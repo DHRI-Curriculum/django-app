@@ -88,6 +88,8 @@ class LocalZoteroCache():
     def __init__(self, api_key=ZOTERO_API_KEY, force_download=FORCE_DOWNLOAD):
         # set up basic info
         self.group_id = 2164386 # note: hard-coded for DHRI right now
+        if not api_key:
+            log.error('Zotero API key not set up correctly')
         self.api = zotero.Zotero(self.group_id, 'group', api_key)
         self.data = {}
         self.api_key = api_key
