@@ -325,39 +325,59 @@ if __name__ == '__main__':
     collector = dict()
     collector['pages'] = []
 
-    p = Page(
-        name = 'Workshops',
-        slug = 'workshops',
-        text = '<p class="lead">This is the workshop page.</p>',
-        template = 'workshop/workshop-list.html'
-    )
-    p.save()
-    collector['pages'].append(p)
+    log.log("Installing pages...")
+    p_test = Page.objects.filter(name = 'Workshops').count()
+    if p_test > 0:
+        log.warning("Page `Workshops` already exists.")
+    else:
+        p = Page(
+            name = 'Workshops',
+            slug = 'workshops',
+            text = '<p class="lead">This is the workshop page.</p>',
+            template = 'workshop/workshop-list.html'
+        )
+        p.save()
+        collector['pages'].append(p)
+        log.log("Page `Workshops` added.")
 
-    p = Page(
-        name = 'About',
-        slug = 'about',
-        text = '<p class="lead">This is the about page.</p>',
-        template = 'website/page.html'
-    )
-    p.save()
-    collector['pages'].append(p)
+    p_test = Page.objects.filter(name = 'About').count()
+    if p_test > 0:
+        log.warning("Page `About` already exists.")
+    else:
+        p = Page(
+            name = 'About',
+            slug = 'about',
+            text = '<p class="lead">This is the about page.</p>',
+            template = 'website/page.html'
+        )
+        p.save()
+        collector['pages'].append(p)
+        log.log("Page `About` added.")
 
-    p = Page(
-        name = 'Library',
-        slug = 'library',
-        text = '<p class="lead">This is the library page.</p>',
-        template = 'library/all-library-items.html'
-    )
-    p.save()
-    collector['pages'].append(p)
+    p_test = Page.objects.filter(name = 'Library').count()
+    if p_test > 0:
+        log.warning("Page `Library` already exists.")
+    else:
+        p = Page(
+            name = 'Library',
+            slug = 'library',
+            text = '<p class="lead">This is the library page.</p>',
+            template = 'library/all-library-items.html'
+        )
+        p.save()
+        collector['pages'].append(p)
+        log.log("Page `Library` added.")
 
-    g = Group(
-        name = 'Learner'
-    )
-    g.save()
-    collector['groups'] = []
-    collector['groups'].append(g)
+    log.log("Installing authorization data...")
+    g_test = Group.objects.filter(name = 'Learner').count()
+    if g_test > 0:
+        log.warning("Group `Learner` already exists.")
+    else:
+        g = Group(name = 'Learner')
+        g.save()
+        collector['groups'] = []
+        collector['groups'].append(g)
+        log.log("Group `Learner` added.")
 
     fixtures.add(collector=collector)
 

@@ -34,18 +34,22 @@ def reset_all(kill=True) -> None:
     from dhri.django.models import Workshop, Frontmatter, Project, Resource, Reading, Contributor, Question, Answer, QuestionType, LearningObjective, Praxis, Tutorial, Lesson, Challenge, Solution
     from dhri.settings import DJANGO_PATHS
     import os
+    errors = []
     for _ in [Workshop, Frontmatter, Project, Resource, Reading, Contributor, Question, Answer, QuestionType, LearningObjective, Praxis, Tutorial, Lesson, Challenge, Solution]:
         try:
             _.objects.all().delete()
             log.log(f'All {_.__name__} deleted.', kill=not AUTO_RESET)
         except OperationalError:
-            MANAGE = DJANGO_PATHS.get("MANAGE")
-            log.error(f"Could not remove {_}.", kill=False)
-            log.warning("Trying to run migrations... If it fails, run them manually")
-            me = Path(__file__).absolute().parent.parent
-            MANAGE = MANAGE.relative_to(me)
-            commands = f"python ./{MANAGE} makemigrations; python ./{MANAGE} migrate"
-            os.system(commands)
+            errors.append(_)
+
+    if errors:
+        log.error(f"{len(errors)} errors occurred.", kill=False)
+        log.warning("Trying to run migrations... If it fails, run them manually")
+        me = Path(__file__).absolute().parent.parent
+        MANAGE = DJANGO_PATHS.get("MANAGE")
+        MANAGE = MANAGE.relative_to(me)
+        commands = f"python ./{MANAGE} makemigrations; python ./{MANAGE} migrate"
+        os.system(commands)
     '''
     try:
         sql.unlink()
@@ -60,11 +64,6 @@ def reset_all(kill=True) -> None:
     os.system(commands[1])
     exit()
     '''
-
-    from django.contrib.auth import get_user_model
-    User = get_user_model()
-    if not User.objects.filter(username='admin').count():
-        User.objects.create_superuser('admin', '', 'admin')
 
 
 if DEBUG == True:
