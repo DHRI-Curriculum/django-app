@@ -1,3 +1,4 @@
+from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render, get_object_or_404, HttpResponse
 from django.conf import settings
 import requests
@@ -22,10 +23,12 @@ from workshop.models import Workshop
 
 payload = dict()
 
+@staff_member_required
 def menu(request):
     workshops = Workshop.objects.all()
     return render(request, 'preview/menu.html', {'workshops': workshops})
 
+@staff_member_required
 def repository(request, repository=None):
     workshop = get_object_or_404(Workshop, slug=repository)
     payload['workshop'] = workshop
@@ -65,6 +68,7 @@ def get_from_url(url:str, type:str): # type = 'frontmatter' | 'theory-to-practic
 
     return(payload)
 
+@staff_member_required
 def frontmatter(request, repository=None):
     workshop = get_object_or_404(Workshop, slug=repository)
 
@@ -81,7 +85,7 @@ def frontmatter(request, repository=None):
 
     return render(request, 'preview/preview.html', payload)
 
-
+@staff_member_required
 def praxis(request, repository=None):
     workshop = get_object_or_404(Workshop, slug=repository)
     url = f'{BASE_URL}{workshop.parent_repo}/{workshop.parent_branch}/{ FILES["praxis"] }'
@@ -97,6 +101,7 @@ def praxis(request, repository=None):
 
     return render(request, 'preview/preview.html', payload)
 
+@staff_member_required
 def lessons(request, repository=None):
     workshop = get_object_or_404(Workshop, slug=repository)
     url = f'{BASE_URL}{workshop.parent_repo}/{workshop.parent_branch}/{ FILES["lessons"] }'
