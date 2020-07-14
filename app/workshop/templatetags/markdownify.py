@@ -24,14 +24,35 @@ class HighlightRenderer(mistune.Renderer):
 
 @register.filter
 def markdown(value):
-    renderer = HighlightRenderer()
-    markdown = mistune.Markdown(renderer=renderer)
-    return markdown(value)
+    try:
+        renderer = HighlightRenderer()
+        markdown = mistune.Markdown(renderer=renderer)
+        return markdown(value)
+    except:
+        return value
 
 @register.filter
 def as_string(value):
     return str(value)
 
+@register.filter
+def nl2br(value):
+    return str(value).replace('\n', '<br />')
+
+@register.filter
+def get_item(dictionary, key):
+    if key in dictionary: return dictionary.get(key)
+    return ''
+
+@register.filter
+def get_item_type(dictionary, key):
+    if dictionary.get(key): return(type(dictionary.get(key)))
+    return(None)
+
+@register.filter
+def is_list(dictionary, key):
+    if dictionary.get(key): return(isinstance(dictionary.get(key), list))
+    return(False)
 
 @register.filter
 def page_window(page, last, size=7):
