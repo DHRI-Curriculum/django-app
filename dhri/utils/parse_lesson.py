@@ -42,8 +42,13 @@ class LessonParser():
 
     def __init__(self, markdown:str, loader:object):
         self.markdown = markdown
-        self.repo = loader.repo
-        self.branch = loader.branch
+        try:
+            self.repo = loader.repo
+            self.branch = loader.branch
+        except:
+            self.repo = None
+            self.branch = None
+            log.warning('No loader object provided so will not download images from lesson file for repository.')
 
         self.data = []
         self.html_data = []
@@ -134,18 +139,19 @@ class LessonParser():
             soup = BeautifulSoup(html_body, 'lxml')
 
             # 1. Attempt to download any images
-            REPO_CLEAR = "".join(self.repo.split("https://github.com/DHRI-Curriculum/")[1:])
-            for image in soup.find_all("img"):
-                src = image.get('src')
-                if not src:
-                    log.warning(f"An image with no src attribute detected in lesson: {image}")
-                    continue
-                filename = image['src'].split('/')[-1]
-                url = f'https://raw.githubusercontent.com/DHRI-Curriculum/{REPO_CLEAR}/{self.branch}/images/{filename}'
-                local_file = STATIC_IMAGES['LESSONS'] / Path(REPO_CLEAR) / filename
-                download_image(url, local_file)
-                local_url = f'/static/images/lessons/{REPO_CLEAR}/{filename}'
-                image['src'] = local_url
+            if self.repo:
+                REPO_CLEAR = "".join(self.repo.split("https://github.com/DHRI-Curriculum/")[1:])
+                for image in soup.find_all("img"):
+                    src = image.get('src')
+                    if not src:
+                        log.warning(f"An image with no src attribute detected in lesson: {image}")
+                        continue
+                    filename = image['src'].split('/')[-1]
+                    url = f'https://raw.githubusercontent.com/DHRI-Curriculum/{REPO_CLEAR}/{self.branch}/images/{filename}'
+                    local_file = STATIC_IMAGES['LESSONS'] / Path(REPO_CLEAR) / filename
+                    download_image(url, local_file)
+                    local_url = f'/static/images/lessons/{REPO_CLEAR}/{filename}'
+                    image['src'] = local_url
 
             # 2. Find and test links
             for link in soup.find_all("a"):

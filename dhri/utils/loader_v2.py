@@ -176,6 +176,19 @@ class HTMLParser():
         self.assessment = self.content.get('assessment')
 
 
+def _normalize_data(data, section):
+    _ = {}
+    for normalized_key, alts in NORMALIZING_SECTIONS[section].items():
+        for alt in alts:
+            done = False
+            for key, val in data.items():
+                if done:
+                    continue
+                if key.lower() == alt.lower():
+                    _[normalized_key] = val
+                    done = True
+    return(_)
+
 
 class Loader():
 
@@ -196,19 +209,6 @@ class Loader():
         praxis_models[model].append(section)
 
     # TODO: Include _assessment_sections test here?
-
-    def _normalize_data(self, data, section):
-        _ = {}
-        for normalized_key, alts in NORMALIZING_SECTIONS[section].items():
-            for alt in alts:
-                done = False
-                for key, val in data.items():
-                    if done:
-                        continue
-                    if key.lower() == alt.lower():
-                        _[normalized_key] = val
-                        done = True
-        return(_)
 
 
     def _test_for_required_sections(self):
@@ -269,9 +269,9 @@ class Loader():
         self.assessment = split_into_sections(self.content.get('assessment'))
         self.lessons = LessonParser(self.content.get('lessons'), loader=self).data
 
-        self.frontmatter = self._normalize_data(self.frontmatter, 'frontmatter')
-        self.praxis = self._normalize_data(self.praxis, 'theory-to-practice')
-        self.assessment = self._normalize_data(self.assessment, 'assessment')
+        self.frontmatter = _normalize_data(self.frontmatter, 'frontmatter')
+        self.praxis = _normalize_data(self.praxis, 'theory-to-practice')
+        self.assessment = _normalize_data(self.assessment, 'assessment')
 
         self.as_html = HTMLParser(self)
 
@@ -292,12 +292,12 @@ class Loader():
 
         # Mapping frontmatter sections
         self.abstract = self.frontmatter.get('abstract')
-        self.learning_objectives = as_list(self.frontmatter.get('learning_objectives'))
         self.estimated_time = self.frontmatter.get('estimated_time')
         self.contributors = ContributorParser(self.frontmatter.get('contributors')).data
-        self.ethical_considerations = as_list(self.frontmatter.get('ethical_considerations'))
         self.readings = as_list(self.frontmatter.get('readings'))
         self.projects = as_list(self.frontmatter.get('projects'))
+        self.learning_objectives = as_list(self.frontmatter.get('learning_objectives'))
+        self.ethical_considerations = as_list(self.frontmatter.get('ethical_considerations'))
 
         # Mapping praxis sections
         self.discussion_questions = as_list(self.praxis.get('discussion_questions'))
@@ -329,32 +329,35 @@ class ContributorParser():
                     role = elems[0]
                     name = " ".join(elems[1:])
                 first_name, last_name = self.split_names(name)
-                self.data.append({
-                    'first_name': first_name,
-                    'last_name': last_name,
-                    'role': role,
-                    'url': url,
-                })
+                if not first_name.lower() == 'none' and not first_name == '':
+                    self.data.append({
+                        'first_name': first_name,
+                        'last_name': last_name,
+                        'role': role,
+                        'url': url,
+                    })
             else:
                 if ":" in item:
                     elems = [_.strip() for _ in item.split(":")]
                     role = elems[0]
                     name = " ".join(elems[1:])
                     first_name, last_name = self.split_names(name)
-                    self.data.append({
-                        'first_name': first_name,
-                        'last_name': last_name,
-                        'role': role,
-                        'url': None,
-                    })
+                    if not first_name.lower() == 'none' and not first_name == '':
+                        self.data.append({
+                            'first_name': first_name,
+                            'last_name': last_name,
+                            'role': role,
+                            'url': None,
+                        })
                 else:
                     first_name, last_name = self.split_names(item)
-                    self.data.append({
-                        'first_name': first_name,
-                        'last_name': last_name,
-                        'role': None,
-                        'url': None,
-                    })
+                    if not first_name.lower() == 'none' and not first_name == '':
+                        self.data.append({
+                            'first_name': first_name,
+                            'last_name': last_name,
+                            'role': None,
+                            'url': None,
+                        })
 
     def split_names(self, full_name:str) -> tuple:
         """Uses the `nameparser` library to interpret names."""

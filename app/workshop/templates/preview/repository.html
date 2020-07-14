@@ -1,0 +1,26 @@
+{% extends 'website/base.html' %}
+{% load markdownify %}
+{% load static %}
+
+{% block main %}
+<div class="row">
+
+    <div class="col-12">
+
+        <h1>{{ workshop.name }}</h1>
+        <div class="row py-2">
+            {% for file in files %}
+                <div class="col-4 py-2">
+                    {{ files|get_item:file }}
+                </div>
+                <div class="col-4 py-2">
+                    <a href="https://raw.githubusercontent.com/{{ workshop.parent_repo }}/{{ workshop.parent_branch }}/{{ file }}" target="_blank">see on GitHub</a>
+                </div>
+                <div class="col-4 py-2">
+                    <a href="{% if file == 'frontmatter' %}{% url 'preview:frontmatter' workshop.slug %}{% elif file == 'praxis' %}{% url 'preview:praxis' workshop.slug %}{% elif file == 'lessons' %}{% url 'preview:lessons' workshop.slug %}{% endif %}" target="_blank">Preview in parser</a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
