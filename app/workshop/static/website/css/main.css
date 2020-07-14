@@ -186,3 +186,17 @@ div .codehilite pre {
 .page-link.current {
     font-weight: 900;
 }
+
+#website-wide-nav > p {
+    pointer-events: none;
+    padding: 0;
+    margin: 0;
+}
+
+#website-wide-nav:hover {
+    cursor: pointer;
+}
+
+#website-wide-nav a {
+    text-decoration: none;
+}

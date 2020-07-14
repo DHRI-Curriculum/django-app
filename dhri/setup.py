@@ -28,5 +28,5 @@ def setup(collect_workshop_slugs:list):
             print(all_urls)
     else:
         commands = f"python ./{MANAGE} makemigrations; python ./{MANAGE} migrate; python {MANAGE} loaddata ./app/fixtures.json; python ./{MANAGE} createsuperuser"
-        log.warning(f"You should now manually run these commands on your command line:"
+        log.warning(f"You should now manually run these commands on your command line:")
         print(commands)

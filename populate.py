@@ -1,6 +1,6 @@
 from dhri import debug
 from dhri.django import django, Fixture
-from dhri.django.models import Workshop, Praxis, Tutorial, Reading, Frontmatter, LearningObjective, Project, Contributor, Lesson, Challenge, Solution, Page
+from dhri.django.models import Workshop, Praxis, Tutorial, Reading, Frontmatter, LearningObjective, Project, Contributor, Lesson, Challenge, Solution, Page, Group
 from dhri.interaction import Logger, get_or_default
 from dhri.settings import AUTO_PROCESS, FIXTURE_PATH, REPLACEMENTS, LESSON_TRANSPOSITIONS
 from dhri.utils.loader import WebCache
@@ -351,6 +351,13 @@ if __name__ == '__main__':
     )
     p.save()
     collector['pages'].append(p)
+
+    g = Group(
+        name = 'Learner'
+    )
+    g.save()
+    collector['groups'] = []
+    collector['groups'].append(g)
 
     fixtures.add(collector=collector)
 

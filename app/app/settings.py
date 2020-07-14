@@ -45,7 +45,9 @@ INSTALLED_APPS = [
     'praxis.apps.PraxisConfig',
     'library.apps.LibraryConfig',
     'lesson.apps.LessonConfig',
+    'learner.apps.LearnerConfig',
     'adminsortable',
+    'crispy_forms'
 ]
 
 MIDDLEWARE = [
@@ -116,7 +118,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/New_York'
 
 USE_I18N = True
 
@@ -134,5 +136,12 @@ STATICFILE_DIRS = [
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 SESSION_SAVE_EVERY_REQUEST = True
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4' # TODO: Should be bootstrap5 once there is support
+
+LOGIN_REDIRECT_URL = 'website:index'
+LOGIN_URL = 'login'
