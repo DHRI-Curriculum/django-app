@@ -28,6 +28,10 @@ def markdown(value):
     markdown = mistune.Markdown(renderer=renderer)
     return markdown(value)
 
+@register.filter
+def as_string(value):
+    return str(value)
+
 
 @register.filter
 def page_window(page, last, size=7):

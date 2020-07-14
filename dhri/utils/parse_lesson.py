@@ -1,10 +1,15 @@
 from dhri.interaction import Logger
 from dhri.utils.markdown import split_into_sections
+from dhri.settings import STATIC_IMAGES, LESSON_TRANSPOSITIONS
 from pathlib import Path
 import requests
+import markdown
 from requests.exceptions import HTTPError, MissingSchema
+from bs4 import BeautifulSoup, Comment
+from dhri.utils.webcache import WebCache
 
 log = Logger(name='lesson-parser')
+md_to_html_parser = markdown.Markdown(extensions=['extra', 'codehilite', 'sane_lists', 'nl2br'])
 
 
 
@@ -35,16 +40,19 @@ def download_image(url, local_file):
 
 class LessonParser():
 
-    def __init__(self, markdown:str):
+    def __init__(self, markdown:str, loader:object):
         self.markdown = markdown
+        self.repo = loader.repo
+        self.branch = loader.branch
 
         self.data = []
+        self.html_data = []
 
         for title, body in split_into_sections(self.markdown, level_granularity=1, clear_empty_lines=False).items():
             droplines = []
 
             challenge = ""
-            # test for challenge
+            # 1. Test markdown for challenge
             if "challenge" in body.lower():
                 for line_num, line in enumerate(body.splitlines()):
                     if line.lower().startswith("## challenge"):
@@ -65,7 +73,7 @@ class LessonParser():
                                 done = True
 
             solution = ""
-            # test for solution
+            # 2. Test markdown for solution
             if "solution" in body.lower():
                 for line_num, line in enumerate(body.splitlines()):
                     if line.lower().startswith("## solution"):
@@ -85,14 +93,14 @@ class LessonParser():
                             except StopIteration:
                                 done = True
 
-            # fix body
+            # 3. Fix markdown body
             cleaned_body = ''
             for i, line in enumerate(body.splitlines()):
                 if line.strip() == '': continue
                 if i not in droplines:
                     cleaned_body += line + '\n'
 
-            # clean up everything
+            # 4. Clean up all markdown data
             title = title.strip()
             body = body.strip()
             challenge = challenge.strip()
@@ -114,6 +122,65 @@ class LessonParser():
                 }
 
             self.data.append(data)
+
+
+            # Next up: HTML parsing
+
+            html_body = md_to_html_parser.convert(cleaned_body.replace('\n', '\n'))
+            html_challenge, html_solution = '', ''
+            if challenge: html_challenge = md_to_html_parser.convert(challenge)
+            if solution: html_solution = md_to_html_parser.convert(solution)
+
+            soup = BeautifulSoup(html_body, 'lxml')
+
+            # 1. Attempt to download any images
+            REPO_CLEAR = "".join(self.repo.split("https://github.com/DHRI-Curriculum/")[1:])
+            for image in soup.find_all("img"):
+                src = image.get('src')
+                if not src:
+                    log.warning(f"An image with no src attribute detected in lesson: {image}")
+                    continue
+                filename = image['src'].split('/')[-1]
+                url = f'https://raw.githubusercontent.com/DHRI-Curriculum/{REPO_CLEAR}/{self.branch}/images/{filename}'
+                local_file = STATIC_IMAGES['LESSONS'] / Path(REPO_CLEAR) / filename
+                download_image(url, local_file)
+                local_url = f'/static/images/lessons/{REPO_CLEAR}/{filename}'
+                image['src'] = local_url
+
+            # 2. Find and test links
+            for link in soup.find_all("a"):
+                href = link.get('href')
+                if not href:
+                    log.warning(f"A link with no href attribute detected in lesson: {link}")
+                    continue
+                c = WebCache(href)
+                if "github.com/DHRI-Curriculum" in href:
+                    log.warning("Internal links in curriculum detected.")
+
+            # 3. Replace transpositions
+            string_soup = str(soup)
+            for transposition in LESSON_TRANSPOSITIONS:
+                if (string_soup.find(transposition + '<br>'),
+                    string_soup.find(transposition + '<br/>'),
+                    string_soup.find(transposition + '<br />')):
+                    string_soup = string_soup.replace(transposition + '<br>', transposition).replace(transposition + '<br/>', transposition).replace(transposition + '<br />', transposition)
+                string_soup = string_soup.replace(transposition, LESSON_TRANSPOSITIONS[transposition])
+
+            # 4. Replace body with string_soup, after cleaning it up
+            html_body = string_soup.replace('<html><body>', '').replace('</body></html>', '').replace('\n<br />\n', '').replace('\n<br />\n', '').replace('<br />', '</p><p>').replace('<br/>', '</p><p>').replace('<br>', '</p><p>')
+
+            # 5. Clean up any challenge and solution data
+            html_challenge = html_challenge.replace('\n<br />\n', '').replace('\n<br />\n', '').replace('<br />', '</p><p>').replace('<br/>', '</p><p>').replace('<br>', '</p><p>')
+            html_solution = html_solution.replace('\n<br />\n', '').replace('\n<br />\n', '').replace('<br />', '</p><p>').replace('<br/>', '</p><p>').replace('<br>', '</p><p>')
+
+            html_data = {
+                    'title': title,
+                    'text': html_body,
+                    'challenge': html_challenge,
+                    'solution': html_solution
+                }
+
+            self.html_data.append(html_data)
 
 
     def __len__(self):

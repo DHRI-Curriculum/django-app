@@ -94,12 +94,14 @@
       </div>
       <hr />
     </div>
-    {% if frontmatter.ethical_considerations %}
+    {% if frontmatter.ethical_considerations.count %}
       <div class="col-12 col-sm-4 mt-4 mt-md-2 overflow-hidden">
         <h4>Ethical considerations</h4>
         <hr />
-        <p style="font-size:1.05rem;">Here is an introductory paragraph about what ethical considerations mean. It might contain <a href="">a link</a> to more information about why we include information about ethics on this level of the website.</p>
-        {{ frontmatter.ethical_considerations | markdown | safe }}<!-- # TODO: Make ethical considations into its own field -->
+        <p style="font-size:1.05rem;">Here is an introductory paragraph about what ethical considerations mean. It might contain <a href="/library/">a link</a> to more information about why we include information about ethics on this level of the website.</p>
+        {% for label in frontmatter.ethical_considerations.all %}
+          {{ label | as_string | markdown | safe }}
+        {% endfor %}
       </div>
     {% endif %}
 
@@ -107,14 +109,14 @@
       <div class="col-12 col-sm-4 mt-4 mt-md-2 overflow-hidden">
         <h4>Readings before you get started</h4>
         <hr />
-        <p style="font-size:1.05rem;">Here is an introductory paragraph about what the following readings are. It might contain <a href="">a link</a> to our "library" for the curriculum website, which can contain all kinds of information.</p>
+        <p style="font-size:1.05rem;">Here is an introductory paragraph about what the following readings are. It might contain <a href="/library/">a link</a> to our "library" for the curriculum website, which can contain all kinds of information.</p>
         {% for reading in frontmatter.readings.all %}
           <div class="p-2 my-3 rounded-lg linked-comment">
             <a class="text-decoration-none" target="_blank" href="{{ reading.url }}">
               {{ reading.title }}
               <svg class="ml-2 bi bi-arrow-up-right-circle" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/> <path fill-rule="evenodd" d="M10.5 5h-4a.5.5 0 0 0 0 1h2.793l-4.147 4.146a.5.5 0 0 0 .708.708L10 6.707V9.5a.5.5 0 0 0 1 0v-4a.5.5 0 0 0-.5-.5z"/> </svg>
             </a>
-            {% if reading.annotation %}<div class="small"><strong>Annotation:</strong> {{ reading.annotation | markdown | safe | striptags }}</div>{% endif %}
+            {% if reading.annotation %}<div class="small"><strong>Annotation:</strong> {{ reading.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
           </div>
         {% endfor %}
       </div>
@@ -124,14 +126,14 @@
       <div class="col-12 col-sm-4 mt-4 mt-md-2 overflow-hidden">
         <h4>Projects related to {{ workshop.name }}</h4>
         <hr />
-        <p style="font-size:1.05rem;">Here is an introductory paragraph about what the following projects are and why they are listed here. It might contain <a href="">a link</a> to our "library" for the curriculum website, which can contain all kinds of information.</p>
+        <p style="font-size:1.05rem;">Here is an introductory paragraph about what the following projects are and why they are listed here. It might contain <a href="/library/">a link</a> to our "library" for the curriculum website, which can contain all kinds of information.</p>
         {% for project in frontmatter.projects.all %}
           <div class="p-2 my-3 rounded-lg linked-comment">
             <a class="text-decoration-none" target="_blank" href="{{ project.url }}">
               {{ project.title }}
               <svg class="ml-2 bi bi-arrow-up-right-circle" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/> <path fill-rule="evenodd" d="M10.5 5h-4a.5.5 0 0 0 0 1h2.793l-4.147 4.146a.5.5 0 0 0 .708.708L10 6.707V9.5a.5.5 0 0 0 1 0v-4a.5.5 0 0 0-.5-.5z"/> </svg>
             </a>
-            {% if project.annotation %}<div class="small"><strong>Annotation:</strong> {{ project.annotation | markdown | safe | striptags }}</div>{% endif %}
+            {% if project.annotation %}<div class="small"><strong>Annotation:</strong> {{ project.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
           </div>
         {% endfor %}
       </div>

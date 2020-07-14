@@ -116,3 +116,28 @@ for path in DJANGO_PATHS:
 LESSON_TRANSPOSITIONS = {
     '<!-- context: terminal -->': '<img src="terminal.png" />'
 }
+
+STATIC_IMAGES = {
+    'LESSONS': Path('./app/workshop/static/images/lessons/')
+}
+
+AUTO_PAGES = [
+    {
+        'name': 'Workshops',
+        'slug': 'workshops',
+        'text': '<p class="lead">This is the workshop page.</p>',
+        'template': 'workshop/workshop-list.html',
+    },
+    {
+        'name': 'About',
+        'slug': 'about',
+        'text': '<p class="lead">This is the about page.</p>',
+        'template': 'website/page.html',
+    },
+    {
+        'name': 'Library',
+        'slug': 'library',
+        'text': '<p class="lead">This is the library page.</p>',
+        'template': 'library/all-library-items.html',
+    },
+]

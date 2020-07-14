@@ -16,7 +16,7 @@
       {% if user.is_authenticated %}
           <a href="{% url 'logout' %}" id="meta-btn">Log out</a> | <a href="{% url 'learner:profile' user.username %}" id="meta-btn">Profile</a>
       {% else %}
-          <a href="{% url 'login' %}" id="meta-btn">Login</a> | <a href="{% url 'register' %}" id="meta-btn">Register</a>
+          <a href="{% url 'login' %}{% if not request.get_full_path == '/logout/' %}?next={{ request.get_full_path|urlencode }}{% endif %}" id="meta-btn">Login</a> | <a href="{% url 'register' %}" id="meta-btn">Register</a>
       {% endif %}
     </span>
   <!--</div>-->

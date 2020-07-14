@@ -4,7 +4,7 @@ from django.db import models
 class Frontmatter(models.Model):
   workshop = models.OneToOneField('workshop.Workshop', related_name="frontmatter", on_delete=models.CASCADE)
   abstract = models.TextField(max_length=1000, blank=True, null=True)
-  ethical_considerations = models.TextField(max_length=1000, blank=True, null=True)
+  # ethical_considerations = models.TextField(max_length=1000, blank=True, null=True)
   estimated_time = models.PositiveSmallIntegerField(blank=True, null=True, help_text="assign full minutes")
   projects = models.ManyToManyField('library.Project', related_name="frontmatters", blank=True)
   resources = models.ManyToManyField('library.Resource', related_name="frontmatters", blank=True)
@@ -18,6 +18,14 @@ class Frontmatter(models.Model):
 
 class LearningObjective(models.Model):
   frontmatter = models.ForeignKey(Frontmatter, on_delete=models.CASCADE, related_name="learning_objectives")
+  label = models.TextField(max_length=500)
+
+  def __str__(self):
+    return self.label
+
+
+class EthicalConsideration(models.Model):
+  frontmatter = models.ForeignKey(Frontmatter, on_delete=models.CASCADE, related_name="ethical_considerations")
   label = models.TextField(max_length=500)
 
   def __str__(self):

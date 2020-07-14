@@ -1,9 +1,9 @@
 from dhri import debug
 from dhri.django import django, Fixture
-from dhri.django.models import Workshop, Praxis, Tutorial, Reading, Frontmatter, LearningObjective, Project, Contributor, Lesson, Challenge, Solution, Page, Group
+from dhri.django.models import *
 from dhri.interaction import Logger, get_or_default
-from dhri.settings import AUTO_PROCESS, FIXTURE_PATH, REPLACEMENTS, LESSON_TRANSPOSITIONS
-from dhri.utils.loader import WebCache
+from dhri.settings import AUTO_PROCESS, FIXTURE_PATH, REPLACEMENTS, LESSON_TRANSPOSITIONS, AUTO_PAGES
+from dhri.utils.webcache import WebCache
 from dhri.utils.loader_v2 import Loader
 from dhri.utils.markdown import get_bulletpoints, is_exclusively_bullets, get_list, get_contributors, Markdown, extract_links
 from dhri.utils.text import get_urls, get_number, get_markdown_hrefs, auto_replace
@@ -12,7 +12,7 @@ from dhri.utils.regex import all_images
 
 # Set up empty stuff for entire loop ##########################
 log = Logger(name="main")
-iteration, all_objects, done, collect_workshop_slugs = 0, [], 'n', []
+iteration, all_objects, done, collect_workshop_slugs = 0, list(), 'n', list()
 fixtures = Fixture(name='fixtures')
 saved_prefix = '-----> '
 ###############################################################
@@ -70,13 +70,12 @@ if __name__ == '__main__':
         ###### WORKSHOP MODEL ####################################
 
         log.name = log.original_name + "-workshop"
-        workshop = Workshop(
+        workshop = Workshop.objects.create(
                 name = repo_name,
                 parent_backend = l.parent_backend,
                 parent_repo = l.parent_repo,
                 parent_branch = l.parent_branch
             )
-        workshop.save()
         log.log(saved_prefix + f'Workshop object {workshop.name} added (ID {workshop.id}).')
         collect_workshop_slugs.append(workshop.slug)
 
@@ -84,79 +83,32 @@ if __name__ == '__main__':
         ###### LESSONS ####################################
         if l.has_lessons:
             log.name = log.original_name + "-lessons"
-            log.log("------ LESSONS ------------------------------------------")
-            collector['lessons'] = []
-            collector['challenges'] = []
-            collector['solutions'] = []
+            collector['lessons'] = list()
+            collector['challenges'] = list()
+            collector['solutions'] = list()
 
             order = 1
 
-            from pathlib import Path
-            from dhri.utils.parse_lesson import download_image
-            from bs4 import BeautifulSoup
-            from bs4 import Comment
-
-            STATIC_IMAGES = Path('./app/workshop/static/images/lessons/')
-            REPO_CLEAR = "".join(repo.split("https://github.com/DHRI-Curriculum/")[1:])
-
             for lesson_data in l.as_html.lessons:
-                soup = BeautifulSoup(lesson_data['text'], 'lxml')
-
-                for image in soup.find_all("img"):
-                    filename = image['src'].split('/')[-1]
-                    url = f'https://raw.githubusercontent.com/DHRI-Curriculum/{REPO_CLEAR}/{branch}/images/{filename}'
-                    local_file = STATIC_IMAGES / Path(REPO_CLEAR) / filename
-                    download_image(url, local_file)
-                    local_url = f'/static/images/lessons/{REPO_CLEAR}/{filename}'
-                    image['src'] = local_url
-
-                for link in soup.find_all("a"):
-                    href = link['href']
-                    c = WebCache(href)
-                    if "github.com/DHRI-Curriculum" in href:
-                        log.warning("Internal links in curriculum detected.")
-                    if c.status_code != 200:
-                        log.warning(f"Link detected in lesson that generated a {c.status_code} status code: {href}")
-                    '''
-                    except:
-                        log.error(f"Fatal error when connecting to URL detected in lesson: {href}", kill=False)
-                    '''
-
-                string_soup = str(soup)
-                for transposition in LESSON_TRANSPOSITIONS:
-                    if (string_soup.find(transposition + '<br>'),
-                        string_soup.find(transposition + '<br/>'),
-                        string_soup.find(transposition + '<br />')):
-                        string_soup = string_soup.replace(transposition + '<br>', transposition).replace(transposition + '<br/>', transposition).replace(transposition + '<br />', transposition)
-                    string_soup = string_soup.replace(transposition, LESSON_TRANSPOSITIONS[transposition])
-                soup = string_soup
-
-                clean_html = soup.replace('<html><body>', '').replace('</body></html>', '').replace('<br />', '</p><p>').replace('<br/>', '</p><p>').replace('<br>', '</p><p>')
-
-                lesson = Lesson(
+                lesson = Lesson.objects.create(
                     workshop = workshop,
                     title = lesson_data['title'],
-                    text = clean_html,
+                    text = lesson_data['text'],
                     order = order
                 )
-                lesson.save()
                 collector['lessons'].append(lesson)
                 order += 1
                 if lesson_data['challenge']:
-                    clean_html = lesson_data['challenge'].replace('<br />', '</p><p>').replace('<br/>', '</p><p>').replace('<br>', '</p><p>')
-                    challenge = Challenge(
+                    challenge = Challenge.objects.create(
                         lesson = lesson,
-                        text = clean_html
+                        text = lesson_data['challenge']
                     )
-                    challenge.save()
                     collector['challenges'].append(challenge)
                 if lesson_data['solution']:
-                    clean_html = lesson_data['solution'].replace('<br />', '</p><p>').replace('<br/>', '</p><p>').replace('<br>', '</p><p>')
-                    solution = Solution(
+                    solution = Solution.objects.create(
                         challenge = challenge,
-                        text = clean_html
+                        text = lesson_data['solution']
                     )
-                    solution.save()
                     collector['solutions'].append(solution)
 
             if len(collector['lessons']):
@@ -175,22 +127,33 @@ if __name__ == '__main__':
             # frontmatter.Frontmatter
             if model == Frontmatter:
                 log.name = log.original_name + "-frontmatter"
-                log.log("------ FRONTMATTER ------------------------------------------")
-                frontmatter = Frontmatter(workshop = workshop)
-                frontmatter.abstract = l.abstract
-                frontmatter.ethical_considerations = l.ethical_considerations
-                frontmatter.estimated_time = get_number(l.frontmatter['estimated_time'])
-                frontmatter.save()
+                frontmatter = Frontmatter.objects.create(
+                    workshop = workshop,
+                    abstract = l.abstract,
+                    # ethical_considerations = l.ethical_considerations,
+                    estimated_time = get_number(l.frontmatter['estimated_time']),
+                )
                 log.log(saved_prefix + f'Frontmatter object {frontmatter.id} added to workshop {workshop}.')
+
+                collector['ethical_considerations'] = list()
+                for label in l.ethical_considerations:
+                    o = EthicalConsideration.objects.create(
+                        frontmatter = frontmatter,
+                        label = str(label)
+                    )
+                    collector['ethical_considerations'].append(o)
+                if len(collector['ethical_considerations']):
+                    log.log(f'Summary: Frontmatter {frontmatter.id} updated with {len(collector["ethical_considerations"])} ethical considerations.')
 
             # frontmatter.LearningObjective
             elif model == LearningObjective:
                 log.name = log.original_name + "-learning-obj"
-                collector['learning_objectives'] = []
+                collector['learning_objectives'] = list()
                 for line in l.learning_objectives:
-                    label = str(line)
-                    o = LearningObjective(frontmatter=frontmatter, label=label)
-                    o.save()
+                    o = LearningObjective.objects.create(
+                        frontmatter = frontmatter,
+                        label = str(line)
+                    )
                     collector['learning_objectives'].append(o)
                 if len(collector['learning_objectives']):
                     log.log(f'Summary: Frontmatter {frontmatter.id} updated with {len(collector["learning_objectives"])} learning objectives.')
@@ -198,7 +161,7 @@ if __name__ == '__main__':
             # frontmatter.Project
             elif model == Project:
                 log.name = log.original_name + "-projects"
-                collector['projects'] = []
+                collector['projects'] = list()
                 for line in l.projects:
                     o = Project()
                     o.annotation = str(line)
@@ -218,7 +181,7 @@ if __name__ == '__main__':
             # frontmatter.Reading
             elif model == Reading:
                 log.name = log.original_name + "-readings"
-                collector['frontmatter_readings'] = []
+                collector['frontmatter_readings'] = list()
                 for line in l.readings:
                     o = Reading()
                     o.annotation = str(line)
@@ -237,12 +200,14 @@ if __name__ == '__main__':
             # frontmatter.Contributor
             elif model == Contributor:
                 log.name = log.original_name + "-contributors"
-                collector['contributors'] = []
+                collector['contributors'] = list()
                 for contributor in l.contributors:
-                    first_name, last_name, role, url = contributor.get('first_name'), contributor.get('last_name'), contributor.get('role'), contributor.get('url')
-                    o = Contributor()
-                    o.first_name, o.last_name, o.role, o.url = first_name, last_name, role, url
-                    o.save()
+                    o = Contributor.objects.create(
+                        first_name = contributor.get('first_name'),
+                        last_name = contributor.get('last_name'),
+                        role = contributor.get('role'),
+                        url = contributor.get('url'),
+                    )
                     collector['contributors'].append(o)
                     msg = saved_prefix + f'Contributor {o.full_name} added.'
                     if o.role != '': msg = msg.replace('added', f'({o.role}) added')
@@ -259,16 +224,16 @@ if __name__ == '__main__':
         for model in l.praxis_models:
             if model == Praxis:
                 log.name = log.original_name + "-praxis"
-                log.log("------ PRAXIS ------------------------------------------")
-                praxis = Praxis(workshop = workshop)
-                praxis.discussion_questions = l.discussion_questions
-                praxis.next_steps = l.next_steps
-                praxis.save()
+                praxis = Praxis.objects.create(
+                    workshop = workshop,
+                    discussion_questions = l.discussion_questions,
+                    next_steps = l.next_steps
+                )
                 log.log(saved_prefix + f'Theory-to-practice object {praxis.id} added to workshop {workshop}.')
 
             elif model == Tutorial:
                 log.name = log.original_name + "-tutorials"
-                collector['tutorials'] = []
+                collector['tutorials'] = list()
                 for line in l.tutorials:
                     o = Tutorial()
                     o.annotation = str(line)
@@ -288,7 +253,7 @@ if __name__ == '__main__':
 
             elif model == Reading:
                 log.name = log.original_name + "-readings"
-                collector['praxis_readings'] = []
+                collector['praxis_readings'] = list()
                 for line in l.further_readings:
                     o = Reading()
                     o.annotation = str(line)
@@ -323,59 +288,28 @@ if __name__ == '__main__':
 
     # Add standard setup of pages
     collector = dict()
-    collector['pages'] = []
+    collector['pages'] = list()
+    collector['groups'] = list()
 
     log.log("Installing pages...")
-    p_test = Page.objects.filter(name = 'Workshops').count()
-    if p_test > 0:
-        log.warning("Page `Workshops` already exists.")
-    else:
-        p = Page(
-            name = 'Workshops',
-            slug = 'workshops',
-            text = '<p class="lead">This is the workshop page.</p>',
-            template = 'workshop/workshop-list.html'
-        )
-        p.save()
-        collector['pages'].append(p)
-        log.log("Page `Workshops` added.")
-
-    p_test = Page.objects.filter(name = 'About').count()
-    if p_test > 0:
-        log.warning("Page `About` already exists.")
-    else:
-        p = Page(
-            name = 'About',
-            slug = 'about',
-            text = '<p class="lead">This is the about page.</p>',
-            template = 'website/page.html'
-        )
-        p.save()
-        collector['pages'].append(p)
-        log.log("Page `About` added.")
-
-    p_test = Page.objects.filter(name = 'Library').count()
-    if p_test > 0:
-        log.warning("Page `Library` already exists.")
-    else:
-        p = Page(
-            name = 'Library',
-            slug = 'library',
-            text = '<p class="lead">This is the library page.</p>',
-            template = 'library/all-library-items.html'
-        )
-        p.save()
-        collector['pages'].append(p)
-        log.log("Page `Library` added.")
+    for page in AUTO_PAGES:
+        if Page.objects.filter(name = page['name']).count() > 0:
+            log.warning(f'Page `page["name"]` already exists.')
+        else:
+            p = Page.objects.create(
+                name = page['name'],
+                slug = page['slug'],
+                text = page['text'],
+                template = page['template']
+            )
+            collector['pages'].append(p)
+            log.log('Page `page["name"]` added.')
 
     log.log("Installing authorization data...")
-    g_test = Group.objects.filter(name = 'Learner').count()
-    if g_test > 0:
+    if Group.objects.filter(name = 'Learner').count() > 0:
         log.warning("Group `Learner` already exists.")
     else:
-        g = Group(name = 'Learner')
-        g.save()
-        collector['groups'] = []
+        g = Group.objects.create(name = 'Learner')
         collector['groups'].append(g)
         log.log("Group `Learner` added.")
 

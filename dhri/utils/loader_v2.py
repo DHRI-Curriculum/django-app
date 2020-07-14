@@ -267,7 +267,7 @@ class Loader():
         self.frontmatter = split_into_sections(self.content.get('frontmatter'))
         self.praxis = split_into_sections(self.content.get('praxis'))
         self.assessment = split_into_sections(self.content.get('assessment'))
-        self.lessons = LessonParser(self.content.get('lessons')).data
+        self.lessons = LessonParser(self.content.get('lessons'), loader=self).data
 
         self.frontmatter = self._normalize_data(self.frontmatter, 'frontmatter')
         self.praxis = self._normalize_data(self.praxis, 'theory-to-practice')
