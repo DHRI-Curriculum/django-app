@@ -1,0 +1,41 @@
+{% extends 'website/base.html' %}
+{% load markdownify admin_urls lessontags static %}
+
+{% block admin_edit %}
+  <a href="{% url 'admin:auth_user_change' user.id %}" class="text-decoration-none">
+    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-badge" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M12 1H4a1 1 0 0 0-1 1v11.755S4 12 8 12s5 1.755 5 1.755V2a1 1 0 0 0-1-1zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4z"/>
+        <path fill-rule="evenodd" d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5z"/>
+      </svg><span class="ml-1 mr-4">Edit user</span>
+  </a>
+
+  <a target="_blank" href="{% url 'admin:learner_profile_change' user.profile.id %}" class="text-decoration-none">
+    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-lines-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <path fill-rule="evenodd" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm7 1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm2 9a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z"/>
+    </svg><span class="ml-1">Edit profile</span>
+  </a>
+{% endblock %}
+
+
+{% block main %}
+<div class="row py-4">
+    <div class="col-sm-3"><!--left col-->
+
+        <div class="text-center">
+            <img src="{{ user.profile.image.url }}" class="avatar img-circle img-thumbnail" alt="avatar">
+            <!--
+                <h6>Upload a different photo...</h6>
+                <input type="file" class="text-center center-block file-upload">
+                </div></hr><br>
+            -->
+        </div>
+    </div>
+    <div class="col-sm-9">
+        <h2 class="account-heading">{% if user.first_name and user.last_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user.username }}{% endif %}</h2>
+        <p class="text-secondary">{{ user.email }}</p>
+        <p>Is staff: {{ user.is_staff }}</p>
+        <p>Is active: {{ user.is_active }}</p>
+        <p>Is superuser: {{ user.is_superuser }}</p>
+    </div>
+</div>
+{% endblock %}

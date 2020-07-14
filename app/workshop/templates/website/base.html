@@ -53,7 +53,7 @@
     {% endif %}
 
 
-    <div id="content" class="container mx-auto">
+    <div id="content" class="container mx-auto py-4">
       {% if request.user.is_authenticated and request.user.is_staff %}
         <div id="admin" class="zen-hideaway">
           <hr />
@@ -63,6 +63,7 @@
       {% endif %}
       {% block header %}{% endblock %}
       {% block hero %}{% endblock %}
+      {% if messages %}<div class="py-2" id="messages">{% for message in messages %}<div class="alert alert-{{ message.tags }}">{{ message }}</div>{% endfor %}</div>{% endif %}
       {% block main %}{% endblock %}
     </div>
 

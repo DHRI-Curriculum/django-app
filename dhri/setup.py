@@ -1,6 +1,6 @@
 from dhri.interaction import get_or_default, Logger
 from dhri.settings import DJANGO_PATHS
-import time, os
+import os
 from pathlib import Path
 
 log = Logger(name='setup')
@@ -17,16 +17,26 @@ def setup(collect_workshop_slugs:list):
     if _.lower() == "y":
         me = Path(__file__).absolute().parent.parent
         MANAGE = MANAGE.relative_to(me)
-        commands = f"python ./{MANAGE} makemigrations; python ./{MANAGE} migrate; python {MANAGE} loaddata ./app/fixtures.json; python ./{MANAGE} createsuperuser"
+        commands = f"python ./{MANAGE} makemigrations; python ./{MANAGE} migrate; python {MANAGE} loaddata ./app/fixtures.json"
         log.warning(f"If the commands do not work, you can run them on the command line like this:\n{commands}")
         log.warning(f"One reason why they might not work is because you have not activated the correct virtual environment.")
         os.system(commands)
+
         log.log(f"You should now be able to run the command: python ./{MANAGE} runserver")
         if len(collect_workshop_slugs):
             all_urls = "\n- http://localhost:8000/workshops/" + ("\n- http://localhost:8000/workshops/".join(collect_workshop_slugs))
             log.log(f"Once the server is up and running, you can visit:")
             print(all_urls)
+
+        try:
+            from django.contrib.auth import get_user_model
+            User = get_user_model()
+            if not User.objects.filter(username='admin').count():
+                User.objects.create_superuser('admin', '', 'admin')
+        except:
+            os.system(f'python ./{MANAGE} createsuperuser') # TODO: Troubleshoot this - something is wrong
+
     else:
         commands = f"python ./{MANAGE} makemigrations; python ./{MANAGE} migrate; python {MANAGE} loaddata ./app/fixtures.json; python ./{MANAGE} createsuperuser"
-        log.warning(f"You should now manually run these commands on your command line:"
+        log.warning(f"You should now manually run these commands on your command line:")
         print(commands)
