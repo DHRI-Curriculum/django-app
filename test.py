@@ -1,4 +1,4 @@
-from dhri.utils.loader_v2 import Loader
+from dhri.utils.loader import Loader
 from dhri.interaction import Logger
 from bs4 import BeautifulSoup
 from pathlib import Path

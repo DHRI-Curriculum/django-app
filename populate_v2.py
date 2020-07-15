@@ -44,7 +44,7 @@ if __name__ == '__main__':
 
         ###### Load in data from GitHub (handled by dhri.utils.loader.Loader)
 
-        from dhri.utils.loader_v2 import Loader
+        from dhri.utils.loader import Loader
         from dhri.utils.exceptions import MissingRequiredSection
 
         try:

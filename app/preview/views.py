@@ -7,7 +7,7 @@ import sys
 sys.path.append(str(Path(settings.BASE_DIR).parent))
 import markdown
 from dhri.utils.markdown import split_into_sections
-from dhri.utils.loader_v2 import _normalize_data, as_list, ContributorParser
+from dhri.utils.loader import _normalize_data, as_list, ContributorParser
 from dhri.utils.parse_lesson import LessonParser
 
 md_to_html_parser = markdown.Markdown(extensions=['extra', 'codehilite', 'sane_lists', 'nl2br'])
@@ -50,14 +50,14 @@ def get_from_url(url:str, type:str): # type = 'frontmatter' | 'theory-to-practic
         payload['sections'] = split_into_sections(r.text)
         payload['sections'] = _normalize_data(payload['sections'], type)
         if type == 'frontmatter':
-            # Emulate fixings in `loader_v2.py`
+            # Emulate fixings in `loader.py`
             if 'learning_objectives' in payload['sections'].keys(): payload['sections']['learning_objectives'] = as_list(payload['sections']['learning_objectives'])
             if 'readings' in payload['sections'].keys(): payload['sections']['readings'] = as_list(payload['sections']['readings'])
             if 'projects' in payload['sections'].keys(): payload['sections']['projects'] = as_list(payload['sections']['projects'])
             if 'ethical_considerations' in payload['sections'].keys(): payload['sections']['ethical_considerations'] = as_list(payload['sections']['ethical_considerations'])
             if 'contributors' in payload['sections'].keys(): payload['sections']['contributors'] = ContributorParser(payload['sections']['contributors']).data
         elif type == 'theory-to-practice':
-            # Emulate fixings in `loader_v2.py`
+            # Emulate fixings in `loader.py`
             if 'discussion_questions' in payload['sections'].keys(): payload['sections']['discussion_questions'] = as_list(payload['sections']['discussion_questions'])
             if 'tutorials' in payload['sections'].keys(): payload['sections']['tutorials'] = as_list(payload['sections']['tutorials'])
             if 'further_readings' in payload['sections'].keys(): payload['sections']['further_readings'] = as_list(payload['sections']['further_readings'])

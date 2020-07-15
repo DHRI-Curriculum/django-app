@@ -4,7 +4,7 @@ from dhri.django.models import *
 from dhri.interaction import Logger, get_or_default
 from dhri.settings import AUTO_PROCESS, FIXTURE_PATH, REPLACEMENTS, LESSON_TRANSPOSITIONS, AUTO_PAGES
 from dhri.utils.webcache import WebCache
-from dhri.utils.loader_v2 import Loader
+from dhri.utils.loader import Loader
 from dhri.utils.markdown import get_bulletpoints, is_exclusively_bullets, get_list, get_contributors, Markdown, extract_links
 from dhri.utils.text import get_urls, get_number, get_markdown_hrefs, auto_replace
 from dhri.utils.exceptions import MissingCurriculumFile, MissingRequiredSection
