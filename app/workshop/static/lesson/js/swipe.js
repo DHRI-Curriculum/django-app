@@ -21,12 +21,10 @@ function moveTouch(e) {
         // sliding horizontally
         if (diffX > 0) {
             // swiped left
-            console.log("swiped left = go forward");
-            location.assign("?page=" + next);
+            if (next != 0) { location.assign("?page=" + next); } else { console.log('no next page'); }
         } else {
             // swiped right
-            console.log("swiped right = go back");
-            location.assign("?page=" + prev);
+            if (prev != 0) { location.assign("?page=" + prev); } else { console.log('no previous page'); }
         }
 
         initialX = null;

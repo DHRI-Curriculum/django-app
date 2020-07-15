@@ -2,7 +2,7 @@ from django.shortcuts import render, HttpResponse, redirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
-from .forms import LearnerRegisterForm
+from .tokens import account_activation_token
 
 def profile(request, username=None):
     payload = dict()
@@ -11,14 +11,14 @@ def profile(request, username=None):
     return render(request, 'learner/profile.html', payload)
 
 
-from .tokens import account_activation_token
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.template.loader import render_to_string
-from django.core.mail import EmailMessage
-from django.contrib.sites.shortcuts import get_current_site
-from django.utils.encoding import force_bytes, force_text
-
 def register(request):
+    from .forms import LearnerRegisterForm
+    from django.utils.encoding import force_bytes
+    from django.utils.http import urlsafe_base64_encode
+    from django.template.loader import render_to_string
+    from django.core.mail import EmailMessage
+    from django.contrib.sites.shortcuts import get_current_site
+
     if request.method == 'POST':
         form = LearnerRegisterForm(request.POST)
         if form.is_valid():
@@ -44,9 +44,12 @@ def register(request):
     return render(request, 'learner/register.html', {'form': form})
 
 
-from django.contrib.auth import login
 
-def activate(request, uidb64, token):
+def activate(request, uidb64='', token=''):
+    from django.utils.http import urlsafe_base64_decode
+    from django.contrib.auth import login
+    from django.utils.encoding import force_text
+
     uid = force_text(urlsafe_base64_decode(uidb64))
     try:
         user = User.objects.get(pk=uid)
@@ -58,6 +61,5 @@ def activate(request, uidb64, token):
         login(request, user)
         messages.success(request, f'Thank you for your email confirmation, {user.username}. You have been logged in automatically.')
         return redirect('website:index')
-        # return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
     else:
         return HttpResponse('Activation link is invalid!')
