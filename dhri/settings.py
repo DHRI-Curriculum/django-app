@@ -149,6 +149,7 @@ AUTO_USERS = {
         ('steve', 'admin', 'Steve', 'Zweibel'),
     ],
     'STAFF': [
+        ('admin', 'admin', 'Administrator', 'General'),
         ('param', 'admin', 'Param', 'Ajmera'),
         ('di', 'admin', 'Di', 'Yoong'),
         ('filipa', 'admin', 'Filipa', 'Calado'),

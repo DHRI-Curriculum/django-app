@@ -2,7 +2,7 @@ from dhri import debug
 from dhri.django import django, Fixture
 from dhri.django.models import *
 from dhri.interaction import Logger, get_or_default
-from dhri.settings import AUTO_PROCESS, FIXTURE_PATH, REPLACEMENTS, LESSON_TRANSPOSITIONS, AUTO_PAGES
+from dhri.settings import AUTO_PROCESS, FIXTURE_PATH, REPLACEMENTS, LESSON_TRANSPOSITIONS, AUTO_PAGES, AUTO_USERS
 from dhri.utils.webcache import WebCache
 from dhri.utils.loader import Loader
 from dhri.utils.markdown import get_bulletpoints, is_exclusively_bullets, get_list, get_contributors, Markdown, extract_links
@@ -289,11 +289,12 @@ if __name__ == '__main__':
     collector = dict()
     collector['pages'] = list()
     collector['groups'] = list()
+    collector['users'] = list()
 
-    log.log("Installing pages...")
+    log.log("Installing pages...", force=True)
     for page in AUTO_PAGES:
         if Page.objects.filter(name = page['name']).count() > 0:
-            log.warning(f'Page `page["name"]` already exists.')
+            log.warning(f'Page `{page["name"]}` already exists.')
         else:
             p = Page.objects.create(
                 name = page['name'],
@@ -302,15 +303,50 @@ if __name__ == '__main__':
                 template = page['template']
             )
             collector['pages'].append(p)
-            log.log('Page `page["name"]` added.')
+            log.log(f'Page `{page["name"]}` added.')
 
-    log.log("Installing authorization data...")
+    ####### GROUPS ##################################################
+    log.log("Installing authorization data (groups)...", force=True)
+
     if Group.objects.filter(name = 'Learner').count() > 0:
-        log.warning("Group `Learner` already exists.")
-    else:
-        g = Group.objects.create(name = 'Learner')
-        collector['groups'].append(g)
-        log.log("Group `Learner` added.")
+        log.warning("Group `Learner` already exists. Deleting...")
+        Group.objects.filter(name = 'Learner').delete()
+    g = Group.objects.create(name = 'Learner')
+    collector['groups'].append(g)
+    log.log("Group `Learner` added.")
+
+    ####### USERS ##################################################
+    log.log("Installing authorization data (users)...", force=True)
+
+    for user in AUTO_USERS['SUPER']:
+        username, password, first_name, last_name = user
+        if User.objects.filter(username=username).count():
+            log.warning(f'User {username} already exists. Deleting...')
+            User.objects.filter(username=username).delete()
+        password = get_or_default(f'Password for {username}?', password, color='red')
+        user = User.objects.create_superuser(username, '', password, first_name=first_name, last_name=last_name)
+        collector['users'].append(user)
+        log.log(f'User `{username}` added.')
+
+    for user in AUTO_USERS['STAFF']:
+        username, password, first_name, last_name = user
+        if User.objects.filter(username=username).count():
+            log.warning(f'User {username} already exists. Deleting...')
+            User.objects.filter(username=username).delete()
+        password = get_or_default(f'Password for {username}?', password, color='red')
+        user = User.objects.create_user(username, '', password, first_name=first_name, last_name=last_name, is_staff=True)
+        collector['users'].append(user)
+        log.log(f'User `{username}` added.')
+
+    for user in AUTO_USERS['USERS']:
+        username, password, first_name, last_name = user
+        if User.objects.filter(username=username).count():
+            log.warning(f'User {username} already exists. Deleting...')
+            User.objects.filter(username=username).delete()
+        password = get_or_default(f'Password for {username}?', password, color='red')
+        user = User.objects.create_user(username, '', password, first_name=first_name, last_name=last_name)
+        collector['users'].append(user)
+        log.log(f'User `{username}` added.')
 
     fixtures.add(collector=collector)
 
