@@ -141,3 +141,22 @@ AUTO_PAGES = [
         'template': 'library/all-library-items.html',
     },
 ]
+
+AUTO_USERS = {
+    'SUPER': [
+        ('kalle', 'admin', 'Kalle', 'Westerling'),
+        ('lisa', 'admin', 'Lisa', 'Rhody'),
+        ('steve', 'admin', 'Steve', 'Zweibel'),
+    ],
+    'STAFF': [
+        ('param', 'admin', 'Param', 'Ajmera'),
+        ('di', 'admin', 'Di', 'Yoong'),
+        ('filipa', 'admin', 'Filipa', 'Calado'),
+        ('kristen', 'admin', 'Kristen', 'Hackett'),
+        ('rafa', 'admin', 'Rafael', 'Davis Portela'),
+        ('stefano', 'admin', 'Stefano', 'Morello'),
+    ],
+    'USERS': [
+        ('test', 'test', 'Test', 'User'),
+    ]
+}
