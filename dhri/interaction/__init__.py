@@ -53,10 +53,10 @@ class Logger():
         if self.bypass_verbose == True:
             VERBOSE = True
 
-    def log(self, message="", kill=False, color='green'):
+    def log(self, message="", kill=False, color='green', force=False):
         message = self._fix_message(message)
         message = colorize(message, fg=color, opts=('',))
-        if VERBOSE: self.output(message)
+        if VERBOSE or force == True: self.output(message)
 
     def error(self, message="", raise_error=None, kill=True, color='red'):
         if raise_error != None:
