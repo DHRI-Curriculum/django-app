@@ -200,3 +200,13 @@ div .codehilite pre {
 #website-wide-nav a {
     text-decoration: none;
 }
+
+#workshop-navbar:hover {
+    cursor: pointer;
+}
+
+@media (min-width: 992px) {
+    #workshop-navbar:hover {
+        cursor: default !important;
+    }
+}

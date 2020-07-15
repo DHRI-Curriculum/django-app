@@ -1,30 +1,30 @@
 <div class="py-4 zen-hideaway">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light" style="border-radius: 1rem !important;">
-    <a class="navbar-brand pr-4" href="{% url 'workshop:frontmatter' slug=workshop.slug %}">{{ workshop.name }}</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light" style="border-radius: 1rem !important;" id="workshop-navbar">
+    <a id="meta-btn" class="navbar-brand pr-4" href="{% url 'workshop:frontmatter' slug=workshop.slug %}">{{ workshop.name }}</a>
+    <button class="navbar-toggler" id="workshop-navbar-toggle" type="button" data-toggle="collapse" data-target="#workshop_navbar_items" aria-controls="workshop_navbar_items" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon" style="pointer-events: none;"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse" id="workshop_navbar_items">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'workshop:frontmatter' slug=workshop.slug %}">Frontmatter{% if request.get_full_path == frontmatter_url %} <span class="sr-only">(current)</span>{% endif %}</a>
+          <a id="meta-btn" class="nav-link" href="{% url 'workshop:frontmatter' slug=workshop.slug %}">Frontmatter{% if request.get_full_path == frontmatter_url %} <span class="sr-only">(current)</span>{% endif %}</a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <a id="meta-btn" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Lessons
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             {% for lesson in lessons %}
-              <a class="dropdown-item" href="{% url 'workshop:lesson' slug=workshop.slug %}?page={{ lesson.order }}">{{ lesson.order }}. {{ lesson }}</a>
+              <a id="meta-btn" class="dropdown-item" href="{% url 'workshop:lesson' slug=workshop.slug %}?page={{ lesson.order }}">{{ lesson.order }}. {{ lesson }}</a>
             {% endfor %}
           </div>
         </li>
         <li class="nav-item disabled">
-          <a class="nav-link disabled" href="#">Assessment</a>
+          <a id="meta-btn" class="nav-link disabled" href="#">Assessment</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'workshop:praxis' slug=workshop.slug %}">Theory to Practice</a>
+          <a id="meta-btn" class="nav-link" href="{% url 'workshop:praxis' slug=workshop.slug %}">Theory to Practice</a>
         </li>
       </ul>
     </div>

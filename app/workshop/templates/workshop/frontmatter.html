@@ -1,5 +1,5 @@
 {% extends 'website/base.html' %}
-{% load markdownify %}
+{% load markdownify admin_urls lessontags static %}
 
 {% block header %}
 
@@ -178,4 +178,9 @@
     </div>
 
   </div><!-- /dashboard -->
+{% endblock %}
+
+
+{% block javascript %}
+  <script src="{% static 'workshop/js/navbar.js' %}" crossorigin="anonymous"></script>
 {% endblock %}
