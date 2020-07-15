@@ -2,7 +2,11 @@
 {% load markdownify admin_urls lessontags static %}
 
 {% block extra_head_material %}
-<link rel="stylesheet" href="{% static 'lesson/css/pygment.css' %}">
+  <link rel="stylesheet" href="{% static 'lesson/css/pygment.css' %}">
+  <script>
+    var next = {% if page_obj.has_next %}{{ page_obj.next_page_number }}{% else %}0{% endif %}
+    var prev = {% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}0{% endif %}
+  </script>
 {% endblock extra_head_material %}
 
 {% block header %}
@@ -42,7 +46,7 @@
 
   <div class="row">
 
-    <div class="col-12 py-3">
+    <div class="col-12 py-3" id="lesson-content">
 
       <h1>{{ lesson.order }}. {{ lesson.title }}</h1>
 
@@ -83,4 +87,5 @@
 
 {% block javascript %}
 <script src="{% static 'lesson/js/zen.js' %}" crossorigin="anonymous"></script>
+<script src="{% static 'lesson/js/swipe.js' %}" crossorigin="anonymous"></script>
 {% endblock %}
