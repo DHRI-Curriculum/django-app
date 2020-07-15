@@ -131,7 +131,7 @@ class LessonParser():
 
             # Next up: HTML parsing
 
-            html_body = md_to_html_parser.convert(cleaned_body.replace('\n', '\n'))
+            html_body = md_to_html_parser.convert(cleaned_body)
             html_challenge, html_solution = '', ''
             if challenge: html_challenge = md_to_html_parser.convert(challenge)
             if solution: html_solution = md_to_html_parser.convert(solution)
