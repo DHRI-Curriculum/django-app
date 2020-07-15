@@ -136,4 +136,6 @@ dhri-test-repo.json
 .ipynb_checkpoints
 
 *key.txt
+*password.txt
 __loader-cache__
+.loader-cache

@@ -1,3 +1,4 @@
+'''
 from dhri.utils.loader import Loader
 from dhri.interaction import Logger
 from bs4 import BeautifulSoup
@@ -29,3 +30,15 @@ for lesson_data in l.as_html.lessons:
         image['src'] = local_url
 
     # do something with soup...
+'''
+
+from dhri.django import django
+from django.core.mail import send_mail
+
+send_mail(
+    'Subject here',
+    'Here is the message.',
+    'webapp@dhinstitutes.org',
+    ['kalle.westerling@gmail.com'],
+    fail_silently=False,
+)
