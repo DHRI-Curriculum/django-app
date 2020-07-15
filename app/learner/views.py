@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from django.contrib import messages
 from .forms import LearnerRegisterForm
 
-# Create your views here.
 def profile(request, username=None):
     payload = dict()
     if username:
