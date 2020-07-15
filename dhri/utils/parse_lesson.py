@@ -2,6 +2,7 @@ from dhri.interaction import Logger
 from dhri.utils.markdown import split_into_sections
 from dhri.settings import STATIC_IMAGES, LESSON_TRANSPOSITIONS
 from pathlib import Path
+import re
 import requests
 import markdown
 from requests.exceptions import HTTPError, MissingSchema
@@ -159,9 +160,23 @@ class LessonParser():
                 if not href:
                     log.warning(f"A link with no href attribute detected in lesson: {link}")
                     continue
-                c = WebCache(href)
                 if "github.com/DHRI-Curriculum" in href:
-                    log.warning("Internal links in curriculum detected.")
+                    OUTBOUND_CLEAR = "".join(href.split("https://github.com/DHRI-Curriculum/")[1:])
+                    if OUTBOUND_CLEAR.strip() == '': OUTBOUND_CLEAR = href
+                    if OUTBOUND_CLEAR.startswith(REPO_CLEAR):
+                        log.warning(f"The lesson `{title}` links to same workshop: {href}")
+                    else:
+                        log.warning(f"The lesson `{title}` links to other workshop/root curriculum: {REPO_CLEAR} —> {OUTBOUND_CLEAR}")
+                elif href.startswith('http') or href.startswith('//'):
+                    c = WebCache(href)
+                else:
+                    g = re.search(r'(\d+).*(md)', href)
+                    if g:
+                        order = int(g.groups()[0])
+                        link['href'] = f'?page={order}'
+                        log.warning(f"The lesson `{title}` links to an internal file: {href} (will be relinked to ?page={order} instead)")
+                    else:
+                        log.warning(f"The lesson `{title}` links to an internal file: {href} (** could not be deciphered)")
 
             # 3. Fix tables
             for table in soup.find_all("table"):
