@@ -163,7 +163,11 @@ class LessonParser():
                 if "github.com/DHRI-Curriculum" in href:
                     log.warning("Internal links in curriculum detected.")
 
-            # 3. Replace transpositions
+            # 3. Fix tables
+            for table in soup.find_all("table"):
+                table['class'] = table.get('class', []) + ['table']
+
+            # 4. Replace transpositions
             string_soup = str(soup)
             for transposition in LESSON_TRANSPOSITIONS:
                 if (string_soup.find(transposition + '<br>'),
@@ -172,10 +176,10 @@ class LessonParser():
                     string_soup = string_soup.replace(transposition + '<br>', transposition).replace(transposition + '<br/>', transposition).replace(transposition + '<br />', transposition)
                 string_soup = string_soup.replace(transposition, LESSON_TRANSPOSITIONS[transposition])
 
-            # 4. Replace body with string_soup, after cleaning it up
+            # 5. Replace body with string_soup, after cleaning it up
             html_body = string_soup.replace('<html><body>', '').replace('</body></html>', '').replace('\n<br />\n', '').replace('\n<br />\n', '').replace('<br />', '</p><p>').replace('<br/>', '</p><p>').replace('<br>', '</p><p>')
 
-            # 5. Clean up any challenge and solution data
+            # 6. Clean up any challenge and solution data
             html_challenge = html_challenge.replace('\n<br />\n', '').replace('\n<br />\n', '').replace('<br />', '</p><p>').replace('<br/>', '</p><p>').replace('<br>', '</p><p>')
             html_solution = html_solution.replace('\n<br />\n', '').replace('\n<br />\n', '').replace('<br />', '</p><p>').replace('<br/>', '</p><p>').replace('<br>', '</p><p>')
 
