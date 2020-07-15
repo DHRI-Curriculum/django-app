@@ -62,6 +62,7 @@ def get_from_url(url:str, type:str): # type = 'frontmatter' | 'theory-to-practic
             if 'next_steps' in payload['sections'].keys(): payload['sections']['next_steps'] = as_list(payload['sections']['next_steps'])
 
     elif type == 'lessons':
+        payload['markdown_text'] = re.sub(r'', '', payload['markdown_text'])
         payload['sections'] = LessonParser(payload['markdown_text'], loader=None).data
 
     return(payload)

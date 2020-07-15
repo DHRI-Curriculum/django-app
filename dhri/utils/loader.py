@@ -166,11 +166,13 @@ class HTMLParser():
 
     def __init__(self, loader):
         self.content = {k: md_to_html_parser.convert(v) for k, v in loader.content.items()}
-        self.lessons = loader.lessons
+        self.lessons = loader.lessons_html
+        '''
         for i, lesson in enumerate(self.lessons):
             self.lessons[i]['text'] = md_to_html_parser.convert(self.lessons[i]['text'])
             if self.lessons[i]['challenge']: self.lessons[i]['challenge'] = md_to_html_parser.convert(self.lessons[i]['challenge'])
             if self.lessons[i]['solution']: self.lessons[i]['solution'] = md_to_html_parser.convert(self.lessons[i]['solution'])
+        '''
         self.frontmatter = self.content.get('frontmatter')
         self.praxis = self.content.get('praxis')
         self.assessment = self.content.get('assessment')
@@ -268,6 +270,7 @@ class Loader():
         self.praxis = split_into_sections(self.content.get('praxis'))
         self.assessment = split_into_sections(self.content.get('assessment'))
         self.lessons = LessonParser(self.content.get('lessons'), loader=self).data
+        self.lessons_html = LessonParser(self.content.get('lessons'), loader=self).html_data
 
         self.frontmatter = _normalize_data(self.frontmatter, 'frontmatter')
         self.praxis = _normalize_data(self.praxis, 'theory-to-practice')

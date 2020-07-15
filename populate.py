@@ -8,7 +8,6 @@ from dhri.utils.loader import Loader
 from dhri.utils.markdown import get_bulletpoints, is_exclusively_bullets, get_list, get_contributors, Markdown, extract_links
 from dhri.utils.text import get_urls, get_number, get_markdown_hrefs, auto_replace
 from dhri.utils.exceptions import MissingCurriculumFile, MissingRequiredSection
-from dhri.utils.regex import all_images
 
 # Set up empty stuff for entire loop ##########################
 log = Logger(name="main")
