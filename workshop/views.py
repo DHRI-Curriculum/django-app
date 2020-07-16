@@ -1,8 +1,8 @@
 from django.shortcuts import render, HttpResponse, get_object_or_404
 from django.core.exceptions import MultipleObjectsReturned
 from django.core.paginator import Paginator
-from .models import Workshop
-from website.models import Page
+# from website.models import Page
+from workshop.models import Workshop
 from lesson.models import Lesson
 
 
@@ -29,12 +29,6 @@ def _flexible_get(model=None, slug_or_int=''):
   else:
     response = f"You have not selected a valid ID for the model {model}."
     return HttpResponse(response, status=500)
-
-
-
-def index(request):
-  workshops = Workshop.objects.all()
-  return render(request, 'workshop/workshop-list.html', {'workshops': workshops})
 
 
 def frontmatter(request, slug=None):
