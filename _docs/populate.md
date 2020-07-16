@@ -1,4 +1,4 @@
-# 2. Populate Database
+# Populate Database
 
 The Django app comes with built-in support to download all the data from the DHRI Curriculum, in a number of different ways. The most straight-forward way is what follows.
 

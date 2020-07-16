@@ -1,4 +1,4 @@
-# 3. Run Server
+# Run Server
 
 You are now all done. You can run the server by running this command:
 

@@ -7,18 +7,22 @@ Deadline: July 23
 
 ---
 
-## Documentation Contents
+## Documentation
 
-- [Installing](blob/alpha-3/_docs/install.md)
-- [Populate Database](#2-populate-database)
-- [Run Server](#3-run-server)
+### All Contents
+
+- [Installing](_docs/install.md)
+- [Populate Database](_docs/populate.md)
+- [Run Server](_docs/run.md)
+- [Setting up a new workshop](_docs/setup-workshop.md)
+- [Changing Settings](_docs/settings.md)
 
 ### Install and run?
 
-1. [Installing](#1-installing)
-2. [Populate Database](#2-populate-database)
-3. [Run Server](#3-run-server)
+1. [Installing](_docs/install.md)
+2. [Populate Database](_docs/populate.md)
+3. [Run Server](_docs/run.md)
 
-Adding a new workshop?
+### Adding a new workshop?
 
-[Installing](#1-installing)
+[Setting up a new workshop](_docs/setup-workshop.md)
