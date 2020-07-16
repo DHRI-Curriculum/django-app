@@ -17,12 +17,18 @@ Deadline: July 23
 - [Setting up a new workshop](_docs/setup-workshop.md)
 - [Changing Settings](_docs/settings.md)
 
-### Install and run?
+---
+
+## Scenarios
+
+### Install and run
+
+Are you trying to install the Django app and run it on a local machine? Here are the three steps you need to follow:
 
 1. [Installing](_docs/install.md)
 2. [Populate Database](_docs/populate.md)
 3. [Run Server](_docs/run.md)
 
-### Adding a new workshop?
+### Add a new workshop
 
-[Setting up a new workshop](_docs/setup-workshop.md)
+Are you trying to create a new workshop for an already existing installation of django-app? You will find instructions in [Setting up a new workshop](_docs/setup-workshop.md).
