@@ -21,12 +21,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = Path(f'{BASE_DIR}/app/django_secret_key.txt').read_text()
+SECRET_KEY = Path(f'{os.path.join(BASE_DIR, "django_secret_key.txt")}').read_text()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -154,5 +154,5 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 #EMAIL_HOST = socket.gethostbyname('mail.dhinstitutes.org')
 EMAIL_HOST_USER = 'dhresearchinstitute@gmail.com'
-EMAIL_HOST_PASSWORD = Path(f'{BASE_DIR}/app/email_password.txt').read_text()
+EMAIL_HOST_PASSWORD = Path(f'{os.path.join(BASE_DIR, "email_password.txt")}').read_text()
 EMAIL_PORT = 587

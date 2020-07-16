@@ -7,7 +7,7 @@ from backend.dhri.log import Logger
 log = Logger(name='loadusers')
 
 def print_row(col1, col2, col3, col1_w=15, col2_w=30, col3_w=30):
-    print(f" %-{col1_w}s %-{col2_w}s %-{col3_w}s" % (col1, col2, col3))
+    print(f"%-{col1_w}s %-{col2_w}s %-{col3_w}s" % (col1, col2, col3))
 
 class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
