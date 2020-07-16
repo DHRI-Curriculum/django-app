@@ -70,9 +70,9 @@ def lesson(request, slug=None, lesson_id=None):
   page_number = request.GET.get('page')
 
   try:
-    page_number = int(request.GET.get('page'))
-  except: # TODO: should make this exception explicit
-    page_number = request.GET.get('page')
+    page_number = int(page_number)
+  except TypeError:
+    pass
 
   if not page_number: page_number = 1
 
