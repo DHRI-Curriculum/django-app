@@ -1,7 +1,10 @@
 from django.contrib.admin.views.decorators import staff_member_required
 from django.shortcuts import render, get_object_or_404, HttpResponse
-from workshop.models import Workshop
-from django.conf import settings
+import requests
+from backend.models import Workshop
+from backend.dhri.markdown import split_into_sections
+from backend.dhri.loader import _normalize_data, as_list, ContributorParser
+from backend.dhri.parse_lesson import LessonParser, md_to_html_parser
 
 
 BASE_URL = 'https://raw.githubusercontent.com/'
@@ -17,24 +20,14 @@ def menu(request):
     return render(request, 'preview/menu.html', {'workshops': Workshop.objects.all()})
 
 @staff_member_required
-def repository(request, repository=None):
+def repository(request, repo=None):
     payload = dict()
-    payload['workshop'] = get_object_or_404(Workshop, slug=repository)
+    payload['workshop'] = get_object_or_404(Workshop, slug=repo)
     payload['files'] = FILES
     payload['BASE_URL'] = BASE_URL
     return render(request, 'preview/repository.html', payload)
 
 def get_from_url(url:str, type:str, workshop=None): # type = 'frontmatter' | 'theory-to-practice' | 'lessons'
-    import requests
-    from pathlib import Path
-    import sys
-    sys.path.append(str(Path(settings.BASE_DIR).parent))
-    from backend.dhri.markdown import split_into_sections
-    from backend.dhri.loader import _normalize_data, as_list, ContributorParser
-    from backend.dhri.parse_lesson import LessonParser
-    import markdown
-    md_to_html_parser = markdown.Markdown(extensions=['extra', 'codehilite', 'sane_lists', 'nl2br'])
-
     payload = dict()
 
     r = requests.get(url)
