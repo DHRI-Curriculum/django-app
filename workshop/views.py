@@ -58,8 +58,9 @@ def frontmatter(request, slug=None):
 def praxis(request, slug=None):
   _, obj = _flexible_get(Workshop, slug)
   frontmatter = obj.frontmatter
+  lessons = Lesson.objects.filter(workshop=obj)
   praxis = obj.praxis
-  return render(request, 'workshop/praxis.html', {'workshop': obj, 'frontmatter': frontmatter, 'praxis': praxis})
+  return render(request, 'workshop/praxis.html', {'workshop': obj, 'frontmatter': frontmatter, 'praxis': praxis, 'lessons': lessons})
 
 
 def lesson(request, slug=None, lesson_id=None):
