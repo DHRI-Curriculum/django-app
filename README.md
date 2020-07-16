@@ -1,6 +1,6 @@
 # Digital Humanities Research Institute's curriculum website (Django)
 
-This is the alpha 2 version of the DHRI's curriculum website (created as a django app), together with a script that can independently import data from a JSON file and populate the website.
+This is the alpha 3 version of the DHRI's curriculum website (created as a django app).
 
 Belongs to: [Sprint 3](https://www.github.com/DHRI-Curriculum/django-app/milestone/3)  
 Deadline: July 23
@@ -86,7 +86,7 @@ You will be asked to confirm (with a "Y") before the data is wiped.
 
 ## Notes
 
-- The script has not yet been tested for compatibility but works in development on Mac OS Catalina (10.15.4) and Python 3.8.0.
+- The script has not yet been tested for compatibility but works in development on Mac OS Catalina (10.15.5) and Python 3.8.0.
 
 
 # django-app
