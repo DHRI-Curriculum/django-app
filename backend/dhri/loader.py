@@ -15,6 +15,7 @@ from .parse_lesson import LessonParser
 from backend.dhri_settings import NORMALIZING_SECTIONS, FORCE_DOWNLOAD, BACKEND_AUTO, REPO_AUTO, BRANCH_AUTO
 from backend.dhri_settings import TEST_AGES, CACHE_DIRS
 from backend.dhri.log import Logger
+from backend.dhri.exceptions import MissingCurriculumFile, MissingRequiredSection
 
 
 md_to_html_parser = markdown.Markdown(extensions=['extra', 'codehilite', 'sane_lists', 'nl2br'])

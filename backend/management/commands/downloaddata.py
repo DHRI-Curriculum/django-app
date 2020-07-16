@@ -56,8 +56,8 @@ class Command(BaseCommand):
 
             try:
                 l = Loader(repo, branch)
-            except MissingRequiredSection:
-                log.error(f"One or more required section(s) could not be found in {l.repo_name}.", kill=False)
+            except MissingRequiredSection as e:
+                log.error(f"One or more required section(s) could not be found in {repo}: {e}")
 
             ###### Test for data consistency
             if sum([l.has_frontmatter, l.has_praxis, l.has_assessment]) <= 2:

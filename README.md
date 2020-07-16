@@ -120,6 +120,159 @@ python manage.py runserver 0.0.0.0:80
 
 ---
 
+## Setting up a new repository
+
+### 1. Create the repository and ensure all files are present
+
+Inside [DHRI-Curriculum](https://github.com/DHRI-Curriculum/), add whichever repository you need.
+
+If you want to, you can create a new branch inside the repository, specific for the Django data.
+
+Make sure that all the necessary files are present:
+
+- `frontmatter.md`
+- `lessons.md`
+- `theory-to-practice.md`
+- `assessment.md`
+
+Without those files in the repo (and branch) that you want to use, you will not be able to work with the repository. Also, each of those files have required sections that need to be present inside them. Here is a template for each file:
+
+#### `frontmatter.md`
+
+```md
+# Frontmatter
+
+## Abstract
+
+Abstract
+
+## Learning Objectives
+
+- Learning objective 1
+- Learning objective 2
+- Learning objective 3
+
+## Estimated time
+
+10 hours.
+
+## Prerequisites
+
+- Title of required previous workshop
+
+## Contexts
+
+### Pre-reading suggestions
+
+- Book about R with [link](http://www.google.com)
+
+### Projects that use these skills
+
+- A project with [link](http://www.google.com)
+
+### Ethical Considerations
+
+- Ethical consideration 1
+- Ethical consideration 2
+- Ethical consideration 3
+
+## Resources (optional)
+
+- Links to required installations
+- Shortcut sheets
+
+## Acknowledgements
+
+- Role: [Firstname Lastname](<personal website>)
+- Role: [Firstname Lastname](<personal website>)
+- Role: [Firstname Lastname](<personal website>)
+```
+
+#### `lessons.md`
+
+```md
+# Lesson 1
+
+Lesson text
+
+## Challenge
+
+Challenge text
+
+## Solution
+
+Solution text
+
+# Lesson 2
+
+Lesson text
+
+## Challenge
+
+Challenge text
+
+## Solution
+
+Solution text
+```
+
+#### `theory-to-practice.md`
+
+```md
+# Theory to Practice
+
+## Suggested Further Readings
+
+- Use bullet points for each of the sources (in markdown, you use - on a new line to create a bullet point).
+- If the reading has a DOI number, make sure to add it. If it does, you do not need to add any additional bibliographic information.
+
+## Other Tutorials
+
+- Use bullet points for each of the sources (in markdown, you use - on a new line to create a bullet point).
+- Programming Historian
+
+## Projects or Challenges to Try
+
+- Further exploration, possible little projects to try — can also use [links](<link>)
+- Exercises from other open source tutorials
+
+## Discussion Questions
+
+- Discussion question 1
+- Discussion question 2
+- Discussion question 3
+```
+
+#### `assessment.md`
+
+```md
+# Assessment
+
+## Quantitative Self-Assessment
+
+Add each question as a regular paragraph.
+
+- Each question should have multiple choice answers, added as bullet points under the paragraph.
+- Make sure that the questions enable the learner to evaluate their understanding of specific concepts from the workshop.
+
+## Qualitative Self-Assessment
+
+Add each question as a regular paragraph. These qualitative questions (of course) do not need to have answers but should enable the learner to think about what they learned and how it can be used.
+
+- If you think of readings/tutorials/projects/challenges from the "Theory to Practice" section to direct them to, and add a note of that as a bullet point under relevant questions.
+```
+
+
+### 2. Download data to Django
+
+```sh
+$ python manage.py downloaddata --repos <repo-name>
+```
+
+It will ask for the branch name.
+
+---
+
 ## Changing Settings
 
 All the settings for the DHRI script lives inside `/backend/dhri_settings.py`. This is a list of the out-of-the-box settings (as of alpha-3) and an explanatio of what they do.
