@@ -28,6 +28,40 @@ $ python manage.py downloaddata --wipe --all
 
 ---
 
+## Optional: Populate selectively
+
+### Groups
+
+If you want to populate the database with the **automatic groups**, you can run:
+
+```sh
+$ python manage.py loadgroups
+```
+
+_Note that `loadgroups` will replace any groups found with the same name, without informing you._
+
+### Users
+
+If you want to populate the database with the **automatic users**, you can run:
+
+```sh
+$ python manage.py loadusers
+```
+
+_Note that `loadusers` will replace any users found with the same username, without informing you._
+
+### Pages
+
+If you want to populate the database with the **automatic pages**, you can run:
+
+```sh
+$ python manage.py loadpages
+```
+
+_Note that `loadpages` will **not** replace pages found with the same title but inform you that they have not been saved._
+
+---
+
 ### Following install track?
 
 [<< Previous step](install.md) | [Next step >>](run.md)
