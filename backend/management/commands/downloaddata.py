@@ -12,7 +12,7 @@ from backend.dhri.text import auto_replace, get_number
 from backend.dhri.markdown import extract_links
 from .wipe import wipe
 
-log = Logger(name='createfixtures')
+log = Logger(name='downloaddata')
 
 
 
@@ -191,7 +191,7 @@ class Command(BaseCommand):
                         log_created(created, 'Contributor', obj.full_name, obj.id, log)
 
                 else:
-                    log.error(f'Have no way of processing {model} for app `frontmatter`. The `createfixtures` script must be adjusted accordingly.', kill=False)
+                    log.error(f'Have no way of processing {model} for app `frontmatter`. The `downloaddata` script must be adjusted accordingly.', kill=False)
 
             log.name = log.original_name + "-praxis"
             for model in l.praxis_models:
@@ -221,7 +221,7 @@ class Command(BaseCommand):
                         praxis.further_readings.add(obj)
 
                 else:
-                    log.error(f'Have no way of processing {model} for app `praxis`. The `createfixtures` script must be adjusted accordingly.', kill=False)
+                    log.error(f'Have no way of processing {model} for app `praxis`. The `downloaddata` script must be adjusted accordingly.', kill=False)
 
 
         # TODO: move into loadpages

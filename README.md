@@ -76,7 +76,7 @@ $ python manage.py migrate
 Next, run the custom DHRI command from inside Django's own management script:
 
 ```sh
-$ python manage.py createfixtures --wipe --all
+$ python manage.py downloaddata --wipe --all
 ```
 
 - The `--wipe` parameter resets the database (so it is not necessary if you have just cloned this repository but it's good to keep there to run some housekeeping tasks in other cases).
@@ -241,7 +241,7 @@ The dictionary controls the command:
 $ python manage.py loadgroups
 ```
 
-It is also invocated in the `createfixtures` command that may be passed to `manage.py`.
+It is also invocated in the `downloaddata` command that may be passed to `manage.py`.
 
 ```py
 AUTO_GROUPS = {
@@ -278,7 +278,7 @@ The dictionary controls the command:
 $ python manage.py loadusers
 ```
 
-It is also invocated in the `createfixtures` command that may be passed to `manage.py`.
+It is also invocated in the `downloaddata` command that may be passed to `manage.py`.
 
 ```py
 AUTO_USERS = {
