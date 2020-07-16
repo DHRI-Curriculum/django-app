@@ -75,7 +75,7 @@
     <div class="lead mt-4">
       {% for tutorial in praxis.tutorials.all %}
         <div class="p-2 my-3 rounded-lg linked-comment">
-          <p class="font-weight-bold"><a href="{{ tutorial.url }}">{{ tutorial }}</a></p>
+          {% if tutorial.title %}<p class="font-weight-bold"><a href="{{ tutorial.url }}">{{ tutorial.title }}</a></p>{% endif %}
           {% if tutorial.annotation %}
             <p class="small">{{ tutorial.annotation | stringformat:"s" | markdown | safe }}</p>
           {% endif %}
@@ -92,7 +92,7 @@
     <div class="lead mt-4">
       {% for reading in praxis.further_readings.all %}
         <div class="p-2 my-3 rounded-lg linked-comment">
-          <p class="font-weight-bold"><a href="{{ reading.url }}">{{ reading }}</a></p>
+          {% if reading.title %}<p class="font-weight-bold"><a href="{{ reading.url }}">{{ reading.title }}</a></p>{% endif %}
           {% if reading.annotation %}
             <p class="small">{{ reading.annotation | stringformat:"s" | markdown | safe }}</p>
           {% endif %}

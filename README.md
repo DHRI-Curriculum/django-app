@@ -12,7 +12,6 @@ Deadline: July 23
 1. [Installing](#1-installing)
 2. [Populate Database](#2-populate-database)
 3. [Run Server](#3-run-server)
-4. [Advanced: Enable Access on Local Network](#4-enable-access-on-local-network-advanced)  
 
 ---
 
@@ -93,40 +92,45 @@ python manage.py runserver
 
 _It will automatically create a development server for you, and you should be able to now navigate to http://localhost:8000 (or its alias http://127.0.0.1:8000)_ in a browser on your computer._
 
-## 4. Enable Access on Local Network (Advanced)
+### Optional: Enable Access on Local Network (Advanced)
 
-If you want to make your development server accessible through your local network, you can do so by following these two steps:
+If you want to make your development server accessible through your local network, instead of the command in the Run Server section above, run the following command:
 
-### Step 1: Adjust Settings
+```
+python manage.py localserver
+```
+
+Note that `localserver` is a custom-made script for the `backend` app here, and _not_ a native Django command.
+
+#### Optional: Adjust Settings
+
+The script above might give you a warning that notifies you that `'*'` has been added to `ALLOWED_HOSTS`. You can rectify that by following these two steps:
 
 - Edit the file `django-app/app/app/settings.py`
 
 - Find the line that reads:
+
    ```python
    ALLOWED_HOSTS = []
    ```
+
    ...and change it to:
+
    ```python
    ALLOWED_HOSTS = ['*']
    ```
 
-### Step 2: Run Server
-
-Instead of the command in the Run Server section above, run the following command:
-
-```
-python manage.py runserver 0.0.0.0:80
-```
-
 ---
 
-## Setting up a new repository
+## Setting up a new workshop
 
-### 1. Create the repository and ensure all files are present
+### Step 1: Create the workshop's repository
 
 Inside [DHRI-Curriculum](https://github.com/DHRI-Curriculum/), add whichever repository you need.
 
-If you want to, you can create a new branch inside the repository, specific for the Django data.
+If you want to, you can create a new branch inside the repository, specific for the Django data. Make note of the branch where you are building the workshop as you will need it in a future step.
+
+### Step 2: Ensure all files are present
 
 Make sure that all the necessary files are present:
 
@@ -262,14 +266,13 @@ Add each question as a regular paragraph. These qualitative questions (of course
 - If you think of readings/tutorials/projects/challenges from the "Theory to Practice" section to direct them to, and add a note of that as a bullet point under relevant questions.
 ```
 
-
-### 2. Download data to Django
+### Step 3: Download data to Django
 
 ```sh
 $ python manage.py downloaddata --repos <repo-name>
 ```
 
-It will ask for the branch name.
+It will ask for the branch name, and load everything from the repository.
 
 ---
 
