@@ -139,9 +139,10 @@ class LessonParser():
 
             soup = BeautifulSoup(html_body, 'lxml')
 
+            REPO_CLEAR = "".join(self.repo.split("https://github.com/DHRI-Curriculum/")[1:])
+
             # 1. Attempt to download any images
             if self.repo:
-                REPO_CLEAR = "".join(self.repo.split("https://github.com/DHRI-Curriculum/")[1:])
                 for image in soup.find_all("img"):
                     src = image.get('src')
                     if not src:
