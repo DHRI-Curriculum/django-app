@@ -1,4 +1,4 @@
-# 1. Installing
+# Installing
 
 ## Step 1. Clone the repository
 
