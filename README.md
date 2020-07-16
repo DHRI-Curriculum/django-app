@@ -9,7 +9,7 @@ Deadline: July 23
 
 ## Documentation Contents
 
-- [Installing](#1-installing)
+- [Installing](blob/alpha-3/_docs/install.md)
 - [Populate Database](#2-populate-database)
 - [Run Server](#3-run-server)
 
