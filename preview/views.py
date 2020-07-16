@@ -65,7 +65,7 @@ def get_from_url(url:str, type:str, workshop=None): # type = 'frontmatter' | 'th
         import re
         from backend.dhri.loader import Loader
         payload['markdown_text'] = re.sub(r'', '', payload['markdown_text'])
-        l = Loader(repo=f'http://www.github.com/DHRI-Curriculum/{workshop.parent_repo}', branch=workshop.parent_branch)
+        l = Loader(repo=f'http://www.github.com/{workshop.parent_repo}', branch=workshop.parent_branch)
         payload['sections'] = LessonParser(payload['markdown_text'], loader=l).data
 
     return(payload)
