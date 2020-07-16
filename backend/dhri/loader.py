@@ -53,11 +53,11 @@ def as_list(md):
     return(all_list_elements.findall(md))
 
 
-def _is_expired(path, age_checker=TEST_AGES['ROOT']) -> bool:
+def _is_expired(path, age_checker=TEST_AGES['ROOT'], force_download=FORCE_DOWNLOAD) -> bool:
     """Checks the age for any path against a set expiration date (a timedelta)"""
     if isinstance(path, str): path = Path(path)
     log = Logger(name='cache-age-check')
-    if not path.exists() or FORCE_DOWNLOAD == True: return(False)
+    if not path.exists() or force_download == True: return(False)
     file_mod_time = datetime.datetime.fromtimestamp(path.stat().st_ctime)
     now = datetime.datetime.today()
 
@@ -86,12 +86,12 @@ clear_cache()
 
 class LoaderCache():
 
-    def __init__(self, loader):
+    def __init__(self, loader, force_download=FORCE_DOWNLOAD):
         self.loader = loader
 
         self.path = CACHE_DIRS['ROOT'] / (self.loader.repo_name + ".json")
 
-        if not self.path.exists() or FORCE_DOWNLOAD == True or _is_expired(self.path): self._setup_raw_content()
+        if not self.path.exists() or force_download == True or _is_expired(self.path, force_download=force_download): self._setup_raw_content()
 
         self.data = self.load()
 
@@ -151,7 +151,7 @@ class LoaderCache():
         try:
             r.raise_for_status()
         except HTTPError:
-            self.loader.log.error(f'The URL ({url}) could not be used. Verify that you are using the correct repository, and that the branch that you provide is correct.', raise_error=HTTPError)
+            self.loader.log.error(f'The URL ({url}) could not be used. Verify that you are using the correct repository, and that the branch that you provide is correct and that it contains all the required files.', raise_error=HTTPError)
 
         return(r.text)
 
@@ -234,6 +234,10 @@ class Loader():
                     else:
                         self.log.warning(msg)
 
+    def _test_for_files(self):
+        if sum([self.has_frontmatter, self.has_praxis, self.has_lessons, self.has_assessment]) <= 3:
+            msg = f"The repository {self.repo_name} does not have enough required files present. The import of the entire repository will be skipped."
+            self.log.error(msg, raise_error=MissingCurriculumFile)
 
     def __init__(self, repo=REPO_AUTO, branch=BRANCH_AUTO, download=True, force_download=FORCE_DOWNLOAD):
 
@@ -253,7 +257,7 @@ class Loader():
 
         self.base_url = f'https://raw.githubusercontent.com/{self.user}/{self.repo_name}/{self.branch}'
 
-        self.cache = LoaderCache(self)
+        self.cache = LoaderCache(self, force_download=force_download)
 
         self.data = self.cache.data
 
@@ -287,6 +291,7 @@ class Loader():
         self.has_assessment = len(self.assessment) > 0
         self.has_lessons = len(self.lessons) > 0
 
+        self._test_for_files()
 
         # Mapping frontmatter sections
         self.abstract = self.frontmatter.get('abstract')

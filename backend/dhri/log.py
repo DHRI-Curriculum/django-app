@@ -71,8 +71,8 @@ class Logger():
         if VERBOSE or force == True: self.output(message)
 
     def error(self, message="", raise_error=None, kill=True, color='red'):
-        if raise_error != None:
-            raise(raise_error('Error: ' + message))
+        if raise_error:
+            raise(raise_error('Error: ' + message)) from None
         message = self._fix_message('Error: ' + message)
         message = colorize(message, fg=color, opts=('bold',))
         self.output(message, kill)

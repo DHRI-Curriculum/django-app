@@ -56,14 +56,9 @@ class Command(BaseCommand):
             repo = f'https://github.com/DHRI-Curriculum/{repo}'
 
             try:
-                l = Loader(repo, branch)
+                l = Loader(repo, branch, force_download=True)
             except MissingRequiredSection as e:
                 log.error(f"One or more required section(s) could not be found in {repo}: {e}")
-
-            ###### Test for data consistency
-            if sum([l.has_frontmatter, l.has_praxis, l.has_assessment]) <= 2:
-                log.error(f"The repository {l.repo_name} does not have enough required files present. The import of the entire repository will be skipped.", kill=None)
-                continue
 
             if options.get('all', False):
                 repo_name = l.meta['repo_name']
@@ -89,7 +84,7 @@ class Command(BaseCommand):
                 for lesson_data in l.as_html.lessons:
                     try:
                         order += 1
-                    except:
+                    except NameError:
                         order = 1
 
                     lesson, created = Lesson.objects.get_or_create(
