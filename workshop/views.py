@@ -61,15 +61,6 @@ def praxis(request, slug=None):
   praxis = obj.praxis
   return render(request, 'workshop/praxis.html', {'workshop': obj, 'frontmatter': frontmatter, 'praxis': praxis})
 
-'''
-def lesson(request, slug=None, lesson_id=None):
-  _, obj = _flexible_get(Workshop, slug)
-  lessons = Lesson.objects.filter(workshop=obj)
-  lesson = get_object_or_404(Lesson, pk=lesson_id)
-  next_lesson = lesson.next
-  return render(request, 'lesson/lesson.html', {'workshop': obj, 'frontmatter': frontmatter, 'lessons': lessons, 'lesson': lesson, 'next_lesson': next_lesson})
-'''
-
 
 def lesson(request, slug=None, lesson_id=None):
   _, obj = _flexible_get(Workshop, slug)
