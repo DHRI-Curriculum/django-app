@@ -19,6 +19,9 @@ class Command(BaseCommand):
         parser.add_argument('--repo', action='store_true')
 
     def handle(self, *args, **options):
+        if not options.get('repo', False):
+            options['repo'] = True # Automatic setting to `repo`
+
         i = 0
         if options.get('repo', False):
             for r in AUTO_REPOS:
