@@ -1,15 +1,15 @@
 from django.core.management import BaseCommand
 from django.contrib.auth.models import User, Group
-from backend.dhri_settings import USERS
+from backend.dhri_settings import AUTO_USERS
 from backend.dhri.log import Logger
 
 
 log = Logger(name='loadusers')
 
 
-def create_users(USERS=USERS):
-    for cat in USERS:
-        for username, settings in USERS[cat].items():
+def create_users(AUTO_USERS=AUTO_USERS):
+    for cat in AUTO_USERS:
+        for username, settings in AUTO_USERS[cat].items():
             groups = settings.pop('groups')
             if User.objects.filter(username=username).count(): User.objects.filter(username=username).delete()
             if cat == 'SUPER':
@@ -42,4 +42,4 @@ class Command(BaseCommand):
     help = 'Create default users'
 
     def handle(self, *args, **options):
-        create_users(USERS)
+        create_users(AUTO_USERS)

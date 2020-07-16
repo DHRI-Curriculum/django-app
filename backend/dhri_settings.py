@@ -10,7 +10,7 @@ AUTO_REPOS = [
     ('git', 'v2.0-kristen-edits'),
 ]
 
-GROUPS_PERMISSIONS = {
+AUTO_GROUPS = {
     'Team': {
         models.Profile: ['add', 'change', 'delete', 'view'],
 
@@ -33,7 +33,7 @@ GROUPS_PERMISSIONS = {
     }
 }
 
-USERS = {
+AUTO_USERS = {
     'SUPER': {
         'kalle': {
             'first_name': 'Kalle',
@@ -124,8 +124,6 @@ BRANCH_AUTO = 'v2.0'
 MAX_TERMINAL_WIDTH = 140
 AUTO_TERMINAL_WIDTH = 70
 
-# Which repositories and branches should we do automatically?
-
 # Django backend settings
 DJANGO_PATHS = {
         'DJANGO': 'app/',
@@ -209,14 +207,6 @@ REQUIRED_SECTIONS = {
     'assessment': set(NORMALIZING_SECTIONS['assessment'].keys())
 }
 
-
-from pathlib import Path
-DJANGO_PATHS['DB'] = Path(DJANGO_PATHS['DB'])
-
-for path in DJANGO_PATHS:
-    DJANGO_PATHS[path] = Path(__file__).absolute().parent.parent / DJANGO_PATHS[path]
-
-
 LESSON_TRANSPOSITIONS = {
     '<!-- context: terminal -->': '<img src="terminal.png" />'
 }
@@ -256,6 +246,13 @@ from itertools import chain
 from datetime import timedelta
 from pathlib import Path
 import os
+
+
+DJANGO_PATHS['DB'] = Path(DJANGO_PATHS['DB'])
+
+for path in DJANGO_PATHS:
+    DJANGO_PATHS[path] = Path(__file__).absolute().parent.parent / DJANGO_PATHS[path]
+
 
 def _test(constant=None, as_type=bool):
     if not isinstance(constant, as_type): log.error(f'{constant}` provided must be a {as_type}.', raise_error=ConstantError)
