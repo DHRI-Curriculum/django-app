@@ -1,9 +1,11 @@
 from django.utils.termcolors import colorize
 from colorama import Fore, Back, Style
 
-import textwrap, re, os
+import textwrap
+import re
+import os
 
-from backend.dhri_settings import VERBOSE, TERMINAL_WIDTH
+from backend.dhri_settings import VERBOSE, TERMINAL_WIDTH, saved_prefix
 
 
 def _get_parts_of_log_message(message):
@@ -92,6 +94,12 @@ class Logger():
     def _fix_message(self, message='', quote='', first_line_add='', indentation='    ', first_line_bold=True):
         indentation = (len(self.name) + 3) * ' ' # +3 because name is put in brackets and a space is added
         return(_fix_message(message=message, quote='', first_line_add='', indentation=indentation, first_line_bold=True))
+
+    def created(self, created:bool, model='', preview='', id=''):
+        if created:
+            self.log(saved_prefix + f'{model} `{preview}` added (ID {id}).')
+        else:
+            self.warning(f'{model} `{preview}` was not saved as it already exists (ID {id}).')
 
 
 

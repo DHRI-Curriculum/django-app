@@ -1,28 +1,23 @@
-# An upgraded and better (faster) loader
+"""Loader functionality for DHRI Curriculum"""
 
+from datetime import datetime
 from pathlib import Path
+
 import json
-import re
 import requests
-from requests.exceptions import HTTPError, MissingSchema
 import markdown
-import datetime
+from requests.exceptions import HTTPError, MissingSchema
 
 from backend.models import *
-from .markdown import split_into_sections
-from .markdown import Markdown as dhri_Markdown
-from .parse_lesson import LessonParser
-from backend.dhri_settings import NORMALIZING_SECTIONS, FORCE_DOWNLOAD, BACKEND_AUTO, REPO_AUTO, BRANCH_AUTO
-from backend.dhri_settings import TEST_AGES, CACHE_DIRS
-from backend.dhri.log import Logger
+
+from backend.dhri_settings import NORMALIZING_SECTIONS, FORCE_DOWNLOAD, BACKEND_AUTO, \
+                                    REPO_AUTO, BRANCH_AUTO, TEST_AGES, CACHE_DIRS
+
+from backend.dhri.markdown import split_into_sections, as_list, extract_links
+from backend.dhri.parse_lesson import LessonParser
+from backend.dhri.log import Logger, get_or_default
 from backend.dhri.exceptions import MissingCurriculumFile, MissingRequiredSection
-
-
-md_to_html_parser = markdown.Markdown(extensions=['extra', 'codehilite', 'sane_lists'])
-
-
-LIST_ELEMENTS = r'- ((?:.*)(?:(?:\n\s{2,4})?(?:.*))*)'
-all_list_elements = re.compile(LIST_ELEMENTS)
+from backend.dhri.text import get_number
 
 
 SECTIONS = {
@@ -47,30 +42,42 @@ SECTIONS = {
 }
 
 
-def as_list(md):
-    """Returns a string of markdown as a Python list"""
-    if not md: return []
-    return(all_list_elements.findall(md))
-
-
 def _is_expired(path, age_checker=TEST_AGES['ROOT'], force_download=FORCE_DOWNLOAD) -> bool:
     """Checks the age for any path against a set expiration date (a timedelta)"""
+
     if isinstance(path, str): path = Path(path)
     log = Logger(name='cache-age-check')
     if not path.exists() or force_download == True: return(False)
-    file_mod_time = datetime.datetime.fromtimestamp(path.stat().st_ctime)
-    now = datetime.datetime.today()
+    file_mod_time = datetime.fromtimestamp(path.stat().st_ctime)
+    now = datetime.today()
 
     if now - file_mod_time > age_checker:
         log.warning(f'Cache has expired for {path} - older than {age_checker}...')
         return False
+
+    log.log(f'Cache is OK for {path} - not older than {age_checker}....')
+    return True
+
+
+def process_links(input, obj):
+    """<#TODO: doctstr>"""
+    links = extract_links(input)
+    if links:
+        title, url = links[0]
     else:
-        log.log(f'Cache is fine for {path} - not older than {age_checker}....')
-        return True
+        return(None, None)
+    if len(links) > 1:
+        log.warning(f'One project seems to contain more than one URL, but only one ({url}) is captured: {links}')
+    if title == None or title == '':
+        from backend.dhri.webcache import WebCache
+        title = WebCache(url).title
+        title = get_or_default(f'Set a title for the {obj} at {url}: ', title)
+    return(title, url)
 
 
 def clear_cache():
     """Clears out the cache folder"""
+
     for DIR in CACHE_DIRS:
         for file in CACHE_DIRS[DIR].glob('*.txt'):
             if _is_expired(file, TEST_AGES[DIR]) == False:
@@ -85,6 +92,7 @@ clear_cache()
 
 
 class LoaderCache():
+    """Handles all the live loading of DHRI Curriculum data from GitHub"""
 
     def __init__(self, loader, force_download=FORCE_DOWNLOAD):
         self.loader = loader
@@ -133,15 +141,18 @@ class LoaderCache():
 
 
     def save(self):
+        """Saves <self.data> into <self.path>"""
         if not self.path.parent.exists(): self.path.parent.mkdir(parents=True)
         self.path.write_text(json.dumps(self.data))
 
 
     def load(self):
+        """Loads <self.data> from <self.path>"""
         return json.loads(self.path.read_text())
 
 
     def _load_raw_text(self, url:str):
+        """Downloads the raw text from a given URL and generates appropriate errors if it fails"""
         try:
             r = requests.get(url)
         except MissingSchema:
@@ -157,16 +168,19 @@ class LoaderCache():
 
 
 
-class HTMLParser():
+class HTMLParser(): # pylint: disable=too-few-public-methods
+    """Parses any given Loader data into HTML through the Markdown module"""
 
     def __init__(self, loader):
-        self.content = {k: md_to_html_parser.convert(v) for k, v in loader.content.items()}
+        PARSER = markdown.Markdown(extensions=['extra', 'codehilite', 'sane_lists'])
+
+        self.content = {k: PARSER.convert(v) for k, v in loader.content.items()}
         self.lessons = loader.lessons_html
         '''
         for i, lesson in enumerate(self.lessons):
-            self.lessons[i]['text'] = md_to_html_parser.convert(self.lessons[i]['text'])
-            if self.lessons[i]['challenge']: self.lessons[i]['challenge'] = md_to_html_parser.convert(self.lessons[i]['challenge'])
-            if self.lessons[i]['solution']: self.lessons[i]['solution'] = md_to_html_parser.convert(self.lessons[i]['solution'])
+            self.lessons[i]['text'] = PARSER.convert(self.lessons[i]['text'])
+            if self.lessons[i]['challenge']: self.lessons[i]['challenge'] = PARSER.convert(self.lessons[i]['challenge'])
+            if self.lessons[i]['solution']: self.lessons[i]['solution'] = PARSER.convert(self.lessons[i]['solution'])
         '''
         self.frontmatter = self.content.get('frontmatter')
         self.praxis = self.content.get('praxis')
@@ -188,6 +202,7 @@ def _normalize_data(data, section):
 
 
 class Loader():
+    """Loading DHRI Curriculum cache files into parsable dictionaries inside an object"""
 
     _frontmatter_sections = SECTIONS['frontmatter']
     _praxis_sections = SECTIONS['praxis']
@@ -239,14 +254,11 @@ class Loader():
             msg = f"The repository {self.repo_name} does not have enough required files present. The import of the entire repository will be skipped."
             self.log.error(msg, raise_error=MissingCurriculumFile)
 
-    def __init__(self, repo=REPO_AUTO, branch=BRANCH_AUTO, download=True, force_download=FORCE_DOWNLOAD):
+    def __init__(self, repo=REPO_AUTO, branch=BRANCH_AUTO, force_download=FORCE_DOWNLOAD):
 
         self.log = Logger(name=f'loader')
 
         self.branch = branch
-        self.download = download
-        self.force_download = force_download
-
         self.repo = repo
         self.user = self.repo.split('/')[3]
         self.repo_name = self.repo.split('/')[4]
@@ -257,9 +269,7 @@ class Loader():
 
         self.base_url = f'https://raw.githubusercontent.com/{self.user}/{self.repo_name}/{self.branch}'
 
-        self.cache = LoaderCache(self, force_download=force_download)
-
-        self.data = self.cache.data
+        self.data = LoaderCache(self, force_download=force_download).data
 
         # Map properties
         self.content = self.data.get('content')
@@ -295,7 +305,7 @@ class Loader():
 
         # Mapping frontmatter sections
         self.abstract = self.frontmatter.get('abstract')
-        self.estimated_time = self.frontmatter.get('estimated_time')
+        self.estimated_time = get_number(self.frontmatter.get('estimated_time'))
         self.contributors = ContributorParser(self.frontmatter.get('contributors')).data
         self.readings = as_list(self.frontmatter.get('readings'))
         self.projects = [str(_) for _ in as_list(self.frontmatter.get('projects'))]

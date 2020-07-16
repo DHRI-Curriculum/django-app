@@ -20,10 +20,14 @@ from backend.dhri.regex import MULTILINE_ITEM, ALL_BULLETS, md_links, urls_gener
 from backend.dhri.log import Logger
 from collections import OrderedDict
 
-LIST_ELEMENTS = r'- (.*)(?:\n\s{2,4})?(.*)'
+LIST_ELEMENTS = r'- ((?:.*)(?:(?:\n\s{2,4})?(?:.*))*)'
 all_list_elements = re.compile(LIST_ELEMENTS)
 
 
+def as_list(md):
+    """Returns a string of markdown as a Python list"""
+    if not md: return []
+    return(all_list_elements.findall(md))
 
 
 def extract_links(md:str):

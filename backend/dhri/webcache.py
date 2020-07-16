@@ -84,7 +84,7 @@ class WebCache():
                 else:
                     return ''
             try:
-                r = requests.get(self.url, timeout=3)
+                r = requests.get(self.url, timeout=10)
                 soup = BeautifulSoup(r.text, 'lxml')
                 try:
                     return {

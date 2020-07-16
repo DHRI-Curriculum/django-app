@@ -1,26 +1,38 @@
-from django.core.management import BaseCommand
-from django.conf import settings
-from backend.dhri_settings import AUTO_REPOS, saved_prefix, AUTO_PAGES
+"""manage.py downloaddata command"""
 
-import os
-from backend.dhri.log import Logger, get_or_default, log_created
+from django.core.management import BaseCommand
+
+
+# Import all models
 from backend.models import *
 
-from backend.dhri.loader import Loader
-from backend.dhri.exceptions import MissingRequiredSection
-from backend.dhri.text import auto_replace, get_number
-from backend.dhri.markdown import extract_links
+
+# Import DHRI specific settings
+from backend.dhri_settings import AUTO_REPOS
+
+
+# Import DHRI specific methods/functions
+from backend.dhri.log import Logger, get_or_default
+from backend.dhri.loader import Loader, process_links, MissingRequiredSection
+from backend.dhri.text import auto_replace
+
+
+# Import other commands
 from .wipe import wipe
+from .loadpages import create_pages
+from .loadgroups import create_groups
+from .loadusers import create_users
 
 
-log = Logger(name='downloaddata')
+# Set up logger
+LOG = Logger(name='downloaddata')
 
 
 class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
-    help = 'Create fixtures from repositories'
+    help = 'Download live data from DHRI curriculum repositories'
 
     def add_arguments(self, parser):
         parser.add_argument('--wipe', action='store_true')
@@ -33,32 +45,16 @@ class Command(BaseCommand):
         if options.get('wipe', False):
             wipe()
 
-        if options.get('all', False):
-            log.log("Automatic import activated.", force=True)
-            repos = AUTO_REPOS
-        else:
-            repos = options.get('repos')
+        repos = _get_repos(options)
 
         for repo in repos:
-            branch = None
-            if isinstance(repo, tuple):
-                repo, branch = repo
-
-            if not branch:
-                for REPO in AUTO_REPOS:
-                    if repo == REPO[0]:
-                        branch = REPO[1]
-
-            if not branch:
-                while not branch:
-                    branch = get_or_default(f'What is the branch name you want to import?', '')
-
+            branch = _test_for_branch(repo)
             repo = f'https://github.com/DHRI-Curriculum/{repo}'
 
             try:
                 l = Loader(repo, branch, force_download=True)
             except MissingRequiredSection as e:
-                log.error(f"One or more required section(s) could not be found in {repo}: {e}")
+                LOG.error(f"One or more required section(s) could not be found in {repo}: {e}")
 
             if options.get('all', False):
                 repo_name = l.meta['repo_name']
@@ -66,8 +62,8 @@ class Command(BaseCommand):
                 repo_name = get_or_default('Repository', l.meta['repo_name'])
 
             repo_name = get_or_default('Workshop name', auto_replace(repo_name.title()))
-            log.name = l.repo_name
-            log.original_name = log.name
+            LOG.name = l.repo_name
+            #LOG.original_name = LOG.name
 
             workshop, created = Workshop.objects.get_or_create(
                 name = repo_name,
@@ -77,9 +73,9 @@ class Command(BaseCommand):
                     'parent_branch': l.parent_branch
                 }
             )
-            log_created(created, 'Workshop', workshop.name, workshop.id, log)
+            LOG.created(created, 'Workshop', workshop.name, workshop.id)
 
-            log.name = log.original_name + "-lessons"
+            #LOG.name = LOG.original_name + "-lessons"
             if l.has_lessons:
                 for lesson_data in l.as_html.lessons:
                     try:
@@ -95,48 +91,32 @@ class Command(BaseCommand):
                             'order': order
                         }
                     )
-                    log_created(created, 'Lesson', lesson.title, lesson.id, log)
+                    LOG.created(created, 'Lesson', lesson.title, lesson.id)
 
                     if lesson_data['challenge']:
                         challenge, created = Challenge.objects.get_or_create(
                             lesson = lesson,
                             text = lesson_data['challenge']
                         )
-                        log_created(created, 'Challenge', challenge.text[:20] + '...', challenge.id, log)
+                        LOG.created(created, 'Challenge', challenge.text[:20] + '...', challenge.id)
 
                         if lesson_data['solution']:
                             obj, created = Solution.objects.get_or_create(
                                 challenge = challenge,
                                 text = lesson_data['solution']
                             )
-                            log_created(created, 'Solution', obj.text[:20] + '...', obj.id, log)
-
-                        processed_solution = True
+                            LOG.created(created, 'Solution', obj.text[:20] + '...', obj.id)
+                            processed_solution = True
 
                     if lesson_data['solution']:
                         try:
                             processed_solution
-                        except:
-                            log.error(f'Lesson `{lesson.title}` has a solution but no challenge. Will continue but not insert the solution.', kill=False)
+                        except NameError:
+                            LOG.error(f'Lesson `{lesson.title}` has a solution but no challenge. Will continue but not insert the solution.', kill=False)
 
                 del order
 
-            # TODO: move...
-            def process_links(input, obj):
-                links = extract_links(input)
-                if links:
-                    title, url = links[0]
-                else:
-                    return(None, None)
-                if len(links) > 1:
-                    log.warning(f'One project seems to contain more than one URL, but only one ({url}) is captured: {links}')
-                if title == None or title == '':
-                    from backend.dhri.webcache import WebCache
-                    title = WebCache(url).title
-                    title = get_or_default(f'Set a title for the {obj} at {url}: ', title)
-                return(title, url)
-
-            log.name = log.original_name + "-frontmatter"
+            #LOG.name = LOG.original_name + "-frontmatter"
             for model in l.frontmatter_models:
 
                 if model == Frontmatter:
@@ -144,33 +124,33 @@ class Command(BaseCommand):
                         workshop = workshop,
                         defaults = {
                             'abstract': l.abstract,
-                            'estimated_time': get_number(l.frontmatter['estimated_time'])
+                            'estimated_time': l.frontmatter['estimated_time']
                         }
                     )
-                    log_created(created, 'Frontmatter for', frontmatter.workshop, frontmatter.id, log)
+                    LOG.created(created, 'Frontmatter for', frontmatter.workshop, frontmatter.id)
 
                 elif model == EthicalConsideration:
                     for label in l.ethical_considerations:
                         obj, created = model.objects.get_or_create(frontmatter = frontmatter, label = label)
-                        log_created(created, 'Ethical Consideration', obj.label[:20] + '...', obj.id, log)
+                        LOG.created(created, 'Ethical Consideration', obj.label[:20] + '...', obj.id)
 
                 elif model == LearningObjective:
                     for label in l.learning_objectives:
                         obj, created = model.objects.get_or_create(frontmatter = frontmatter, label = label)
-                        log_created(created, 'Learning Objective', obj.label[:20] + '...', obj.id, log)
+                        LOG.created(created, 'Learning Objective', obj.label[:20] + '...', obj.id)
 
                 elif model == Project:
                     for annotation in l.projects:
                         title, url = process_links(annotation, 'project')
                         obj, created = model.objects.get_or_create(annotation = annotation, title = title, url = url)
-                        log_created(created, 'Project', obj.title, obj.id, log)
+                        LOG.created(created, 'Project', obj.title, obj.id)
                         frontmatter.projects.add(obj)
 
                 elif model == Reading:
                     for annotation in l.readings:
                         title, url = process_links(annotation, 'reading')
                         obj, created = model.objects.get_or_create(annotation = annotation, title = title, url = url)
-                        log_created(created, 'Reading', obj.title, obj.id, log)
+                        LOG.created(created, 'Reading', obj.title, obj.id)
                         frontmatter.readings.add(obj)
 
                 elif model == Contributor:
@@ -181,12 +161,12 @@ class Command(BaseCommand):
                             role = contributor.get('role'),
                             url = contributor.get('url'),
                         )
-                        log_created(created, 'Contributor', obj.full_name, obj.id, log)
+                        LOG.created(created, 'Contributor', obj.full_name, obj.id)
 
                 else:
-                    log.error(f'Have no way of processing {model} for app `frontmatter`. The `downloaddata` script must be adjusted accordingly.', kill=False)
+                    LOG.error(f'Have no way of processing {model} for app `frontmatter`. The `downloaddata` script must be adjusted accordingly.', kill=False)
 
-            log.name = log.original_name + "-praxis"
+            #LOG.name = LOG.original_name + "-praxis"
             for model in l.praxis_models:
 
                 if model == Praxis:
@@ -197,33 +177,60 @@ class Command(BaseCommand):
                             'next_steps': l.next_steps
                         }
                     )
-                    log_created(created, 'Theory-to-practice for', praxis.workshop, praxis.id, log)
+                    LOG.created(created, 'Theory-to-practice for', praxis.workshop, praxis.id)
 
                 elif model == Tutorial:
                     for annotation in l.tutorials:
                         label, url = process_links(annotation, 'tutorial')
                         obj, created = model.objects.get_or_create(annotation = annotation, label = label, url = url)
-                        log_created(created, 'Tutorial', obj.label, obj.id, log)
+                        LOG.created(created, 'Tutorial', obj.label, obj.id)
                         praxis.tutorials.add(obj)
 
                 elif model == Reading:
                     for annotation in l.further_readings:
                         title, url = process_links(annotation, 'reading')
                         obj, created = model.objects.get_or_create(annotation = annotation, title = title, url = url)
-                        log_created(created, 'Reading', obj.title, obj.id, log)
+                        LOG.created(created, 'Reading', obj.title, obj.id)
                         praxis.further_readings.add(obj)
 
                 else:
-                    log.error(f'Have no way of processing {model} for app `praxis`. The `downloaddata` script must be adjusted accordingly.', kill=False)
+                    LOG.error(f'Have no way of processing {model} for app `praxis`. The `downloaddata` script must be adjusted accordingly.', kill=False)
 
 
-        from .loadpages import create_pages
-        create_pages()
+        if options.get('all', False):
+            LOG.log("Automatic import activated: Attempting to generate pages", force=True)
+            create_pages()
 
-        from .loadgroups import create_groups
-        create_groups()
+            LOG.log("Automatic import activated: Attempting to generate groups", force=True)
+            create_groups()
 
-        from .loadusers import create_users
-        create_users()
+            LOG.log("Automatic import activated: Attempting to generate users", force=True)
+            create_users()
 
-        # TODO: Dump data?
+            # TODO: Dump data?
+
+def _test_for_branch(repo=''):
+    repo, branch = None, None
+
+    if isinstance(repo, tuple):
+        repo, branch = repo
+
+    if not branch:
+        for r in AUTO_REPOS:
+            if repo == r[0]:
+                branch = r[1]
+
+    if not branch:
+        while not branch:
+            branch = get_or_default(f'What is the branch name you want to import?', '')
+
+    return repo, branch
+
+def _get_repos(options={}):
+    if options.get('all', False):
+        LOG.log("Automatic import activated.", force=True)
+        repos = AUTO_REPOS
+    else:
+        repos = options.get('repos')
+
+    return repos
