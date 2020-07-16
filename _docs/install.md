@@ -39,6 +39,6 @@ That should show you the progress of the installation of all the python dependen
 
 ---
 
-### Following install track?
+### Continue install track
 
 [<< Back to repo](https://github.com/DHRI-Curriculum/django-app/tree/alpha-3) | [Next step >>](populate.md)

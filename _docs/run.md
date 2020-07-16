@@ -35,3 +35,7 @@ The script above might give you a warning that notifies you that `'*'` has been 
    ```py
    ALLOWED_HOSTS = ['*']
    ```
+
+### Continue install track
+
+[<< Previous step](populate.md) | [Back to repo >>](https://github.com/DHRI-Curriculum/django-app/tree/alpha-3)

@@ -62,6 +62,6 @@ _Note that `loadpages` will **not** replace pages found with the same title but 
 
 ---
 
-### Following install track?
+### Continue install track
 
 [<< Previous step](install.md) | [Next step >>](run.md)
