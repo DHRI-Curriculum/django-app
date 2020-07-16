@@ -24,7 +24,7 @@ def repository(request, repository=None):
     payload['BASE_URL'] = BASE_URL
     return render(request, 'preview/repository.html', payload)
 
-def get_from_url(url:str, type:str): # type = 'frontmatter' | 'theory-to-practice' | 'lessons'
+def get_from_url(url:str, type:str, workshop=None): # type = 'frontmatter' | 'theory-to-practice' | 'lessons'
     import requests
     from pathlib import Path
     import sys
@@ -63,8 +63,10 @@ def get_from_url(url:str, type:str): # type = 'frontmatter' | 'theory-to-practic
 
     elif type == 'lessons':
         import re
+        from backend.dhri.loader import Loader
         payload['markdown_text'] = re.sub(r'', '', payload['markdown_text'])
-        payload['sections'] = LessonParser(payload['markdown_text'], loader=None).data
+        l = Loader(repo=workshop.parent_repo, branch=workshop.parent_branch)
+        payload['sections'] = LessonParser(payload['markdown_text'], loader=l).data
 
     return(payload)
 
@@ -105,7 +107,7 @@ def praxis(request, repository=None):
 def lessons(request, repository=None):
     workshop = get_object_or_404(Workshop, slug=repository)
     url = f'{BASE_URL}{workshop.parent_repo}/{workshop.parent_branch}/{ FILES["lessons"] }'
-    _ = get_from_url(url=url, type='lessons')
+    _ = get_from_url(url=url, type='lessons', workshop=workshop)
 
     payload = dict()
     payload['workshop'] = workshop
