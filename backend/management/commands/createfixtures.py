@@ -10,6 +10,7 @@ from backend.dhri.loader import Loader
 from backend.dhri.exceptions import MissingRequiredSection
 from backend.dhri.text import auto_replace, get_number
 from backend.dhri.markdown import extract_links
+from .wipe import wipe
 
 log = Logger(name='createfixtures')
 
@@ -29,10 +30,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if options.get('wipe', False):
-            log.log("Wipe activated.", force=True) #  The script will proceed in VERBOSE mode automatically?
-            for model in ALL_MODELS:
-                model.objects.all().delete()
-                log.log(f' {model.__str__} removed.', force=True) #  The script will proceed in VERBOSE mode automatically?
+            wipe()
 
         if options.get('all', False):
             log.log("Automatic import activated.")
@@ -239,6 +237,9 @@ class Command(BaseCommand):
             )
 
         from .loadgroups import create_groups
-        from .loadusers import create_users
         create_groups()
+
+        from .loadusers import create_users
         create_users()
+
+        # TODO: Dump data?

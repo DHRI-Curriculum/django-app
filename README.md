@@ -5,12 +5,16 @@ This is the alpha 3 version of the DHRI's curriculum website (created as a djang
 Belongs to: [Sprint 3](https://www.github.com/DHRI-Curriculum/django-app/milestone/3)  
 Deadline: July 23
 
+---
+
 ## Contents
 
 1. [Installing](#1-installing)
 2. [Populate Database](#2-populate-database)
 3. [Run Server](#3-run-server)
 4. [Advanced: Enable Access on Local Network](#4-enable-access-on-local-network-advanced)  
+
+---
 
 ## 1. Installing
 

@@ -212,7 +212,7 @@ LESSON_TRANSPOSITIONS = {
 }
 
 STATIC_IMAGES = {
-    'LESSONS': Path('./app/workshop/static/images/lessons/')
+    'LESSONS': './app/workshop/static/images/lessons/'
 }
 
 AUTO_PAGES = [
@@ -253,6 +253,8 @@ DJANGO_PATHS['DB'] = Path(DJANGO_PATHS['DB'])
 for path in DJANGO_PATHS:
     DJANGO_PATHS[path] = Path(__file__).absolute().parent.parent / DJANGO_PATHS[path]
 
+for cat in STATIC_IMAGES:
+    STATIC_IMAGES[cat] = Path(STATIC_IMAGES[cat])
 
 def _test(constant=None, as_type=bool):
     if not isinstance(constant, as_type): log.error(f'{constant}` provided must be a {as_type}.', raise_error=ConstantError)
