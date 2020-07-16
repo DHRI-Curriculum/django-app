@@ -12,8 +12,8 @@ from backend.dhri.text import auto_replace, get_number
 from backend.dhri.markdown import extract_links
 from .wipe import wipe
 
-log = Logger(name='downloaddata')
 
+log = Logger(name='downloaddata')
 
 
 class Command(BaseCommand):
