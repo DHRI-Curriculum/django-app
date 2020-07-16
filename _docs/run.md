@@ -26,12 +26,12 @@ The script above might give you a warning that notifies you that `'*'` has been 
 
 - Find the line that reads:
 
-   ```python
+   ```py
    ALLOWED_HOSTS = []
    ```
 
    ...and change it to:
 
-   ```python
+   ```py
    ALLOWED_HOSTS = ['*']
    ```

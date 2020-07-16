@@ -26,6 +26,8 @@ $ python manage.py downloaddata --wipe --all
 
 - The `--all` parameter will download data from _all_ the standard repositories. If you want to see the full list, just run `python manage.py showsettings --repo`. Should you want to make edits, see ["Changing settings"](#changing-settings) below.
 
+---
+
 ### Following install track?
 
 [<< Previous step](install.md) | [Next step >>](run.md)

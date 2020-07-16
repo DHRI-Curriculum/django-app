@@ -37,6 +37,8 @@ Collecting django==3.0.7 (from -r requirements.txt (line 1))
 
 That should show you the progress of the installation of all the python dependencies for the project.
 
+---
+
 ### Following install track?
 
 [<< Back to repo](https://github.com/DHRI-Curriculum/django-app/tree/alpha-3) | [Next step >>](populate.md)
