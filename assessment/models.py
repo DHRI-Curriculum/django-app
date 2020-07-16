@@ -18,7 +18,7 @@ class QuestionType(models.Model):
     label = models.TextField(max_length=500)
 
     def __str__(self):
-        return self.label
+        return f'{self.label}'
 
 
 class Question(SortableMixin):
@@ -30,7 +30,7 @@ class Question(SortableMixin):
         ordering = ['order']
 
     def __str__(self):
-        return self.label
+        return f'{self.label}'
 
 
 class Answer(SortableMixin):
@@ -43,4 +43,4 @@ class Answer(SortableMixin):
         ordering = ['order']
 
     def __str__(self):
-        return self.label
+        return f'{self.label}'

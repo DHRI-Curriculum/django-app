@@ -16,4 +16,4 @@ class Page(models.Model):
     is_homepage = models.BooleanField(default=False)
 
     def __str__(self):
-        return str(self.name)
+        return f'{self.name}'

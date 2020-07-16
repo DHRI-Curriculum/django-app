@@ -17,4 +17,4 @@ class Workshop(models.Model):
       super(Workshop, self).save()
 
   def __str__(self):
-    return(self.name)
+      return f'{self.name}'

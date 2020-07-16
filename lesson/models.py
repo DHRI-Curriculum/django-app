@@ -13,7 +13,7 @@ class Lesson(models.Model):
     ordering = ['order']
 
   def __str__(self):
-    return str(self.title)
+    return f'{self.title}'
 
 
 class Challenge(models.Model):
@@ -21,8 +21,14 @@ class Challenge(models.Model):
   title = models.CharField(max_length=200)
   text = models.TextField()
 
+  def __str__(self):
+    return f'{self.title}'
+
 
 class Solution(models.Model):
   challenge = models.OneToOneField(Challenge, on_delete=models.CASCADE)
   title = models.CharField(max_length=200)
   text = models.TextField()
+
+  def __str__(self):
+    return f'{self.title}'

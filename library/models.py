@@ -8,7 +8,7 @@ class Tutorial(models.Model):
   zotero_item = models.TextField(max_length=500, null=True, blank=True)
 
   def __str__(self):
-    return self.label
+    return f'{self.label}'
 
 
 class Project(models.Model):
@@ -18,7 +18,7 @@ class Project(models.Model):
   zotero_item = models.TextField(max_length=500, null=True, blank=True)
 
   def __str__(self):
-    return self.title
+    return f'{self.title}'
 
 
 class Resource(models.Model):
@@ -28,7 +28,7 @@ class Resource(models.Model):
   zotero_item = models.TextField(max_length=500, null=True, blank=True)
 
   def __str__(self):
-    return self.title
+    return f'{self.title}'
 
 
 class Reading(models.Model):
@@ -38,4 +38,4 @@ class Reading(models.Model):
   zotero_item = models.TextField(max_length=500, null=True, blank=True)
 
   def __str__(self):
-    return self.title
+    return f'{self.title}'

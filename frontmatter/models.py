@@ -13,7 +13,7 @@ class Frontmatter(models.Model):
   prerequisites = models.ManyToManyField('workshop.Workshop', related_name="prerequisites", blank=True)
 
   def __str__(self):
-    return "Frontmatter for " + self.workshop.name
+    return f'Frontmatter for {self.workshop.name}'
 
 
 class LearningObjective(models.Model):
@@ -21,7 +21,7 @@ class LearningObjective(models.Model):
   label = models.TextField(max_length=500)
 
   def __str__(self):
-    return self.label
+    return f'{self.label}'
 
 
 class EthicalConsideration(models.Model):
@@ -29,7 +29,7 @@ class EthicalConsideration(models.Model):
   label = models.TextField(max_length=500)
 
   def __str__(self):
-    return self.label
+    return f'{self.label}'
 
 
 
@@ -41,10 +41,11 @@ class Contributor(models.Model):
 
   def _fullname(self):
     return self.first_name + ' ' + self.last_name
+
   _fullname.short_description = "Full name of contributor"
   _fullname.admin_order_field = 'last_name'
 
   full_name = property(_fullname)
 
   def __str__(self):
-    return self.full_name
+    return f'{self.full_name}'
