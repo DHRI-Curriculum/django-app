@@ -112,8 +112,11 @@ class LessonParser():
             challenge = challenge.strip()
             solution = solution.strip()
 
-            if challenge == '': challenge = None
-            if solution == '': solution = None
+            if challenge == '':
+                challenge = None
+
+            if solution == '':
+                solution = None
 
             if solution and not challenge:
                 log.error(f"The lesson `{title}` has a solution but no challenge. The program has stopped.")
@@ -134,14 +137,20 @@ class LessonParser():
 
             html_body = md_to_html_parser.convert(cleaned_body)
             html_challenge, html_solution = '', ''
-            if challenge: html_challenge = md_to_html_parser.convert(challenge)
-            if solution: html_solution = md_to_html_parser.convert(solution)
+
+            if challenge:
+                html_challenge = md_to_html_parser.convert(challenge)
+
+            if solution:
+                html_solution = md_to_html_parser.convert(solution)
 
             soup = BeautifulSoup(html_body, 'lxml')
 
             # 1. Attempt to download any images
             if self.repo:
                 REPO_CLEAR = "".join(self.repo.split("https://github.com/DHRI-Curriculum/")[1:])
+            else:
+                REPO_CLEAR = ''
 
             for image in soup.find_all("img"):
                 src = image.get('src')
