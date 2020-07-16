@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'lesson.apps.LessonConfig',
     'learner.apps.LearnerConfig',
     'preview.apps.PreviewConfig',
+    'backend',
     'adminsortable',
     'crispy_forms'
 ]

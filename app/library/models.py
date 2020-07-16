@@ -12,7 +12,7 @@ class Tutorial(models.Model):
 
 
 class Project(models.Model):
-  title = models.TextField(max_length=500)
+  title = models.TextField(max_length=500, null=True)
   url = models.TextField(max_length=500, null=True, blank=True)
   annotation = models.TextField(max_length=3000, null=True, blank=True)
   zotero_item = models.TextField(max_length=500, null=True, blank=True)
@@ -32,8 +32,8 @@ class Resource(models.Model):
 
 
 class Reading(models.Model):
-  title = models.TextField(max_length=500)
-  url = models.TextField(max_length=500)
+  title = models.TextField(max_length=500, null=True)
+  url = models.TextField(max_length=500, null=True)
   annotation = models.TextField(max_length=3000, null=True, blank=True)
   zotero_item = models.TextField(max_length=500, null=True, blank=True)
 
