@@ -224,17 +224,8 @@ class Command(BaseCommand):
                     log.error(f'Have no way of processing {model} for app `praxis`. The `downloaddata` script must be adjusted accordingly.', kill=False)
 
 
-        # TODO: move into loadpages
-        log.name = log.original_name + "-pages"
-        for p in AUTO_PAGES:
-            page, created = Page.objects.get_or_create(
-                name = p.get('name', None),
-                text = p.get('text', None),
-                defaults = {
-                    'template': p.get('template', None),
-                    'slug': p.get('slug', None)
-                }
-            )
+        from .loadpages import create_pages
+        create_pages()
 
         from .loadgroups import create_groups
         create_groups()

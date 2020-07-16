@@ -51,7 +51,7 @@ def log_created(created:bool, model='', preview='', id='', log=None):
         from backend.dhri_settings import saved_prefix
         log.log(saved_prefix + f'{model} `{preview}` added (ID {id}).')
     else:
-        log.warning(f'{model} `{preview}` already exists (ID {id}).')
+        log.warning(f'{model} `{preview}` was not saved as it already exists (ID {id}).')
 
 
 class Logger():
