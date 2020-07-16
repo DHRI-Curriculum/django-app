@@ -169,7 +169,7 @@ FORCE_DOWNLOAD = False
 DEBUG = True
 
 # If VERBOSE is set to True, every output message will display the source module (good for troubleshooting)
-VERBOSE = True
+VERBOSE = False
 
 # If set to True, resets all the DHRI curriculum database elements automatically before script runs (not recommended in production)
 AUTO_RESET = True

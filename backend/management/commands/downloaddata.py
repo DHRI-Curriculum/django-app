@@ -24,6 +24,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('--wipe', action='store_true')
+        # parser.add_argument('--verbose', action='store_true') # TODO: Create verbose mode here...
         group = parser.add_mutually_exclusive_group(required=True)
         group.add_argument('--repos', nargs='+', type=str)
         group.add_argument('--all', action='store_true')
@@ -33,7 +34,7 @@ class Command(BaseCommand):
             wipe()
 
         if options.get('all', False):
-            log.log("Automatic import activated.")
+            log.log("Automatic import activated.", force=True)
             repos = AUTO_REPOS
         else:
             repos = options.get('repos')
@@ -81,10 +82,7 @@ class Command(BaseCommand):
                     'parent_branch': l.parent_branch
                 }
             )
-            if created:
-                log.log(saved_prefix + f'Workshop {workshop.name} added (ID {workshop.id}).')
-            else:
-                log.warning(f'Workshop {workshop.name} already exists (ID {workshop.id}).')
+            log_created(created, 'Workshop', workshop.name, workshop.id, log)
 
             log.name = log.original_name + "-lessons"
             if l.has_lessons:
