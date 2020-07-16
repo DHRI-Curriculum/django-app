@@ -11,7 +11,7 @@ def wipe():
     log.log("Wipe activated.", force=True) #  The script will proceed in VERBOSE mode automatically?
     for model in ALL_MODELS:
         model.objects.all().delete()
-        log.log(f' {model.__str__} removed.', force=True) #  The script will proceed in VERBOSE mode automatically?
+        log.log(f'All {model._meta.verbose_name_plural} removed.', force=True) #  The script will proceed in VERBOSE mode automatically?
 
 
 class Command(BaseCommand):

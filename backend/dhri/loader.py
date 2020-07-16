@@ -18,7 +18,7 @@ from backend.dhri.log import Logger
 from backend.dhri.exceptions import MissingCurriculumFile, MissingRequiredSection
 
 
-md_to_html_parser = markdown.Markdown(extensions=['extra', 'codehilite', 'sane_lists', 'nl2br'])
+md_to_html_parser = markdown.Markdown(extensions=['extra', 'codehilite', 'sane_lists'])
 
 
 LIST_ELEMENTS = r'- ((?:.*)(?:(?:\n\s{2,4})?(?:.*))*)'
