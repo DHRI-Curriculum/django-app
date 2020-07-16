@@ -1,5 +1,3 @@
-[<< Back to README](../README.md) | [>>]()
-
 # 1. Installing
 
 ## Step 1. Clone the repository
@@ -38,3 +36,7 @@ Collecting django==3.0.7 (from -r requirements.txt (line 1))
 ```
 
 That should show you the progress of the installation of all the python dependencies for the project.
+
+### Following install track?
+
+[<< Back to README](../README.md) | [Next step >>](populate.md)

@@ -25,3 +25,7 @@ $ python manage.py downloaddata --wipe --all
 - The `--wipe` parameter resets the database (so it is not necessary if you have just cloned this repository but it's good to keep there to run some housekeeping tasks in other cases).
 
 - The `--all` parameter will download data from _all_ the standard repositories. If you want to see the full list, just run `python manage.py showsettings --repo`. Should you want to make edits, see ["Changing settings"](#changing-settings) below.
+
+### Following install track?
+
+[<< Previous step](install.md) | [Next step >>](run.md)
