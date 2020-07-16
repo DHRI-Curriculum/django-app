@@ -1,0 +1,32 @@
+<div class="py-4 zen-hideaway">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light" style="border-radius: 1rem !important;" id="workshop-navbar">
+    <a id="meta-btn" class="navbar-brand pr-4" href="{% url 'workshop:frontmatter' slug=workshop.slug %}">{{ workshop.name }}</a>
+    <button class="navbar-toggler" id="workshop-navbar-toggle" type="button" data-toggle="collapse" data-target="#workshop_navbar_items" aria-controls="workshop_navbar_items" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon" style="pointer-events: none;"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="workshop_navbar_items">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item no-touch">
+          <a id="meta-btn" class="nav-link" href="{% url 'workshop:frontmatter' slug=workshop.slug %}">Frontmatter{% if request.get_full_path == frontmatter_url %} <span class="sr-only">(current)</span>{% endif %}</a>
+        </li>
+        <li class="nav-item dropdown no-touch">
+          <a id="meta-btn" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Lessons
+          </a>
+          <div class="dropdown-menu no-touch" aria-labelledby="navbarDropdown">
+            {% for lesson in lessons %}
+              <a id="meta-btn" class="dropdown-item" href="{% url 'workshop:lesson' slug=workshop.slug %}?page={{ lesson.order }}">{{ lesson.order }}. {{ lesson }}</a>
+            {% endfor %}
+          </div>
+        </li>
+        <li class="nav-item disabled no-touch">
+          <a id="meta-btn" class="nav-link disabled" href="#">Assessment</a>
+        </li>
+        <li class="nav-item no-touch">
+          <a id="meta-btn" class="nav-link" href="{% url 'workshop:praxis' slug=workshop.slug %}">Theory to Practice</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>

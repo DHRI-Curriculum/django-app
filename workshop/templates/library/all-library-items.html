@@ -1,0 +1,87 @@
+{% extends 'website/base.html' %}
+{% load markdownify %}
+{% load static %}
+
+{% block hero %}
+<div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+  <h1 class="display-4">Library</h1>
+  {{ page.text | safe }}
+</div>
+{% endblock %}
+
+
+{% block admin_edit %}
+  <a href="{% url 'admin:website_page_change' page.id  %}" class="text-decoration-none">
+    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pen" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+      <path fill-rule="evenodd" d="M5.707 13.707a1 1 0 0 1-.39.242l-3 1a1 1 0 0 1-1.266-1.265l1-3a1 1 0 0 1 .242-.391L10.086 2.5a2 2 0 0 1 2.828 0l.586.586a2 2 0 0 1 0 2.828l-7.793 7.793zM3 11l7.793-7.793a1 1 0 0 1 1.414 0l.586.586a1 1 0 0 1 0 1.414L5 13l-3 1 1-3z"/>
+      <path fill-rule="evenodd" d="M9.854 2.56a.5.5 0 0 0-.708 0L5.854 5.855a.5.5 0 0 1-.708-.708L8.44 1.854a1.5 1.5 0 0 1 2.122 0l.293.292a.5.5 0 0 1-.707.708l-.293-.293z"/>
+      <path d="M13.293 1.207a1 1 0 0 1 1.414 0l.03.03a1 1 0 0 1 .03 1.383L13.5 4 12 2.5l1.293-1.293z"/>
+    </svg><span class="ml-1 mr-4">Edit page</span>
+  </a>
+{% endblock %}
+
+
+
+{% block main %}
+  <div class="container">
+    <div class="row">
+
+        <div class="col-12 col-sm-6 mt-4 mt-md-2 overflow-hidden">
+            <h4>All Projects</h4>
+            <hr />
+            <p style="font-size:1.05rem;">Here is an introductory paragraph about what "projects" mean on the website...</p>
+            <div id="project-list">
+                {% include 'library/projects.html' %}
+            </div>
+            <div class="text-center">
+                <a id="loadMoreProjects" class="btn btn-light btn-sm" data-page="2" data-url="/library/load-projects/" data-div="project-list">Load More</a>
+            </div>
+        </div>
+
+
+        <div class="col-12 col-sm-6 mt-4 mt-md-2 overflow-hidden">
+            <h4>All Readings</h4>
+            <hr />
+            <p style="font-size:1.05rem;">Here is an introductory paragraph about what "readings" mean on the website...</p>
+            <div id="reading-list">
+                {% include 'library/readings.html' %}
+            </div>
+            <div class="text-center">
+                <a id="loadMoreReadings" class="btn btn-light btn-sm" data-page="2" data-url="/library/load-readings/" data-div="reading-list">Load More</a>
+            </div>
+        </div>
+
+
+        <div class="col-12 col-sm-6 mt-4 mt-md-2 overflow-hidden">
+            <h4>All Resources</h4>
+            <hr />
+            <p style="font-size:1.05rem;">Here is an introductory paragraph about what "resources" mean on the website...</p>
+            <div id="resource-list">
+                {% include 'library/resources.html' %}
+            </div>
+            <div class="text-center">
+                <a id="loadMoreResources" class="btn btn-light btn-sm" data-page="2" data-url="/library/load-resources/" data-div="resource-list">Load More</a>
+            </div>
+        </div>
+
+
+        <div class="col-12 col-sm-6 mt-4 mt-md-2 overflow-hidden">
+            <h4>All Tutorials</h4>
+            <hr />
+            <p style="font-size:1.05rem;">Here is an introductory paragraph about what "tutorials" mean on the website...</p>
+            <div id="tutorial-list">
+                {% include 'library/tutorials.html' %}
+            </div>
+            <div class="text-center">
+                <a id="loadMoreTutorials" class="btn btn-light btn-sm" data-page="2" data-url="/library/load-tutorials/" data-div="tutorial-list">Load More</a>
+            </div>
+        </div>
+
+    </div>
+  </div>
+{% endblock %}
+
+
+{% block javascript %}
+<script src="{% static 'library/js/button.js' %}" crossorigin="anonymous"></script>
+{% endblock %}
