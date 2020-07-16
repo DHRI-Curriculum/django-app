@@ -1,4 +1,5 @@
 from django import template
+from django.utils.safestring import mark_safe
 import mistune
 from pygments import highlight
 from pygments.lexers import get_lexer_by_name
@@ -43,6 +44,12 @@ def nl2br(value):
 def get_item(dictionary, key):
     if key in dictionary: return dictionary.get(key)
     return ''
+
+
+@register.simple_tag()
+def get_from_tuple(tuple, no, key):
+    return mark_safe(tuple[no].get(key))
+
 
 @register.filter
 def get_item_type(dictionary, key):

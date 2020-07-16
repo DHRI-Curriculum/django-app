@@ -1,4 +1,6 @@
 from backend import models
+from django.conf import settings
+import os
 
 AUTO_REPOS = [
     ('project-lab', 'v2.0rhody-edits'),
@@ -212,7 +214,7 @@ LESSON_TRANSPOSITIONS = {
 }
 
 STATIC_IMAGES = {
-    'LESSONS': './app/workshop/static/images/lessons/'
+    'LESSONS': os.path.join(settings.BASE_DIR, 'workshop/static/images/lessons/')
 }
 
 AUTO_PAGES = [

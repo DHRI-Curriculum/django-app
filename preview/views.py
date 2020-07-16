@@ -58,14 +58,17 @@ def get_from_url(url:str, type:str, workshop=None): # type = 'frontmatter' | 'th
         import re
         from backend.dhri.loader import Loader
         payload['markdown_text'] = re.sub(r'', '', payload['markdown_text'])
-        l = Loader(repo=f'http://www.github.com/{workshop.parent_repo}', branch=workshop.parent_branch)
-        payload['sections'] = LessonParser(payload['markdown_text'], loader=l).data
+        l = Loader(repo=f'https://github.com/{workshop.parent_repo}', branch=workshop.parent_branch)
+        payload['sections'] = l.lessons
+        payload['sections_html'] = l.lessons_html
+        for i, section in enumerate(payload['sections']):
+            payload['sections'][i]['text'] = payload['sections'][i]['text'].replace('\n', '<br />')
 
     return(payload)
 
 @staff_member_required
-def frontmatter(request, repository=None):
-    workshop = get_object_or_404(Workshop, slug=repository)
+def frontmatter(request, repo=None):
+    workshop = get_object_or_404(Workshop, slug=repo)
 
     url = f'{BASE_URL}{workshop.parent_repo}/{workshop.parent_branch}/{ FILES["frontmatter"] }'
     _ = get_from_url(url=url, type='frontmatter')
@@ -81,8 +84,8 @@ def frontmatter(request, repository=None):
     return render(request, 'preview/preview.html', payload)
 
 @staff_member_required
-def praxis(request, repository=None):
-    workshop = get_object_or_404(Workshop, slug=repository)
+def praxis(request, repo=None):
+    workshop = get_object_or_404(Workshop, slug=repo)
     url = f'{BASE_URL}{workshop.parent_repo}/{workshop.parent_branch}/{ FILES["praxis"] }'
     _ = get_from_url(url=url, type='theory-to-practice')
 
@@ -97,8 +100,8 @@ def praxis(request, repository=None):
     return render(request, 'preview/preview.html', payload)
 
 @staff_member_required
-def lessons(request, repository=None):
-    workshop = get_object_or_404(Workshop, slug=repository)
+def lessons(request, repo=None):
+    workshop = get_object_or_404(Workshop, slug=repo)
     url = f'{BASE_URL}{workshop.parent_repo}/{workshop.parent_branch}/{ FILES["lessons"] }'
     _ = get_from_url(url=url, type='lessons', workshop=workshop)
 
@@ -108,6 +111,6 @@ def lessons(request, repository=None):
     payload['type'] = 'lessons'
     payload['markdown_text'] = _.get('markdown_text')
     payload['html_text'] = _.get('html_text')
-    payload['sections'] = _.get('sections')
+    payload['sections'] = zip(_.get('sections'), _.get('sections_html'))
 
     return render(request, 'preview/preview.html', payload)

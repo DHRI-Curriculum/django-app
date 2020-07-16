@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup, Comment
 from backend.dhri.webcache import WebCache
 
 log = Logger(name='lesson-parser')
-md_to_html_parser = markdown.Markdown(extensions=['extra', 'codehilite', 'sane_lists', 'nl2br'])
+md_to_html_parser = markdown.Markdown(extensions=['extra', 'codehilite', 'sane_lists']) # 'nl2br'
 
 
 
@@ -105,6 +105,9 @@ class LessonParser():
                 if line.strip() == '': continue
                 if i not in droplines:
                     cleaned_body += line + '\n'
+            
+            cleaned_body = re.sub(r' +', ' ', cleaned_body)
+            cleaned_body = re.sub(r'\n+', '\n', cleaned_body)
 
             # 4. Clean up all markdown data
             title = title.strip()
@@ -149,20 +152,27 @@ class LessonParser():
             # 1. Attempt to download any images
             if self.repo:
                 REPO_CLEAR = "".join(self.repo.split("https://github.com/DHRI-Curriculum/")[1:])
-            else:
-                REPO_CLEAR = ''
 
-            for image in soup.find_all("img"):
-                src = image.get('src')
-                if not src:
-                    log.warning(f"An image with no src attribute detected in lesson: {image}")
-                    continue
-                filename = image['src'].split('/')[-1]
-                url = f'https://raw.githubusercontent.com/DHRI-Curriculum/{REPO_CLEAR}/{self.branch}/images/{filename}'
-                local_file = STATIC_IMAGES['LESSONS'] / Path(REPO_CLEAR) / filename
-                download_image(url, local_file)
-                local_url = f'/static/images/lessons/{REPO_CLEAR}/{filename}'
-                image['src'] = local_url
+                # Only download images if self.repo is set
+                for image in soup.find_all("img"):
+                    src = image.get('src')
+                    if not src:
+                        log.warning(f"An image with no src attribute detected in lesson: {image}")
+                        continue
+                    filename = image['src'].split('/')[-1]
+                    url = f'https://raw.githubusercontent.com/DHRI-Curriculum/{REPO_CLEAR}/{self.branch}/images/{filename}'
+                    local_file = STATIC_IMAGES['LESSONS'] / Path(REPO_CLEAR) / filename
+
+                    if '//' in url:
+                        url = url.replace('//', '/').replace('https:/', 'https://').replace('http:/', 'http://')
+
+                    download_image(url, local_file)
+                    local_url = f'/static/images/lessons/{REPO_CLEAR}/{filename}'
+                    print('local_file:', local_file)
+                    print('local_url:', local_url)
+                    print('url:', url)
+                    image['src'] = local_url
+                    image['class'] = image.get('class', []) + ['img-fluid']
 
             # 2. Find and test links
             for link in soup.find_all("a"):
@@ -191,6 +201,9 @@ class LessonParser():
             # 3. Fix tables
             for table in soup.find_all("table"):
                 table['class'] = table.get('class', []) + ['table']
+
+            for tr in soup.find_all("tr"):
+                tr['height'] = 'auto'
 
             # 4. Replace transpositions
             string_soup = str(soup)

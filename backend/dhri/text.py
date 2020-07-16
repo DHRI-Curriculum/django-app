@@ -21,12 +21,10 @@ def get_number(markdown:str) -> int:
     g = re.search(NUMBERS, markdown)
     if g:
         if '.' in g.groups()[0]:
-            assumed_integer = g.groups()[0].split('.')[0]
+            return g.groups()[0].split('.')[0]
         else:
-            assumed_integer = g.groups()[0]
-    else:
-        assumed_integer = 0
-    return(assumed_integer)
+            return g.groups()[0]
+    return 0
 
 
 def auto_replace(string:str) -> str:

@@ -47,12 +47,11 @@ class Command(BaseCommand):
 
         repos = _get_repos(options)
 
-        for repo in repos:
-            branch = _test_for_branch(repo)
-            repo = f'https://github.com/DHRI-Curriculum/{repo}'
+        for d in repos:
+            repo, branch = _test_for_branch(d)
 
             try:
-                l = Loader(repo, branch, force_download=True)
+                l = Loader(f'https://github.com/DHRI-Curriculum/{repo}', branch, force_download=True)
             except MissingRequiredSection as e:
                 LOG.error(f"One or more required section(s) could not be found in {repo}: {e}")
 
@@ -198,6 +197,8 @@ class Command(BaseCommand):
 
 
         if options.get('all', False):
+            LOG.name = 'downloaddata'
+
             LOG.log("Automatic import activated: Attempting to generate pages", force=True)
             create_pages()
 
@@ -209,15 +210,15 @@ class Command(BaseCommand):
 
             # TODO: Dump data?
 
-def _test_for_branch(repo=''):
+def _test_for_branch(d=''):
     repo, branch = None, None
 
-    if isinstance(repo, tuple):
-        repo, branch = repo
+    if isinstance(d, tuple):
+        repo, branch = d
 
     if not branch:
         for r in AUTO_REPOS:
-            if repo == r[0]:
+            if d == r[0]:
                 branch = r[1]
 
     if not branch:
@@ -227,6 +228,8 @@ def _test_for_branch(repo=''):
     return repo, branch
 
 def _get_repos(options={}):
+    repos = []
+
     if options.get('all', False):
         LOG.log("Automatic import activated.", force=True)
         repos = AUTO_REPOS

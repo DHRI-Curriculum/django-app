@@ -258,6 +258,9 @@ class Loader():
 
         self.log = Logger(name=f'loader')
 
+        if not repo.startswith('https://github.com/'):
+            log.error('Repository URL does not look correct. Needs to start with https://github.com/')
+
         self.branch = branch
         self.repo = repo
         self.user = self.repo.split('/')[3]
@@ -285,6 +288,20 @@ class Loader():
         self.praxis = _normalize_data(self.praxis, 'theory-to-practice')
         self.assessment = _normalize_data(self.assessment, 'assessment')
 
+        # fix frontmatter data sections
+        self.frontmatter['estimated_time'] = get_number(self.frontmatter.get('estimated_time'))
+        self.frontmatter['contributors'] = ContributorParser(self.frontmatter.get('contributors')).data
+        self.frontmatter['readings'] = [str(_) for _ in as_list(self.frontmatter.get('readings'))]
+        self.frontmatter['projects'] = [str(_) for _ in as_list(self.frontmatter.get('projects'))]
+        self.frontmatter['learning_objectives'] = [str(_) for _ in as_list(self.frontmatter.get('learning_objectives'))]
+        self.frontmatter['ethical_considerations'] = [str(_) for _ in as_list(self.frontmatter.get('ethical_considerations'))]
+
+        # fix praxis data sections
+        self.praxis['discussion_questions'] = [str(_) for _ in as_list(self.praxis.get('discussion_questions'))]
+        self.praxis['next_steps'] = [str(_) for _ in as_list(self.praxis.get('next_steps'))]
+        self.praxis['tutorials'] = [str(_) for _ in as_list(self.praxis.get('tutorials'))]
+        self.praxis['further_readings'] = [str(_) for _ in as_list(self.praxis.get('further_readings'))]
+
         self.as_html = HTMLParser(self)
 
         self.content = {
@@ -305,18 +322,18 @@ class Loader():
 
         # Mapping frontmatter sections
         self.abstract = self.frontmatter.get('abstract')
-        self.estimated_time = get_number(self.frontmatter.get('estimated_time'))
-        self.contributors = ContributorParser(self.frontmatter.get('contributors')).data
-        self.readings = as_list(self.frontmatter.get('readings'))
-        self.projects = [str(_) for _ in as_list(self.frontmatter.get('projects'))]
-        self.learning_objectives = [str(_) for _ in as_list(self.frontmatter.get('learning_objectives'))]
-        self.ethical_considerations = [str(_) for _ in as_list(self.frontmatter.get('ethical_considerations'))]
+        self.estimated_time = self.frontmatter.get('estimated_time')
+        self.contributors = self.frontmatter.get('contributors')
+        self.readings = self.frontmatter.get('readings')
+        self.projects = self.frontmatter.get('readings')
+        self.learning_objectives = self.frontmatter.get('learning_objectives')
+        self.ethical_considerations = self.frontmatter.get('ethical_considerations')
 
         # Mapping praxis sections
-        self.discussion_questions = as_list(self.praxis.get('discussion_questions'))
-        self.next_steps = as_list(self.praxis.get('next_steps'))
-        self.tutorials = [str(_) for _ in as_list(self.praxis.get('tutorials'))]
-        self.further_readings = [str(_) for _ in as_list(self.praxis.get('further_readings'))]
+        self.discussion_questions = self.praxis.get('discussion_questions')
+        self.next_steps = self.praxis.get('next_steps')
+        self.tutorials = self.praxis.get('tutorials')
+        self.further_readings = self.praxis.get('further_readings')
 
 
 class ContributorParser():
