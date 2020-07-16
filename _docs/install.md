@@ -39,4 +39,4 @@ That should show you the progress of the installation of all the python dependen
 
 ### Following install track?
 
-[<< Back to README](../README.md) | [Next step >>](populate.md)
+[<< Back to README](../) | [Next step >>](populate.md)
