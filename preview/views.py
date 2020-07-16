@@ -29,9 +29,9 @@ def get_from_url(url:str, type:str): # type = 'frontmatter' | 'theory-to-practic
     from pathlib import Path
     import sys
     sys.path.append(str(Path(settings.BASE_DIR).parent))
-    from dhri.utils.markdown import split_into_sections
-    from dhri.utils.loader import _normalize_data, as_list, ContributorParser
-    from dhri.utils.parse_lesson import LessonParser
+    from backend.dhri.markdown import split_into_sections
+    from backend.dhri.loader import _normalize_data, as_list, ContributorParser
+    from backend.dhri.parse_lesson import LessonParser
     import markdown
     md_to_html_parser = markdown.Markdown(extensions=['extra', 'codehilite', 'sane_lists', 'nl2br'])
 
