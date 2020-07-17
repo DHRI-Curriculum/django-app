@@ -50,6 +50,10 @@ class Command(BaseCommand):
         for d in repos:
             repo, branch = _test_for_branch(d)
 
+            if not repo:
+                repo = d
+            #LOG.error(f"Cannot understand repo {repo}.")
+
             try:
                 l = Loader(f'https://github.com/DHRI-Curriculum/{repo}', branch, force_download=True)
             except MissingRequiredSection as e:

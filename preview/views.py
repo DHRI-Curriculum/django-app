@@ -3,8 +3,7 @@ from django.shortcuts import render, get_object_or_404, HttpResponse
 import requests
 from backend.models import Workshop
 from backend.dhri.markdown import split_into_sections
-from backend.dhri.loader import _normalize_data, as_list, ContributorParser
-from backend.dhri.parse_lesson import LessonParser, md_to_html_parser
+from backend.dhri.loader import _normalize_data, as_list, ContributorParser, LessonParser, PARSER
 
 
 BASE_URL = 'https://raw.githubusercontent.com/'
@@ -34,7 +33,7 @@ def get_from_url(url:str, type:str, workshop=None): # type = 'frontmatter' | 'th
 
     # Generate markdown & HTML
     payload['markdown_text'] = r.text
-    payload['html_text'] = md_to_html_parser.convert(r.text)
+    payload['html_text'] = PARSER.convert(r.text)
 
     if type == 'frontmatter' or type == 'theory-to-practice':
         # Split sections

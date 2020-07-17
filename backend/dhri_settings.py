@@ -295,3 +295,5 @@ if TERMINAL_WIDTH > MAX_TERMINAL_WIDTH: TERMINAL_WIDTH = MAX_TERMINAL_WIDTH
 
 
 saved_prefix = '----> '
+
+github_token = Path(os.path.join(settings.BASE_DIR, 'github_token_key.txt')).read_text()

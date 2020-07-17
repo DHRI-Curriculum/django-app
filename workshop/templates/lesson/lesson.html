@@ -3,6 +3,7 @@
 
 {% block extra_head_material %}
   <link rel="stylesheet" href="{% static 'lesson/css/pygment.css' %}">
+  <link rel="stylesheet" href="{% static 'website/css/github.css' %}">
   <script>
     var next = {% if page_obj.has_next %}{{ page_obj.next_page_number }}{% else %}0{% endif %}
     var prev = {% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}0{% endif %}
@@ -46,7 +47,7 @@
 
   <div class="row">
 
-    <div class="col-12 py-3" id="lesson-content">
+    <div class="markdown-body col-12 py-3" id="lesson-content">
 
       <h1>{{ lesson.order }}. {{ lesson.title }}</h1>
 
