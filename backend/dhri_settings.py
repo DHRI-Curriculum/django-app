@@ -4,7 +4,7 @@ import os
 
 AUTO_REPOS = [
     ('project-lab', 'v2.0rhody-edits'),
-    ('data-and-ethics', 'v2.0-di-edits'),
+    ('data-literacies', 'v2.0-di-edits'),
     ('text-analysis', 'v2.0-rafa-edits'),
     ('command-line', 'v2.0-smorello-edits'),
     ('python', 'v2.0-filipa-edits'),
