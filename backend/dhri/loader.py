@@ -488,9 +488,9 @@ class LessonParser():
 
             challenge = ""
             # 1. Test markdown for challenge
-            if "challenge" in body.lower():
+            if "## challenge" in body.lower() or "## activity" in body.lower():
                 for line_num, line in enumerate(body.splitlines()):
-                    if line.lower().startswith("## challenge"):
+                    if line.lower().startswith("## challenge") or line.lower().startswith("## activity"):
                         droplines.append(line_num)
                         startline = line_num + 1
                         nextlines = (item for item in body.splitlines()[startline:])
@@ -615,6 +615,8 @@ class LessonParser():
                         log.warning(f"The lesson `{title}` links to other workshop/root curriculum: {REPO_CLEAR} —> {OUTBOUND_CLEAR}")
                 elif href.startswith('http') or href.startswith('//'):
                     c = WebCache(href)
+                elif href.startswith('#'):
+                    log.warning(f"The lesson `{title}` contains a relative href ({href}) which may or may not work in production.")
                 else:
                     g = re.search(r'(\d+).*(md)', href)
                     if g:
