@@ -28,6 +28,7 @@ from requests.exceptions import HTTPError, MissingSchema
 from bs4 import BeautifulSoup, Comment
 from backend.dhri.webcache import WebCache
 from github import Github
+import time
 
 
 class GitHubParser():
@@ -46,7 +47,12 @@ class GitHubParser():
         #if r.status_code == 200:
         #    return r.text
 
-        return g.render_markdown(string)
+        try:
+            return g.render_markdown(string)
+        except:
+            time.sleep(3)
+            return g.render_markdown(string)
+
         log.warning(f'GitHub API returned {r.status_code}: {r.text}', kill=False)
         log.warning(f'Trying to interpret data using internal markdown instead')
 
