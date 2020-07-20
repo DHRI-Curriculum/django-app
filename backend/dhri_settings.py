@@ -4,8 +4,8 @@ import os
 
 AUTO_REPOS = [
     # ('databases', 'v2.0'),
-    ('project-lab', 'v2.0rhody-edits'),
     ('data-literacies', 'v2.0-di-edits'),
+    ('project-lab', 'v2.0rhody-edits'),
     ('text-analysis', 'v2.0-rafa-edits'),
     ('command-line', 'v2.0-smorello-edits'),
     ('python', 'v2.0-filipa-edits'),

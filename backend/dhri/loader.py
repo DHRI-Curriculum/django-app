@@ -583,7 +583,7 @@ class LessonParser():
 
             # 1. Attempt to download any images
             if self.repo:
-                REPO_CLEAR = "".join(self.repo.split("https://github.com/DHRI-Curriculum/")[1:])
+                REPO_CLEAR = self.repo.split("/")[-1]
 
                 # Only download images if self.repo is set
                 for image in soup.find_all("img"):
@@ -627,7 +627,13 @@ class LessonParser():
                         link['href'] = f'?page={order}'
                         log.warning(f"The lesson `{title}` links to an internal file: {href} (will be relinked to ?page={order} instead)")
                     else:
-                        log.warning(f"The lesson `{title}` links to an internal file: {href} (** could not be deciphered)")
+                        if ".png" in href or ".jpg" in href or ".gif" in href:
+                            filename = href.split('/')[-1]
+                            local_url = f'/static/images/lessons/{REPO_CLEAR}/{filename}'
+                            link['href'] = local_url
+                            log.warning(f"The lesson `{title}` links to an image: {href} —> {local_url})")
+                        else:
+                            log.warning(f"The lesson `{title}` links to an internal file: {href} (** could not be deciphered)")
 
             # 3. Fix tables
             for table in soup.find_all("table"):
