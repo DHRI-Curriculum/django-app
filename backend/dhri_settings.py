@@ -3,6 +3,7 @@ from django.conf import settings
 import os
 
 AUTO_REPOS = [
+    # ('databases', 'v2.0'),
     ('project-lab', 'v2.0rhody-edits'),
     ('data-literacies', 'v2.0-di-edits'),
     ('text-analysis', 'v2.0-rafa-edits'),
@@ -133,12 +134,12 @@ DJANGO_PATHS = {
         'MANAGE': 'app/manage.py',
     }
 
-# Zotero API key
-try:
-    with open('./zotero-api-key.txt', 'r') as f:
-        ZOTERO_API_KEY = f.read()
-except:
-    ZOTERO_API_KEY = None
+# API key locations
+
+KEYS = {
+    'ZOTERO': os.path.join(settings.BASE_DIR, 'zotero-api-key.txt.txt'),
+    'GITHUB': os.path.join(settings.BASE_DIR, 'github_token_key.txt')
+}
 
 
 # Auto replacement in titles
@@ -244,11 +245,13 @@ AUTO_PAGES = [
 #### MAKE NO CHANGES BELOW
 
 
+from backend.dhri.log import Logger
 from itertools import chain
 from datetime import timedelta
 from pathlib import Path
 import os
 
+log = Logger(name='settings')
 
 DJANGO_PATHS['DB'] = Path(DJANGO_PATHS['DB'])
 
@@ -258,9 +261,11 @@ for path in DJANGO_PATHS:
 for cat in STATIC_IMAGES:
     STATIC_IMAGES[cat] = Path(STATIC_IMAGES[cat])
 
+'''
 def _test(constant=None, as_type=bool):
     if not isinstance(constant, as_type): log.error(f'{constant}` provided must be a {as_type}.', raise_error=ConstantError)
     return(True)
+'''
 
 def _check_normalizer(dictionary=NORMALIZING_SECTIONS):
     for section in NORMALIZING_SECTIONS:
@@ -296,4 +301,14 @@ if TERMINAL_WIDTH > MAX_TERMINAL_WIDTH: TERMINAL_WIDTH = MAX_TERMINAL_WIDTH
 
 saved_prefix = '----> '
 
-github_token = Path(os.path.join(settings.BASE_DIR, 'github_token_key.txt')).read_text()
+try:
+    with open(KEYS['GITHUB'], 'r') as f:
+        GITHUB_TOKEN = f.read()
+except:
+    GITHUB_TOKEN = None
+
+try:
+    with open(KEYS['ZOTERO'], 'r') as f:
+        ZOTERO_API_KEY = f.read()
+except:
+    ZOTERO_API_KEY = None

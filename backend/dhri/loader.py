@@ -23,7 +23,7 @@ from backend.dhri.text import get_number
 
 
 
-from backend.dhri_settings import STATIC_IMAGES, LESSON_TRANSPOSITIONS, github_token
+from backend.dhri_settings import STATIC_IMAGES, LESSON_TRANSPOSITIONS, GITHUB_TOKEN
 from requests.exceptions import HTTPError, MissingSchema
 from bs4 import BeautifulSoup, Comment
 from backend.dhri.webcache import WebCache
@@ -37,27 +37,24 @@ class GitHubParser():
         pass
 
     def convert(self, string):
+        if not GITHUB_TOKEN:
+            log.error('GitHub API token is not correctly set up in backend.dhri_settings — correct the error and try again')
+
         string = str(string)
-        #string = string.encode('utf-8')
-        g = Github(github_token)
-        #r = requests.request('POST', 'https://api.github.com/markdown/raw',
-        #             headers={'Content-Type': 'text/plain'},
-        #             data=string
-        #            )
-        #if r.status_code == 200:
-        #    return r.text
+        g = Github(GITHUB_TOKEN)
 
         try:
             return g.render_markdown(string)
         except:
             time.sleep(3)
-            return g.render_markdown(string)
+            try:
+                return g.render_markdown(string)
+            except:
+                pass
 
-        log.warning(f'GitHub API returned {r.status_code}: {r.text}', kill=False)
-        log.warning(f'Trying to interpret data using internal markdown instead')
+        log.error(f'GitHub API interpretation of markdown failed: Trying to interpret data using internal markdown instead.', kill=False)
 
         # backup solution
-        string = string.decode('utf-8')
         p = markdown.Markdown(extensions=['extra', 'codehilite', 'sane_lists'])
         return p.convert(string)
 
