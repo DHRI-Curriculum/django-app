@@ -245,13 +245,11 @@ AUTO_PAGES = [
 #### MAKE NO CHANGES BELOW
 
 
-from backend.dhri.log import Logger
 from itertools import chain
 from datetime import timedelta
 from pathlib import Path
 import os
-
-log = Logger(name='settings')
+from backend.dhri.exceptions import ConstantError
 
 DJANGO_PATHS['DB'] = Path(DJANGO_PATHS['DB'])
 
@@ -272,7 +270,7 @@ def _check_normalizer(dictionary=NORMALIZING_SECTIONS):
         all_ = [x.lower() for x in list(chain.from_iterable([x for x in NORMALIZING_SECTIONS[section].values()]))]
 
         if max([all_.count(x) for x in set(all_)]) > 1:
-            log.error('NORMALIZING_SECTIONS is confusing: multiple alternative strings for normalizing.', raise_error=ConstantError)
+            raise ConstantError('NORMALIZING_SECTIONS is confusing: multiple alternative strings for normalizing.')
 
     return(True)
 
