@@ -43,16 +43,21 @@ class GitHubParser():
         string = str(string)
         g = Github(GITHUB_TOKEN)
 
+        exceptions = []
         try:
             return g.render_markdown(string)
-        except:
+        except Exception as e:
+            exceptions.append(str(e))
             time.sleep(3)
             try:
                 return g.render_markdown(string)
             except:
+                exceptions.append(str(e))
                 pass
 
         log.error(f'GitHub API interpretation of markdown failed: Trying to interpret data using internal markdown instead.', kill=False)
+        log.error(f'FYI, these were the exceptions:')
+        print(exceptions)
 
         # backup solution
         p = markdown.Markdown(extensions=['extra', 'codehilite', 'sane_lists'])
