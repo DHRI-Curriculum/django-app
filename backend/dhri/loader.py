@@ -56,7 +56,7 @@ class GitHubParser():
                 pass
 
         log.error(f'GitHub API interpretation of markdown failed: Trying to interpret data using internal markdown instead.', kill=False)
-        log.error(f'FYI, these were the exceptions:')
+        log.error(f'FYI, these were the exceptions:', kill=False)
         print(exceptions)
 
         # backup solution
