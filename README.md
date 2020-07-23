@@ -19,6 +19,8 @@ Deadline: July 23
 
 ---
 
+### Workflow
+
 In order to explain the workflow of what happens in the application, here is a visual representation of the flow from the end user and the administrator end, and both of their interactions with the Django application.
 
 ![Visualization of the flow](_docs/django-flow.png)
