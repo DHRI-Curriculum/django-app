@@ -3,7 +3,7 @@ from django.conf import settings
 import os
 
 AUTO_REPOS = [
-    # ('databases', 'v2.0'),
+    ('databases', 'v2.0'),
     ('data-literacies', 'v2.0-di-edits'),
     ('project-lab', 'v2.0rhody-edits'),
     ('text-analysis', 'v2.0-rafa-edits'),
