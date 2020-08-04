@@ -1,3 +1,7 @@
 from django.db import models
 
-# Create your models here.
+class Term(models.Model):
+    term = models.TextField()
+    explication = models.TextField()
+    readings = models.ManyToManyField('library.Reading')
+    tutorials = models.ManyToManyField('library.Tutorial')
