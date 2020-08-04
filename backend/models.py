@@ -7,6 +7,7 @@ from praxis.models import *
 from preview.models import *
 from website.models import *
 from workshop.models import *
+from glossary.models import *
 
 ALL_MODELS = [
     # Profile,
@@ -20,5 +21,6 @@ ALL_MODELS = [
     Reading,
     Praxis,
     Page,
-    Workshop
+    Workshop,
+    Term
 ]

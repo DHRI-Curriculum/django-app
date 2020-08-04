@@ -95,16 +95,16 @@ def _is_expired(path, age_checker=TEST_AGES['ROOT'], force_download=FORCE_DOWNLO
 
     if isinstance(path, str): path = Path(path)
     log = Logger(name='cache-age-check')
-    if not path.exists() or force_download == True: return(False)
+    if not path.exists() or force_download == True: return(True)
     file_mod_time = datetime.fromtimestamp(path.stat().st_ctime)
     now = datetime.today()
 
     if now - file_mod_time > age_checker:
         log.warning(f'Cache has expired for {path} - older than {age_checker}...')
-        return False
+        return True
 
     log.log(f'Cache is OK for {path} - not older than {age_checker}....')
-    return True
+    return False
 
 
 def process_links(input, obj):
@@ -678,3 +678,86 @@ class LessonParser():
 
     def __len__(self):
         return(len(self.data))
+
+
+class GlossaryCache():
+
+    log = Logger(name='glossary-loader-cache')
+
+    def __init__(self, loader, force_download=FORCE_DOWNLOAD):
+        self.loader = loader
+
+        self.path = CACHE_DIRS['ROOT'] / (self.loader.repo_name + ".json")
+        self.expired = _is_expired(self.path, age_checker=TEST_AGES["GLOSSARY"], force_download=force_download)
+
+        if not self.path.exists():
+            log.warning(f'{self.path} does not exist so downloading glossary cache...')
+            self._setup_raw_content()
+
+        if force_download == True:
+            log.warning(f'Force download is set to True so downloading glossary cache...')
+            self._setup_raw_content()
+
+        if self.expired == True:
+            log.warning(f'File is expired (set to {self.expired}) so downloading glossary cache...')
+            self._setup_raw_content()
+
+        self.data = self.load()
+
+
+    def _setup_raw_content(self):
+        self.data = {
+            'content': self._load_raw_text()
+        }
+        self.save()
+
+
+    def _load_raw_text(self):
+        log.log(f'Loading raw text from {self.loader.repo_name}...')
+
+        r = requests.get(f'https://github.com/DHRI-Curriculum/{self.loader.repo_name}/tree/{self.loader.branch}/terms')
+
+        soup = BeautifulSoup(r.text, 'lxml')
+
+        results = dict()
+
+        for _ in soup.find_all("div", {"class": "js-navigation-item"})[1:]:
+            link = _.find('a')['href']
+            filename = link.split('/')[-1]
+            term = ".".join(filename.split('.')[:-1])
+
+            log.log(f'Loading raw text from term `{term}`...')
+            raw_url = f'https://raw.githubusercontent.com/DHRI-Curriculum/{self.loader.repo_name}/{self.loader.branch}/terms/{filename}'
+            r = requests.get(raw_url)
+            results[term] = r.text
+
+        return(results)
+
+
+    def save(self):
+        """Saves <self.data> into <self.path>"""
+        if not self.path.parent.exists(): self.path.parent.mkdir(parents=True)
+        self.path.write_text(json.dumps(self.data))
+
+
+    def load(self):
+        """Loads <self.data> from <self.path>"""
+        return json.loads(self.path.read_text())
+
+
+
+
+from backend.dhri_settings import GLOSSARY_REPO
+
+class GlossaryLoader():
+
+    log = Logger(name='glossary-loader')
+
+    def __init__(self, GLOSSARY_REPO=GLOSSARY_REPO):
+        self.repo_name = GLOSSARY_REPO[0]
+        self.branch = GLOSSARY_REPO[1]
+
+        self.data = GlossaryCache(self, force_download=FORCE_DOWNLOAD).data
+
+        # Map properties
+        self.content = self.data.get('content')
