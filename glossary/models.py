@@ -9,6 +9,9 @@ class Term(models.Model):
     tutorials = models.ManyToManyField('library.Tutorial')
 
     def save(self, *args, **kwargs):
-      name = self.name.replace('-',' ').replace('/',' ')
-      self.slug = slugify(name)
-      super(Workshop, self).save()
+        term = self.term.replace('-',' ').replace('/',' ')
+        self.slug = slugify(term)
+        super(Term, self).save()
+
+    def __str__(self):
+        return f'{self.term}'

@@ -128,11 +128,11 @@ def clear_cache():
 
     for DIR in CACHE_DIRS:
         for file in CACHE_DIRS[DIR].glob('*.txt'):
-            if _is_expired(file, TEST_AGES[DIR]) == False:
+            if _is_expired(file, TEST_AGES[DIR]) == True:
                 file.unlink()
 
         for file in CACHE_DIRS[DIR].glob('*.json'):
-            if _is_expired(file, TEST_AGES[DIR]) == False:
+            if _is_expired(file, TEST_AGES[DIR]) == True:
                 file.unlink()
 
 clear_cache()
@@ -147,7 +147,7 @@ class LoaderCache():
 
         self.path = CACHE_DIRS['ROOT'] / (self.loader.repo_name + ".json")
 
-        if not self.path.exists() or force_download == True or _is_expired(self.path, force_download=force_download): self._setup_raw_content()
+        if not self.path.exists() or force_download == True or _is_expired(self.path, force_download=force_download) == True: self._setup_raw_content()
 
         self.data = self.load()
 
@@ -688,7 +688,7 @@ class GlossaryCache():
         self.loader = loader
 
         self.path = CACHE_DIRS['ROOT'] / (self.loader.repo_name + ".json")
-        self.expired = _is_expired(self.path, age_checker=TEST_AGES["GLOSSARY"], force_download=force_download)
+        self.expired = _is_expired(self.path, age_checker=TEST_AGES["GLOSSARY"], force_download=force_download) == True
 
         if not self.path.exists():
             log.warning(f'{self.path} does not exist so downloading glossary cache...')
@@ -707,8 +707,13 @@ class GlossaryCache():
 
     def _setup_raw_content(self):
         self.data = {
-            'content': self._load_raw_text()
+            'terms_raw': self._load_raw_text()
         }
+
+        for term in self.data.get('terms_raw'):
+            print(term)
+            print(self.data.get('terms_raw').get(term))
+
         self.save()
 
 
@@ -760,4 +765,16 @@ class GlossaryLoader():
         self.data = GlossaryCache(self, force_download=FORCE_DOWNLOAD).data
 
         # Map properties
-        self.content = self.data.get('content')
+        self.terms_raw = self.data.get('terms_raw')
+
+        self.sections = self.terms_raw
+
+        for term, data in self.sections.items():
+            self.sections[term] = split_into_sections(data)
+            self.sections[term] = {k.lower():v for k, v in self.sections[term].items()}
+            if self.sections[term].get('readings'):
+                readings = as_list(self.sections[term].pop('readings'))
+                self.sections[term]['readings'] = readings
+            if self.sections[term].get('tutorials'):
+                tutorials = as_list(self.sections[term].pop('tutorials'))
+                self.sections[term]['tutorials'] = tutorials
