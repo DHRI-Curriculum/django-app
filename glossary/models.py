@@ -15,3 +15,6 @@ class Term(models.Model):
 
     def __str__(self):
         return f'{self.term}'
+
+    class Meta:
+        ordering = ['term']

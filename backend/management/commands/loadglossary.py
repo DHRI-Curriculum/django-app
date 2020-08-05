@@ -53,7 +53,13 @@ class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
+    def add_arguments(self, parser):
+        parser.add_argument('--wipe', action='store_true')
+
     help = 'Create glossary words'
 
     def handle(self, *args, **options):
+        if options.get('wipe', False):
+            Term.objects.all().delete()
+            log.log(f'All Terms removed.', force=True)
         create_terms(GLOSSARY_REPO)

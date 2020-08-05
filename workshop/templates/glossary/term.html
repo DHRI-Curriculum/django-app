@@ -1,0 +1,29 @@
+{% extends 'website/base.html' %}
+{% load markdownify admin_urls lessontags static crispy_forms_tags %}
+
+
+{% block main %}
+<div class="row py-4">
+    <div class="col-12">
+        <div class="border-top pt-3">
+            <h1>{{ term.term }}</h1>
+            <p class="lead">{{ term.explication }}</p>
+            {% if term.readings %}
+                <h3>Readings</h3>
+                {% for reading in term.readings.all %}
+                    <p><a href="{{ reading.url }}">{{ reading.title }}</a></p>
+                    <p>{{ reading.annotation }} ({{ reading.zotero_item }})</p>
+                {% endfor %}
+            {% endif %}
+
+            {% if term.tutorials %}
+                <h3>Tutorials</h3>
+                {% for tutorial in term.tutorials.all %}
+                    <p><a href="{{ tutorial.url }}">{{ tutorial.label }}</a></p>
+                    <p>{{ tutorial.annotation }} ({{ tutorial.zotero_item }})</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
