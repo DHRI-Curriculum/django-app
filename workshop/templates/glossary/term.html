@@ -5,7 +5,7 @@
 {% block main %}
 <div class="row py-4">
     <div class="col-12">
-        <div class="border-top pt-3">
+        <div class="pt-3">
             <h1>{{ term.term }}</h1>
             <p class="lead">{{ term.explication }}</p>
 
@@ -42,6 +42,19 @@
                 {% endif %}
 
             </div>
+
+            {% if lessons_with_term %}
+                <div class="row py-2 border-top">
+                    <div class="col-12">
+                        <h3>Lessons containing term</h3>
+                        <ul>
+                        {% for lesson in lessons_with_term.all %}
+                            <li><a href="{% url "workshop:lesson" lesson.workshop.slug %}?page={{ lesson.order }}">{{ lesson.title }}</a></li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
         </div>
     </div>
 </div>
