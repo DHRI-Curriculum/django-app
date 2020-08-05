@@ -8,21 +8,40 @@
         <div class="border-top pt-3">
             <h1>{{ term.term }}</h1>
             <p class="lead">{{ term.explication }}</p>
-            {% if term.readings %}
-                <h3>Readings</h3>
-                {% for reading in term.readings.all %}
-                    <p><a href="{{ reading.url }}">{{ reading.title }}</a></p>
-                    <p>{{ reading.annotation }} ({{ reading.zotero_item }})</p>
-                {% endfor %}
-            {% endif %}
 
-            {% if term.tutorials %}
-                <h3>Tutorials</h3>
-                {% for tutorial in term.tutorials.all %}
-                    <p><a href="{{ tutorial.url }}">{{ tutorial.label }}</a></p>
-                    <p>{{ tutorial.annotation }} ({{ tutorial.zotero_item }})</p>
-                {% endfor %}
-            {% endif %}
+            <div class="row py-2">
+
+                {% if term.readings %}
+                    <div class="col-6">
+                        <h3>Readings</h3>
+                        {% for reading in term.readings.all %}
+                            <div class="p-2 my-3 rounded-lg linked-comment">
+                                <a class="text-decoration-none" target="_blank" href="{{ reading.url }}">
+                                {{ reading.title }}
+                                <svg class="ml-2 bi bi-arrow-up-right-circle" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/> <path fill-rule="evenodd" d="M10.5 5h-4a.5.5 0 0 0 0 1h2.793l-4.147 4.146a.5.5 0 0 0 .708.708L10 6.707V9.5a.5.5 0 0 0 1 0v-4a.5.5 0 0 0-.5-.5z"/> </svg>
+                                </a>
+                                {% if reading.annotation %}<div class="small"><strong>Annotation:</strong> {{ reading.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if term.tutorials %}
+                    <div class="col-6">
+                        <h3>Tutorials</h3>
+                        {% for tutorial in term.tutorials.all %}
+                            <div class="p-2 my-3 rounded-lg linked-comment">
+                                <a class="text-decoration-none" target="_blank" href="{{ tutorial.url }}">
+                                {{ tutorial.label }}
+                                <svg class="ml-2 bi bi-arrow-up-right-circle" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/> <path fill-rule="evenodd" d="M10.5 5h-4a.5.5 0 0 0 0 1h2.793l-4.147 4.146a.5.5 0 0 0 .708.708L10 6.707V9.5a.5.5 0 0 0 1 0v-4a.5.5 0 0 0-.5-.5z"/> </svg>
+                                </a>
+                                {% if tutorial.annotation %}<div class="small"><strong>Annotation:</strong> {{ tutorial.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+            </div>
         </div>
     </div>
 </div>
