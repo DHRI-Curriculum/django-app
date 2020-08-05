@@ -778,3 +778,12 @@ class GlossaryLoader():
             if self.sections[term].get('tutorials'):
                 tutorials = as_list(self.sections[term].pop('tutorials'))
                 self.sections[term]['tutorials'] = tutorials
+
+        '''
+        self.sections_html = self.sections
+
+        for term, data in self.sections_html.items():
+            self.sections_html[term] = {k: PARSER.convert(v) for k, v in data.items()}
+
+        print(self.sections_html)
+        '''
