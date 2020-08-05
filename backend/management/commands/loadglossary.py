@@ -4,7 +4,6 @@ from backend.dhri.log import Logger, log_created
 from backend.models import Term, Reading, Tutorial
 from backend.dhri.loader import GlossaryLoader, process_links
 
-from pprint import pprint
 
 log = Logger(name='loadglossary')
 
@@ -62,5 +61,8 @@ class Command(BaseCommand):
         if options.get('wipe', False):
             Term.objects.all().delete()
             log.log(f'All Terms removed.', force=True)
+
+            loader = GlossaryLoader(force_download=True)
+            log.log(f'Glossary cache removed.', force=True)
 
         create_terms()

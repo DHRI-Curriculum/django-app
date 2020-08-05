@@ -758,11 +758,11 @@ class GlossaryLoader():
 
     log = Logger(name='glossary-loader')
 
-    def __init__(self, GLOSSARY_REPO=GLOSSARY_REPO):
-        self.repo_name = GLOSSARY_REPO[0]
-        self.branch = GLOSSARY_REPO[1]
+    def __init__(self, glossary_repo=GLOSSARY_REPO, force_download=FORCE_DOWNLOAD):
+        self.repo_name = glossary_repo[0]
+        self.branch = glossary_repo[1]
 
-        self.data = GlossaryCache(self, force_download=FORCE_DOWNLOAD).data
+        self.data = GlossaryCache(self, force_download=force_download).data
 
         # Map properties
         self.terms_raw = self.data.get('terms_raw')
