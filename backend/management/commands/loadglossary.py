@@ -62,4 +62,5 @@ class Command(BaseCommand):
         if options.get('wipe', False):
             Term.objects.all().delete()
             log.log(f'All Terms removed.', force=True)
-        create_terms(GLOSSARY_REPO)
+
+        create_terms()
