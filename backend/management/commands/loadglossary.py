@@ -8,8 +8,8 @@ from backend.dhri.loader import GlossaryLoader, process_links
 log = Logger(name='loadglossary')
 
 
-def create_terms(GLOSSARY_REPO=GLOSSARY_REPO):
-    loader = GlossaryLoader()
+def create_terms(glossary_repo=GLOSSARY_REPO):
+    loader = GlossaryLoader(glossary_repo)
 
     for _, data in loader.sections.items():
         readings, tutorials = list(), list()
@@ -36,17 +36,14 @@ def create_terms(GLOSSARY_REPO=GLOSSARY_REPO):
             title, url = process_links(annotation, 'reading')
             obj, created = Reading.objects.get_or_create(annotation = annotation, title = title, url = url)
             log.created(created, 'Reading', obj.title, obj.id)
-            # title, url = process_links(reading, 'reading')
-            # obj = Reading.objects.get_or_create(title=title, url=url)
             term.readings.add(obj)
 
         for annotation in tutorials:
             label, url = process_links(annotation, 'tutorial')
             obj, created = Tutorial.objects.get_or_create(annotation = annotation, label = label, url = url)
-            # title, url = process_links(tutorial, 'tutorial')
-            # obj = Tutorial.objects.get_or_create(title=title, url=url)
             log.created(created, 'Tutorial', obj.label, obj.id)
             term.tutorials.add(obj)
+
 
 class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
