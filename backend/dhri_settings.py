@@ -13,6 +13,8 @@ AUTO_REPOS = [
     ('git', 'v2.0-kristen-edits'),
 ]
 
+GLOSSARY_REPO = ('glossary', 'v2.0')
+
 AUTO_GROUPS = {
     'Team': {
         models.Profile: ['add', 'change', 'delete', 'view'],
@@ -160,6 +162,7 @@ TEST_AGES = {
     'ROOT': 20160, # 20,160 minutes = 14 days
     'WEB': 20160, # 20,160 minutes = 14 days
     'ZOTERO': 14, # days
+    'GLOSSARY': 14 # days
 }
 
 # If set to True, the script will override the cache every time (effectively disregarding TEST_AGES above)
@@ -282,6 +285,7 @@ for DIR in CACHE_DIRS:
 TEST_AGES['ROOT'] = timedelta(minutes=TEST_AGES['ROOT'])
 TEST_AGES['WEB'] = timedelta(minutes=TEST_AGES['WEB'])
 TEST_AGES['ZOTERO'] = timedelta(days=TEST_AGES['ZOTERO'])
+TEST_AGES['GLOSSARY'] = timedelta(days=TEST_AGES['GLOSSARY'])
 
 # Run tests
 
