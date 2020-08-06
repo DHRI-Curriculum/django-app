@@ -11,6 +11,7 @@ A dictionary that determines the path of the different caches for the DHRI Curri
 ```py
 CACHE_DIRS = {
     'ROOT': '.loader-cache/',
+    'PARSER': '.loader-cache/parser/',
     'WEB': '.loader-cache/web/',
     'ZOTERO': '.loader-cache/zotero/'
 }
@@ -23,6 +24,7 @@ A dictionary that defines the expiry age for the cache categories defined as in 
 ```py
 TEST_AGES = {
     'ROOT': 20160, # 20,160 minutes = 14 days
+    'PARSER': 20160, # 20,160 minutes = 14 days
     'WEB': 20160, # 20,160 minutes = 14 days
     'ZOTERO': 14, # days
 }
