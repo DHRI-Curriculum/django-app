@@ -8,6 +8,7 @@ app_name = 'learner'
 
 urlpatterns = [
   path('', views.profile),
+  path('favorite/', views.favorite, name='favorite'),
   path('profile/<str:username>/', views.profile, name='profile'),
   path('activate/<uidb64>/<token>/', views.activate, name='activate'),
 ]

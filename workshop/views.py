@@ -44,9 +44,13 @@ def frontmatter(request, slug=None):
 
   obj.has_visited = request.session.get('has_visited', False)
 
+  favorited = False
+  if request.user.is_authenticated:
+    if obj in request.user.profile.favorites.all(): favorited = True
+
   lessons = Lesson.objects.filter(workshop=obj)
   frontmatter = obj.frontmatter
-  return render(request, 'workshop/frontmatter.html', {'workshop': obj, 'frontmatter': frontmatter, 'lessons': lessons})
+  return render(request, 'workshop/frontmatter.html', {'workshop': obj, 'frontmatter': frontmatter, 'lessons': lessons, 'user_favorited': favorited})
 
 
 def praxis(request, slug=None):
