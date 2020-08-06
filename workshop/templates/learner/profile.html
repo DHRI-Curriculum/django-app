@@ -43,6 +43,14 @@
         <p>Is staff: {{ user.is_staff }}</p>
         <p>Is active: {{ user.is_active }}</p>
         <p>Is superuser: {{ user.is_superuser }}</p>
+        {% if favorites.count %}
+          <p>Favorites:</p>
+          <ul>
+            {% for w in favorites.all %}
+              <li><a href="{% url "workshop:frontmatter" slug=w.slug %}">{{ w.name }}</a></li>
+            {% endfor %}
+          </ul>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

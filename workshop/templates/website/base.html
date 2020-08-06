@@ -46,6 +46,11 @@
       // A CSRF token is required when making post requests in Django
       // To be used for making AJAX requests
       window.CSRF_TOKEN = "{{ csrf_token }}";
+      {% if workshop %}
+        window.workshop = "{{ workshop.slug }}";
+      {% else %}
+        window.workshop = undefined;
+      {% endif %}
     </script>
 
   </head>

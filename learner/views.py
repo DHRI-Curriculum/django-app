@@ -3,11 +3,19 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
 from .tokens import account_activation_token
+from .models import Profile
+from django.http import JsonResponse, HttpResponseForbidden
+from workshop.models import Workshop
+from django.views.decorators.csrf import csrf_protect
 
 def profile(request, username=None):
     payload = dict()
     if username:
         payload['user'] = get_object_or_404(User, username=username)
+        payload['favorites'] = payload['user'].profile.favorites.all()
+    else:
+        payload['user'] = request.user
+        payload['favorites'] = request.user.profile.favorites.all()
     return render(request, 'learner/profile.html', payload)
 
 
@@ -63,3 +71,26 @@ def activate(request, uidb64='', token=''):
         return redirect('website:index')
     else:
         return HttpResponse('Activation link is invalid!')
+
+
+@csrf_protect
+def favorite(request):
+    if not request.user.is_authenticated:
+        return HttpResponseForbidden()
+
+    workshop = request.headers.get('workshop')
+    obj = get_object_or_404(Workshop, slug=workshop)
+
+    removed, added = False, False
+    if obj in request.user.profile.favorites.all():
+        request.user.profile.favorites.remove(obj)
+        print(obj, "removed as favorite")
+        removed = True
+    else:
+        request.user.profile.favorites.add(obj)
+        print(obj, "added as favorite")
+        added = True
+
+    output_data = {'workshop': obj.name, 'success': True, 'added': added, 'removed': removed}
+
+    return JsonResponse(output_data)
