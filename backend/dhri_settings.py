@@ -35,6 +35,10 @@ AUTO_GROUPS = {
 
     'Learner': {
 
+    },
+
+    'Instructor': {
+
     }
 }
 
