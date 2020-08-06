@@ -154,12 +154,14 @@ REPLACEMENTS = {
 
 CACHE_DIRS = {
     'ROOT': '.loader-cache/',
+    'PARSER': '.loader-cache/parser/',
     'WEB': '.loader-cache/web/',
     'ZOTERO': '.loader-cache/zotero/'
 }
 
 TEST_AGES = {
-    'ROOT': 20160, # 20,160 minutes = 14 days
+    'ROOT': 20160, # 20,160 minutes = 14 days,
+    'PARSER': 20160, # 20,160 minutes = 14 days,
     'WEB': 20160, # 20,160 minutes = 14 days
     'ZOTERO': 14, # days
     'GLOSSARY': 14 # days
@@ -283,6 +285,7 @@ for DIR in CACHE_DIRS:
     if not CACHE_DIRS[DIR].exists(): CACHE_DIRS[DIR].mkdir()
 
 TEST_AGES['ROOT'] = timedelta(minutes=TEST_AGES['ROOT'])
+TEST_AGES['PARSER'] = timedelta(minutes=TEST_AGES['PARSER'])
 TEST_AGES['WEB'] = timedelta(minutes=TEST_AGES['WEB'])
 TEST_AGES['ZOTERO'] = timedelta(days=TEST_AGES['ZOTERO'])
 TEST_AGES['GLOSSARY'] = timedelta(days=TEST_AGES['GLOSSARY'])

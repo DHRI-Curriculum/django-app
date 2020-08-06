@@ -15,57 +15,22 @@ from backend.dhri_settings import NORMALIZING_SECTIONS, FORCE_DOWNLOAD, BACKEND_
                                     REPO_AUTO, BRANCH_AUTO, TEST_AGES, CACHE_DIRS
 
 from backend.dhri.markdown import split_into_sections, as_list, extract_links
-# from backend.dhri.parse_lesson import LessonParser
 from backend.dhri.log import Logger, get_or_default
 from backend.dhri.exceptions import MissingCurriculumFile, MissingRequiredSection
 from backend.dhri.text import get_number
+from backend.dhri.markdown_parser import PARSER
 
 
 
-
-from backend.dhri_settings import STATIC_IMAGES, LESSON_TRANSPOSITIONS, GITHUB_TOKEN
+from backend.dhri_settings import STATIC_IMAGES, LESSON_TRANSPOSITIONS
 from requests.exceptions import HTTPError, MissingSchema
 from bs4 import BeautifulSoup, Comment
 from backend.dhri.webcache import WebCache
-from github import Github
 import time
 
 
-class GitHubParser():
 
-    def __init__(self, string:str=None):
-        pass
-
-    def convert(self, string):
-        if not GITHUB_TOKEN:
-            log.error('GitHub API token is not correctly set up in backend.dhri_settings — correct the error and try again')
-
-        string = str(string)
-        g = Github(GITHUB_TOKEN)
-
-        exceptions = []
-        try:
-            return g.render_markdown(string)
-        except Exception as e:
-            exceptions.append(str(e))
-            time.sleep(3)
-            try:
-                return g.render_markdown(string)
-            except:
-                exceptions.append(str(e))
-                pass
-
-        log.error(f'GitHub API interpretation of markdown failed: Trying to interpret data using internal markdown instead.', kill=False)
-        log.error(f'FYI, these were the exceptions:', kill=False)
-        print(exceptions)
-
-        # backup solution
-        p = markdown.Markdown(extensions=['extra', 'codehilite', 'sane_lists'])
-        return p.convert(string)
-
-PARSER = GitHubParser()
-
-
+log = Logger(name='loader')
 
 
 SECTIONS = {
@@ -474,7 +439,6 @@ def download_image(url, local_file):
             log.warning(f"Could not download image {local_file.name} (not allowed)")
 
 
-log = Logger()
 
 class LessonParser():
 
@@ -778,12 +742,3 @@ class GlossaryLoader():
             if self.sections[term].get('tutorials'):
                 tutorials = as_list(self.sections[term].pop('tutorials'))
                 self.sections[term]['tutorials'] = tutorials
-
-        '''
-        self.sections_html = self.sections
-
-        for term, data in self.sections_html.items():
-            self.sections_html[term] = {k: PARSER.convert(v) for k, v in data.items()}
-
-        print(self.sections_html)
-        '''
