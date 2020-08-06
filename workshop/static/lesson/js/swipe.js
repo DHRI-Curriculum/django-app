@@ -16,7 +16,12 @@ const go_prev = function() {
     if (prev != 0) { location.assign("?page=" + prev); } else { flash_text(); console.log('no prev page'); }
 }
 
+/*
+
+// Touch functionality removed as it was too sensitive.
+
 function startTouch(e) {
+    console.log(e);
     initialX = e.touches[0].clientX;
     initialY = e.touches[0].clientY;
 };
@@ -32,7 +37,6 @@ function moveTouch(e) {
     var diffY = initialY - currentY;
 
     if (Math.abs(diffX) > Math.abs(diffY)) {
-        // sliding horizontally
         if (diffX > 0) {
             // swiped left
             go_next();
@@ -50,7 +54,7 @@ function moveTouch(e) {
 
 document.getElementById('lesson-content').addEventListener("touchstart", startTouch, false);
 document.getElementById('lesson-content').addEventListener("touchmove", moveTouch, false);
-
+*/
 window.addEventListener("keydown", function (event) {
     if (event.defaultPrevented) {
       return; // Do nothing if the event was already processed
