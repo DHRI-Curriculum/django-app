@@ -582,7 +582,7 @@ class LessonParser():
                 elif href.startswith('http') or href.startswith('//'):
                     c = WebCache(href)
                 elif href.startswith('#'):
-                    log.warning(f"The lesson `{title}` contains a relative href ({href}) which may or may not work in production.")
+                    log.log(f"The lesson `{title}` contains a relative href ({href}) which may or may not work in production.", color="yellow")
                 else:
                     g = re.search(r'(\d+).*(md)', href)
                     if g:
