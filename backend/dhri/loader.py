@@ -1,33 +1,27 @@
 """Loader functionality for DHRI Curriculum"""
 
-from datetime import datetime
-from pathlib import Path
 
+import datetime
 import json
 import requests
 import re
-import markdown
+
+from pathlib import Path
+from bs4 import BeautifulSoup, Comment
 from requests.exceptions import HTTPError, MissingSchema
 
 from backend.models import *
 
-from backend.dhri_settings import NORMALIZING_SECTIONS, FORCE_DOWNLOAD, BACKEND_AUTO, \
-                                    REPO_AUTO, BRANCH_AUTO, TEST_AGES, CACHE_DIRS
-
-from backend.dhri.markdown import split_into_sections, as_list, extract_links
-from backend.dhri.log import Logger, get_or_default
 from backend.dhri.exceptions import MissingCurriculumFile, MissingRequiredSection
-from backend.dhri.text import get_number
+from backend.dhri.log import Logger, get_or_default
+from backend.dhri.markdown import split_into_sections, as_list, extract_links
 from backend.dhri.markdown_parser import PARSER
-
-
-
-from backend.dhri_settings import STATIC_IMAGES, LESSON_TRANSPOSITIONS
-from requests.exceptions import HTTPError, MissingSchema
-from bs4 import BeautifulSoup, Comment
+from backend.dhri.text import get_number
 from backend.dhri.webcache import WebCache
-import time
 
+from backend.dhri_settings import NORMALIZING_SECTIONS, FORCE_DOWNLOAD, BACKEND_AUTO, \
+                                    REPO_AUTO, BRANCH_AUTO, TEST_AGES, CACHE_DIRS, \
+                                    STATIC_IMAGES, LESSON_TRANSPOSITIONS
 
 
 log = Logger(name='loader')
@@ -61,8 +55,8 @@ def _is_expired(path, age_checker=TEST_AGES['ROOT'], force_download=FORCE_DOWNLO
     if isinstance(path, str): path = Path(path)
     log = Logger(name='cache-age-check')
     if not path.exists() or force_download == True: return(True)
-    file_mod_time = datetime.fromtimestamp(path.stat().st_ctime)
-    now = datetime.today()
+    file_mod_time = datetime.datetime.fromtimestamp(path.stat().st_ctime)
+    now = datetime.datetime.today()
 
     if now - file_mod_time > age_checker:
         log.warning(f'Cache has expired for {path} - older than {age_checker}...')
