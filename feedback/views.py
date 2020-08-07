@@ -10,23 +10,22 @@ from django.contrib.auth.decorators import login_required
 @ensure_csrf_cookie
 def index(request):
   # page = Page.objects.filter(is_homepage=True).last()
+  return redirect('website:index')
   return render(request, 'feedback/index.html', {})
 
 
 def _close_or_redirect(request, username = None):
     if request.GET.get('close') == 'true':
-        return HttpResponse('''
-        Thank you for your feedback, ''' + username + '''. We will follow up with you shortly.<br /><br />This window will close in three seconds.
+        return HttpResponse('''Thank you for your feedback, ''' + username + '''. We will follow up with you shortly.<br /><br />This window will close in three seconds.
 
-        <script>
-            const delay = ms => new Promise(res => setTimeout(res, ms));
-            const close = async () => {
-                await delay(3000);
-                window.close();
-            };
-            close();
-        </script>
-        ''')
+                                <script>
+                                    const delay = ms => new Promise(res => setTimeout(res, ms));
+                                    const close = async () => {
+                                        await delay(3000);
+                                        window.close();
+                                    };
+                                    close();
+                                </script>''')
     else:
         messages.info(request, f'Thank you for your feedback, {username}. We will follow up with you shortly.')
         return redirect('website:index')
@@ -36,7 +35,6 @@ def _close_or_redirect(request, username = None):
 def feedback_popup(request, feedback_type, pk=None):
 
     form = IssueForm()
-    lesson = None
     payload = {'feedback_type': feedback_type}
 
     if feedback_type == "lesson":
