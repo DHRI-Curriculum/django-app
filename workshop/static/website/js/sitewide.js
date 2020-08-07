@@ -24,7 +24,7 @@ website_wide_nav
 */
 /*
 document.addEventListener("DOMContentLoaded",function(){
-    console.log('here!')
+    //console.log('here!')
     var bsCollapse = new bootstrap.Collapse(website_wide_nav_ext).hide = true;
 });
 */

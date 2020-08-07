@@ -39,7 +39,7 @@ const zen_switch = function(e) {
         hide_class('zen-hideaway')
         document.cookie = "zen = on;";
     } else {
-        console.log('error', e)
+        console.log('Error:', e)
     }
 
     e.stopPropagation();

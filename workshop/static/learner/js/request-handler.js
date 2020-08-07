@@ -1,7 +1,7 @@
 
 approve = function(e) {
     var link = e.target;
-    console.log(link);
+    //console.log(link);
     var url = '/learner/requests/';
     var tr = link.dataset.tr;
     var username = link.dataset.username;
@@ -21,7 +21,7 @@ approve = function(e) {
         link.classList.add('disabled');
         tr = document.getElementById(tr);
         tr.style.display = 'none';
-        console.log(data);
+        //console.log(data);
     }).catch(function(ex) {
         console.log("Error:", ex);
     });

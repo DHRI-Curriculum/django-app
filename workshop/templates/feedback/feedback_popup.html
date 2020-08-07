@@ -1,0 +1,29 @@
+{% extends 'website/base-micro.html' %}
+{% load markdownify admin_urls lessontags static crispy_forms_tags %}
+
+
+{% block main %}
+<h1 class="border-bottom pb-4 mb-4">Feedback</h1>
+
+{% if feedback_type == "lesson" %}
+    <p>
+        <strong>Lesson</strong> {{ lesson.title }}<br />
+        <strong>Part of workshop</strong> {{ lesson.workshop.name }}
+    </p>
+
+    <form method="POST" action="{% url "feedback:feedback_popup" feedback_type="lesson" pk=lesson.id %}?close={{ request.GET.close }}">{% csrf_token %}
+{% elif feedback_type == "website" %}
+    <p>
+        <strong>Website</strong>
+    </p>
+    <form method="POST" action="{% url "feedback:feedback_popup" feedback_type="website" %}?close={{ request.GET.close }}">{% csrf_token %}
+{% endif %}
+    <fieldset class="form-group">
+        {{ form | crispy }}
+    </fieldset>
+    <div class="form-group">
+        <button class="btn btn-outline-success" type="submit">Submit feedback</button>
+    </div>
+</form>
+
+{% endblock %}

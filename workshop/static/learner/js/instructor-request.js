@@ -16,7 +16,7 @@ request_instructor = function(e) {
     }).then(function(data) {
         link.innerHTML = "Instructor status requested";
         link.classList.add('disabled');
-        console.log(data);
+        //console.log(data);
     }).catch(function(ex) {
         console.log("Error:", ex);
     });

@@ -10,7 +10,7 @@ const star_fill = `
 
 favorite = function(e) {
     var link = e.target;
-    console.log(link);
+    //console.log(link);
     var workshop = link.dataset.workshop;
     var url = link.dataset.url;
     var div = link.dataset.div;
@@ -31,12 +31,12 @@ favorite = function(e) {
             msg = star_empty;
             document.getElementById(div).innerHTML = msg;
             document.getElementById('add-favorite').addEventListener('click', function(e) { favorite(e); });
-            console.log("Favorite " + data.workshop + "removed.");
+            //console.log("Favorite " + data.workshop + "removed.");
         } else if (data.added === true) {
             msg = star_fill;
             document.getElementById(div).innerHTML = msg;
             document.getElementById('remove-favorite').addEventListener('click', function(e) { favorite(e); });
-            console.log("Favorite " + data.workshop + "added.");
+            //console.log("Favorite " + data.workshop + "added.");
         } else {
             console.log("Error: Cannot interpret response.");
         }

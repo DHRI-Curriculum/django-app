@@ -8,29 +8,12 @@
     {% block extra_head_material %}{% endblock %}
   </head>
   <body>
-
-    {% include "website/navbar.html" %}
+    {% include "website/navbar-simple.html" %}
     {% include "website/ie_warning.html" %}
-    {% include "website/instructor_requests.html" %}
 
     <div id="content" class="container mx-auto py-4">
-      {% if request.user.is_staff %}
-          <div id="admin" class="zen-hideaway">
-              <hr />
-              <strong class="text-muted mr-4 small">Admin tools</strong>{% block admin_edit %}{% endblock %}
-              <hr />
-          </div>
-      {% endif %}
-      {% block header %}{% endblock %}
       {% include "website/messages.html" %}
-      {% block hero %}{% endblock %}
       {% block main %}{% endblock %}
-    </div>
-
-    <div id="footer" class="container mx-auto">
-      <footer class="pt-4 my-5 border-top zen-hideaway">
-        {% include 'website/footer.html' %}
-      </footer>
     </div>
 
     {% include "website/bootstrap.html" %}

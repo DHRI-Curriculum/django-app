@@ -1,0 +1,14 @@
+<nav class="navbar navbar-dark nav-dark">
+  <p class="navbar-brand navbar-toggler border-0 m-0" href="/">
+    <!--<img src="/static/images/logo.png" width="50" height="50" alt="" loading="lazy" class="mr-2">-->
+    <span class="d-none d-md-inline-block"><strong>Curriculum</strong> | Digital Humanities Research Institute</span>
+    <span class="d-inline-block d-md-none"><strong>Curriculum</strong> | DH Research Institute</span>
+  </p>
+  <span class="text-light">
+    {% if user.is_authenticated %}
+      <a href="{% url 'learner:profile' user.username %}" id="meta-btn">{% if user.first_name and user.last_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user.username }}{% endif %}</a> | <a href="{% url 'logout' %}" id="meta-btn">Log out</a>
+    {% else %}
+        <a href="{% url 'login' %}{% if not request.get_full_path == '/logout/' %}?next={{ request.get_full_path|urlencode }}{% endif %}" id="meta-btn">Login</a> | <a href="{% url 'register' %}" id="meta-btn">Register</a>
+    {% endif %}
+  </span>
+</nav>
