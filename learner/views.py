@@ -10,14 +10,23 @@ from django.views.decorators.csrf import csrf_protect
 
 def profile(request, username=None):
     payload = dict()
-    if username:
-        payload['user'] = get_object_or_404(User, username=username)
-        payload['favorites'] = payload['user'].profile.favorites.all()
+
+    if username and request.user.username == username:
+        payload['is_me'] = True
+    elif not username:
+        payload['is_me'] = True
     else:
+        payload['is_me'] = False
+
+    if payload['is_me']:
+        instructor = Group.objects.get(name='Instructor')
+        payload['is_instructor'] = instructor in request.user.groups.all()
         payload['user'] = request.user
         payload['favorites'] = request.user.profile.favorites.all()
         payload['instructor_requested'] = request.user.profile.instructor_requested
-        # TODO: Add is_instructor
+    else:
+        payload['user'] = get_object_or_404(User, username=username)
+        payload['favorites'] = payload['user'].profile.favorites.all()
     return render(request, 'learner/profile.html', payload)
 
 

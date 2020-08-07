@@ -40,9 +40,6 @@
     <div class="col-sm-9">
         <h2 class="account-heading">{% if user.first_name and user.last_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user.username }}{% endif %}</h2>
         <p class="text-secondary">{{ user.email }}</p>
-        <p>Is staff: {{ user.is_staff }}</p>
-        <p>Is active: {{ user.is_active }}</p>
-        <p>Is superuser: {{ user.is_superuser }}</p>
         {% if favorites.count %}
           <p>Favorites:</p>
           <ul>
@@ -51,13 +48,21 @@
             {% endfor %}
           </ul>
         {% endif %}
-        <p id="instructor">
-          {% if not instructor_requested %}
-            <a id="instructor-request" class="btn btn-light btn-sm" data-url="/learner/instructor-request/" data-p="instructor">Request Instructor status</a>
-          {% else %}
-            <a id="instructor-request" class="disabled btn btn-light btn-sm">Instructor status requested</a>
-          {% endif %}
-        </p>
+        {% if is_me %}
+          <h4 class="py-2 border-top">My settings</h4>
+          {% if user.is_staff %}<p><em>Is staff.</em></p>{% endif %}
+          {% if user.is_active %}<p><em>Is active.</em></p>{% endif %}
+          {% if user.is_superuser %}<p><em>Is superuser.</em></p>{% endif %}
+          <p id="instructor">
+            {% if not instructor_requested and not is_instructor %}
+              <a id="instructor-request" class="btn btn-light btn-sm" data-url="/learner/instructor-request/" data-p="instructor">Request Instructor status</a>
+            {% elif is_instructor%}
+              <em>Is instructor.</em>
+            {% else %}
+              <a id="instructor-request" class="disabled btn btn-light btn-sm">Instructor status requested</a>
+            {% endif %}
+          </p>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
