@@ -17,6 +17,7 @@ def profile(request, username=None):
         payload['user'] = request.user
         payload['favorites'] = request.user.profile.favorites.all()
         payload['instructor_requested'] = request.user.profile.instructor_requested
+        # TODO: Add is_instructor
     return render(request, 'learner/profile.html', payload)
 
 
