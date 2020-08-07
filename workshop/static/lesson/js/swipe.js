@@ -21,7 +21,7 @@ const go_prev = function() {
 // Touch functionality removed as it was too sensitive.
 
 function startTouch(e) {
-    console.log(e);
+    //console.log(e);
     initialX = e.touches[0].clientX;
     initialY = e.touches[0].clientY;
 };
@@ -63,12 +63,12 @@ window.addEventListener("keydown", function (event) {
     switch (event.key) {
         case "Left":
         case "ArrowLeft":
-            console.log('left');
+            //console.log('left');
             go_prev();
             break;
         case "Right":
         case "ArrowRight":
-            console.log('right');
+            //console.log('right');
             go_next();
             break;
     }
