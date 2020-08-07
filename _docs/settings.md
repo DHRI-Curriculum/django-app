@@ -351,6 +351,6 @@ A replacement dictionary, where image `src` attributes' directories will be repl
 
 ```py
 STATIC_IMAGES = {
-    'LESSONS': Path('./app/workshop/static/images/lessons/')
+    'LESSONS': Path('./app/media/images/lessons/')
 }
 ```

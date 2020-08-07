@@ -224,7 +224,7 @@ LESSON_TRANSPOSITIONS = {
 }
 
 STATIC_IMAGES = {
-    'LESSONS': os.path.join(settings.BASE_DIR, 'workshop/static/images/lessons/')
+    'LESSONS': os.path.join(settings.BASE_DIR, 'website/static/website/images/lessons/')
 }
 
 AUTO_PAGES = [

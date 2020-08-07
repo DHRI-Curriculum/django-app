@@ -562,7 +562,7 @@ class LessonParser():
                         url = url.replace('//', '/').replace('https:/', 'https://').replace('http:/', 'http://')
 
                     download_image(url, local_file)
-                    local_url = f'/static/images/lessons/{REPO_CLEAR}/{filename}'
+                    local_url = f'/static/website/images/lessons/{REPO_CLEAR}/{filename}'
                     image['src'] = local_url
                     image['class'] = image.get('class', []) + ['img-fluid']
 
@@ -592,7 +592,7 @@ class LessonParser():
                     else:
                         if ".png" in href or ".jpg" in href or ".gif" in href:
                             filename = href.split('/')[-1]
-                            local_url = f'/static/images/lessons/{REPO_CLEAR}/{filename}'
+                            local_url = f'/static/website/images/lessons/{REPO_CLEAR}/{filename}'
                             link['href'] = local_url
                             log.warning(f"The lesson `{title}` links to an image: {href} —> {local_url})")
                         else:
