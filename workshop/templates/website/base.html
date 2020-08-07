@@ -14,7 +14,13 @@
     {% include "website/instructor_requests.html" %}
 
     <div id="content" class="container mx-auto py-4">
-      {% include "website/admin_tools.html" %}
+      {% if request.user.is_staff %}
+          <div id="admin" class="zen-hideaway">
+              <hr />
+              <strong class="text-muted mr-4 small">Admin tools</strong>{% block admin_edit %}{% endblock %}
+              <hr />
+          </div>
+      {% endif %}
       {% block header %}{% endblock %}
       {% include "website/messages.html" %}
       {% block hero %}{% endblock %}
