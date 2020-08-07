@@ -1,0 +1,7 @@
+{% if request.user.is_staff and website.instructor_requests|length > 0 %}
+    <script>
+        var toast = document.getElementById('toaster');
+        t = new bootstrap.Toast(toast);
+        t.show();
+    </script>
+{% endif %}

@@ -8,40 +8,17 @@
     {% block extra_head_material %}{% endblock %}
   </head>
   <body>
-
-    {% include "website/navbar.html" %}
-
+    {% include "website/navbar-simple.html" %}
     {% include "website/ie_warning.html" %}
 
-    {% include "website/instructor_requests.html" %}
-
     <div id="content" class="container mx-auto py-4">
-      {% include "website/admin_tools.html" %}
-      {% block header %}{% endblock %}
-      {% block hero %}{% endblock %}
       {% include "website/messages.html" %}
       {% block main %}{% endblock %}
     </div>
 
-    <div id="footer" class="container mx-auto">
-      <footer class="pt-4 my-5 border-top zen-hideaway">
-        {% include 'website/footer.html' %}
-      </footer>
-    </div>
-
-    <!-- bootstrap v5.0-alpha1 -->
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha1/js/bootstrap.min.js" integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous"></script>
+    {% include "website/bootstrap.html" %}
     <script src="{% static 'website/js/sitewide.js' %}"></script>
-    {% block javascript %}
-    {% endblock %}
-
-    {% if request.user.is_staff and website.instructor_requests|length > 0 %}
-      <script>
-        var myToastEl = document.getElementById('toast-test');
-        t = new bootstrap.Toast(myToastEl);
-        t.show();
-      </script>
-    {% endif %}
+    <!-- Page specific Javascript -->{% block javascript %}{% endblock %}
+    {% include "website/instructor_requests_toaster.html" %}
   </body>
 </html>

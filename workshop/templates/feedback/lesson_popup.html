@@ -1,4 +1,4 @@
-{% extends 'website/base.html' %}
+{% extends 'website/base-micro.html' %}
 {% load markdownify admin_urls lessontags static crispy_forms_tags %}
 
 
@@ -6,7 +6,7 @@
 <h1 class="border-bottom pb-4 mb-4">Providing feedback on Lesson</h1>
 
 <h4>Lesson: {{ lesson.title }}</h4>
-<h4>Part of workshop: {{ lesson.workshop.name }})</h4>
+<h4>Part of workshop: {{ lesson.workshop.name }}</h4>
 
 <form method="POST">{% csrf_token %}
     <fieldset class="form-group">
