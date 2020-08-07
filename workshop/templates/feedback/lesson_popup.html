@@ -3,10 +3,12 @@
 
 
 {% block main %}
-<h1 class="border-bottom pb-4 mb-4">Providing feedback on Lesson</h1>
+<h1 class="border-bottom pb-4 mb-4">Lesson Feedback</h1>
 
-<h4>Lesson: {{ lesson.title }}</h4>
-<h4>Part of workshop: {{ lesson.workshop.name }}</h4>
+<p>
+<strong>Lesson</strong> {{ lesson.title }}<br />
+<strong>Part of workshop</strong> {{ lesson.workshop.name }}
+</p>
 
 <form method="POST" action="{% url "feedback:lesson_popup" lesson.id %}?close={{ request.GET.close }}">{% csrf_token %}
     <fieldset class="form-group">
