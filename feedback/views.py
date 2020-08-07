@@ -28,9 +28,23 @@ def lesson_popup(request, lesson_id):
             feedback.save()
             # print(feedback)
             username = feedback.user
-            messages.info(request, f'Thank you for your feedback, {username}. We will follow up with you shortly.')
 
-            return redirect('website:index')
+            if request.GET.get('close') == 'true':
+                return HttpResponse('''
+                Thank you for your feedback, kallewesterling. We will follow up with you shortly.<br /><br />This window will close in three seconds.
+
+                <script>
+                    const delay = ms => new Promise(res => setTimeout(res, ms));
+                    const close = async () => {
+                        await delay(3000);
+                        window.close();
+                    };
+                    close();
+                </script>
+                ''')
+            else:
+                messages.info(request, f'Thank you for your feedback, {username}. We will follow up with you shortly.')
+                return redirect('website:index')
 
     else:
         form = IssueForm()
