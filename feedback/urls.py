@@ -8,6 +8,6 @@ app_name = 'feedback'
 
 urlpatterns = [
   path('', views.index, name='index'),
-  path('popup/lesson/<int:lesson_id>', views.lesson_popup, name='lesson_popup'),
-  path('thank_you', views.thank_you, name='thank_you'),
+  path('popup/<str:feedback_type>/', views.feedback_popup, name='feedback_popup'),
+  path('popup/<str:feedback_type>/<int:pk>/', views.feedback_popup, name='feedback_popup')
 ]
