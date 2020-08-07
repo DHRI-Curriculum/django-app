@@ -20,7 +20,7 @@ def profile(request, username=None):
 
     if payload['is_me']:
         instructor = Group.objects.get(name='Instructor')
-        payload['is_instructor'] = instructor in request.user.groups.all()
+        # payload['is_instructor'] = instructor in request.user.groups.all()
         payload['user'] = request.user
         payload['favorites'] = request.user.profile.favorites.all()
         payload['instructor_requested'] = request.user.profile.instructor_requested

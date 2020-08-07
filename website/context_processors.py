@@ -5,8 +5,11 @@ from learner.models import Profile
 
 from pathlib import Path
 
+
+instructor = Group.objects.get(name='Instructor')
+
+
 def get_pending_requests():
-    instructor = Group.objects.get(name='Instructor')
     pending_requests = list()
     all_pending_requests = Profile.objects.filter(instructor_requested=True)
     for profile in all_pending_requests:
@@ -26,5 +29,7 @@ def add_to_all_contexts(request):
     context_data['website']['pages'] = Page.objects.all()
     if request.user.is_staff:
         context_data['website']['instructor_requests'] = get_pending_requests()
+
+    context_data['is_instructor'] = instructor in request.user.groups.all()
 
     return context_data
