@@ -1,6 +1,6 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django.shortcuts import get_object_or_404
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.contrib import messages
 from .tokens import account_activation_token
 from .models import Profile
@@ -16,6 +16,7 @@ def profile(request, username=None):
     else:
         payload['user'] = request.user
         payload['favorites'] = request.user.profile.favorites.all()
+        payload['instructor_requested'] = request.user.profile.instructor_requested
     return render(request, 'learner/profile.html', payload)
 
 
@@ -75,7 +76,7 @@ def activate(request, uidb64='', token=''):
 
 @csrf_protect
 def favorite(request):
-    if not request.user.is_authenticated:
+    if not request.user.is_authenticated: # TODO: Does not seem to work
         return HttpResponseForbidden()
 
     workshop = request.headers.get('workshop')
@@ -94,3 +95,46 @@ def favorite(request):
     output_data = {'workshop': obj.name, 'success': True, 'added': added, 'removed': removed}
 
     return JsonResponse(output_data)
+
+
+@csrf_protect
+def instructor_request(request):
+    if not request.user.is_authenticated: # TODO: Does not seem to work
+        return HttpResponseForbidden()
+
+    request.user.profile.instructor_requested = True
+    request.user.profile.save()
+
+    output_data = {'success': True}
+
+    return JsonResponse(output_data)
+
+
+def instructor_requests(request):
+    instructor = Group.objects.get(name='Instructor')
+
+    if request.method == "GET":
+        if not request.user.is_superuser:
+            return HttpResponseForbidden()
+
+        pending_requests = list()
+        all_pending_requests = Profile.objects.filter(instructor_requested=True)
+        for profile in all_pending_requests:
+            if not instructor in profile.user.groups.all():
+                pending_requests.append(profile)
+            else:
+                profile.instructor_requested = False
+                profile.save()
+
+        return render(request, 'learner/requests.html', {'pending_requests': pending_requests})
+    else:
+        username = request.headers.get('username')
+        print(username)
+        user = get_object_or_404(User, username=username)
+
+        user.groups.add(instructor)
+        user.profile.instructor_requested = False
+        user.profile.save()
+
+        output_data = {'success': True}
+        return JsonResponse(output_data)

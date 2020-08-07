@@ -1,0 +1,42 @@
+{% extends 'website/base.html' %}
+{% load markdownify admin_urls lessontags static crispy_forms_tags %}
+
+
+{% block main %}
+<div class="row py-4">
+    <div class="col-12">
+
+        <h1>Requests for Instructor status</h1>
+
+        <p class="lead">Here are the users who have requested Instructor status. Approve them by pressing "Approve" next to each username.</p>
+
+        <table class="my-4 table table-light table-hover">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>Email</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for profile in pending_requests %}
+                    <tr id="tr-{{ profile.user.username }}">
+                        <td>{{ profile.user.username }}</td>
+                        <td>{{ profile.user.first_name }}</td>
+                        <td>{{ profile.user.last_name }}</td>
+                        <td>{{ profile.user.email }}</td>
+                        <td width="20%" class="text-center"><a id="approve" class="approve btn btn-dark btn-sm text-light" data-tr="tr-{{ profile.user.username }}" data-username="{{ profile.user.username }}">Approve</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block javascript %}
+  <script src="{% static 'learner/js/request-handler.js' %}" crossorigin="anonymous"></script>
+{% endblock %}
