@@ -51,6 +51,18 @@
             {% endfor %}
           </ul>
         {% endif %}
+        <p id="instructor">
+          {% if not instructor_requested %}
+            <a id="instructor-request" class="btn btn-light btn-sm" data-url="/learner/instructor-request/" data-p="instructor">Request Instructor status</a>
+          {% else %}
+            <a id="instructor-request" class="disabled btn btn-light btn-sm">Instructor status requested</a>
+          {% endif %}
+        </p>
     </div>
 </div>
+{% endblock %}
+
+
+{% block javascript %}
+  <script src="{% static 'learner/js/instructor-request.js' %}" crossorigin="anonymous"></script>
 {% endblock %}
