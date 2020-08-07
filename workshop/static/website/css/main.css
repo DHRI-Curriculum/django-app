@@ -227,3 +227,13 @@ div .codehilite pre {
 .preview-text > h3 { font-size: 1.5rem; font-weight: 700; }
 .preview-text > h4 { font-size: 1.3rem; font-weight: 700; }
 .preview-text > h5 { font-size: 1.2rem; font-weight: 600; }
+
+.pl-small {
+    padding-left: 2px;
+}
+
+.bi-check-circle {
+    height: 1em;
+    line-height:100%;
+    width: 1em;
+}

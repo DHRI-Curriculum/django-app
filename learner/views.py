@@ -120,21 +120,25 @@ def instructor_request(request):
     return JsonResponse(output_data)
 
 
-def instructor_requests(request):
+def get_pending_requests():
     instructor = Group.objects.get(name='Instructor')
+    pending_requests = list()
+    all_pending_requests = Profile.objects.filter(instructor_requested=True)
+    for profile in all_pending_requests:
+        if not instructor in profile.user.groups.all():
+            pending_requests.append(profile)
+        else:
+            profile.instructor_requested = False
+            profile.save()
+    return pending_requests
 
+
+def instructor_requests(request):
     if request.method == "GET":
         if not request.user.is_superuser:
             return HttpResponseForbidden()
 
-        pending_requests = list()
-        all_pending_requests = Profile.objects.filter(instructor_requested=True)
-        for profile in all_pending_requests:
-            if not instructor in profile.user.groups.all():
-                pending_requests.append(profile)
-            else:
-                profile.instructor_requested = False
-                profile.save()
+        pending_requests = get_pending_requests()
 
         return render(request, 'learner/requests.html', {'pending_requests': pending_requests})
     else:

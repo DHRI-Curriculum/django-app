@@ -25,6 +25,14 @@
 
 
 {% block main %}
+<svg width="0" height="0">
+  <defs>
+    <g id="checkbox">
+      <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path fill-rule="evenodd" d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z"/>
+    </g>
+  </defs>
+</svg>
+
 <div class="row py-4">
     <div class="col-sm-3"><!--left col-->
 
@@ -50,15 +58,36 @@
         {% endif %}
         {% if is_me %}
           <h4 class="py-2 border-top">My settings</h4>
-          {% if user.is_staff %}<p><em>Is staff.</em></p>{% endif %}
-          {% if user.is_active %}<p><em>Is active.</em></p>{% endif %}
-          {% if user.is_superuser %}<p><em>Is superuser.</em></p>{% endif %}
+          <div style="height:50px;line-height:50px">
+            {% if user.is_active %}
+              <span class="px-2">
+                <svg viewBox="0 0 16 16" class="bi bi-check-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><use xlink:href="#checkbox" /></svg>
+                <span class="pl-small">Active</span>
+              </span>
+            {% endif %}
+            {% if user.is_staff %}
+              <span class="px-2">
+                <svg viewBox="0 0 16 16" class="bi bi-check-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><use xlink:href="#checkbox" /></svg>
+                <span class="pl-small">Staff</span>
+              </span>
+            {% endif %}
+            {% if user.is_superuser %}
+              <span class="px-2">
+                <svg viewBox="0 0 16 16" class="bi bi-check-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><use xlink:href="#checkbox" /></svg>
+                <span class="pl-small">Superuser</span>
+              </span>
+            {% endif %}
+            {% if is_instructor %}
+              <span class="px-2">
+                <svg viewBox="0 0 16 16" class="bi bi-check-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><use xlink:href="#checkbox" /></svg>
+                <span class="pl-small">Instructor</span>
+              </span>
+            {% endif %}
+          </div>
           <p id="instructor">
             {% if not instructor_requested and not is_instructor %}
               <a id="instructor-request" class="btn btn-light btn-sm" data-url="/learner/instructor-request/" data-p="instructor">Request Instructor status</a>
-            {% elif is_instructor%}
-              <em>Is instructor.</em>
-            {% else %}
+            {% elif instructor_requested%}
               <a id="instructor-request" class="disabled btn btn-light btn-sm">Instructor status requested</a>
             {% endif %}
           </p>
