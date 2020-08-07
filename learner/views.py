@@ -1,5 +1,4 @@
-from django.shortcuts import render, HttpResponse, redirect
-from django.shortcuts import get_object_or_404
+from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
 from django.contrib.auth.models import User, Group
 from django.contrib import messages
 from .tokens import account_activation_token
@@ -142,6 +141,7 @@ def instructor_requests(request):
 
         return render(request, 'learner/requests.html', {'pending_requests': pending_requests})
     else:
+        instructor = Group.objects.get(name='Instructor')
         username = request.headers.get('username')
         print(username)
         user = get_object_or_404(User, username=username)

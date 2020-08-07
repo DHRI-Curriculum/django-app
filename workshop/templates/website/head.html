@@ -1,0 +1,41 @@
+{% load static %}
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Digital Humanities Research Institute - Curriculum Website</title>
+<link href="https://fonts.googleapis.com/css?family=Titillium+Web:400,600,700" rel="stylesheet">
+
+<link rel="stylesheet" href="{% static 'website/css/main.css' %}">
+<link rel="stylesheet" href="{% static 'website/css/bootstrap-style.min.css' %}">
+<link rel="stylesheet" href="{% static 'website/css/icons.css' %}">
+
+{% include "website/favicons.html" %}
+
+<script type="text/javascript">
+    // A CSRF token is required when making post requests in Django
+    // To be used for making AJAX requests
+    window.CSRF_TOKEN = "{{ csrf_token }}";
+    {% if workshop %}
+    window.workshop = "{{ workshop.slug }}";
+    {% else %}
+    window.workshop = undefined;
+    {% endif %}
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    // How to get csrf token: const csrftoken = getCookie('csrftoken');
+</script>

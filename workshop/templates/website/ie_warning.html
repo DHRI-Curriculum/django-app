@@ -1,0 +1,7 @@
+{% if 'Trident' in request.META.HTTP_USER_AGENT %}
+    <div class="container py-4 zen-hideaway">
+    <div class="alert alert-danger" role="alert">
+        You are using Internet Explorer. This website does not support Internet Explorer and you will have trouble interacting with parts of it.
+    </div>
+    </div>
+{% endif %}
