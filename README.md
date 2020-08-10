@@ -1,8 +1,8 @@
 # Digital Humanities Research Institute's curriculum website (Django)
 
-This is the alpha 4 version of the DHRI's curriculum website (created as a django app).
+This is the alpha 5 version of the DHRI's curriculum website (created as a django app).
 
-Belongs to: [Sprint 5](https://www.github.com/DHRI-Curriculum/django-app/milestone/6)  
+Belongs to: [Sprint 5](https://github.com/DHRI-Curriculum/django-app/labels/sprint%205)  
 Deadline: August 24, 2020
 
 ---
