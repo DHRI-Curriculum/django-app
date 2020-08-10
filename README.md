@@ -2,8 +2,8 @@
 
 This is the alpha 4 version of the DHRI's curriculum website (created as a django app).
 
-Belongs to: [Sprint 4](https://www.github.com/DHRI-Curriculum/django-app/milestone/3)  
-Deadline: August 6, 2020
+Belongs to: [Sprint 5](https://www.github.com/DHRI-Curriculum/django-app/milestone/6)  
+Deadline: August 24, 2020
 
 ---
 
