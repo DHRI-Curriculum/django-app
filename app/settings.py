@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'library.apps.LibraryConfig',
     'lesson.apps.LessonConfig',
     'learner.apps.LearnerConfig',
-    'preview.apps.PreviewConfig',
+    'preview.apps.PreviewConfig', # TODO: #159 remove Preview app, it is only for dev purposes
     'glossary.apps.GlossaryConfig',
     'feedback.apps.FeedbackConfig',
     'backend',
@@ -136,7 +136,7 @@ STATIC_URL = '/static/'
 STATICFILE_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
