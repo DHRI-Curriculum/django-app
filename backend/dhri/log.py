@@ -9,6 +9,7 @@ from backend.dhri_settings import VERBOSE, TERMINAL_WIDTH, saved_prefix
 
 
 def _get_parts_of_log_message(message):
+    message = re.sub('\n+', ' ', message)
     g = re.search(r'(.*)\:\s(.*)', message)
     if not g:
         return((message, ''))

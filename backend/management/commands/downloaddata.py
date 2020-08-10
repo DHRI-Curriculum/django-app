@@ -54,6 +54,8 @@ class Command(BaseCommand):
                 repo = d
             #LOG.error(f"Cannot understand repo {repo}.")
 
+            LOG.log(f"Starting import: {repo} ({branch})", force=True)
+
             try:
                 l = Loader(f'https://github.com/DHRI-Curriculum/{repo}', branch, force_download=True)
             except MissingRequiredSection as e:
@@ -66,7 +68,7 @@ class Command(BaseCommand):
 
             repo_name = get_or_default('Workshop name', auto_replace(repo_name.title()))
             LOG.name = l.repo_name
-            #LOG.original_name = LOG.name
+
 
             workshop, created = Workshop.objects.get_or_create(
                 name = repo_name,
