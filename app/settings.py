@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'preview.apps.PreviewConfig', # TODO: #159 remove Preview app, it is only for dev purposes
     'glossary.apps.GlossaryConfig',
     'feedback.apps.FeedbackConfig',
+    'install.apps.InstallConfig',
     'backend',
     'adminsortable',
     'crispy_forms'
