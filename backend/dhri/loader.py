@@ -594,7 +594,7 @@ class LessonParser():
                             filename = href.split('/')[-1]
                             local_url = f'/static/website/images/lessons/{REPO_CLEAR}/{filename}'
                             link['href'] = local_url
-                            log.warning(f"The lesson `{title}` links to an image: {href} —> {local_url})")
+                            log.log(f"The lesson `{title}` links to an image and has been rerouted: {href} —> {local_url})", color='yellow')
                         else:
                             log.warning(f"The lesson `{title}` links to an internal file: {href} (** could not be deciphered)")
 
