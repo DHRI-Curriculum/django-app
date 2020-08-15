@@ -588,7 +588,7 @@ class LessonParser():
                     if g:
                         order = int(g.groups()[0])
                         link['href'] = f'?page={order}'
-                        log.warning(f"The lesson `{title}` links to an internal file: {href} (will be relinked to ?page={order} instead)")
+                        log.log(f"The lesson `{title}` links to an internal file `{href}` and has been relinked to `?page={order}` instead.", color="yellow")
                     else:
                         if ".png" in href or ".jpg" in href or ".gif" in href:
                             filename = href.split('/')[-1]
