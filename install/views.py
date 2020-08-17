@@ -2,14 +2,12 @@ from django.shortcuts import render, HttpResponse, get_object_or_404
 from .models import Instruction
 
 def index(request):
-    return HttpResponse('index for install')
+    instructions = Instruction.objects.all()
+    return render(request, 'install/index.html', {'instructions': instructions})
 
 def installation(request, slug=None):
-    obj = get_object_or_404(Instruction, slug=slug)
-    return HttpResponse(f'''
-    {obj.software.software}
-    {obj.software.operating_system}r
-    ''')
+    installation = get_object_or_404(Instruction, slug=slug)
+    return render(request, 'install/installation.html', {'installation': installation})
 
 def checklist(request, slug=None):
     return HttpResponse(f'checklist for {slug}')

@@ -40,7 +40,8 @@ class Step(models.Model):
 class Screenshot(models.Model):
     step = models.ForeignKey(Step, on_delete=models.CASCADE, related_name='screenshots')
     order = models.PositiveSmallIntegerField()
-    image = models.ImageField()
+    image = models.ImageField(upload_to='installation_screenshots')
+    alt_text = models.TextField(blank=False, default="No alt text")
 
     class Meta:
         ordering = ('order',)

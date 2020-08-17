@@ -1,0 +1,8 @@
+{% extends 'website/base.html' %}
+{% load markdownify admin_urls lessontags static crispy_forms_tags %}
+
+{% block main %}
+    {% for instruction in instructions.all %}
+        <a href="{% url 'install:installation' slug=instruction.slug %}">{{ instruction }}</a>
+    {% endfor %}
+{% endblock %}

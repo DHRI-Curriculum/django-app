@@ -1,0 +1,14 @@
+{% extends 'website/base.html' %}
+{% load markdownify admin_urls lessontags static crispy_forms_tags %}
+
+{% block main %}
+    <p><strong>Software:</strong> {{ installation.software.software }}</p>
+    <p><strong>Operating system:</strong> {{ installation.software.operating_system }}</p>
+    {% for step in installation.steps.all %}
+        <h3>Step {{ step.order }}</h3>
+        <p>{{ step.text }}</p>
+        {% for screenshot in step.screenshots.all %}
+            <img src="{{ screenshot.image.url }}" alt="{% if screenshot.alt_text == 'No alt text' %}{{ screenshot }}{% else %}{{ screenshot.alt_text }}{% endif %}">
+        {% endfor %}
+    {% endfor %}
+{% endblock %}
