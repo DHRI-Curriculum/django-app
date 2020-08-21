@@ -3,25 +3,7 @@
 from django.core.management import BaseCommand
 
 
-# Import all models
-from backend.models import *
-
-
-# Import DHRI specific settings
-from backend.dhri_settings import AUTO_REPOS
-
-
-# Import DHRI specific methods/functions
-from backend.dhri.log import Logger, get_or_default
-from backend.dhri.loader import Loader, process_links, MissingRequiredSection
-from backend.dhri.text import auto_replace
-
-
-# Import other commands
-from .wipe import wipe
-from .loadpages import create_pages
-from .loadgroups import create_groups
-from .loadusers import create_users
+from .imports import *
 
 
 # Set up logger
@@ -213,6 +195,9 @@ class Command(BaseCommand):
 
             LOG.log("Automatic import activated: Attempting to generate users", force=True)
             create_users()
+
+            LOG.log("Automatic import activated: Attempting to generate installations", force=True)
+            create_installations()
 
             # TODO: Dump data?
 

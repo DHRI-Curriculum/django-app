@@ -2,7 +2,24 @@
 {% load markdownify admin_urls lessontags static crispy_forms_tags %}
 
 {% block main %}
-    {% for instruction in instructions.all %}
-        <a href="{% url 'install:installation' slug=instruction.slug %}">{{ instruction }}</a>
+    <h3>All Instructions</h3>
+    {% for instruction in all_instructions.all %}
+        <p><a href="{% url 'install:installation' slug=instruction.slug %}">{{ instruction }}</a></p>
+    {% endfor %}
+
+    <h3>By Operating System</h3>
+    {% for os, instructions in per_os.items %}
+        <h5>{{ os }}</h5>
+        {% for instruction in instructions %}
+            <p><a href="{% url 'install:installation' slug=instruction.slug %}">{{ instruction.software.software }}</a></p>
+        {% endfor %}
+    {% endfor %}
+
+    <h3>By Software</h3>
+    {% for software, instructions in per_software.items %}
+        <h5>{{ software }}</h5>
+        {% for instruction in instructions %}
+            <p><a href="{% url 'install:installation' slug=instruction.slug %}">{{ instruction.software.operating_system }}</a></p>
+        {% endfor %}
     {% endfor %}
 {% endblock %}

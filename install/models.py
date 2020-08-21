@@ -22,7 +22,7 @@ class Instruction(models.Model):
         super(Instruction, self).save()
 
     def __str__(self):
-        return f'Instruction for {self.software.software} ({self.software.operating_system})'
+        return f'Installation instruction for {self.software.software} ({self.software.operating_system})'
 
 
 class Step(models.Model):
