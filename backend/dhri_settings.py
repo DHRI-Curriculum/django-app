@@ -2,6 +2,8 @@ from backend import models
 from django.conf import settings
 import os
 
+VERSION = '0.5'
+
 AUTO_REPOS = [
     ('databases', 'v2.0'),
     ('data-literacies', 'v2.0-di-edits'),
