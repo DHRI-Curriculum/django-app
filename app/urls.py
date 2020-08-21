@@ -12,7 +12,6 @@ urlpatterns = [
     path('workshops/', include('workshop.urls')),
     path('assessment/', include('assessment.urls')),
     path('learner/', include('learner.urls')),
-    path('preview/', include('preview.urls')),
     path('glossary/', include('glossary.urls')),
     path('feedback/', include('feedback.urls')),
     path('sign-up/', learner_views.register, name='register'),
