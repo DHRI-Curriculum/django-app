@@ -7,7 +7,7 @@ log = Logger(name='loadinstalls')
 
 
 def create_installations():
-    print('create installations...')
+    print('create installations...') # TODO: Fix for Issue 134
     pass
 
 
