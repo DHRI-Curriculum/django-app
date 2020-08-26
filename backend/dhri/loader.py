@@ -672,11 +672,6 @@ class GlossaryCache():
         self.data = {
             'terms_raw': self._load_raw_text()
         }
-
-        for term in self.data.get('terms_raw'):
-            print(term)
-            print(self.data.get('terms_raw').get(term))
-
         self.save()
 
 
@@ -717,9 +712,60 @@ class GlossaryCache():
 
 from backend.dhri_settings import GLOSSARY_REPO
 
+class GlossaryParser():
+    readings = list()
+    tutorials = list()
+    explication, readings_md, tutorials_md = None, None, None
+
+    def __init__(self, data:str):
+        self.data = data
+        self.term = list(split_into_sections(data, level_granularity=1).keys())[0]
+        for header, md in split_into_sections(data, level_granularity=2).items():
+            if header == self.term:
+                self.explication = md
+            elif header == 'Readings' or (header == 'Reading' and self.readings_md == None):
+                self.readings_md = md
+            elif header == 'Tutorials' or (header == 'Tutorial' and self.tutorials_md == None):
+                self.tutorials_md = md
+            else:
+                print(f'Error: Unable to parse {header} in term {self.term}.')
+
+        if self.readings_md:
+            self.readings = as_list(self.readings_md)
+
+        if self.tutorials_md:
+            self.tutorials = as_list(self.tutorials_md)
+
+        if self.explication:
+            self.explication = PARSER.convert(self.explication)
+
+        self._tutorials = list()
+        for i, tutorial in enumerate(self.tutorials):
+            annotation = PARSER.convert(tutorial)
+            linked_text, url = extract_links(tutorial)[0] # TODO: Only extracting one link here...
+            self._tutorials.append({
+                'annotation': annotation,
+                'linked_text': linked_text,
+                'url': url
+            })
+        self.tutorials = self._tutorials
+
+        self._readings = list()
+        for i, reading in enumerate(self.readings):
+            annotation = PARSER.convert(reading)
+            linked_text, url = extract_links(reading)[0] # TODO: Only extracting one link here...
+            self._readings.append({
+                'annotation': annotation,
+                'linked_text': linked_text,
+                'url': url
+            })
+        self.readings = self._readings
+
 class GlossaryLoader():
 
     log = Logger(name='glossary-loader')
+    terms = dict()
+    all_terms = list()
 
     def __init__(self, glossary_repo=GLOSSARY_REPO, force_download=FORCE_DOWNLOAD):
         self.repo_name = glossary_repo[0]
@@ -730,14 +776,6 @@ class GlossaryLoader():
         # Map properties
         self.terms_raw = self.data.get('terms_raw')
 
-        self.sections = self.terms_raw
-
-        for term, data in self.sections.items():
-            self.sections[term] = split_into_sections(data)
-            self.sections[term] = {k.lower():v for k, v in self.sections[term].items()}
-            if self.sections[term].get('readings'):
-                readings = as_list(self.sections[term].pop('readings'))
-                self.sections[term]['readings'] = readings
-            if self.sections[term].get('tutorials'):
-                tutorials = as_list(self.sections[term].pop('tutorials'))
-                self.sections[term]['tutorials'] = tutorials
+        for term, data in self.terms_raw.items():
+            self.terms[term] = GlossaryParser(data)
+            self.all_terms.append(term)

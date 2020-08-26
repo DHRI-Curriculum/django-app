@@ -10,39 +10,25 @@ log = Logger(name='loadglossary')
 
 def create_terms(glossary_repo=GLOSSARY_REPO):
     loader = GlossaryLoader(glossary_repo)
+    # TODO: #166 Add something in the Glossary app that makes a clearer connection to which workshops that are linked to each term. Perhaps each lesson can have a ManyToMany relationship to the Terms?
 
-    for _, data in loader.sections.items():
-        readings, tutorials = list(), list()
+    for term in loader.all_terms:
 
-        if data.get('readings'):
-            readings = data.pop('readings')
-
-        if data.get('tutorials'):
-            tutorials = data.pop('tutorials')
-
-        if len(data) == 1:
-            header = [_ for _ in data.keys()][0]
-            content = [_ for _ in data.values()][0]
-        else:
-            log.error(f'Too many headers in the glossary term `{term}`. Please make sure the markdown file follows conventions.')
-
-        term, created = Term.objects.get_or_create(
-            term=header,
-            explication=content
+        t, created = Term.objects.get_or_create(
+            term=loader.terms[term].term,
+            explication=loader.terms[term].explication
         )
-        log.created(created, 'Term', term.term, term.id)
+        log.created(created, 'Term', t.term, t.id)
 
-        for annotation in readings:
-            title, url = process_links(annotation, 'reading')
-            obj, created = Reading.objects.get_or_create(annotation = annotation, title = title, url = url)
+        for d in loader.terms[term].readings:
+            obj, created = Reading.objects.get_or_create(annotation = d['annotation'], title = d['linked_text'], url = d['url'])
             log.created(created, 'Reading', obj.title, obj.id)
-            term.readings.add(obj)
+            t.readings.add(obj)
 
-        for annotation in tutorials:
-            label, url = process_links(annotation, 'tutorial')
-            obj, created = Tutorial.objects.get_or_create(annotation = annotation, label = label, url = url)
+        for d in loader.terms[term].tutorials:
+            obj, created = Tutorial.objects.get_or_create(annotation = d['annotation'], label = d['linked_text'], url = d['url'])
             log.created(created, 'Tutorial', obj.label, obj.id)
-            term.tutorials.add(obj)
+            t.tutorials.add(obj)
 
 
 class Command(BaseCommand):

@@ -9,7 +9,7 @@ class Software(models.Model):
     operating_system = models.CharField(max_length=250)
 
     def __str__(self):
-        return f'Software {self.software} ({self.operating_system})'
+        return f'{self.software} ({self.operating_system})'
 
 
 class Instruction(models.Model):

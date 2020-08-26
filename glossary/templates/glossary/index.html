@@ -1,15 +1,15 @@
-{% extends 'website/base.html' %}
+{% extends 'website/base-left-menu.html' %}
 {% load markdownify admin_urls lessontags static crispy_forms_tags %}
 
+
+{% block leftmenu %}
+    {% include 'glossary/leftmenu/content.html' %}
+{% endblock %}
 
 {% block main %}
 <div class="row py-4">
     <div class="col-12">
         <div class="border-top pt-3">
-            <h1>Terms</h1>
-            {% for term in terms %}
-                <p><a href="{% url "glossary:term" term.slug %}">{{ term }}</a></p>
-            {% endfor %}
         </div>
     </div>
 </div>
