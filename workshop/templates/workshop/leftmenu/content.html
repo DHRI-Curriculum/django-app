@@ -1,4 +1,10 @@
-<strong class="h4 text-muted">Workshops</strong>
-  {% for workshop in website.workshops %}
-    <p><a href="{% url 'workshop:frontmatter' slug=workshop.slug %}" class="">{{ workshop }}</a></p>
-  {% endfor %}
+<strong class="h4 text-muted border-bottom pb-2">Workshops</strong>
+    <div class="mt-4">
+        <ul class="nav flex-column">
+            {% for workshop in website.workshops %}
+                <li class="nav-item mb-2">
+                    <a href="{% url 'workshop:frontmatter' slug=workshop.slug %}">{{ workshop }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
