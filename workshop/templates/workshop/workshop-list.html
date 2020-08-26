@@ -1,6 +1,10 @@
 {% extends 'website/base-left-menu.html' %}
 {% load markdownify %}
 
+{% block leftmenu %}
+  {% include 'workshop/leftmenu/content.html' %}
+{% endblock %}
+
 {% block hero %}
 <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
   <h1 class="display-4">Workshops</h1>

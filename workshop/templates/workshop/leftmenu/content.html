@@ -1,0 +1,4 @@
+<strong class="h4 text-muted">Workshops</strong>
+  {% for workshop in website.workshops %}
+    <p><a href="{% url 'workshop:frontmatter' slug=workshop.slug %}" class="">{{ workshop }}</a></p>
+  {% endfor %}

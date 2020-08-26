@@ -1,5 +1,9 @@
-{% extends 'website/base.html' %}
+{% extends 'website/base-left-menu.html' %}
 {% load markdownify admin_urls lessontags static %}
+
+{% block leftmenu %}
+  {% include 'workshop/leftmenu/content.html' %}
+{% endblock %}
 
 {% block header %}
 
@@ -9,7 +13,7 @@
     </div>
   {% endif %}
 
-  {% include 'workshop/workshop-wide-elements/navbar.html' %}
+  <!--{% include 'workshop/workshop-wide-elements/navbar.html' %}-->
 {% endblock %}
 
 
