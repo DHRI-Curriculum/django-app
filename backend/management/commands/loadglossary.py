@@ -48,12 +48,14 @@ def create_terms(glossary_repo=GLOSSARY_REPO):
 
         for annotation in readings:
             title, url = process_links(annotation, 'reading')
+            if title == None: continue # TODO: Warning here?
             obj, created = Reading.objects.get_or_create(annotation = annotation, title = title, url = url)
             log.created(created, 'Reading', obj.title, obj.id)
             term.readings.add(obj)
 
         for annotation in tutorials:
             label, url = process_links(annotation, 'tutorial')
+            if label == None: continue # TODO: Warning here?
             obj, created = Tutorial.objects.get_or_create(annotation = annotation, label = label, url = url)
             log.created(created, 'Tutorial', obj.label, obj.id)
             term.tutorials.add(obj)
