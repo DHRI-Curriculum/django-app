@@ -1,0 +1,55 @@
+{% load markdownify admin_urls lessontags static crispy_forms_tags %}
+<ul id="leftmenu" class="nav nav-tabs" style="font-size: 0.7375rem;" role="tablist">
+    <li class="nav-item" role="presentation">
+        <a class="nav-link active" aria-controls="all" aria-selected="true" data-toggle="tab" href="#all" style="padding: 0.3rem 1rem">All</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" href="#macos" aria-controls="macos" aria-selected="false" data-toggle="tab" style="padding: 0.3rem 1rem">macOS</a>
+    </li>
+    <li class="nav-item" role="presentation">
+        <a class="nav-link" href="#windows" aria-controls="windows" aria-selected="false" data-toggle="tab" style="padding: 0.3rem 1rem">Windows</a>
+    </li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content py-3">
+    <div class="tab-pane active" id="all" role="tabpanel" aria-labelledby="all-tab">
+        <!-- <strong class="h6 my-2 pb-2 text-muted border-bottom d-block">All</strong> -->
+        {% for software, instructions in per_software.items %}
+            <div class="py-3">
+                <strong class="h5">{{ software }}</strong>
+                {% for instruction in instructions %}
+                    {% if forloop.first %}<p class="text-muted" style="font-size:60%">{{ instruction.what | striptags | safe }}</p>{% endif %}
+                    {% if forloop.first %}<div class="btn-group" role="group" aria-label="install-group-sm-{{ software }}">{% endif %}
+                    <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'install:installation' slug=instruction.slug %}">{{ instruction.software.operating_system }}</a>
+                    {% if forloop.last %}</div>{% endif %}
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+    {% for os, instructions in per_os.items %}
+        {% if os == 'macOS' %}
+            <div class="tab-pane" id="macos" role="tabpanel" aria-labelledby="macos-tab">
+                <strong class="h6 my-2 pb-2 border-bottom d-block">macOS</strong>
+                {% for instruction in instructions %}
+                    <div class="py-3">
+                        <strong class="h5">{{ instruction.software.software }}</strong>
+                        <p class="text-muted" style="font-size:60%">{{ instruction.what | striptags | safe }}</p>
+                        <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'install:installation' slug=instruction.slug %}">Installation instructions</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% elif os == 'Microsoft Windows' %}
+            <div class="tab-pane" id="windows" role="tabpanel" aria-labelledby="windows-tab">
+                <strong class="h6 my-2 pb-2 border-bottom d-block">Microsoft Windows</strong>
+                {% for instruction in instructions %}
+                    <div class="py-3">
+                        <strong class="h5">{{ instruction.software.software }}</strong>
+                        <p class="text-muted" style="font-size:60%">{{ instruction.what | striptags | safe }}</p>
+                        <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'install:installation' slug=instruction.slug %}">Installation instructions</a>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endfor %}
+</div>

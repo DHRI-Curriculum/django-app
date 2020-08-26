@@ -1,24 +1,29 @@
 {% load static %}
 <div class="row">
-  <div class="col-12 col-md">
+  <div class="col-12 col-lg">
     <a href="/"><img class="mb-2" src="{% static 'website/images/logo.png' %}" alt="Logo for the Digital Humanities Research Institute" width="125" height="125"></a>
     <small class="d-block mb-3 text-muted">Version {{ version }}. Licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative Commons BY-SA 4.0</a>.</small>
   </div>
-  <div class="col-6 col-md">
+  <div class="col-6 col-lg">
     <h5><a class="text-body text-decoration-none" href="/workshops/">Workshops</a></h5>
     <ul class="list-unstyled text-small">
-      {% for workshop in website.workshops %}
-      <li><a class="link-secondary" href="{% url 'workshop:frontmatter' slug=workshop.slug %}">{{ workshop.name }}</a></li>
-      {% endfor %}
+      <!--
+        {% for workshop in website.workshops %}
+          <li><a class="link-secondary" href="{% url 'workshop:frontmatter' slug=workshop.slug %}">{{ workshop.name }}</a></li>
+        {% endfor %}
+      -->
     </ul>
   </div>
-  <div class="col-6 col-md">
+  <div class="col-6 col-lg">
+    <h5><a class="text-body text-decoration-none" href="/install/">Installations</a></h5>
+  </div>
+  <div class="col-6 col-lg">
     <h5><a class="text-body text-decoration-none" href="/library/">Library</a></h5>
   </div>
-  <div class="col-6 col-md">
+  <div class="col-6 col-lg">
     <h5><a class="text-body text-decoration-none" href="/glossary/">Glossary</a></h5>
   </div>
-  <div class="col-6 col-md">
+  <div class="col-6 col-lg">
     <h5><a class="text-body text-decoration-none" href="/about/">About</a></h5>
     <ul class="list-unstyled text-small">
       <li><a class="link-secondary" href="#">Team</a></li>

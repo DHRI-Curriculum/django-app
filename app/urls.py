@@ -14,6 +14,7 @@ urlpatterns = [
     path('learner/', include('learner.urls')),
     path('glossary/', include('glossary.urls')),
     path('feedback/', include('feedback.urls')),
+    path('install/', include('install.urls')),
     path('sign-up/', learner_views.register, name='register'),
     path('login/', auth_views.LoginView.as_view(template_name='learner/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='learner/logout.html'), name='logout'),

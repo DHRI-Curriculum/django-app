@@ -1,5 +1,4 @@
 from django.core.management import BaseCommand
-from django.contrib.auth.models import User, Group
 from backend.dhri_settings import AUTO_PAGES
 from backend.dhri.log import Logger, log_created
 from backend.models import Page
