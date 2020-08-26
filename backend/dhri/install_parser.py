@@ -111,9 +111,11 @@ class InstallParser():
             if 'remove this section' in section.lower(): continue # automatically remove sections that contain this text
 
             if 'what it is' in section.lower():
+                text = text.replace('\n---\n', '') # manually removing this because it causes issues with paragraphs being converted to h2
                 self.what = PARSER.convert(text) # make it into HTML
                 continue
             if 'why we use it' in section.lower():
+                text = text.replace('\n---\n', '') # manually removing this because it causes issues with paragraphs being converted to h2
                 self.why = PARSER.convert(text) # make it into HTML
                 continue
             if 'installation instructions' in section.lower() and 'macos' in section.lower():
