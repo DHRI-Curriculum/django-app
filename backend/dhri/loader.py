@@ -674,7 +674,6 @@ class GlossaryCache():
         }
 
         for term in self.data.get('terms_raw'):
-            print(term)
             print(self.data.get('terms_raw').get(term))
 
         self.save()

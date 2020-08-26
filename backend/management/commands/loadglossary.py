@@ -14,17 +14,31 @@ def create_terms(glossary_repo=GLOSSARY_REPO):
     for _, data in loader.sections.items():
         readings, tutorials = list(), list()
 
-        if data.get('readings'):
+        if data.get('readings') != None and len(data.get('readings')):
             readings = data.pop('readings')
+        elif data.get('readings') != None:
+            del data['readings']
 
-        if data.get('tutorials'):
+        if data.get('reading') != None and len(data.get('reading')):
+            readings = data.pop('reading')
+        elif data.get('reading') != None:
+            del data['reading']
+
+        if data.get('tutorials') != None and len(data.get('tutorials')):
             tutorials = data.pop('tutorials')
+        elif data.get('tutorials') != None:
+            del data['tutorials']
+
+        if data.get('tutorial') != None and len(data.get('tutorial')):
+            tutorials = data.pop('tutorial')
+        elif data.get('tutorial') != None:
+            del data['tutorial']
 
         if len(data) == 1:
             header = [_ for _ in data.keys()][0]
             content = [_ for _ in data.values()][0]
         else:
-            log.error(f'Too many headers in the glossary term `{term}`. Please make sure the markdown file follows conventions.')
+            log.error(f'Too many headers in the glossary term `{data}`. Please make sure the markdown file follows conventions.')
 
         term, created = Term.objects.get_or_create(
             term=header,
