@@ -187,6 +187,12 @@ class Command(BaseCommand):
         if options.get('all', False):
             LOG.name = 'downloaddata'
 
+            LOG.log("Automatic import activated: Attempting to generate glossary", force=True)
+            create_terms()
+
+            LOG.log("Automatic import activated: Attempting to generate installations", force=True)
+            create_installations()
+
             LOG.log("Automatic import activated: Attempting to generate pages", force=True)
             create_pages()
 
@@ -196,10 +202,6 @@ class Command(BaseCommand):
             LOG.log("Automatic import activated: Attempting to generate users", force=True)
             create_users()
 
-            LOG.log("Automatic import activated: Attempting to generate installations", force=True)
-            create_installations()
-
-            # TODO: Dump data?
 
 def _test_for_branch(d=''):
     repo, branch = None, None

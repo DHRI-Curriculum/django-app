@@ -14,7 +14,8 @@ from backend.dhri.text import auto_replace
 
 # Import other commands
 from .wipe import wipe
+from .loadglossary import create_terms
+from .loadinstalls import create_installations
 from .loadpages import create_pages
 from .loadgroups import create_groups
 from .loadusers import create_users
-from .loadinstalls import create_installations
