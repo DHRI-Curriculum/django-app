@@ -141,3 +141,4 @@ __loader-cache__
 .loader-cache
 fixtures.json
 secrets.yml
+*.ipynb
