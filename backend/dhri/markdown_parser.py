@@ -80,7 +80,7 @@ class GitHubParserCache():
                 rendered_str = p.convert(string)
                 processor = 'Markdown'
 
-        rendered_str = rendered_str.replace('  ', '&nbsp;&nbsp;')
+        rendered_str = rendered_str.replace('  ', '&nbsp;&nbsp;') # TODO: #169 This isn't working
         return({
             'original_string': self.string,
             'markdown': rendered_str,
