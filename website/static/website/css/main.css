@@ -237,3 +237,8 @@ div .codehilite pre {
     line-height:100%;
     width: 1em;
 }
+
+div#admin {
+    padding-left:5px;
+    background-color: rgba(0, 0, 0, 0.05);
+}

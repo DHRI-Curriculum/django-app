@@ -15,10 +15,8 @@
 
     <div id="content" class="container mx-auto py-4">
       {% if request.user.is_staff %}
-          <div id="admin" class="zen-hideaway">
-              <hr />
-              <strong class="text-muted mr-4 small">Admin tools</strong>{% block admin_edit %}{% endblock %}
-              <hr />
+          <div id="admin" class="zen-hideaway border shadow-sm p-2">
+              <strong class="text-muted ml-2 mr-4 small">Admin tools</strong>{% block admin_edit %}{% endblock %}
           </div>
       {% endif %}
       {% block header %}{% endblock %}
