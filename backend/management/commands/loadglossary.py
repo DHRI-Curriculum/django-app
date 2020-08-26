@@ -10,6 +10,7 @@ log = Logger(name='loadglossary')
 
 def create_terms(glossary_repo=GLOSSARY_REPO):
     loader = GlossaryLoader(glossary_repo)
+    # TODO: #166 Add something in the Glossary app that makes a clearer connection to which workshops that are linked to each term. Perhaps each lesson can have a ManyToMany relationship to the Terms?
 
     for term in loader.all_terms:
 
