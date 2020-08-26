@@ -14,6 +14,7 @@ AUTO_REPOS = [
 ]
 
 GLOSSARY_REPO = ('glossary', 'v2.0')
+INSTALL_REPO = ('install', 'v2.0')
 
 AUTO_GROUPS = {
     'Team': {
@@ -163,12 +164,14 @@ CACHE_DIRS = {
     'ZOTERO': '.loader-cache/zotero/'
 }
 
+# The following are written as days
 TEST_AGES = {
-    'ROOT': 20160, # 20,160 minutes = 14 days,
-    'PARSER': 20160, # 20,160 minutes = 14 days,
-    'WEB': 20160, # 20,160 minutes = 14 days
-    'ZOTERO': 14, # days
-    'GLOSSARY': 14 # days
+    'ROOT': 14,
+    'PARSER': 14,
+    'WEB': 14,
+    'ZOTERO': 14,
+    'GLOSSARY': 14,
+    'INSTALL': 14
 }
 
 # If set to True, the script will override the cache every time (effectively disregarding TEST_AGES above)
@@ -224,7 +227,8 @@ LESSON_TRANSPOSITIONS = {
 }
 
 STATIC_IMAGES = {
-    'LESSONS': os.path.join(settings.BASE_DIR, 'website/static/website/images/lessons/')
+    'LESSONS': os.path.join(settings.BASE_DIR, 'website/static/website/images/lessons/'),
+    'INSTALL': os.path.join(settings.BASE_DIR, 'media/installation_screenshots/')
 }
 
 AUTO_PAGES = [
@@ -288,11 +292,12 @@ for DIR in CACHE_DIRS:
     CACHE_DIRS[DIR] = Path(CACHE_DIRS[DIR])
     if not CACHE_DIRS[DIR].exists(): CACHE_DIRS[DIR].mkdir()
 
-TEST_AGES['ROOT'] = timedelta(minutes=TEST_AGES['ROOT'])
-TEST_AGES['PARSER'] = timedelta(minutes=TEST_AGES['PARSER'])
-TEST_AGES['WEB'] = timedelta(minutes=TEST_AGES['WEB'])
+TEST_AGES['ROOT'] = timedelta(days=TEST_AGES['ROOT'])
+TEST_AGES['PARSER'] = timedelta(days=TEST_AGES['PARSER'])
+TEST_AGES['WEB'] = timedelta(days=TEST_AGES['WEB'])
 TEST_AGES['ZOTERO'] = timedelta(days=TEST_AGES['ZOTERO'])
 TEST_AGES['GLOSSARY'] = timedelta(days=TEST_AGES['GLOSSARY'])
+TEST_AGES['INSTALL'] = timedelta(days=TEST_AGES['INSTALL'])
 
 # Run tests
 

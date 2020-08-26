@@ -1,14 +1,54 @@
-{% extends 'website/base.html' %}
+{% extends 'website/base-left-menu.html' %}
 {% load markdownify admin_urls lessontags static crispy_forms_tags %}
 
+{% block leftmenu %}
+    {% include 'install/left-menu/content.html' %}
+{% endblock %}
+
+{% block admin_edit %}
+  <a href="{% url 'admin:install_instruction_change' instruction.id  %}" class="text-decoration-none small">
+    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pen" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+      <path fill-rule="evenodd" d="M5.707 13.707a1 1 0 0 1-.39.242l-3 1a1 1 0 0 1-1.266-1.265l1-3a1 1 0 0 1 .242-.391L10.086 2.5a2 2 0 0 1 2.828 0l.586.586a2 2 0 0 1 0 2.828l-7.793 7.793zM3 11l7.793-7.793a1 1 0 0 1 1.414 0l.586.586a1 1 0 0 1 0 1.414L5 13l-3 1 1-3z"/>
+      <path fill-rule="evenodd" d="M9.854 2.56a.5.5 0 0 0-.708 0L5.854 5.855a.5.5 0 0 1-.708-.708L8.44 1.854a1.5 1.5 0 0 1 2.122 0l.293.292a.5.5 0 0 1-.707.708l-.293-.293z"/>
+      <path d="M13.293 1.207a1 1 0 0 1 1.414 0l.03.03a1 1 0 0 1 .03 1.383L13.5 4 12 2.5l1.293-1.293z"/>
+    </svg><span class="ml-1 mr-4">Edit</span>
+  </a>
+{% endblock %}
+
 {% block main %}
-    <p><strong>Software:</strong> {{ instruction.software.software }}</p>
-    <p><strong>Operating system:</strong> {{ instruction.software.operating_system }}</p>
+    <h2 class="py-2">How to install {{ instruction.software.software }} for {{ instruction.software.operating_system }}</h2>
+    <div class="lead pb-4 mb-4 border-bottom">
+        <p>{{ instruction.what | safe }}</p>
+        <p>{{ instruction.why | safe }}</p>
+    </div>
     {% for step in instruction.steps.all %}
-        <h3>Step {{ step.order }}</h3>
-        <p>{{ step.text }}</p>
-        {% for screenshot in step.screenshots.all %}
-            <img src="{{ screenshot.image.url }}" alt="{% if screenshot.alt_text == 'No alt text' %}{{ screenshot }}{% else %}{{ screenshot.alt_text }}{% endif %}">
-        {% endfor %}
+    <div class="row py-2 my-4">
+        <div class="col-12">
+            <h3>Step {{ step.order }}{% if step.header %}: {{ step.header | markdown | striptags | safe }}{% endif %}</h3>
+        </div>
+        <div class="col-12 col-md-4">
+            <div class="lead">{{ step.text | safe }}</div>
+        </div>
+        <div class="col-12 col-md-8">
+            {% for screenshot in step.screenshots.all %}
+                <a href="{{ screenshot.image.url }}"><img src="{{ screenshot.image.url }}" class="shadow shadow-sm border img-fluid" alt="{% if screenshot.alt_text == 'No alt text' %}{{ screenshot }}{% else %}{{ screenshot.alt_text }}{% endif %}"></a>
+            {% endfor %}
+        </div>
+    </div>
     {% endfor %}
+{% endblock %}
+
+
+{% block javascript %}
+<script>
+    var triggerTabList = [].slice.call(document.querySelectorAll('#leftmenu a'))
+    triggerTabList.forEach(function (triggerEl) {
+    var tabTrigger = new bootstrap.Tab(triggerEl)
+
+    triggerEl.addEventListener('click', function (e) {
+        e.preventDefault()
+        tabTrigger.show()
+    })
+    })
+</script>
 {% endblock %}

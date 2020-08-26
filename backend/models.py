@@ -6,6 +6,7 @@ from preview.models import *
 from website.models import *
 from workshop.models import *
 from glossary.models import *
+from install.models import *
 
 ALL_MODELS = [
     # Profile,
@@ -20,5 +21,9 @@ ALL_MODELS = [
     Praxis,
     Page,
     Workshop,
-    Term
+    Term,
+    Software,
+    Instruction,
+    Step,
+    Screenshot
 ]

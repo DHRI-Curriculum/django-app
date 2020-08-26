@@ -96,9 +96,9 @@ class Logger():
         indentation = (len(self.name) + 3) * ' ' # +3 because name is put in brackets and a space is added
         return(_fix_message(message=message, quote='', first_line_add='', indentation=indentation, first_line_bold=True))
 
-    def created(self, created:bool, model='', preview='', id=''):
+    def created(self, created:bool, model='', preview='', id='', force=False):
         if created:
-            self.log(saved_prefix + f'{model} `{preview}` added (ID {id}).')
+            self.log(saved_prefix + f'{model} `{preview}` added (ID {id}).', force=force)
         else:
             self.warning(f'{model} `{preview}` was not saved as it already exists (ID {id}).')
 
