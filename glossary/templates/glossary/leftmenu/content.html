@@ -1,8 +1,10 @@
-<strong class="h4">Terms</strong>
-    <ul class="nav flex-column">
-        {% for term in all_terms %}
-            <li class="nav-item">
-                <a class="text-muted" href="{% url "glossary:term" term.slug %}">{{ term }}</a>
-            </li>
-        {% endfor %}
-    </ul>
+<strong class="h4 text-muted border-bottom pb-2">Terms</strong>
+    <div class="mt-4">
+        <ul class="nav flex-column">
+            {% for term in all_terms %}
+                <li class="nav-item mb-2">
+                    <a href="{% url "glossary:term" term.slug %}">{{ term }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>

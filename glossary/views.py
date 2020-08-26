@@ -13,4 +13,6 @@ def term(request, slug=None):
 
 def index(request):
     payload = build_nav()
+    import random
+    payload['random_items'] = random.sample(list(payload['all_terms']), 4)
     return render(request, 'glossary/index.html', payload)
