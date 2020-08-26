@@ -1,19 +1,19 @@
 {% load markdownify admin_urls lessontags static crispy_forms_tags %}
 <ul id="leftmenu" class="nav nav-tabs" style="font-size: 0.7375rem;" role="tablist">
     <li class="nav-item" role="presentation">
-        <a class="nav-link active" aria-controls="all" aria-selected="true" data-toggle="tab" href="#all" style="padding: 0.3rem 1rem">All</a>
+        <a class="nav-link {% if 'Macintosh' in request.META.HTTP_USER_AGENT %}{% elif 'Windows' in request.META.HTTP_USER_AGENT %}{% else %}active{% endif %}" aria-controls="all" {% if 'Macintosh' in request.META.HTTP_USER_AGENT %}aria-selected="false"{% elif 'Windows' in request.META.HTTP_USER_AGENT %}aria-selected="false"{% else %}aria-selected="true"{% endif %} data-toggle="tab" href="#all" style="padding: 0.3rem 1rem">All</a>
     </li>
     <li class="nav-item" role="presentation">
-        <a class="nav-link" href="#macos" aria-controls="macos" aria-selected="false" data-toggle="tab" style="padding: 0.3rem 1rem">macOS</a>
+        <a class="nav-link {% if 'Macintosh' in request.META.HTTP_USER_AGENT %}active{% elif 'Windows' in request.META.HTTP_USER_AGENT %}{% else %}{% endif %}" href="#macos" aria-controls="macos" {% if 'Macintosh' in request.META.HTTP_USER_AGENT %}aria-selected="true"{% elif 'Windows' in request.META.HTTP_USER_AGENT %}aria-selected="false"{% else %}aria-selected="false"{% endif %} data-toggle="tab" style="padding: 0.3rem 1rem">macOS</a>
     </li>
     <li class="nav-item" role="presentation">
-        <a class="nav-link" href="#windows" aria-controls="windows" aria-selected="false" data-toggle="tab" style="padding: 0.3rem 1rem">Windows</a>
+        <a class="nav-link" href="#windows" aria-controls="windows" {% if 'Macintosh' in request.META.HTTP_USER_AGENT %}aria-selected="false"{% elif 'Windows' in request.META.HTTP_USER_AGENT %}aria-selected="true"{% else %}aria-selected="false"{% endif %} data-toggle="tab" style="padding: 0.3rem 1rem">Windows</a>
     </li>
 </ul>
 
 <!-- Tab panes -->
 <div class="tab-content py-3">
-    <div class="tab-pane active" id="all" role="tabpanel" aria-labelledby="all-tab">
+    <div class="tab-pane {% if 'Macintosh' in request.META.HTTP_USER_AGENT %}{% elif 'Windows' in request.META.HTTP_USER_AGENT %}{% else %}active{% endif %}" id="all" role="tabpanel" aria-labelledby="all-tab">
         <!-- <strong class="h6 my-2 pb-2 text-muted border-bottom d-block">All</strong> -->
         {% for software, instructions in per_software.items %}
             <div class="py-3">
@@ -29,7 +29,7 @@
     </div>
     {% for os, instructions in per_os.items %}
         {% if os == 'macOS' %}
-            <div class="tab-pane" id="macos" role="tabpanel" aria-labelledby="macos-tab">
+            <div class="tab-pane {% if 'Macintosh' in request.META.HTTP_USER_AGENT %}active{% elif 'Windows' in request.META.HTTP_USER_AGENT %}{% else %}{% endif %}" id="macos" role="tabpanel" aria-labelledby="macos-tab">
                 <strong class="h6 my-2 pb-2 border-bottom d-block">macOS</strong>
                 {% for instruction in instructions %}
                     <div class="py-3">
@@ -40,7 +40,7 @@
                 {% endfor %}
             </div>
         {% elif os == 'Windows' %}
-            <div class="tab-pane" id="windows" role="tabpanel" aria-labelledby="windows-tab">
+            <div class="tab-pane {% if 'Macintosh' in request.META.HTTP_USER_AGENT %}{% elif 'Windows' in request.META.HTTP_USER_AGENT %}active{% else %}{% endif %}" id="windows" role="tabpanel" aria-labelledby="windows-tab">
                 <strong class="h6 my-2 pb-2 border-bottom d-block">Microsoft Windows</strong>
                 {% for instruction in instructions %}
                     <div class="py-3">
