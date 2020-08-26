@@ -77,21 +77,24 @@ class Command(BaseCommand):
 
     help = 'Load all installs'
 
+    def add_arguments(self, parser):
+        parser.add_argument('--wipe', action='store_true')
+
     def handle(self, *args, **options):
         if options.get('wipe', False):
-            Software.objects.all().delete()
-            log.log(f'All Software removed.', force=True)
-
-            Instruction.objects.all().delete()
-            log.log(f'All Instructions removed.', force=True)
+            Screenshot.objects.all().delete()
+            log.log(f'All Screenshots removed.', force=True)
 
             Step.objects.all().delete()
             log.log(f'All Steps removed.', force=True)
 
-            Screenshot.objects.all().delete()
-            log.log(f'All Screenshots removed.', force=True)
+            Instruction.objects.all().delete()
+            log.log(f'All Instructions removed.', force=True)
 
-            loader = GlossaryLoader(force_download=True)
-            log.log(f'Glossary cache removed.', force=True)
+            Software.objects.all().delete()
+            log.log(f'All Software removed.', force=True)
+
+            loader = InstallLoader(force_download=True)
+            log.log(f'Install cache removed.', force=True)
 
         create_installations()
