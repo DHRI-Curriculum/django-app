@@ -1,5 +1,6 @@
 import json
 import re
+import requests
 
 from pathlib import Path
 from collections import OrderedDict
@@ -32,15 +33,15 @@ class InstallCache():
         self.expired = _is_expired(self.path, age_checker=TEST_AGES["INSTALL"], force_download=force_download) == True
 
         if not self.path.exists():
-            log.warning(f'{self.path} does not exist so downloading install cache...')
+            self.log.warning(f'{self.path} does not exist so downloading install cache...')
             self._setup_raw_content()
 
         if force_download == True:
-            log.warning(f'Force download is set to True so downloading install cache...')
+            self.log.warning(f'Force download is set to True so downloading install cache...')
             self._setup_raw_content()
 
         if self.expired == True:
-            log.warning(f'File is expired (set to {self.expired}) so downloading install cache...')
+            self.log.warning(f'File is expired (set to {self.expired}) so downloading install cache...')
             self._setup_raw_content()
 
         self.data = self.load()
@@ -55,7 +56,7 @@ class InstallCache():
 
 
     def _load_raw_text(self):
-        log.log(f'Loading raw text from {self.loader.repo_name}...')
+        self.log.log(f'Loading raw text from {self.loader.repo_name}...')
 
         r = requests.get(f'https://github.com/DHRI-Curriculum/{self.loader.repo_name}/tree/{self.loader.branch}/guides')
 
@@ -69,7 +70,7 @@ class InstallCache():
             name = ".".join(filename.split('.')[:-1])
 
             if name != 'images' and name != '':
-                log.log(f'Loading raw text from `{name}`...')
+                self.log.log(f'Loading raw text from `{name}`...')
                 raw_url = f'https://raw.githubusercontent.com/DHRI-Curriculum/{self.loader.repo_name}/{self.loader.branch}/guides/{filename}'
                 r = requests.get(raw_url)
                 results[name] = r.text
@@ -90,6 +91,8 @@ class InstallCache():
 
 class InstallParser():
 
+    log = Logger(name='install-parser')
+
     def _get_order(self, step):
         g = re.search(r"Step ([0-9]+): ", step)
         if g:
@@ -97,7 +100,7 @@ class InstallParser():
             step = re.sub(r'Step ([0-9]+): ', '', step)
         else:
             order = 0
-            log.warning('Found an installation step that does not show the order clearly (see documentation). Cannot determine order: ' + str(step))
+            self.log.warning('Found an installation step that does not show the order clearly (see documentation). Cannot determine order: ' + str(step))
         return(order, step)
 
     software, what, why, windows, mac_os = None, None, None, None, None
@@ -111,11 +114,11 @@ class InstallParser():
             if 'remove this section' in section.lower(): continue # automatically remove sections that contain this text
 
             if 'what it is' in section.lower():
-                text = text.replace('\n---\n', '') # manually removing this because it causes issues with paragraphs being converted to h2
+                text = text.replace('---', '') # manually removing this because it causes issues with paragraphs being converted to h2
                 self.what = PARSER.convert(text) # make it into HTML
                 continue
             if 'why we use it' in section.lower():
-                text = text.replace('\n---\n', '') # manually removing this because it causes issues with paragraphs being converted to h2
+                text = text.replace('---', '') # manually removing this because it causes issues with paragraphs being converted to h2
                 self.why = PARSER.convert(text) # make it into HTML
                 continue
             if 'installation instructions' in section.lower() and 'macos' in section.lower():
@@ -148,7 +151,7 @@ class InstallParser():
                     for img in soup.find_all("img"):
                         src = img.get('src')
                         if not src:
-                            log.warning(f"An image with no src attribute detected in installation instruction step: {img}. Skipping...")
+                            self.log.warning(f"An image with no src attribute detected in installation instruction step: {img}. Skipping...")
                             continue
 
                         filename = src.split('/')[-1]
