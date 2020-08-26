@@ -45,7 +45,7 @@ class Command(BaseCommand):
             Term.objects.all().delete()
             log.log(f'All Terms removed.', force=True)
 
-            loader = GlossaryLoader(force_download=True)
+            GlossaryLoader(force_download=True)
             log.log(f'Glossary cache removed.', force=True)
 
         create_terms()
