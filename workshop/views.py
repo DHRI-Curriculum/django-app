@@ -1,7 +1,6 @@
 from django.shortcuts import render, HttpResponse, get_object_or_404
 from django.core.exceptions import MultipleObjectsReturned
 from django.core.paginator import Paginator
-# from website.models import Page
 from workshop.models import Workshop
 from lesson.models import Lesson
 
@@ -49,8 +48,12 @@ def frontmatter(request, slug=None):
     if obj in request.user.profile.favorites.all(): favorited = True
 
   lessons = Lesson.objects.filter(workshop=obj)
+  all_terms = list()
+  for lesson in lessons:
+    all_terms.extend(list(lesson.terms.all()))
+  num_terms = len(all_terms)
   frontmatter = obj.frontmatter
-  return render(request, 'workshop/frontmatter.html', {'workshop': obj, 'frontmatter': frontmatter, 'lessons': lessons, 'user_favorited': favorited})
+  return render(request, 'workshop/frontmatter.html', {'workshop': obj, 'frontmatter': frontmatter, 'lessons': lessons, 'user_favorited': favorited, 'all_terms': all_terms, 'num_terms': num_terms})
 
 
 def praxis(request, slug=None):
