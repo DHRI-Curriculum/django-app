@@ -42,6 +42,9 @@
       <div class="py-2 px-2" id="time_estimated">
         <span class="text-muted small">This workshop is estimated to take {{ frontmatter.estimated_time }} hours to complete.</span>
       </div>
+      <div class="py-2 px-3" id="updated">
+        <p><strong>Last updated:</strong> {{ workshop.updated }}</p>
+      </div>
     </div>
     <div id="hero">
       {% include 'workshop/frontmatter-elements/hero.html' %}
@@ -172,6 +175,7 @@
 
   </div>
 
+  <!--
   <div id="dashboard" class="row justify-content-center small bg-super-light py-2 rounded-lg">
 
     <div id="github" class="py-2 col-12 col-sm-2">
@@ -205,7 +209,8 @@
 
     </div>
 
-  </div><!-- /dashboard -->
+  </div>
+  --><!-- /dashboard -->
 {% endblock %}
 
 

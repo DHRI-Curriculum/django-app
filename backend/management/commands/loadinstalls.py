@@ -48,6 +48,8 @@ def create_installations():
 
                     i = 1
                     for screenshot in d.get('screenshots'):
+                        exists = False
+
                         if screenshot[0] == '' or screenshot[0] == 'None' or screenshot[0] == None or screenshot[1] == 'None' or screenshot[1] == None:
                             if screenshot[1] in [None, 'None']:
                                 log.warning(f'Cannot find local cache for screenshot for installation step {s.order} (in {s.instruction}) so skipping: {screenshot}', color='red')
@@ -57,18 +59,20 @@ def create_installations():
 
                         # Check existing screenshots
                         for sh in Screenshot.objects.filter(gh_name=screenshot[0]).all():
+                            exists = True
                             fullname = sh.image.name
                             if not sh.image.storage.exists(fullname):
-                                print(f'{sh.id} delete... (file {fullname} does not exist)')
+                                print(f'Will remove screenshot with ID {sh.id} as file {fullname} does not exist in `media` directory.')
                                 sh.delete()
 
-                        sh, created = Screenshot.objects.get_or_create(step=s, gh_name=screenshot[0], defaults={'order': i})
-                        log.created(created, f'Screenshot for {sh.step.instruction}', sh.order, sh.id)
-                        if created:
-                            with open(screenshot[1], 'rb') as f:
-                                sh.image = File(f, name=screenshot[0])
-                                sh.save()
-                                i += 1
+                        if exists == False:
+                            sh, created = Screenshot.objects.get_or_create(step=s, gh_name=screenshot[0], defaults={'order': i})
+                            log.created(created, f'Screenshot for {sh.step.instruction}', sh.order, sh.id)
+                            if created:
+                                with open(screenshot[1], 'rb') as f:
+                                    sh.image = File(f, name=screenshot[0])
+                                    sh.save()
+                                    i += 1
 
 
 class Command(BaseCommand):

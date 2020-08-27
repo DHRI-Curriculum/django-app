@@ -2,84 +2,7 @@
 {% load markdownify admin_urls lessontags static crispy_forms_tags %}
 
 {% block extra_head_material %}
-<style>
-#post-it-container {
-  position: relative;
-  margin: 25px;
-  width: 10em;
-  height: 10em;
-  z-index: 1;
-  float:left;
-}
-#post-it-container {
-  perspective: 1000px;
-}
-#post-it-card {
-  width: 100%;
-  height: 100%;
-  transform-style: preserve-3d;
-  transition: all 500ms linear;
-  text-overflow: clip;
-}
-#post-it-container:hover #post-it-card {
-  transform: rotateY(180deg);
-  cursor:pointer;
-}
-.face {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  background: #ffc;
-}
-.face.back {
-  display: block;
-  transform: rotateY(180deg);
-  box-sizing: border-box;
-  font-size:0.7rem;
-  text-overflow: clip;
-  white-space: inherit;
-  overflow: scroll;
-}
-
-div.term {
-color: #151515;
-display: block;
-height: 100%;
-width: 100%;
-text-align: center;
-font-size: 0.8rem;
-}
-
-#post-its div#post-it-container:nth-child(1) {
-  -o-transform:rotate(-5deg);
-  -webkit-transform:rotate(-5deg);
-  -moz-transform:rotate(-5deg);
-  position:relative;
-  top:-1px;
-}
-#post-its div#post-it-container:nth-child(even) {
-  -o-transform:rotate(4deg);
-  -webkit-transform:rotate(4deg);
-  -moz-transform:rotate(4deg);
-  position:relative;
-  top:5px;
-}
-#post-its div#post-it-container:nth-child(4n) {
-  -o-transform:rotate(-3deg);
-  -webkit-transform:rotate(-3deg);
-  -moz-transform:rotate(-3deg);
-  position:relative;
-  top:-5px;
-}
-#post-its div#post-it-container:nth-child(7n) {
-  -o-transform:rotate(5deg);
-  -webkit-transform:rotate(5deg);
-  -moz-transform:rotate(5deg);
-  position:relative;
-  top:-10px;
-}
-</style>
+  <link rel="stylesheet" href="{% static 'glossary/css/postit.css' %}">
 {% endblock %}
 
 {% block leftmenu %}
@@ -90,20 +13,10 @@ font-size: 0.8rem;
 <div class="row py-4">
     <div class="col-12">
       <h3>Test your knowledge</h3>
-      <p class="lead">Can you define the terms below. Hover over each of them to read a preview of the definitions.</p>
+      <p class="lead">Can you define the terms below? Hover over each of them to read a preview of the definitions.</p>
       <div id="post-its" class="d-inline-flex">
         {% for term in random_items %}
-          <div id="post-it-container">
-            <div id="post-it-card" class="shadow-sm">
-              <div class="front face">
-                  <div class="term p-5">{{ term }}</div>
-              </div>
-              <div class="back face text-center p-2">
-                  <p>{{ term.explication | striptags | truncatewords:35 | safe }}<p>
-                  <a href="{% url 'glossary:term' term.slug %}">See term page</a>
-              </div>
-            </div>
-          </div>
+          {% include 'glossary/postit.html' %}
         {% endfor %}
       </div>
     </div>
