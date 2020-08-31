@@ -97,3 +97,6 @@ class Praxis(models.Model):
 
     def __str__(self):
         return f'Praxis collection for workshop {self.workshop.name}'
+
+    class Meta:
+      verbose_name_plural = "Praxes"
