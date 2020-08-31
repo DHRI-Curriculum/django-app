@@ -7,14 +7,26 @@
 </div>
 
 
-{% if frontmatter.learning_objectives %}
-<div class="my-5">
-    <hr class="pt-1" />
-    <h4>In this workshop, you will learn how to</h4>
-    {% for objective in frontmatter.learning_objectives.all %}
-        <li>{{ objective }}</li>
-    {% endfor %}
-</div>
+{% if frontmatter.learning_objectives or num_terms > 0 %}
+    <div class="my-5">
+        <hr class="pt-1" />
+        <h3>In this workshop, you will learn...</h3>
+        {% if frontmatter.learning_objectives %}
+            <h4>Learning Objectives</h4>
+            {% for objective in frontmatter.learning_objectives.all %}
+                <li>{{ objective }}</li>
+            {% endfor %}
+        {% endif %}
+        {% if num_terms > 0 %}
+            <h4 class="">Glossary terms</h4>
+            <div class="lead mt-4">These are the glossary terms that you will learn how to define in this workshop.</div>
+            <div id="post-its" class="d-inline-flex">
+            {% for term in all_terms %}
+                {% include 'glossary/postit.html' %}
+            {% endfor %}
+            </div>
+        {% endif %}
+    </div>
 {% endif %}
 
 

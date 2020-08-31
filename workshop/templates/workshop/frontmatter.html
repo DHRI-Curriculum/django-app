@@ -87,20 +87,6 @@
 
 {% block main %}
 
-  {% if num_terms > 0 %}
-    <div class="row pt-5">
-      <div class="col-12 pb-2">
-        <h3>Glossary terms</h3>
-        <div class="lead mt-4">These are the glossary terms that you will learn how to define in this workshop.</div>
-        <div id="post-its" class="d-inline-flex">
-          {% for term in all_terms %}
-            {% include 'glossary/postit.html' %}
-          {% endfor %}
-        </div>
-      </div>
-    </div>
-  {% endif %}
-
   {% if frontmatter.prerequisites.count or frontmatter.resources.count %}
     <div class="row pt-5">
 
@@ -112,7 +98,7 @@
         <hr />
       </div>
 
-      <div class="col-6">
+      <div class="col-12 col-md-6">
         {% if frontmatter.prerequisites.count %}
         <h4>Prerequisites</h4>
         <p style="font-size:1.05rem;">Here is an introductory paragraph about what a prerequisite means. This should go in the new site model probably.</p>
@@ -122,7 +108,7 @@
         {% endif %}
       </div>
 
-      <div class="col-6">
+      <div class="col-12 col-md-6">
         {% if frontmatter.resources.count %}
         <h4>Requirements</h4>
         <p style="font-size:1.05rem;">Here is an introductory paragraph about what a requirement means. This should go in the new site model probably.</p>
@@ -144,7 +130,7 @@
       <hr />
     </div>
     {% if frontmatter.ethical_considerations.count %}
-      <div class="col-12 col-sm-4 mt-4 mt-md-2 overflow-hidden">
+      <div class="col-12 col-xl-4 mt-4 mt-md-2 overflow-hidden">
         <h4>Ethical considerations</h4>
         <hr />
         <p style="font-size:1.05rem;">Here is an introductory paragraph about what ethical considerations mean. It might contain <a href="/library/">a link</a> to more information about why we include information about ethics on this level of the website.</p>
@@ -155,7 +141,7 @@
     {% endif %}
 
     {% if frontmatter.readings.count %}
-      <div class="col-12 col-sm-4 mt-4 mt-md-2 overflow-hidden">
+      <div class="col-12 col-xl-4 mt-4 mt-md-2 overflow-hidden">
         <h4>Readings before you get started</h4>
         <hr />
         <p style="font-size:1.05rem;">Here is an introductory paragraph about what the following readings are. It might contain <a href="/library/">a link</a> to our "library" for the curriculum website, which can contain all kinds of information.</p>
@@ -172,7 +158,7 @@
     {% endif %}
 
     {% if frontmatter.projects.count %}
-      <div class="col-12 col-sm-4 mt-4 mt-md-2 overflow-hidden">
+      <div class="col-12 col-xl-4 mt-4 mt-md-2 overflow-hidden">
         <h4>Projects related to {{ workshop.name }}</h4>
         <hr />
         <p style="font-size:1.05rem;">Here is an introductory paragraph about what the following projects are and why they are listed here. It might contain <a href="/library/">a link</a> to our "library" for the curriculum website, which can contain all kinds of information.</p>

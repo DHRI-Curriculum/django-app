@@ -6,7 +6,7 @@ class Lesson(models.Model):
   title = models.CharField(max_length=200)
   created = models.DateTimeField(auto_now_add=True)
   updated = models.DateTimeField(auto_now=True)
-  workshop = models.ForeignKey(Workshop, on_delete=models.CASCADE)
+  workshop = models.ForeignKey(Workshop, on_delete=models.CASCADE, related_name='lessons')
   text = models.TextField()
   terms = models.ManyToManyField(Term, blank=True)
   order = models.PositiveSmallIntegerField(default=0)
