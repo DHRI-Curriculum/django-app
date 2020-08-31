@@ -43,7 +43,7 @@
   <div class="container">
     <div class="row">
       {% for workshop in workshops %}
-        <div class="col-lg-6 px-3 py-3">
+        <div class="col-xl-6 px-3 py-3">
           <div class="card h-100">
 
             <div class="card-header">
@@ -52,10 +52,18 @@
 
             <div class="card-body">
               {% if workshop.frontmatter.abstract %}<p class="card-text m-0">{{ workshop.frontmatter.abstract | markdown | safe }}</p>{% endif %}
+
+              {% if workshop.has_terms %}
+                <div class="mt-2 pt-1 border-top">
+                <strong class="mr-1">Key terms</strong>{% for term in workshop.terms %}
+                  <a tabindex="{{ forloop.counter0 }}" class="btn badge btn-light" data-popover-arrow="hello" data-container="body" data-toggle="popover" data-placement="top" data-title="{{ term }}" data-content="{{ term.explication | striptags }} <strong>Click to read more about {{ term}}</strong>" href="{% url 'glossary:term' term.slug %}">{{ term }}</a>
+                {% endfor %}
+                </div>
+              {% endif %}
             </div>
 
-            <div class="card-footer">
-              <a href="{% url 'workshop:frontmatter' slug=workshop.slug %}" class="btn btn-primary stretched-link">Start</a>
+            <div class="card-footer text-right">
+              <a href="{% url 'workshop:frontmatter' slug=workshop.slug %}" class="btn btn-success">Start &raquo;</a>
             </div>
 
           </div>
@@ -64,3 +72,16 @@
     </div>
   </div>
 {% endblock %}
+
+{% block extra_head_material %}
+
+{% endblock %}
+
+{% block javascript %}
+<script>
+  var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="popover"]'))
+  var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+    return new bootstrap.Popover(popoverTriggerEl, {trigger: 'hover', container: 'body', 'html': true, template: '<div class="popover shadow-lg w-700" role="tooltip"><div class="popover-arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'})
+  })
+</script>
+{% endblock%}

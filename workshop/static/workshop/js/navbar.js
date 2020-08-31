@@ -7,18 +7,20 @@ isHidden = function(el) {
     return (style.display === 'none')
 }
 
-workshop_nav
-    .addEventListener('click', function (e) {
-        if (e.target.id == 'meta-btn') {
-            // do nothing
-        } else if (e.target.id == "workshop-navbar-toggle") {
-            // do nothing
-        } else {
-            if (isHidden(workshop_navbar_toggle_button) != true) {
-                var bsCollapse = new bootstrap.Collapse(workshop_navbar_items, {
-                    toggle: true
-                });
-                e.preventDefault();
+if (workshop_nav) {
+    workshop_nav
+        .addEventListener('click', function (e) {
+            if (e.target.id == 'meta-btn') {
+                // do nothing
+            } else if (e.target.id == "workshop-navbar-toggle") {
+                // do nothing
+            } else {
+                if (isHidden(workshop_navbar_toggle_button) != true) {
+                    var bsCollapse = new bootstrap.Collapse(workshop_navbar_items, {
+                        toggle: true
+                    });
+                    e.preventDefault();
+                };
             };
-        };
-    })
+        });
+}

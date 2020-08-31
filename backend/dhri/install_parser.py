@@ -132,7 +132,7 @@ class InstallParser():
         # Correct the instruction lists into sections
         operating_systems = ['mac os', 'windows']
         for os in operating_systems:
-            if self.instructions[os]:
+            if self.instructions[os] and isinstance(self.instructions[os], str):
                 self._instructions[os] = dict()
                 self.instructions[os] = split_into_sections(self.instructions[os], level_granularity=3)
 
@@ -181,7 +181,8 @@ class InstallParser():
                     # manual fixes
                     soup = str(soup).replace('\n</', '</').replace('---', '<hr />')
                     self._instructions[os][section]['html'] = str(soup).replace('<html><body>', '').replace('</body></html>', '')
-
+                else:
+                    self.log.warning('Expected instructions to be a markdown string but received an object of type `dict`. Continuing assuming that `dict` object contains valid instructions.')
         self.instructions['windows'] = self._instructions['windows']
         self.windows = self.instructions['windows']
 

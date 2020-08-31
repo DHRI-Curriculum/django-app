@@ -271,6 +271,8 @@ def split_into_sections(markdown:str, level_granularity=3, keep_levels=False, cl
       - keep_level which maintains the number of octothorps before the header
     """
 
+    if not isinstance(markdown, str):
+        raise RuntimeError('Markdown is not string:', markdown)
     if clear_empty_lines:
         lines = [_ for _ in markdown.splitlines() if _] # cleans out any empty lines
     else:

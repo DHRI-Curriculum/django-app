@@ -21,6 +21,21 @@ class Workshop(models.Model):
   def __str__(self):
       return f'{self.name}'
 
+  @property
+  def terms(self):
+      "Returns all the terms associated with all lessons belonging to workshop."
+      _ = list()
+      for lesson in self.lessons.all():
+        _.extend(lesson.terms.all())
+      return(_)
+
+  @property
+  def has_terms(self):
+    for lesson in self.lessons.all():
+        if lesson.terms.count(): return True
+    return False
+
+
 
 class Contributor(models.Model):
   first_name = models.TextField(max_length=100)
@@ -82,3 +97,6 @@ class Praxis(models.Model):
 
     def __str__(self):
         return f'Praxis collection for workshop {self.workshop.name}'
+
+    class Meta:
+      verbose_name_plural = "Praxes"
