@@ -6,13 +6,13 @@ VERSION = '0.5'
 
 AUTO_REPOS = [
     # ('databases', 'v2.0'),
-    ('data-literacies', 'v2.0-di-edits'),
-    ('project-lab', 'v2.0rhody-edits'),
-    ('text-analysis', 'v2.0-rafa-edits'),
-    ('command-line', 'v2.0-smorello-edits'),
-    ('python', 'v2.0-filipa-edits'),
-    ('html-css', 'v2.0-param-edits'),
-    ('git', 'v2.0-kristen-edits'),
+    # ('project-lab', 'v2.0rhody-edits'),
+    ('data-literacies', 'v2.0'),
+    ('text-analysis', 'v2.0'),
+    ('command-line', 'v2.0'),
+    ('python', 'v2.0'),
+    ('html-css', 'v2.0'),
+    ('git', 'v2.0'),
 ]
 
 GLOSSARY_REPO = ('glossary', 'v2.0')

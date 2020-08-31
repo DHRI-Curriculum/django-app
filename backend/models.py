@@ -24,5 +24,6 @@ ALL_MODELS = [
     Software,
     Instruction,
     Step,
-    Screenshot
+    Screenshot,
+    Collaboration
 ]

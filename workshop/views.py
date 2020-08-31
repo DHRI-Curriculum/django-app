@@ -53,7 +53,17 @@ def frontmatter(request, slug=None):
     all_terms.extend(list(lesson.terms.all()))
   num_terms = len(all_terms)
   frontmatter = obj.frontmatter
-  return render(request, 'workshop/frontmatter.html', {'workshop': obj, 'frontmatter': frontmatter, 'lessons': lessons, 'user_favorited': favorited, 'all_terms': all_terms, 'num_terms': num_terms})
+
+  previous_collaborators, current_collaborators = list(), list()
+  for collaborator in frontmatter.contributors.all():
+    for collaboration in collaborator.collaboration_set.all():
+      collaborator.role = collaboration.get_role_display()
+      if collaboration.current:
+        current_collaborators.append(collaborator)
+      else:
+        previous_collaborators.append(collaborator)
+
+  return render(request, 'workshop/frontmatter.html', {'workshop': obj, 'frontmatter': frontmatter, 'lessons': lessons, 'user_favorited': favorited, 'all_terms': all_terms, 'num_terms': num_terms, 'previous_collaborators': previous_collaborators, 'current_collaborators': current_collaborators})
 
 
 def praxis(request, slug=None):

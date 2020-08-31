@@ -87,7 +87,20 @@
 
 {% block main %}
 
-  {{ frontmatter.contributors.all }}
+  {% for c in current_collaborators %}
+    <div class="row">
+        <div class="col-sm-3"><!--left col-->
+            <div class="text-center">
+                <img src="{{ c.profile.image.url }}" class="avatar img-circle img-thumbnail" alt="avatar">
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <h4 class="account-heading">{{ c }} ({{ c.role }})</h4>
+            <p class="text-secondary">{{ c.profile.user.email }}</p>
+            {% if c.profile.bio %}<p>{{ c.profile.bio }}</p>{% endif %}
+        </div>
+    </div>
+  {% endfor %}
 
   {% if frontmatter.prerequisites.count or frontmatter.resources.count %}
     <div class="row pt-5">

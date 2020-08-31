@@ -7,6 +7,7 @@ class Profile(models.Model):
     email_confirmed = models.BooleanField(default=False)
     favorites = models.ManyToManyField('workshop.Workshop', blank=True)
     instructor_requested = models.BooleanField(default=False)
+    bio = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return f'{self.user.username}\'s Profile'
