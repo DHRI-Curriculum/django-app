@@ -87,6 +87,8 @@
 
 {% block main %}
 
+  {{ frontmatter.contributors.all }}
+
   {% if frontmatter.prerequisites.count or frontmatter.resources.count %}
     <div class="row pt-5">
 
@@ -173,10 +175,6 @@
         {% endfor %}
       </div>
     {% endif %}
-  </div>
-
-  <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-left">
-
   </div>
 
   <!--

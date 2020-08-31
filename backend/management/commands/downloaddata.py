@@ -149,6 +149,7 @@ class Command(BaseCommand):
                             url = contributor.get('url'),
                         )
                         LOG.created(created, 'Contributor', obj.full_name, obj.id)
+                        frontmatter.contributors.add(obj)
 
                 else:
                     LOG.error(f'Have no way of processing {model} for app `frontmatter`. The `downloaddata` script must be adjusted accordingly.', kill=False)
