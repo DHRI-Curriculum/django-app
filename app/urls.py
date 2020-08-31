@@ -12,6 +12,7 @@ urlpatterns = [
     path('workshops/', include('workshop.urls')),
     path('assessment/', include('assessment.urls')),
     path('learner/', include('learner.urls')),
+    path('terms/', include('glossary.urls')),
     path('glossary/', include('glossary.urls')),
     path('feedback/', include('feedback.urls')),
     path('install/', include('install.urls')),
