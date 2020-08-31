@@ -16,7 +16,7 @@
     <div id="content" class="container mx-auto py-4">
       {% if request.user.is_staff %}
           <div id="admin" class="zen-hideaway border shadow-sm p-2">
-              <strong class="text-muted ml-2 mr-4 small">Admin tools</strong>{% block admin_edit %}{% endblock %}
+              <strong class="text-muted ml-2 mr-4 small">Admin tools</strong>{% block admin_edit %}{% endblock %}{% include 'website/admin-viewports.html' %}
           </div>
       {% endif %}
       {% block header %}{% endblock %}

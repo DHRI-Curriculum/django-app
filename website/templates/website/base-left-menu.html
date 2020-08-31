@@ -21,12 +21,7 @@
       <div class="col-12 col-md-9">
         {% if request.user.is_staff %}
             <div id="admin" class="zen-hideaway border shadow-sm p-2 d-none d-sm-block">
-                <strong class="text-muted ml-2 mr-4 small">Admin tools</strong>{% block admin_edit %}{% endblock %}
-                <div class="d-inline-block d-sm-none ml-4"><strong class="text-muted small"><span class="font-weight-bold">Current viewport:</span> XS</strong></div>
-                <div class="d-none d-sm-inline-block d-md-none ml-4"><strong class="text-muted small"><span class="font-weight-bold">Current viewport:</span> SM</strong></div>
-                <div class="d-none d-md-inline-block d-lg-none ml-4"><strong class="text-muted small"><span class="font-weight-bold">Current viewport:</span> MD</strong></div>
-                <div class="d-none d-lg-inline-block d-xl-none ml-4"><strong class="text-muted small"><span class="font-weight-bold">Current viewport:</span> LG</strong></div>
-                <div class="d-none d-xl-inline-block ml-4"><strong class="text-muted small"><span class="font-weight-bold">Current viewport:</span> XL</strong></div>
+                <strong class="text-muted ml-2 mr-4 small">Admin tools</strong>{% block admin_edit %}{% endblock %}{% include 'website/admin-viewports.html' %}
             </div>
         {% endif %}
         {% block header %}{% endblock %}
