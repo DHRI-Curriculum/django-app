@@ -17,7 +17,10 @@ def create_blurbs(AUTO_USERS=AUTO_USERS):
                     text = u.get('blurb', {'text': None, 'workshop': None}).get('text')
                     workshop = u.get('blurb', {'text': None, 'workshop': None}).get('workshop')
                     if text and workshop:
-                        w = Workshop.objects.get(slug=workshop)
+                        try:
+                            w = Workshop.objects.get(slug=workshop)
+                        except:
+                            w = None
                         if w:
                             obj, created = Blurb.objects.get_or_create(
                                 workshop = w,
