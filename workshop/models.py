@@ -41,7 +41,6 @@ class Workshop(models.Model):
 class Contributor(models.Model):
   first_name = models.TextField(max_length=100)
   last_name = models.TextField(max_length=100)
-  #role = models.TextField(max_length=100, null=True, blank=True)
   url = models.TextField(max_length=200, null=True, blank=True) # TODO: move to Profile model?
   profile = models.ForeignKey(Profile, null=True, blank=True, on_delete=models.CASCADE)
 
@@ -86,11 +85,15 @@ class Collaboration(models.Model): # TODO: Do we want these ordered?
   current = models.BooleanField(default=False)
 
   def __str__(self):
-    return f'''{self.contributor.full_name}'s role in {self.frontmatter.workshop.name} ({self.role})'''
+    return f'''{self.contributor.full_name}'s role in {self.frontmatter.workshop.name} ({self._get_current_text()} {self.get_role_display()})'''
 
   def is_current(self):
     if self.current: return True
     return False
+
+  def _get_current_text(self):
+    if self.current: return "Current"
+    return "Past"
 
   class Meta:
     ordering = ('current',)

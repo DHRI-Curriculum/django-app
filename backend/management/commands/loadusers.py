@@ -60,7 +60,7 @@ def create_users(AUTO_USERS=AUTO_USERS):
                     except FileNotFoundError:
                         print(f'Could not find image for user with username `{u.get("username")}`: Make sure the file exists: `{u.get("img")}` in the root directory of the app.')
                         exit()
-                user.save()
+                user.profile.save()
                 log.log(f'`{user.profile}` saved with bio information and photo.', force=True)
 
             # Groups

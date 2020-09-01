@@ -164,7 +164,7 @@ class Command(BaseCommand):
                         for contributor in l.contributors:
                             low_role = ''
                             is_author, is_reviewer, is_editor, is_current, is_past = False, False, False, False, False
-                            print(contributor)
+
                             if contributor.get('role'):
                                 low_role = contributor.get('role').lower()
                                 is_author = 'author' in low_role or 'contributor' in low_role
