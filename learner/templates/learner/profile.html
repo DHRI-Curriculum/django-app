@@ -34,6 +34,7 @@
 </svg>
 
 <div class="row py-4">
+  {% if is_me or request.user.is_staff %}
     <div class="col-sm-3"><!--left col-->
 
         <div class="text-center">
@@ -93,6 +94,11 @@
           </p>
         {% endif %}
     </div>
+  {% else %}
+    <div class="col-12">
+      <p class="text-danger font-weight-bold">You cannot view other people's profiles.</p>
+    </div>
+  {% endif %}
 </div>
 {% endblock %}
 

@@ -6,7 +6,9 @@ from .models import Profile
 from django.http import JsonResponse, HttpResponseForbidden
 from workshop.models import Workshop
 from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def profile(request, username=None):
     payload = dict()
 
