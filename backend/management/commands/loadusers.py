@@ -3,6 +3,7 @@ from django.contrib.auth.models import User, Group
 from backend.dhri_settings import AUTO_USERS, USER_SETUP
 from backend.dhri.log import Logger
 from django.core.files import File
+from backend.models import Workshop
 
 
 log = Logger(name='loadusers')
@@ -10,7 +11,6 @@ log = Logger(name='loadusers')
 
 def create_users(AUTO_USERS=AUTO_USERS):
     for cat in list(AUTO_USERS.keys()):
-        print(cat)
         for u in AUTO_USERS[cat]:
             is_staff = cat == 'STAFF'
             is_super = cat == 'SUPER'
@@ -30,7 +30,8 @@ def create_users(AUTO_USERS=AUTO_USERS):
                     username=username,
                     password = u.get('password'),
                     first_name = u.get('first_name'),
-                    last_name = u.get('last_name')
+                    last_name = u.get('last_name'),
+                    email = u.get('email')
                 )
                 log.log(f'Superuser `{user}` added.', force=True) # TODO: Remove `force=True` (sane check here)
             else:
@@ -38,7 +39,8 @@ def create_users(AUTO_USERS=AUTO_USERS):
                     password = u.get('password'),
                     username=username,
                     first_name = u.get('first_name'),
-                    last_name = u.get('last_name')
+                    last_name = u.get('last_name'),
+                    email = u.get('email')
                 )
                 if is_staff:
                     user.is_staff=True
@@ -71,28 +73,6 @@ def create_users(AUTO_USERS=AUTO_USERS):
                         log.log(f'{user} --> added to `{group}`.')
                 except:
                     log.error(f'Error: Could not add {user} to group {group}.')
-                    log.error(f'If you are certain that the group should exist, try running `manage.py create_groups` first.')
-
-            '''
-            print()
-            print()
-            print(u.get('blurb', {'text': None, 'workshop': None}).get('text'))
-            print(u.get('blurb', {'text': None, 'workshop': None}).get('workshop'))
-            for group in u.get('groups', []):
-                print(group)
-            '''
-    exit()
-
-    for cat in AUTO_USERS:
-        for username, settings in AUTO_USERS[cat].items():
-            groups = settings.pop('groups')
-            for group in groups:
-                try:
-                    if Group.objects.get(name=group):
-                        Group.objects.get(name=group).user_set.add(u)
-                        log.log(f'--> added to `{group}`.')
-                except:
-                    log.error(f'Error: Could not add {u} to group {group}.')
                     log.error(f'If you are certain that the group should exist, try running `manage.py create_groups` first.')
 
 

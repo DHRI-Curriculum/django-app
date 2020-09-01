@@ -3,6 +3,8 @@ from django.core.exceptions import MultipleObjectsReturned
 from django.core.paginator import Paginator
 from workshop.models import Workshop, Collaboration
 from lesson.models import Lesson
+from learner.models import Profile
+from django.conf import settings
 
 
 def _flexible_get(model=None, slug_or_int=''):
@@ -55,16 +57,17 @@ def frontmatter(request, slug=None):
   payload['num_terms'] = len(payload['all_terms'])
 
   payload['frontmatter'] = payload['workshop'].frontmatter
+  payload['default_user_image'] = settings.MEDIA_URL + Profile.image.field.default
 
-  payload['all_collaborators'] = Collaboration.objects.filter(frontmatter=payload['frontmatter'])
-  payload['current_collaborators'] = payload['all_collaborators'].filter(current=True)
-  payload['past_collaborators'] = payload['all_collaborators'].filter(current=False)
-  payload['current_authors'] = payload['current_collaborators'].filter(role='Au')
-  payload['current_editors'] = payload['current_collaborators'].filter(role='Ed')
-  payload['current_reviewers'] = payload['current_collaborators'].filter(role='Re')
-  payload['past_authors'] = payload['past_collaborators'].filter(role='Au')
-  payload['past_editors'] = payload['past_collaborators'].filter(role='Ed')
-  payload['past_reviewers'] = payload['past_collaborators'].filter(role='Re')
+  payload['all_collaborators'] = Collaboration.objects.filter(frontmatter=payload['frontmatter']).order_by('contributor__last_name')
+  payload['current_collaborators'] = payload['all_collaborators'].filter(current=True).order_by('contributor__last_name')
+  payload['past_collaborators'] = payload['all_collaborators'].filter(current=False).order_by('contributor__last_name')
+  payload['current_authors'] = payload['current_collaborators'].filter(role='Au').order_by('contributor__last_name')
+  payload['current_editors'] = payload['current_collaborators'].filter(role='Ed').order_by('contributor__last_name')
+  payload['current_reviewers'] = payload['current_collaborators'].filter(role='Re').order_by('contributor__last_name')
+  payload['past_authors'] = payload['past_collaborators'].filter(role='Au').order_by('contributor__last_name')
+  payload['past_editors'] = payload['past_collaborators'].filter(role='Ed').order_by('contributor__last_name')
+  payload['past_reviewers'] = payload['past_collaborators'].filter(role='Re').order_by('contributor__last_name')
 
   return render(request, 'workshop/frontmatter.html', payload)
 

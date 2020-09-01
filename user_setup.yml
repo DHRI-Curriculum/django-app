@@ -2,6 +2,7 @@ SUPER:
 
   - first_name: Kalle
     last_name: Westerling
+    email: kwesterling1@gradcenter.cuny.edu
     username: kalle
     password: admin
     groups:

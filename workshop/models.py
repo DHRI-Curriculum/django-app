@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.text import slugify
 from library.models import Reading, Project, Resource, Tutorial
 from learner.models import Profile
+from django.contrib.auth.models import User
 
 
 class Workshop(models.Model):
@@ -129,3 +130,8 @@ class Praxis(models.Model):
 
     class Meta:
       verbose_name_plural = "Praxes"
+
+class Blurb(models.Model):
+    workshop = models.ForeignKey(Workshop, on_delete=models.CASCADE)
+    text = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)

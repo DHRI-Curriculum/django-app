@@ -25,5 +25,6 @@ ALL_MODELS = [
     Instruction,
     Step,
     Screenshot,
-    Collaboration
+    Collaboration,
+    Blurb
 ]
