@@ -14,7 +14,7 @@ def create_users(AUTO_USERS=AUTO_USERS):
         for u in AUTO_USERS[cat]:
             is_staff = cat == 'STAFF'
             is_super = cat == 'SUPER'
-            is_user = cat == 'USER'
+            # is_user = cat == 'USER' (not in use)
 
             # print(is_staff, is_super, is_user)
 
@@ -22,7 +22,7 @@ def create_users(AUTO_USERS=AUTO_USERS):
 
             # TODO: Set all force to False
             if User.objects.filter(username=username).count():
-                log.log(f"Deleting existing user `{username}`...", force=True)
+                log.log(f"Deleting existing user `{username}`...", force=True) # TODO: Remove `force=True` (sane check here)
                 User.objects.filter(username=username).delete()
 
             if is_super:
@@ -32,7 +32,7 @@ def create_users(AUTO_USERS=AUTO_USERS):
                     first_name = u.get('first_name'),
                     last_name = u.get('last_name')
                 )
-                log.log(f'Superuser `{user}` added.', force=True)
+                log.log(f'Superuser `{user}` added.', force=True) # TODO: Remove `force=True` (sane check here)
             else:
                 user = User.objects.create_user(
                     password = u.get('password'),
@@ -43,9 +43,9 @@ def create_users(AUTO_USERS=AUTO_USERS):
                 if is_staff:
                     user.is_staff=True
                     user.save()
-                    log.log(f'Staff user `{user}` added.', force=True)
+                    log.log(f'Staff user `{user}` added.', force=True) # TODO: Remove `force=True` (sane check here)
                 else:
-                    log.log(f'User `{user}` added.', force=True)
+                    log.log(f'User `{user}` added.', force=True) # TODO: Remove `force=True` (sane check here)
 
             # Profile
             if u.get('bio') or u.get('img'):
