@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponse, get_object_or_404
 from django.core.exceptions import MultipleObjectsReturned
 from django.core.paginator import Paginator
-from workshop.models import Workshop, Collaboration
+from workshop.models import Workshop, Collaboration, Blurb
 from lesson.models import Lesson
 from learner.models import Profile
 from django.conf import settings
@@ -69,6 +69,9 @@ def frontmatter(request, slug=None):
   payload['past_editors'] = payload['past_collaborators'].filter(role='Ed').order_by('contributor__last_name')
   payload['past_reviewers'] = payload['past_collaborators'].filter(role='Re').order_by('contributor__last_name')
 
+  payload['blurbs'] = Blurb.objects.filter(workshop=payload['workshop']).order_by('user__last_name')
+  for blurb in payload['blurbs']:
+    print(blurb.user.profile.personal_links())
   return render(request, 'workshop/frontmatter.html', payload)
 
 

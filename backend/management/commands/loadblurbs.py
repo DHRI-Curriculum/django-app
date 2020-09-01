@@ -8,7 +8,7 @@ from backend.models import Workshop, Blurb
 log = Logger(name='loadblurbs')
 
 
-def create_users(AUTO_USERS=AUTO_USERS):
+def create_blurbs(AUTO_USERS=AUTO_USERS):
     for cat in list(AUTO_USERS.keys()):
         for u in AUTO_USERS[cat]:
             if u.get('blurb'):
@@ -42,4 +42,4 @@ class Command(BaseCommand):
     help = 'Create blurbs'
 
     def handle(self, *args, **options):
-        create_users(AUTO_USERS)
+        create_blurbs(AUTO_USERS)

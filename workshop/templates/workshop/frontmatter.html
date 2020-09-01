@@ -99,11 +99,29 @@
               </div>
           </div>
           <div class="col-sm-9">
-              <h4 class="account-heading">{{ c.contributor }} ({{ c.get_role_display }})</h4>
+              <h4 class="account-heading">{{ c.contributor }}</h4>
               <p class="text-secondary">{{ c.contributor.profile.user.email }}</p>
               {% if c.contributor.profile.bio %}<p>{{ c.contributor.profile.bio }}</p>{% endif %}
+              {% if c.contributor.profile.links.count %}
+                <p><strong class="mr-2">Personal links</strong>{% for link in c.contributor.profile.personal_links.all %}<a href="{{ link.url }}" class="badge bg-light text-dark mr-1" target="_blank">{{ link.label }}</a>{% endfor %}</p>
+                <p><strong class="mr-2">Projects I have worked on</strong>{% for link in c.contributor.profile.project_links.all %}<a href="{{ link.url }}" class="badge bg-light text-dark mr-1" target="_blank">{{ link.label }}</a>{% endfor %}</p>
+              {% endif %}
           </div>
     {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if blurbs %}
+    <div class="row mt-5">
+      {% for blurb in blurbs %}
+        <div class="col-12">
+          <h4>Meet your instructor</h4>
+          <p class="lead">{{ blurb.text | safe }}</p>
+          {% if blurb.user.first_name and blurb.user.last_name %}
+            <p>— {{ blurb.user.first_name }} {{ blurb.user.last_name }}</p>
+          {% endif %}
+        </div>
+      {% endfor %}
     </div>
   {% endif %}
 

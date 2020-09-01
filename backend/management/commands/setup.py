@@ -1,4 +1,4 @@
-"""manage.py downloaddata command"""
+"""manage.py setup command"""
 
 from django.core.management import BaseCommand
 
@@ -7,7 +7,7 @@ from .imports import *
 
 
 # Set up logger
-LOG = Logger(name='downloaddata')
+LOG = Logger(name='setup')
 
 
 class Command(BaseCommand):
@@ -29,7 +29,7 @@ class Command(BaseCommand):
             wipe()
 
         if options.get('all', False) or options.get('structure', False):
-            LOG.name = 'downloaddata'
+            LOG.name = 'setup'
 
             LOG.log("Automatic import activated: Attempting to generate glossary", force=True)
             create_terms()
@@ -214,7 +214,7 @@ class Command(BaseCommand):
                             frontmatter.contributors.add(c)
 
                     else:
-                        LOG.error(f'Have no way of processing {model} for app `frontmatter`. The `downloaddata` script must be adjusted accordingly.', kill=False)
+                        LOG.error(f'Have no way of processing {model} for app `frontmatter`. The `setup` script must be adjusted accordingly.', kill=False)
 
                 #LOG.name = LOG.original_name + "-praxis"
                 for model in l.praxis_models:
@@ -244,8 +244,13 @@ class Command(BaseCommand):
                             praxis.further_readings.add(obj)
 
                     else:
-                        LOG.error(f'Have no way of processing {model} for app `praxis`. The `downloaddata` script must be adjusted accordingly.', kill=False)
+                        LOG.error(f'Have no way of processing {model} for app `praxis`. The `setup` script must be adjusted accordingly.', kill=False)
 
+        if options.get('all', False) or repos:
+            LOG.name = 'setup'
+
+            LOG.log("Automatic import activated: Attempting to generate blurbs", force=True)
+            create_blurbs()
 
 
 def _test_for_branch(d=''):

@@ -135,3 +135,6 @@ class Blurb(models.Model):
     workshop = models.ForeignKey(Workshop, on_delete=models.CASCADE)
     text = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+      return(f'Blurb for workshop {self.workshop.name} by {self.user}')
