@@ -125,6 +125,9 @@ AUTO_USERS = {
 
 ##### Standard settings ##############################
 
+# Where user info is stored:
+USER_SETUP = 'user_setup.yml'
+
 # This is where the final fixtures JSON file will be saved
 FIXTURE_PATH = 'app/fixtures.json'
 
@@ -328,3 +331,26 @@ try:
         ZOTERO_API_KEY = f.read()
 except:
     ZOTERO_API_KEY = None
+
+import yaml
+try:
+    with open(USER_SETUP, 'r') as f:
+        AUTO_USERS = yaml.safe_load(f)
+except FileNotFoundError:
+    print(f'Cannot open {USER_SETUP} to read the automatic user information. Make sure your `dhri_settings.py` file contains the correct filename.')
+    exit()
+except yaml.parser.ParserError as e:
+    print(f'Cannot parse file {USER_SETUP}: {e}')
+    exit()
+except yaml.scanner.ScannerError as e:
+    print(f'Cannot parse file {USER_SETUP}: {e}')
+    exit()
+
+REQUIRED_IN_USERS = ['first_name', 'last_name', 'username', 'password']
+# AUTO_USERS testing data
+for cat in AUTO_USERS:
+    for u in AUTO_USERS[cat]:
+        for section in REQUIRED_IN_USERS:
+            if not u.get(section):
+                print(f'User setup file does not contain section `{section}` (in user with username `{u.get("username")}`). Make sure all the users in the `{USER_SETUP}` file contains all the required sections: `{"`, `".join(REQUIRED_IN_USERS)}`.')
+                exit()
