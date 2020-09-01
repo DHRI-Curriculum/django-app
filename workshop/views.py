@@ -1,8 +1,10 @@
 from django.shortcuts import render, HttpResponse, get_object_or_404
 from django.core.exceptions import MultipleObjectsReturned
 from django.core.paginator import Paginator
-from workshop.models import Workshop
+from workshop.models import Workshop, Collaboration, Blurb
 from lesson.models import Lesson
+from learner.models import Profile
+from django.conf import settings
 
 
 def _flexible_get(model=None, slug_or_int=''):
@@ -29,45 +31,62 @@ def _flexible_get(model=None, slug_or_int=''):
     response = f"You have not selected a valid ID for the model {model}."
     return HttpResponse(response, status=500)
 
+payload = dict()
 
 def frontmatter(request, slug=None):
+
   request.session.set_expiry(0) # expires at browser close
 
-  _, obj = _flexible_get(Workshop, slug)
-  has_visited = request.session.get('has_visited', False)
+  _, payload['workshop'] = _flexible_get(Workshop, slug)
 
-  if not has_visited:
-    obj.views += 1
-    obj.save()
+  if not request.session.get('has_visited', False):
+    payload['workshop'].views += 1
+    payload['workshop'].save()
     request.session['has_visited'] = True
 
-  obj.has_visited = request.session.get('has_visited', False)
+  payload['workshop'].has_visited = request.session.get('has_visited', False)
 
-  favorited = False
+  payload['user_favorited'] = False
   if request.user.is_authenticated:
-    if obj in request.user.profile.favorites.all(): favorited = True
+    if payload['workshop'] in request.user.profile.favorites.all(): payload['user_favorited'] = True
 
-  lessons = Lesson.objects.filter(workshop=obj)
-  all_terms = list()
-  for lesson in lessons:
-    all_terms.extend(list(lesson.terms.all()))
-  num_terms = len(all_terms)
-  frontmatter = obj.frontmatter
-  return render(request, 'workshop/frontmatter.html', {'workshop': obj, 'frontmatter': frontmatter, 'lessons': lessons, 'user_favorited': favorited, 'all_terms': all_terms, 'num_terms': num_terms})
+  payload['lessons'] = Lesson.objects.filter(workshop=payload['workshop'])
+  payload['all_terms'] = list()
+  for lesson in payload['lessons']:
+    payload['all_terms'].extend(list(lesson.terms.all()))
+  payload['num_terms'] = len(payload['all_terms'])
+
+  payload['frontmatter'] = payload['workshop'].frontmatter
+  payload['default_user_image'] = settings.MEDIA_URL + Profile.image.field.default
+
+  payload['all_collaborators'] = Collaboration.objects.filter(frontmatter=payload['frontmatter']).order_by('contributor__last_name')
+  payload['current_collaborators'] = payload['all_collaborators'].filter(current=True).order_by('contributor__last_name')
+  payload['past_collaborators'] = payload['all_collaborators'].filter(current=False).order_by('contributor__last_name')
+  payload['current_authors'] = payload['current_collaborators'].filter(role='Au').order_by('contributor__last_name')
+  payload['current_editors'] = payload['current_collaborators'].filter(role='Ed').order_by('contributor__last_name')
+  payload['current_reviewers'] = payload['current_collaborators'].filter(role='Re').order_by('contributor__last_name')
+  payload['past_authors'] = payload['past_collaborators'].filter(role='Au').order_by('contributor__last_name')
+  payload['past_editors'] = payload['past_collaborators'].filter(role='Ed').order_by('contributor__last_name')
+  payload['past_reviewers'] = payload['past_collaborators'].filter(role='Re').order_by('contributor__last_name')
+
+  payload['blurbs'] = Blurb.objects.filter(workshop=payload['workshop']).order_by('user__last_name')
+  for blurb in payload['blurbs']:
+    print(blurb.user.profile.personal_links())
+  return render(request, 'workshop/frontmatter.html', payload)
 
 
 def praxis(request, slug=None):
-  _, obj = _flexible_get(Workshop, slug)
-  frontmatter = obj.frontmatter
-  lessons = Lesson.objects.filter(workshop=obj)
-  praxis = obj.praxis
-  return render(request, 'workshop/praxis.html', {'workshop': obj, 'frontmatter': frontmatter, 'praxis': praxis, 'lessons': lessons})
+  _, payload['workshop'] = _flexible_get(Workshop, slug)
+  payload['frontmatter'] = payload['workshop'].frontmatter
+  payload['lessons'] = Lesson.objects.filter(workshop=payload['workshop'])
+  payload['praxis'] = payload['workshop'].praxis
+  return render(request, 'workshop/praxis.html', payload)
 
 
 def lesson(request, slug=None, lesson_id=None):
-  _, obj = _flexible_get(Workshop, slug)
-  lessons = Lesson.objects.filter(workshop=obj)
-  paginator = Paginator(lessons, 1)
+  _, payload['workshop'] = _flexible_get(Workshop, slug)
+  payload['lessons'] = Lesson.objects.filter(workshop=payload['workshop'])
+  paginator = Paginator(payload['lessons'], 1)
 
   page_number = request.GET.get('page')
 
@@ -78,9 +97,9 @@ def lesson(request, slug=None, lesson_id=None):
 
   if not page_number: page_number = 1
 
-  page_obj = paginator.get_page(page_number)
+  payload['page_obj'] = paginator.get_page(page_number)
 
-  percentage = round(page_number / paginator.num_pages * 100)
+  payload['percentage'] = round(page_number / paginator.num_pages * 100)
 
-  lesson = page_obj.object_list[0]
-  return render(request, 'lesson/lesson.html', {'workshop': obj, 'lessons': lessons, 'lesson': lesson, 'page_obj': page_obj, 'percentage': percentage})
+  payload['lesson'] = payload['page_obj'].object_list[0]
+  return render(request, 'lesson/lesson.html', payload)

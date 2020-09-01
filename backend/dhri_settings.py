@@ -6,13 +6,13 @@ VERSION = '0.5'
 
 AUTO_REPOS = [
     # ('databases', 'v2.0'),
-    ('data-literacies', 'v2.0-di-edits'),
-    ('project-lab', 'v2.0rhody-edits'),
-    ('text-analysis', 'v2.0-rafa-edits'),
-    ('command-line', 'v2.0-smorello-edits'),
-    ('python', 'v2.0-filipa-edits'),
-    ('html-css', 'v2.0-param-edits'),
-    ('git', 'v2.0-kristen-edits'),
+    # ('project-lab', 'v2.0rhody-edits'),
+    ('data-literacies', 'v2.0'),
+    ('text-analysis', 'v2.0'),
+    ('command-line', 'v2.0'),
+    ('python', 'v2.0'),
+    ('html-css', 'v2.0'),
+    ('git', 'v2.0'),
 ]
 
 GLOSSARY_REPO = ('glossary', 'v2.0')
@@ -124,6 +124,9 @@ AUTO_USERS = {
 
 
 ##### Standard settings ##############################
+
+# Where user info is stored:
+USER_SETUP = 'user_setup.yml'
 
 # This is where the final fixtures JSON file will be saved
 FIXTURE_PATH = 'app/fixtures.json'
@@ -328,3 +331,26 @@ try:
         ZOTERO_API_KEY = f.read()
 except:
     ZOTERO_API_KEY = None
+
+import yaml
+try:
+    with open(USER_SETUP, 'r') as f:
+        AUTO_USERS = yaml.safe_load(f)
+except FileNotFoundError:
+    print(f'Cannot open {USER_SETUP} to read the automatic user information. Make sure your `dhri_settings.py` file contains the correct filename.') # TODO: Figure out import of log and change `print` to `log.error` here
+    exit()
+except yaml.parser.ParserError as e:
+    print(f'Cannot parse file {USER_SETUP}: {e}') # TODO: Figure out import of log and change `print` to `log.error` here
+    exit()
+except yaml.scanner.ScannerError as e:
+    print(f'Cannot parse file {USER_SETUP}: {e}') # TODO: Figure out import of log and change `print` to `log.error` here
+    exit()
+
+REQUIRED_IN_USERS = ['first_name', 'last_name', 'username', 'password']
+# AUTO_USERS testing data
+for cat in AUTO_USERS:
+    for u in AUTO_USERS[cat]:
+        for section in REQUIRED_IN_USERS:
+            if not u.get(section):
+                print(f'User setup file does not contain section `{section}` (in user with username `{u.get("username")}`). Make sure all the users in the `{USER_SETUP}` file contains all the required sections: `{"`, `".join(REQUIRED_IN_USERS)}`.') # TODO: Figure out import of log and change `print` to `log.error` here
+                exit()

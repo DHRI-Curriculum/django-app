@@ -1,0 +1,12 @@
+<div class="row px-3 pb-2 d-none d-md-flex">
+    <div class="col-md-3 pl-0">
+        <img src="{% if c.contributor.profile %}{{ c.contributor.profile.image.url }}{% else %}{{ default_user_image }}{% endif %}" class="avatar img-circle img-thumbnail" alt="avatar" />
+    </div>
+    <div class="col-md-9 px-0">
+        {% if c.contributor.profile.user.is_staff or c.contributor.url %}<a {% if not c.contributor.profile.user.is_staff and c.contributor.url %}target="_blank"{% endif %} href="{% if c.contributor.profile.user.is_staff %}{% url 'learner:profile' username=c.contributor.profile.user.username %}{% elif c.contributor.url %}{{ c.contributor.url }}{% endif %}">{% endif %}{{ c.contributor.full_name }}{% if c.contributor.profile.user.is_staff or c.contributor.url %}</a>{% endif %}
+    </div>
+</div>
+<div class="row px-3 pb-2 d-md-none">
+    <img src="{% if c.contributor.profile %}{{ c.contributor.profile.image.url }}{% else %}{{ default_user_image }}{% endif %}" class="avatar img-circle img-thumbnail mr-2 w-25" alt="avatar" />
+    {% if c.contributor.profile.user.is_staff %}<a href="{% url 'learner:profile' username=c.contributor.profile.user.username %}">{% endif %}{{ c.contributor.full_name }}{% if c.contributor.profile.user.is_staff %}</a>{% endif %}
+</div>

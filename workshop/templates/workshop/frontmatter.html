@@ -87,8 +87,46 @@
 
 {% block main %}
 
+  {% if current_authors %}
+    <div class="row">
+      <div class="col-12">
+        <h3>Meet the author{% if current_authors.count > 1 %}s{% endif %}</h3>
+      </div>
+    {% for c in current_authors %}
+          <div class="col-sm-3"><!--left col-->
+              <div class="text-center">
+                  <img src="{{ c.contributor.profile.image.url }}" class="avatar img-circle img-thumbnail" alt="avatar">
+              </div>
+          </div>
+          <div class="col-sm-9">
+              <h4 class="account-heading">{{ c.contributor }}</h4>
+              <p class="text-secondary">{{ c.contributor.profile.user.email }}</p>
+              {% if c.contributor.profile.bio %}<p>{{ c.contributor.profile.bio }}</p>{% endif %}
+              {% if c.contributor.profile.links.count %}
+                <p><strong class="mr-2">Personal links</strong>{% for link in c.contributor.profile.personal_links.all %}<a href="{{ link.url }}" class="badge bg-light text-dark mr-1" target="_blank">{{ link.label }}</a>{% endfor %}</p>
+                <p><strong class="mr-2">Projects I have worked on</strong>{% for link in c.contributor.profile.project_links.all %}<a href="{{ link.url }}" class="badge bg-light text-dark mr-1" target="_blank">{{ link.label }}</a>{% endfor %}</p>
+              {% endif %}
+          </div>
+    {% endfor %}
+    </div>
+  {% endif %}
+
+  {% if blurbs %}
+    <div class="row mt-5">
+      {% for blurb in blurbs %}
+        <div class="col-12">
+          <h4>Meet your instructor</h4>
+          <p class="lead">{{ blurb.text | safe }}</p>
+          {% if blurb.user.first_name and blurb.user.last_name %}
+            <p>— {{ blurb.user.first_name }} {{ blurb.user.last_name }}</p>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
   {% if frontmatter.prerequisites.count or frontmatter.resources.count %}
-    <div class="row pt-5">
+    <div class="row mt-5">
 
       <div class="col-12 pb-2">
         <h3>Before you start</h3>
@@ -121,7 +159,7 @@
     </div>
   {% endif %}
 
-  <div class="row pt-5 rounded-sm">
+  <div class="row mt-5 rounded-sm">
     <div class="col-12 pb-2">
       <h3>Contexts</h3>
       <div class="lead mt-4">
@@ -175,46 +213,56 @@
     {% endif %}
   </div>
 
-  <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-left">
+  {% if past_authors or current_reviewers or past_reviewers or current_editors or past_editors %}
+    <div class="row my-3 bg-super-light rounded-lg">
+      {% if past_authors %}
+        <div class="col-12 col-lg-4">
+          <div class="border-bottom py-1 my-3"><h4>Contributing Authors</h4></div>
+          <div class="py-1 my-1"><h6>Past</h6></div>
+          {% for c in past_authors %}
+            {% include 'workshop/frontmatter-elements/collaborator_row.html' %}
+          {% endfor %}
+        </div>
+      {% endif %}
 
-  </div>
+      {% if current_reviewers or past_reviewers %}
+        <div class="col-12 col-lg-4">
+          <div class="border-bottom py-1 my-3"><h4>Reviewers</h4></div>
+          {% if current_reviewers %}
+            <div class="py-1 my-1"><h6>Current</h6></div>
+            {% for c in current_reviewers %}
+              {% include 'workshop/frontmatter-elements/collaborator_row.html' %}
+            {% endfor %}
+          {% endif %}
+          {% if past_reviewers %}
+            <div class="py-1 my-1"><h6>Past</h6></div>
+            {% for c in past_reviewers %}
+              {% include 'workshop/frontmatter-elements/collaborator_row.html' %}
+            {% endfor %}
+          {% endif %}
+        </div>
+      {% endif %}
 
-  <!--
-  <div id="dashboard" class="row justify-content-center small bg-super-light py-2 rounded-lg">
+      {% if current_editors or past_editors %}
+        <div class="col-12 col-lg-4">
+          <div class="border-bottom py-1 my-3"><h4>Editors</h4></div>
+          {% if current_editors %}
+            <div class="py-1 my-1"><h6>Current</h6></div>
+            {% for c in current_editors %}
+              {% include 'workshop/frontmatter-elements/collaborator_row.html' %}
+            {% endfor %}
+          {% endif %}
+          {% if past_editors %}
+            <div class="py-1 my-1"><h6>Past</h6></div>
+            {% for c in past_editors %}
+              {% include 'workshop/frontmatter-elements/collaborator_row.html' %}
+            {% endfor %}
+          {% endif %}
+        </div>
+      {% endif %}
 
-    <div id="github" class="py-2 col-12 col-sm-2">
-      <h6>
-        <a target="_blank" href="http://www.github.com/{{ workshop.parent_repo }}/tree/{{ workshop.parent_branch }}" class="text-decoration-none">
-        <svg class="bi bi-server" width="1.5em" height="1.5em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"> <path d="M13 2c0-1.105-2.239-2-5-2S3 .895 3 2s2.239 2 5 2 5-.895 5-2z"/> <path d="M13 3.75c-.322.24-.698.435-1.093.593C10.857 4.763 9.475 5 8 5s-2.857-.237-3.907-.657A4.881 4.881 0 0 1 3 3.75V6c0 1.105 2.239 2 5 2s5-.895 5-2V3.75z"/> <path d="M13 7.75c-.322.24-.698.435-1.093.593C10.857 8.763 9.475 9 8 9s-2.857-.237-3.907-.657A4.881 4.881 0 0 1 3 7.75V10c0 1.105 2.239 2 5 2s5-.895 5-2V7.75z"/> <path d="M13 11.75c-.322.24-.698.435-1.093.593-1.05.42-2.432.657-3.907.657s-2.857-.237-3.907-.657A4.883 4.883 0 0 1 3 11.75V14c0 1.105 2.239 2 5 2s5-.895 5-2v-2.25z"/> </svg>
-        <span class="pl-1">GitHub</span>
-        </a>
-      </h6>
     </div>
-
-    <div id="updated" class="py-2 col-12 col-sm-3">
-      <h6>
-        Last updated
-      </h6>
-      <span class="font-weight-bolder">
-        <span class="badge badge-dark text-light lead">{{ workshop.updated }}</span>
-      </span>
-    </div>
-
-    <div id="contributors" class="py-2 col-12 col-sm-3">
-      <h6>
-        <svg class="bi bi-people-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/> </svg>
-        <span class="pl-1">All collaborators</span>
-      </h6>
-      <ul>
-        {% for contributor in frontmatter.contributors.all %}
-          <li>{% if contributor.url %}<a href="{{ contributor.url }}" target="_blank">{% endif %}{{ contributor.full_name }}{% if contributor.role %} ({{ contributor.role }}){% endif %}{% if contributor.url %}</a>{% endif %}</li>
-        {% endfor %}
-      </ul>
-
-    </div>
-
-  </div>
-  --><!-- /dashboard -->
+  {% endif %}
 {% endblock %}
 
 

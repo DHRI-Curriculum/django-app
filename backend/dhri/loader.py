@@ -362,7 +362,15 @@ class ContributorParser():
                     elems = [_.strip() for _ in name.split(":")]
                     role = elems[0]
                     name = " ".join(elems[1:])
+                elif ":" in item:
+                    elems = [_.strip() for _ in item.split(":")]
+                    role = elems[0]
                 first_name, last_name = self.split_names(name)
+
+                if first_name == 'Rafael Davis' and last_name == 'Portela': # Correct this name manually
+                    first_name = 'Rafael'
+                    last_name = 'Davis Portela'
+
                 if not first_name.lower() == 'none' and not first_name == '':
                     self.data.append({
                         'first_name': first_name,

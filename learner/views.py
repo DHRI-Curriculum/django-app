@@ -7,6 +7,7 @@ from django.http import JsonResponse, HttpResponseForbidden
 from workshop.models import Workshop
 from django.views.decorators.csrf import csrf_protect
 
+
 def profile(request, username=None):
     payload = dict()
 
@@ -26,6 +27,10 @@ def profile(request, username=None):
     else:
         payload['user'] = get_object_or_404(User, username=username)
         payload['favorites'] = payload['user'].profile.favorites.all()
+        '''
+        if not payload['user'].is_staff:
+            return redirect('/login/?next=%s' % request.path)
+        '''
     return render(request, 'learner/profile.html', payload)
 
 

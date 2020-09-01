@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.text import slugify
 from library.models import Reading, Project, Resource, Tutorial
+from learner.models import Profile
+from django.contrib.auth.models import User
 
 
 class Workshop(models.Model):
@@ -40,8 +42,8 @@ class Workshop(models.Model):
 class Contributor(models.Model):
   first_name = models.TextField(max_length=100)
   last_name = models.TextField(max_length=100)
-  role = models.TextField(max_length=100, null=True, blank=True)
-  url = models.TextField(max_length=200, null=True, blank=True)
+  url = models.TextField(max_length=200, null=True, blank=True) # TODO: move to Profile model?
+  profile = models.ForeignKey(Profile, null=True, blank=True, on_delete=models.CASCADE)
 
   def _fullname(self):
     return self.first_name + ' ' + self.last_name
@@ -58,16 +60,44 @@ class Contributor(models.Model):
 class Frontmatter(models.Model):
   workshop = models.OneToOneField(Workshop, related_name="frontmatter", on_delete=models.CASCADE)
   abstract = models.TextField(max_length=1000, blank=True, null=True)
-  # ethical_considerations = models.TextField(max_length=1000, blank=True, null=True)
   estimated_time = models.PositiveSmallIntegerField(blank=True, null=True, help_text="assign full minutes")
   projects = models.ManyToManyField('library.Project', related_name="frontmatters", blank=True)
   resources = models.ManyToManyField('library.Resource', related_name="frontmatters", blank=True)
   readings = models.ManyToManyField('library.Reading', related_name="frontmatters", blank=True)
-  contributors = models.ManyToManyField(Contributor, related_name="frontmatters", blank=True)
+  contributors = models.ManyToManyField(Contributor, related_name="frontmatters", blank=True, through='Collaboration')
   prerequisites = models.ManyToManyField(Workshop, related_name="prerequisites", blank=True)
 
   def __str__(self):
     return f'Frontmatter for {self.workshop.name}'
+
+
+class Collaboration(models.Model): # TODO: Do we want these ordered?
+  AUTHOR = 'Au'
+  REVIEWER = 'Re'
+  EDITOR = 'Ed'
+  ROLE_CHOICES = [
+    (AUTHOR, 'Author'),
+    (REVIEWER, 'Reviewer'),
+    (EDITOR, 'Editor'),
+  ]
+  frontmatter = models.ForeignKey(Frontmatter, on_delete=models.CASCADE)
+  contributor = models.ForeignKey(Contributor, on_delete=models.CASCADE)
+  role = models.CharField(max_length=2, choices=ROLE_CHOICES, default=AUTHOR)
+  current = models.BooleanField(default=False)
+
+  def __str__(self):
+    return f'''{self.contributor.full_name}'s role in {self.frontmatter.workshop.name} ({self._get_current_text()} {self.get_role_display()})'''
+
+  def is_current(self):
+    if self.current: return True
+    return False
+
+  def _get_current_text(self):
+    if self.current: return "Current"
+    return "Past"
+
+  class Meta:
+    ordering = ('current',)
 
 
 class LearningObjective(models.Model):
@@ -100,3 +130,11 @@ class Praxis(models.Model):
 
     class Meta:
       verbose_name_plural = "Praxes"
+
+class Blurb(models.Model):
+    workshop = models.ForeignKey(Workshop, on_delete=models.CASCADE)
+    text = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+      return(f'Blurb for workshop {self.workshop.name} by {self.user}')
