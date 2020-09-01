@@ -337,13 +337,13 @@ try:
     with open(USER_SETUP, 'r') as f:
         AUTO_USERS = yaml.safe_load(f)
 except FileNotFoundError:
-    print(f'Cannot open {USER_SETUP} to read the automatic user information. Make sure your `dhri_settings.py` file contains the correct filename.')
+    print(f'Cannot open {USER_SETUP} to read the automatic user information. Make sure your `dhri_settings.py` file contains the correct filename.') # TODO: Figure out import of log and change `print` to `log.error` here
     exit()
 except yaml.parser.ParserError as e:
-    print(f'Cannot parse file {USER_SETUP}: {e}')
+    print(f'Cannot parse file {USER_SETUP}: {e}') # TODO: Figure out import of log and change `print` to `log.error` here
     exit()
 except yaml.scanner.ScannerError as e:
-    print(f'Cannot parse file {USER_SETUP}: {e}')
+    print(f'Cannot parse file {USER_SETUP}: {e}') # TODO: Figure out import of log and change `print` to `log.error` here
     exit()
 
 REQUIRED_IN_USERS = ['first_name', 'last_name', 'username', 'password']
@@ -352,5 +352,5 @@ for cat in AUTO_USERS:
     for u in AUTO_USERS[cat]:
         for section in REQUIRED_IN_USERS:
             if not u.get(section):
-                print(f'User setup file does not contain section `{section}` (in user with username `{u.get("username")}`). Make sure all the users in the `{USER_SETUP}` file contains all the required sections: `{"`, `".join(REQUIRED_IN_USERS)}`.')
+                print(f'User setup file does not contain section `{section}` (in user with username `{u.get("username")}`). Make sure all the users in the `{USER_SETUP}` file contains all the required sections: `{"`, `".join(REQUIRED_IN_USERS)}`.') # TODO: Figure out import of log and change `print` to `log.error` here
                 exit()
