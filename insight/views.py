@@ -1,8 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 
 
 def index(request):
-    pass
+    return HttpResponse('index')
 
-def insight(request):
-    pass
+def insight(request, slug=None):
+    return HttpResponse(f'insight for {slug}')
