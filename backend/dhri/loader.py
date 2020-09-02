@@ -299,7 +299,7 @@ class Loader():
         self.frontmatter['contributors'] = ContributorParser(self.frontmatter.get('contributors')).data
         self.frontmatter['readings'] = [str(_) for _ in as_list(self.frontmatter.get('readings'))]
         self.frontmatter['projects'] = [str(_) for _ in as_list(self.frontmatter.get('projects'))]
-        self.frontmatter['learning_objectives'] = [str(_) for _ in as_list(self.frontmatter.get('learning_objectives'))]
+        self.frontmatter['learning_objectives'] = [PARSER.convert(_) for _ in as_list(self.frontmatter.get('learning_objectives'))] # make into HTML
         self.frontmatter['ethical_considerations'] = [str(_) for _ in as_list(self.frontmatter.get('ethical_considerations'))]
 
         # fix praxis data sections

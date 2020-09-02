@@ -20,3 +20,4 @@ from .loadpages import create_pages
 from .loadgroups import create_groups, Group
 from .loadusers import create_users, User
 from .loadblurbs import create_blurbs
+from .loadinsights import create_insights

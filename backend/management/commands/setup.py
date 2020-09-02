@@ -289,6 +289,9 @@ class Command(BaseCommand):
             LOG.log("Automatic import activated: Attempting to generate blurbs", force=True)
             create_blurbs()
 
+            LOG.log("Automatic import activated: Attempting to generate insights", force=True)
+            create_insights()
+
 
 def _test_for_branch(d=''):
     repo, branch = None, None

@@ -13,8 +13,8 @@
         <h3>In this workshop, you will learn...</h3>
         {% if frontmatter.learning_objectives %}
             <h4>Learning Objectives</h4>
-            {% for objective in frontmatter.learning_objectives.all %}
-                <li>{{ objective }}</li>
+            {% for objective in learning_objectives %}
+                <li>{{ objective | safe }}</li>
             {% endfor %}
         {% endif %}
         {% if num_terms > 0 %}
