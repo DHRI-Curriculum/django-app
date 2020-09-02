@@ -35,9 +35,7 @@ class GitHubParserCache():
     def process(self, data:dict):
         markdown = data.get('markdown')
         if markdown:
-            print("before\n", markdown)
             markdown = markdown.replace('  ', '&nbsp;&nbsp;').replace('\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
-            print("after\n", markdown)
             data['markdown'] = markdown
         return data
 
