@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import Insight, Section, OperatingSystemSpecificSection
 
-# Register your models here.
+admin.site.register(Insight)
+admin.site.register(Section)
+admin.site.register(OperatingSystemSpecificSection)
