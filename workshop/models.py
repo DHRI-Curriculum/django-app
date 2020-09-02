@@ -42,7 +42,7 @@ class Workshop(models.Model):
 class Contributor(models.Model):
   first_name = models.TextField(max_length=100)
   last_name = models.TextField(max_length=100)
-  url = models.TextField(max_length=200, null=True, blank=True) # TODO: move to Profile model?
+  url = models.TextField(max_length=200, null=True, blank=True) # This one is really only used when Contributor's profile is set to null
   profile = models.ForeignKey(Profile, null=True, blank=True, on_delete=models.CASCADE)
 
   def _fullname(self):
