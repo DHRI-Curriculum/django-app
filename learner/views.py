@@ -4,7 +4,7 @@ from django.contrib import messages
 from .tokens import account_activation_token
 from .models import Profile
 from django.http import JsonResponse, HttpResponseForbidden
-from workshop.models import Workshop
+from workshop.models import Workshop, Collaboration, Contributor
 from django.views.decorators.csrf import csrf_protect
 
 
@@ -19,18 +19,20 @@ def profile(request, username=None):
         payload['is_me'] = False
 
     if payload['is_me']:
-        instructor = Group.objects.get(name='Instructor')
-        # payload['is_instructor'] = instructor in request.user.groups.all()
         payload['user'] = request.user
-        payload['favorites'] = request.user.profile.favorites.all()
-        payload['instructor_requested'] = request.user.profile.instructor_requested
     else:
         payload['user'] = get_object_or_404(User, username=username)
-        payload['favorites'] = payload['user'].profile.favorites.all()
-        '''
-        if not payload['user'].is_staff:
-            return redirect('/login/?next=%s' % request.path)
-        '''
+
+    payload['profile'] = payload['user'].profile
+    payload['contributor'] = Contributor.objects.get(profile=payload['user'].profile)
+    payload['collaborations_by_roles'] = payload['contributor'].get_collaboration_by_role()
+    payload['collaborations'] = Collaboration.objects.filter(contributor=payload['contributor'])
+    payload['favorites'] = payload['profile'].favorites.all()
+
+    instructor = Group.objects.get(name='Instructor')
+    payload['is_instructor'] = instructor in request.user.groups.all()
+    payload['instructor_requested'] = payload['profile'].instructor_requested
+
     return render(request, 'learner/profile.html', payload)
 
 
