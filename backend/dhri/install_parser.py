@@ -103,11 +103,11 @@ class InstallParser():
             self.log.warning('Found an installation step that does not show the order clearly (see documentation). Cannot determine order: ' + str(step))
         return(order, step)
 
-    software, what, why, windows, mac_os = None, None, None, None, None
-    _instructions, instructions, additional_sections = dict(), {'mac os': '', 'windows': ''}, OrderedDict()
-
     def __init__(self, data:str):
         self.software = list(split_into_sections(data, level_granularity=1).keys())[0]
+        self.software, self.what, self.why, self.windows, self.mac_os = None, None, None, None, None
+        self._instructions, self.instructions, self.additional_sections = dict(), {'mac os': '', 'windows': ''}, OrderedDict()
+
 
         for section, text in split_into_sections(data, level_granularity=2).items():
             if text == '': continue
@@ -204,12 +204,12 @@ class InstallLoader():
 
     log = Logger(name='install-loader')
 
-    instructions = dict()
-    all_software = list()
-
     def __init__(self, install_repo=INSTALL_REPO, force_download=FORCE_DOWNLOAD):
         self.repo_name = install_repo[0]
         self.branch = install_repo[1]
+
+        self.instructions = dict()
+        self.all_software = list()
 
         self.data = InstallCache(self, force_download=force_download).data
 

@@ -17,6 +17,7 @@ AUTO_REPOS = [
 
 GLOSSARY_REPO = ('glossary', 'v2.0')
 INSTALL_REPO = ('install', 'v2.0')
+INSIGHT_REPO = ('insights', 'v2.0')
 
 AUTO_GROUPS = {
     'Team': {
@@ -176,7 +177,8 @@ TEST_AGES = {
     'WEB': 14,
     'ZOTERO': 14,
     'GLOSSARY': 14,
-    'INSTALL': 14
+    'INSTALL': 14,
+    'INSIGHT': 14
 }
 
 # If set to True, the script will override the cache every time (effectively disregarding TEST_AGES above)
@@ -233,7 +235,8 @@ LESSON_TRANSPOSITIONS = {
 
 STATIC_IMAGES = {
     'LESSONS': os.path.join(settings.BASE_DIR, 'website/static/website/images/lessons/'),
-    'INSTALL': os.path.join(settings.BASE_DIR, 'media/installation_screenshots/')
+    'INSTALL': os.path.join(settings.BASE_DIR, 'media/installation_screenshots/'),
+    'INSIGHT': os.path.join(settings.BASE_DIR, 'insight/static/insight/images/')
 }
 
 AUTO_PAGES = [
@@ -303,6 +306,7 @@ TEST_AGES['WEB'] = timedelta(days=TEST_AGES['WEB'])
 TEST_AGES['ZOTERO'] = timedelta(days=TEST_AGES['ZOTERO'])
 TEST_AGES['GLOSSARY'] = timedelta(days=TEST_AGES['GLOSSARY'])
 TEST_AGES['INSTALL'] = timedelta(days=TEST_AGES['INSTALL'])
+TEST_AGES['INSIGHT'] = timedelta(days=TEST_AGES['INSIGHT'])
 
 # Run tests
 
