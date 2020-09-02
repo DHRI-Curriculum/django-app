@@ -29,6 +29,17 @@ class GitHubParserCache():
 
         self.data = self.load()
 
+        self.data = self.process(self.data)
+
+
+    def process(self, data:dict):
+        markdown = data.get('markdown')
+        if markdown:
+            print("before\n", markdown)
+            markdown = markdown.replace('  ', '&nbsp;&nbsp;').replace('\t', '&nbsp;&nbsp;&nbsp;&nbsp;')
+            print("after\n", markdown)
+            data['markdown'] = markdown
+        return data
 
     def load(self):
         """Loads <self.data> from <self.path>"""
@@ -87,7 +98,6 @@ class GitHubParserCache():
             rendered_str = p.convert(string)
             processor = 'Markdown'
 
-        rendered_str = rendered_str.replace('  ', '&nbsp;&nbsp;') # TODO: #169 This isn't working
         return({
             'original_string': self.string,
             'markdown': rendered_str,
