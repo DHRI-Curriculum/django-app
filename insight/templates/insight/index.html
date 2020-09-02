@@ -1,0 +1,35 @@
+{% extends 'website/base-left-menu.html' %}
+{% load markdownify admin_urls lessontags static crispy_forms_tags %}
+
+{% block leftmenu %}
+    {% include 'insight/left-menu/content.html' %}
+{% endblock %}
+
+{% block main %}
+    <div class="row">
+      {% for software, instructions in per_software.items %}
+        {% for instruction in instructions %}
+            {% if forloop.first %}
+            <div class="col-lg-6 px-3 py-3">
+                <div class="card text-center h-100">
+                    <div class="card-body">
+                        <img src="https://cdn.searchenginejournal.com/wp-content/uploads/2020/06/how-to-use-python-to-monitor-and-measure-website-performance-5ed76ef838ff3-760x400.png" class="card-img-top" alt="<!-- TODO -->">
+                        <h5 class="card-title pt-3">{{ software }}</h5>
+                        <p class="card-text">{{ instruction.why | striptags | safe }}</p>
+                        <div class="btn-group" role="group" aria-label="install-group{{ software }}">
+            {% endif %}
+                        <a href="{% url 'install:installation' slug=instruction.slug %}" class="card-link">Install for {{ instruction.software.operating_system }}</a>
+                        <!-- <a type="button" class="btn btn-sm btn-primary" href="{% url 'install:installation' slug=instruction.slug %}">{{ instruction.software.operating_system }}</a> -->
+            {% if forloop.last %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+      {% endfor %}
+    </div>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

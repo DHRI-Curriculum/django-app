@@ -1,0 +1,10 @@
+<strong class="h4 text-muted border-bottom pb-2">Insights</strong>
+    <div class="mt-4">
+        <ul class="nav flex-column">
+            {% for insight in all_insights %}
+                <li class="nav-item mb-2">
+                    <a href="{% url "insight:insight" insight.slug %}">{{ insight }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
