@@ -121,6 +121,43 @@ class Command(BaseCommand):
                             except NameError:
                                 LOG.error(f'Lesson `{lesson.title}` has a solution but no challenge. Will continue but not insert the solution.', kill=False)
 
+                        if lesson_data['evaluation']:
+                            eval, created = Evaluation.objects.get_or_create(
+                                lesson = lesson
+                            )
+                            LOG.created(created, 'Evaluation', eval.lesson.title, eval.id)
+                            for d in lesson_data['evaluation']:
+                                question = d.get('question')
+                                if question:
+                                    q, created = Question.objects.get_or_create(
+                                        evaluation = eval,
+                                        label = question
+                                    )
+                                    LOG.created(created, 'Question', q.label, q.id)
+
+                                    answers = d.get('answers')
+                                    if answers:
+                                        correct_answers = answers.get('correct', [])
+                                        incorrect_answers = answers.get('incorrect', [])
+                                        has_answers = len(correct_answers) > 0 or len(incorrect_answers) > 0
+                                        if has_answers:
+                                            for answer in correct_answers:
+                                                obj, created = Answer.objects.get_or_create(
+                                                    question = q,
+                                                    label = answer,
+                                                    is_correct = True
+                                                )
+                                                LOG.created(created, 'Answer', obj.label, obj.id)
+                                            for answer in incorrect_answers:
+                                                obj, created = Answer.objects.get_or_create(
+                                                    question = q,
+                                                    label = answer,
+                                                    is_correct = False
+                                                )
+                                                LOG.created(created, 'Answer', obj.label, obj.id)
+                                else:
+                                    LOG.warning(f"Question could not be interpreted in lesson {lesson.title}: Raw data — {d}")
+
                     del order
 
                 #LOG.name = LOG.original_name + "-frontmatter"

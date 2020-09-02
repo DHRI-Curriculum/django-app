@@ -7,9 +7,9 @@ VERSION = '0.5'
 AUTO_REPOS = [
     # ('databases', 'v2.0'),
     # ('project-lab', 'v2.0rhody-edits'),
+    ('command-line', 'v2.0'),
     ('data-literacies', 'v2.0'),
     ('text-analysis', 'v2.0'),
-    ('command-line', 'v2.0'),
     ('python', 'v2.0'),
     ('html-css', 'v2.0'),
     ('git', 'v2.0'),
@@ -164,7 +164,7 @@ REPLACEMENTS = {
 
 CACHE_DIRS = {
     'ROOT': '.loader-cache/',
-    'PARSER': '.loader-cache/parser/',
+    'PARSER': '/tmp/.gh-api-cache/', # .loader-cache/parser/ # TODO: For documentation - it's good to keep this in a unique directory on the hard drive...
     'WEB': '.loader-cache/web/',
     'ZOTERO': '.loader-cache/zotero/'
 }

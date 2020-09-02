@@ -58,6 +58,7 @@ class GitHubParserCache():
         g = Github(GITHUB_TOKEN)
 
         exceptions = list()
+        fatal = False
 
         try:
             rendered_str = g.render_markdown(string)
@@ -75,10 +76,16 @@ class GitHubParserCache():
                 log.error(f'FYI, these were the exceptions:', kill=False)
                 log.error("\n- ".join(exceptions), kill=False)
 
-                # backup solution
-                p = markdown.Markdown(extensions=['extra', 'codehilite', 'sane_lists'])
-                rendered_str = p.convert(string)
-                processor = 'Markdown'
+                fatal = True
+
+        if 'triggered an abuse detection mechanism' in rendered_str:
+            fatal = True
+
+        if fatal:
+            # backup solution
+            p = markdown.Markdown(extensions=['extra', 'codehilite', 'sane_lists'])
+            rendered_str = p.convert(string)
+            processor = 'Markdown'
 
         rendered_str = rendered_str.replace('  ', '&nbsp;&nbsp;') # TODO: #169 This isn't working
         return({

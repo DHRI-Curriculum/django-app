@@ -42,7 +42,7 @@ class Workshop(models.Model):
 class Contributor(models.Model):
   first_name = models.TextField(max_length=100)
   last_name = models.TextField(max_length=100)
-  url = models.TextField(max_length=200, null=True, blank=True) # TODO: move to Profile model?
+  url = models.TextField(max_length=200, null=True, blank=True) # This one is really only used when Contributor's profile is set to null
   profile = models.ForeignKey(Profile, null=True, blank=True, on_delete=models.CASCADE)
 
   def _fullname(self):
@@ -55,6 +55,16 @@ class Contributor(models.Model):
 
   def __str__(self):
     return f'{self.full_name}'
+
+  def get_collaboration_by_role(self):
+    return [
+        {'group': 'Current Author', 'list': self.collaborations.filter(role='Au', current=True)},
+        {'group': 'Past Author', 'list': self.collaborations.filter(role='Au', current=False)},
+        {'group': 'Current Reviewer', 'list': self.collaborations.filter(role='Re', current=True)},
+        {'group': 'Past Reviewer', 'list': self.collaborations.filter(role='Re', current=False)},
+        {'group': 'Current Editor', 'list': self.collaborations.filter(role='Ed', current=True)},
+        {'group': 'Past Editor', 'list': self.collaborations.filter(role='Ed', current=False)},
+    ]
 
 
 class Frontmatter(models.Model):
@@ -81,7 +91,7 @@ class Collaboration(models.Model): # TODO: Do we want these ordered?
     (EDITOR, 'Editor'),
   ]
   frontmatter = models.ForeignKey(Frontmatter, on_delete=models.CASCADE)
-  contributor = models.ForeignKey(Contributor, on_delete=models.CASCADE)
+  contributor = models.ForeignKey(Contributor, on_delete=models.CASCADE, related_name='collaborations')
   role = models.CharField(max_length=2, choices=ROLE_CHOICES, default=AUTHOR)
   current = models.BooleanField(default=False)
 

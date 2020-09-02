@@ -34,3 +34,34 @@ class Solution(models.Model):
 
   def __str__(self):
     return f'{self.title}'
+
+
+class Evaluation(models.Model):
+  lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name='evaluations')
+
+  def __str__(self):
+    return f'Evaluation for lesson {self.lesson.title}'
+
+
+class Question(models.Model):
+  evaluation = models.ForeignKey(Evaluation, related_name='questions', on_delete=models.CASCADE)
+  label = models.TextField()
+  is_required = models.BooleanField(default=False)
+
+  @property
+  def has_multiple_answers(self):
+    return self.answers.filter(is_correct=True).count() > 1
+
+  @property
+  def has_single_answer(self):
+    return self.answers.filter(is_correct=True).count() == 1
+
+  @property
+  def has_answers(self):
+    return self.answers.count() > 0
+
+
+class Answer(models.Model):
+  question = models.ForeignKey(Question, related_name='answers', on_delete=models.CASCADE)
+  label = models.TextField()
+  is_correct = models.BooleanField(default=False)

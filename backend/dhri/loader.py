@@ -23,6 +23,8 @@ from backend.dhri_settings import NORMALIZING_SECTIONS, FORCE_DOWNLOAD, BACKEND_
                                     REPO_AUTO, BRANCH_AUTO, TEST_AGES, CACHE_DIRS, \
                                     STATIC_IMAGES, LESSON_TRANSPOSITIONS
 
+from backend.dhri.new_functions import mini_parse_eval
+
 
 log = Logger(name='loader')
 
@@ -507,17 +509,40 @@ class LessonParser():
                             except StopIteration:
                                 done = True
 
-            # 3. Fix markdown body
+            # 3. Evaluation
+            evaluation = ""
+            if "## evaluation" in body.lower():
+                for line_num, line in enumerate(body.splitlines()):
+                    if line.lower().startswith("## evaluation"):
+                        droplines.append(line_num)
+                        startline = line_num + 1
+                        nextlines = (item for item in body.splitlines()[startline:])
+                        done = False
+                        while not done:
+                            try:
+                                l = next(nextlines)
+                                if l.startswith("#"):
+                                    done = True
+                                    continue
+                                evaluation += l + "\n"
+                                droplines.append(startline)
+                                startline += 1
+                            except StopIteration:
+                                done = True
+
+            evaluation = mini_parse_eval(evaluation)
+
+            # 4. Fix markdown body
             cleaned_body = ''
             for i, line in enumerate(body.splitlines()):
                 if line.strip() == '': continue
                 if i not in droplines:
                     cleaned_body += line + '\n'
-            
+
             cleaned_body = re.sub(r' +', ' ', cleaned_body)
             cleaned_body = re.sub(r'\n+', '\n', cleaned_body)
 
-            # 4. Clean up all markdown data
+            # 5. Clean up all markdown data
             title = title.strip()
             body = body.strip()
             challenge = challenge.strip()
@@ -532,19 +557,21 @@ class LessonParser():
             if solution and not challenge:
                 log.error(f"The lesson `{title}` has a solution but no challenge. The program has stopped.")
             elif challenge and not solution:
-                log.warning(f'The lesson `{title}` has a challenge with no solution.')
+                pass # This used to be `log.warning(f'The lesson `{title}` has a challenge with no solution.')`
 
             data = {
                     'title': title,
                     'text': cleaned_body,
                     'challenge': challenge,
-                    'solution': solution
+                    'solution': solution,
+                    'evaluation': evaluation
                 }
 
             self.data.append(data)
 
-
-            # Next up: HTML parsing
+            ####################################################
+            # Next up: HTML parsing ############################
+            ####################################################
 
             html_body = PARSER.convert(cleaned_body)
             html_challenge, html_solution = '', ''
@@ -554,6 +581,13 @@ class LessonParser():
 
             if solution:
                 html_solution = PARSER.convert(solution)
+
+            for i, d in enumerate(evaluation):
+                evaluation[i]['question'] = PARSER.convert(d.get('question')).strip().replace('<p>', '').replace('</p>', '')
+                for ii, a in enumerate(d['answers']['correct']):
+                    evaluation[i]['answers']['correct'][ii] = PARSER.convert(a).strip().replace('<p>', '').replace('</p>', '')
+                for ii, a in enumerate(d['answers']['incorrect']):
+                    evaluation[i]['answers']['incorrect'][ii] = PARSER.convert(a).strip().replace('<p>', '').replace('</p>', '')
 
             soup = BeautifulSoup(html_body, 'lxml')
 
@@ -577,7 +611,7 @@ class LessonParser():
                     download_image(url, local_file)
                     local_url = f'/static/website/images/lessons/{REPO_CLEAR}/{filename}'
                     image['src'] = local_url
-                    image['class'] = image.get('class', []) + ['img-fluid']
+                    image['class'] = image.get('class', []) + ['img-fluid', 'd-block', 'my-4']
 
             # 2. Find and test links
             for link in soup.find_all("a"):
@@ -641,7 +675,8 @@ class LessonParser():
                     'title': title,
                     'text': html_body,
                     'challenge': html_challenge,
-                    'solution': html_solution
+                    'solution': html_solution,
+                    'evaluation': evaluation
                 }
 
             self.html_data.append(html_data)
@@ -724,6 +759,7 @@ class GlossaryParser():
     readings = list()
     tutorials = list()
     explication, readings_md, tutorials_md = None, None, None
+    log = Logger('glossary-parser')
 
     def __init__(self, data:str):
         self.data = data
@@ -736,7 +772,7 @@ class GlossaryParser():
             elif header == 'Tutorials' or (header == 'Tutorial' and self.tutorials_md == None):
                 self.tutorials_md = md
             else:
-                print(f'Error: Unable to parse {header} in term {self.term}.')
+                self.log.error(f'Unable to parse {header} in term {self.term}.')
 
         if self.readings_md:
             self.readings = as_list(self.readings_md)
