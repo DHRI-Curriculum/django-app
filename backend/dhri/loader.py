@@ -453,6 +453,7 @@ class LessonParser():
 
     def __init__(self, markdown:str, loader:object):
         self.markdown = markdown
+
         try:
             self.repo = loader.repo
             self.branch = loader.branch
@@ -464,7 +465,9 @@ class LessonParser():
         self.data = []
         self.html_data = []
 
-        for title, body in split_into_sections(self.markdown, level_granularity=1, clear_empty_lines=False).items():
+        markdown_contents = split_into_sections(self.markdown, level_granularity=1, clear_empty_lines=False)
+
+        for title, body in markdown_contents.items():
             droplines = []
 
             challenge = ""
@@ -490,7 +493,7 @@ class LessonParser():
 
             solution = ""
             # 2. Test markdown for solution
-            if "solution" in body.lower():
+            if "## solution" in body.lower():
                 for line_num, line in enumerate(body.splitlines()):
                     if line.lower().startswith("## solution"):
                         droplines.append(line_num)
@@ -535,12 +538,12 @@ class LessonParser():
             # 4. Fix markdown body
             cleaned_body = ''
             for i, line in enumerate(body.splitlines()):
-                if line.strip() == '': continue
+                #if line.strip() == '': continue
                 if i not in droplines:
                     cleaned_body += line + '\n'
 
-            cleaned_body = re.sub(r' +', ' ', cleaned_body)
-            cleaned_body = re.sub(r'\n+', '\n', cleaned_body)
+            #cleaned_body = re.sub(r' +', ' ', cleaned_body)
+            #cleaned_body = re.sub(r'\n+', '\n', cleaned_body)
 
             # 5. Clean up all markdown data
             title = title.strip()
@@ -622,6 +625,9 @@ class LessonParser():
                 if "github.com/DHRI-Curriculum" in href:
                     OUTBOUND_CLEAR = "".join(href.split("https://github.com/DHRI-Curriculum/")[1:])
                     if OUTBOUND_CLEAR.strip() == '': OUTBOUND_CLEAR = href
+                    print(OUTBOUND_CLEAR)
+                    # if it contains `raw=True`, we want to keep it...
+                    # 
                     if OUTBOUND_CLEAR.startswith(REPO_CLEAR):
                         log.warning(f"The lesson `{title}` links to same workshop: {href}")
                     else:
