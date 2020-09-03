@@ -256,3 +256,16 @@ div#admin {
     background-color: #f6f8fa;
     border-radius: 3px;
   }
+
+#left-menu-wrapper {
+    position: absolute;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: blue;
+    transition: 1s;
+}
+
+#left-menu-main {
+    transition: 1s width flex;
+}
