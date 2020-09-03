@@ -158,6 +158,19 @@ class Command(BaseCommand):
                                 else:
                                     LOG.warning(f"Question could not be interpreted in lesson {lesson.title}: Raw data — {d}")
 
+                        if lesson_data['keywords']:
+                            for d in lesson_data['keywords']:
+                                obj = Term.objects.filter(term=d.get('title'))
+                                if obj.count() > 1:
+                                    obj = obj.last()
+                                    LOG.warning(f'Term {d.get("title")} is not unique so will assign the latest added term to lesson {lesson.order} in workshop {lesson.workshop.name}: Preview of explication: {obj.explication[:30]}...')
+                                elif obj.count() == 0:
+                                    LOG.warning(f'Term {d.get("title")} cannot be found, so it will not be added to lesson {lesson.order} in workshop {lesson.workshop.name}: Preview of explication: {obj.explication[:30]}...')
+                                if obj.count() == 1:
+                                    obj = obj.last()
+                                    lesson.terms.add(obj)
+                                    LOG.log(f'Term {obj.term} has been added to lesson {lesson.order} for workshop {lesson.workshop.name}.', force=True) # TODO: remove `force=True`
+
                     del order
 
                 #LOG.name = LOG.original_name + "-frontmatter"

@@ -1,6 +1,22 @@
 from backend.dhri.log import Logger
+from backend.dhri.markdown import as_list, extract_links
 
 log = Logger()
+
+def mini_parse_keywords(markdown:str):
+    log.name = 'keywords-parser'
+
+    _ = list()
+    for keyword in as_list(markdown):
+        for d in extract_links(keyword):
+            _.append({
+                'title': d[0],
+                'url': d[1],
+                'slug': d[1].split('/')[-1].replace('.md', '')
+            })
+
+    return _
+
 
 def mini_parse_eval(markdown:str):
     log.name = 'evaluation-parser'
