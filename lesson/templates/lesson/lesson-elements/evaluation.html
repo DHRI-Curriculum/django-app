@@ -23,14 +23,16 @@
                         <form class="mt-0">
                             {% for answer in question.answers.all %}
                                 <div class="form-check">
-                                    <input class="form-check-input" {% if question.has_multiple_answers %}type="checkbox" value="" id="flexCheckDefault"{% elif question.has_single_answer %}type="radio" name="flexRadioDefault" id="flexRadioDefault1"{% endif %}>
-                                    <label class="form-check-label" for="flexCheckDefault">
+                                    <input class="form-check-input" {% if question.has_multiple_answers %}type="checkbox" value="" id="flexCheck{{ answer.id }}"{% elif question.has_single_answer %}type="radio" name="flexRadio{{ question.id }}" id="flexRadio{{ answer.id }}"{% endif %}>
+                                    <label class="form-check-label" for="{% if question.has_multiple_answers %}flexCheck{{ answer.id }}{% elif question.has_single_answer %}flexRadio{{ answer.id }}{% endif %}">
                                         {{ answer.label | safe }}
                                     </label>
                                 </div>
                             {% endfor %}
-                            <div class="mt-2"><button type="submit" class="btn btn-primary">Check my answers</button></div>
+                            <div class="mt-2"><button type="submit" class="btn btn-primary">Check my answer</button></div>
                         </form>
+                    {% else %}
+                        <em>This question has no answer. It is a reflective question.</em>
                     {% endif %}
                 </div>
             {% endfor %}

@@ -256,7 +256,7 @@ AUTO_PAGES = [
         'name': 'Library',
         'slug': 'library',
         'text': '<p class="lead">This is the library page.</p>',
-        'template': 'library/all-library-items.html',
+        'template': 'library/index.html',
     },
 ]
 

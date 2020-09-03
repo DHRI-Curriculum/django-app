@@ -6,18 +6,9 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 
 from .models import Reading, Resource, Tutorial, Project
 
-@ensure_csrf_cookie
-def index(request):
-    projects = Project.objects.all().order_by('title')[:3]
-    readings = Reading.objects.all()[:3]
-    resources = Resource.objects.all()[:3]
-    tutorials = Tutorial.objects.all()[:3]
-    return render(request, 'library/all-library-items.html', {
-        'projects': projects,
-        'readings': readings,
-        'resources': resources,
-        'tutorials': tutorials
-    })
+
+payload = dict()
+
 
 def lazyload_projects(request):
     page = request.headers.get('page')

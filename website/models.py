@@ -7,7 +7,7 @@ class Page(models.Model):
     class Template(models.TextChoices):
         STANDARD = 'website/page.html', _('Standard')
         WORKSHOP_LIST = 'workshop/workshop-list.html', _('Workshop list')
-        LIBRARY_LIST = 'library/all-library-items.html', _('Library items')
+        LIBRARY_LIST = 'library/index.html', _('Library items')
 
     name = models.CharField(max_length=200)
     slug = models.CharField(max_length=200, blank=True)
