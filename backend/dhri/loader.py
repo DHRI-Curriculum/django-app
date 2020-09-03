@@ -23,7 +23,7 @@ from backend.dhri_settings import NORMALIZING_SECTIONS, FORCE_DOWNLOAD, BACKEND_
                                     REPO_AUTO, BRANCH_AUTO, TEST_AGES, CACHE_DIRS, \
                                     STATIC_IMAGES, LESSON_TRANSPOSITIONS
 
-from backend.dhri.new_functions import mini_parse_eval
+from backend.dhri.new_functions import mini_parse_eval, mini_parse_keywords
 
 
 log = Logger(name='loader')
@@ -536,6 +536,29 @@ class LessonParser():
 
             evaluation = mini_parse_eval(evaluation)
 
+            # 4. Glossary terms
+            keywords = ""
+            if "## keywords" in body.lower():
+                for line_num, line in enumerate(body.splitlines()):
+                    if line.lower().startswith("## keywords"):
+                        droplines.append(line_num)
+                        startline = line_num + 1
+                        nextlines = (item for item in body.splitlines()[startline:])
+                        done = False
+                        while not done:
+                            try:
+                                l = next(nextlines)
+                                if l.startswith("#"):
+                                    done = True
+                                    continue
+                                keywords += l + "\n"
+                                droplines.append(startline)
+                                startline += 1
+                            except StopIteration:
+                                done = True
+
+            keywords = mini_parse_keywords(keywords)
+
             # 4. Fix markdown body
             cleaned_body = ''
             for i, line in enumerate(body.splitlines()):
@@ -568,7 +591,8 @@ class LessonParser():
                     'text': cleaned_body,
                     'challenge': challenge,
                     'solution': solution,
-                    'evaluation': evaluation
+                    'evaluation': evaluation,
+                    'keywords': keywords,
                 }
 
             self.data.append(data)
@@ -686,7 +710,8 @@ class LessonParser():
                     'text': html_body,
                     'challenge': html_challenge,
                     'solution': html_solution,
-                    'evaluation': evaluation
+                    'evaluation': evaluation,
+                    'keywords': keywords,
                 }
 
             self.html_data.append(html_data)
