@@ -157,7 +157,7 @@ class InstallParser():
                         filename = src.split('/')[-1]
 
                         if filename == '%3Cfilename.png%3E':
-                            print('skipping...')
+                            # print('skipping...')
                             continue
 
                         local_file = IMAGE_CACHE['INSTALL'] / filename
