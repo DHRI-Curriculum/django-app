@@ -260,12 +260,19 @@ div#admin {
 #left-menu-wrapper {
     position: absolute;
     left: 0;
-    width: 0;
+    width: 100%;
     height: 100%;
-    background: blue;
-    transition: 1s;
+    transition: 0.5s linear;
 }
 
 #left-menu-main {
-    transition: 1s width flex;
+    transition: 0.5s linear;
+}
+
+#left-menu-main.delayed {
+    transition-delay: 1.5s !important;
+}
+
+#left-menu-main.not-delayed {
+    transition-delay: 0s !important;
 }

@@ -4,25 +4,41 @@ const left_main = document.querySelector('#left-menu-main');
 const toggle_menu_btn = document.querySelector('#toggle_menu');
 
 const hide_menubar = () => {
-    /*
-    left_menubar.classList.add('d-none');
-    left_menubar.classList.remove('d-block');
-    left_main.classList.replace('col-md-9', 'col-md-12');
-    */
-   console.log('hide!');
-   left_menu_wrapper.style.left = '-500px';
-   left_main.classList.replace('col-md-9', 'col-md-12');
+    console.log('hide!');
+
+    console.log('changing menu to delayed')
+    left_menu_wrapper.classList.remove('delayed');
+    left_menu_wrapper.classList.add('not-delayed');
+
+    console.log('move out menu')
+    left_menu_wrapper.style.left = '-500px';
+
+    console.log('setting main to full')
+    left_main.classList.remove('col-md-9');
+
+    console.log('changing main to delayed (for next transition)')
+    left_main.classList.remove('not-delayed');
+    left_main.classList.add('delayed');
+
+    left_menu_wrapper.classList.remove('delayed');
 };
 
 const show_menubar = () => {
-    /*
-    left_menubar.classList.remove('d-none');
-    left_menubar.classList.add('d-block');
-    left_main.classList.replace('col-md-12', 'col-md-9');
-    */
-   console.log('show!');
-   left_menu_wrapper.style.left = '0px';
-   left_main.classList.replace('col-md-12', 'col-md-9');
+    console.log('show!');
+
+    console.log('changing menu to not delayed')
+    left_menu_wrapper.classList.remove('not-delayed');
+    left_menu_wrapper.classList.add('delayed');
+
+    console.log('setting main to column')
+    left_main.classList.add('col-md-9');
+
+    console.log('move in menu')
+    left_menu_wrapper.style.left = '0px';
+
+    console.log('changing main to not delayed (for next transition)')
+    left_main.classList.remove('delayed');
+    left_main.classList.add('not-delayed');
 };
 
 const toggle_menu = (e) => {
