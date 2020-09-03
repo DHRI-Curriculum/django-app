@@ -1,4 +1,5 @@
 from django.utils.text import slugify
+from urllib import parse as urlparser
 from backend.dhri.log import Logger
 
 from backend.dhri_settings import FORCE_DOWNLOAD
@@ -15,6 +16,17 @@ log = Logger(name='webcache')
 
 class WebCache():
 
+    def _get_path_from_url(self, url):
+        parsed = urlparser.urlparse(url)
+        elem = parsed.netloc.split('.')
+        elem.reverse()
+        json_path = parsed.path
+        if json_path.endswith('/'): json_path = json_path[:-1]
+        if json_path.startswith('/'): json_path = json_path[1:]
+        json_path = json_path.replace('/', '-')
+        slugified = slugify(json_path) or 'none'
+        return CACHE_DIRS['WEB'] / ('/'.join([x for x in elem if not x == 'www']) + '/' + slugified + '.json')
+
     def _valid_url(self):
         from django.core.validators import URLValidator
         validate = URLValidator()
@@ -23,6 +35,9 @@ class WebCache():
             return True
         except:
             return False
+
+    def _ensure_parents(self, path):
+        if not path.parent.exists(): path.parent.mkdir(parents=True)
 
     def __init__(self, url:str, force_download=FORCE_DOWNLOAD):
 
@@ -41,10 +56,12 @@ class WebCache():
             }
 
         if self.valid_url:
-            slug_url = self.replace_trailing_slash(url)
-            slug_url = self.pre_clean_url(url)
-            self.path = CACHE_DIRS['WEB'] / (slugify(slug_url)+'.json')
+            #slug_url = self.replace_trailing_slash(url)
+            #slug_url = self.pre_clean_url(url)
+            # self.path = CACHE_DIRS['WEB'] / (slugify(slug_url)+'.json')
+            self.path = self._get_path_from_url(url)
             self.path = Path(self.path)
+            self._ensure_parents(self.path)
 
             self._check_age()
 
@@ -67,10 +84,6 @@ class WebCache():
     def replace_trailing_slash(self, url:str):
         if url.endswith('/'): url = url[:-1]
         return url
-
-    def pre_clean_url(self, url:str):
-        url = url.replace('https://', '').replace('http://', '').replace('www.', '').replace('/', '-')
-        return url[:100]
 
     def download(self):
 

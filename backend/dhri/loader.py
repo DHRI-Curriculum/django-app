@@ -76,7 +76,8 @@ def process_links(input, obj):
     else:
         return(None, None)
     if len(links) > 1:
-        log.warning(f'One project seems to contain more than one URL, but only one ({url}) is captured: {links}')
+        link_list = "\n    - ".join([x[1][:50] for x in links[1:]])
+        log.warning(f'One project seems to contain more than one URL, but only one ({url[:50]}) is captured: {link_list}')
     if title == None or title == '':
         from backend.dhri.webcache import WebCache
         title = WebCache(url).title
@@ -634,6 +635,7 @@ class LessonParser():
                         log.warning(f"The lesson `{title}` links to other workshop/root curriculum: {REPO_CLEAR} —> {OUTBOUND_CLEAR}")
                 elif href.startswith('http') or href.startswith('//'):
                     c = WebCache(href)
+                    link['target'] = '_blank'
                 elif href.startswith('#'):
                     log.log(f"The lesson `{title}` contains a relative href ({href}) which may or may not work in production.", color="yellow")
                 else:
@@ -652,7 +654,9 @@ class LessonParser():
                             log.warning(f"The lesson `{title}` links to an internal file: {href} (** could not be deciphered)")
 
             # 3. Fix tables
+            scrollable_div = BeautifulSoup('<div class="scrollable">').div
             for table in soup.find_all("table"):
+                table.wrap(scrollable_div)
                 table['class'] = table.get('class', []) + ['table']
 
             for tr in soup.find_all("tr"):
