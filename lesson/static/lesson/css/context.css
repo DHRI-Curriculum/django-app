@@ -1,0 +1,26 @@
+.markdown-body .highlight::before {
+    color: var(--primary);
+    text-align: right;
+    font-size: 12px;
+    padding: 0px;
+    margin: 0px;
+    background-color: #ecf0f1;
+    display: block;
+    border-top-left-radius: 7px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-top-right-radius: 7px;
+}
+
+.markdown-body .highlight-text-shell-session:hover::before {
+    content: 'Terminal/Git Bash';
+}
+
+.markdown-body .highlight-text-python-console:hover::before {
+    content: 'Python REPL';
+}
+
+.markdown-body .highlight-source-python:hover::before {
+    content: 'Python file (.py)';
+}
+

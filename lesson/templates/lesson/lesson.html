@@ -4,6 +4,7 @@
 {% block extra_head_material %}
   <link rel="stylesheet" href="{% static 'glossary/css/postit.css' %}">
   <link rel="stylesheet" href="{% static 'lesson/css/pygment.css' %}">
+  <link rel="stylesheet" href="{% static 'lesson/css/context.css' %}">
   <link rel="stylesheet" href="{% static 'website/css/github.css' %}">
   <script>
     var next = {% if page_obj.has_next %}{{ page_obj.next_page_number }}{% else %}0{% endif %}

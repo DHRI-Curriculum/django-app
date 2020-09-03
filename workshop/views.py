@@ -57,6 +57,7 @@ def frontmatter(request, slug=None):
   payload['num_terms'] = len(payload['all_terms'])
 
   payload['frontmatter'] = payload['workshop'].frontmatter
+  payload['learning_objectives'] = [x.label.replace('<p>', '').replace('</p>', '') for x in payload['frontmatter'].learning_objectives.all()]
   payload['default_user_image'] = settings.MEDIA_URL + Profile.image.field.default
 
   payload['all_collaborators'] = Collaboration.objects.filter(frontmatter=payload['frontmatter']).order_by('contributor__last_name')

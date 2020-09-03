@@ -58,7 +58,7 @@ class Question(models.Model):
 
   @property
   def has_answers(self):
-    return self.answers.count() > 0
+    return self.has_single_answer or self.has_multiple_answers
 
 
 class Answer(models.Model):
