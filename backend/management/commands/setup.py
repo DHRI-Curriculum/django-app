@@ -165,7 +165,7 @@ class Command(BaseCommand):
                                     obj = obj.last()
                                     LOG.warning(f'Term {d.get("title")} is not unique so will assign the latest added term to lesson {lesson.order} in workshop {lesson.workshop.name}: Preview of explication: {obj.explication[:30]}...')
                                 elif obj.count() == 0:
-                                    LOG.warning(f'Term {d.get("title")} cannot be found, so it will not be added to lesson {lesson.order} in workshop {lesson.workshop.name}: Preview of explication: {obj.explication[:30]}...')
+                                    LOG.warning(f'Term {d.get("title")} cannot be found, so it will not be added to lesson {lesson.order} in workshop {lesson.workshop.name}.')
                                 if obj.count() == 1:
                                     obj = obj.last()
                                     lesson.terms.add(obj)
