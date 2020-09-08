@@ -16,6 +16,7 @@ Deadline: August 24, 2020
 - [Run Server](_docs/run.md)
 - [Setting up a new workshop](_docs/setup-workshop.md)
 - [Changing Settings](_docs/settings.md)
+- [Deployment on Reclaim](_docs/deploy-on-reclaim.md)
 
 ---
 
