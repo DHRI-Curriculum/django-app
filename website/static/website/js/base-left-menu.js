@@ -43,10 +43,10 @@ const show_menubar = () => {
 
 const toggle_menu = (e) => {
     if (left_menu_wrapper.style.left == '-500px') {
-        e.target.innerHTML = '&laquo; Hide left-hand menu';
+        e.target.innerHTML = '&laquo; Hide selection menu';
         show_menubar()
     } else {
-        e.target.innerHTML = 'Show left-hand menu &raquo;';
+        e.target.innerHTML = 'Show selection menu &raquo;';
         hide_menubar()
     }
 }
