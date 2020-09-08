@@ -44,7 +44,7 @@
     <div class="col-sm-9">
         <h2 class="account-heading">{% if user.first_name and user.last_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user.username }}{% endif %}</h2>
         <p class="text-secondary">{{ user.email }}{% if user.is_staff and user.email %} | {% elif user.is_staff %}Staff{% endif %}</p>
-        <p class="lead">{{ user.profile.bio }}</p>
+        <p class="lead">{{ user.profile.bio | safe }}</p>
 
         {% if profile.links.count %}
           {% if profile.personal_links.count %}<p><strong class="mr-2">Personal links</strong>{% for link in profile.personal_links.all %}<a href="{{ link.url }}" class="badge bg-light text-dark mr-1" target="_blank">{{ link.label }}</a>{% endfor %}</p>{% endif %}
