@@ -12,3 +12,4 @@ django-crispy-forms==1.9.2
 six==1.15.0
 markdown==3.2.2
 PyGithub==1.51
+mysqlclient==2.0.1
