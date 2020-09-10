@@ -257,6 +257,10 @@ div#admin {
     border-radius: 3px;
   }
 
+#left-menu-menubar {
+    min-height: 450px;
+}
+
 #left-menu-wrapper {
     position: absolute;
     left: 0;
