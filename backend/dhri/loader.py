@@ -678,7 +678,7 @@ class LessonParser():
                             log.warning(f"The lesson `{title}` links to an internal file: {href} (** could not be deciphered)")
 
             # 3. Fix tables
-            scrollable_div = BeautifulSoup('<div class="scrollable">').div
+            scrollable_div = BeautifulSoup('<div class="scrollable">', 'lxml').div
             for table in soup.find_all("table"):
                 table.wrap(scrollable_div)
                 table['class'] = table.get('class', []) + ['table']
