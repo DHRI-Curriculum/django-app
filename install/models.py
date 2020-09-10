@@ -44,7 +44,7 @@ class Screenshot(models.Model):
     step = models.ForeignKey(Step, on_delete=models.CASCADE, related_name='screenshots')
     order = models.PositiveSmallIntegerField()
     image = models.ImageField(upload_to='installation_screenshots')
-    gh_name = models.TextField(blank=False, unique=True)
+    gh_name = models.CharField(max_length=255, blank=False, unique=True)
     alt_text = models.TextField(blank=False, default="No alt text")
 
     class Meta:
