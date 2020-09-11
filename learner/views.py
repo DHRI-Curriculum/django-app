@@ -6,51 +6,73 @@ from .models import Profile
 from django.http import JsonResponse, HttpResponseForbidden
 from workshop.models import Workshop, Collaboration, Contributor
 from django.views.decorators.csrf import csrf_protect
+from django.views.generic.detail import DetailView
+from django.views.generic import View
 
 
-def profile(request, username=None):
-    payload = dict()
 
-    if username and request.user.username == username:
-        payload['is_me'] = True
-    elif not username:
-        payload['is_me'] = True
-    else:
-        payload['is_me'] = False
+class Detail(DetailView):
+    model = Profile
+    template_name = 'learner/profile.html'
 
-    if payload['is_me']:
-        payload['user'] = request.user
-    else:
-        payload['user'] = get_object_or_404(User, username=username)
+    def get_user_object(self):
+        try:
+            return self.user_obj
+        except:
+            self.user_obj = get_object_or_404(User, username=self.kwargs.get('username'))
+            return self.user_obj
 
-    payload['profile'] = payload['user'].profile
-    payload['contributor'] = Contributor.objects.get(profile=payload['user'].profile)
-    payload['collaborations_by_roles'] = payload['contributor'].get_collaboration_by_role()
-    payload['collaborations'] = Collaboration.objects.filter(contributor=payload['contributor'])
-    payload['favorites'] = payload['profile'].favorites.all()
+    def get_contributor_object(self):
+        try:
+            return self.contributor_obj
+        except:
+            self.contributor_obj = Contributor.objects.get(profile=self.get_user_object().profile)
+            return self.contributor_obj
 
-    instructor = Group.objects.get(name='Instructor')
-    payload['is_instructor'] = instructor in request.user.groups.all()
-    payload['instructor_requested'] = payload['profile'].instructor_requested
+    def get_object(self):
+        user_obj = self.get_user_object()
+        return user_obj.profile
 
-    return render(request, 'learner/profile.html', payload)
+    def is_me(self):
+        user_obj = self.get_user_object()
+        return user_obj == self.request.user
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_me'] = self.is_me()
+        if context['is_me']:
+            context['user'] = self.request.user
+        else:
+            context['user'] = self.get_user_object()
+
+        context['contributor'] = self.get_contributor_object()
+        context['is_instructor'] = Group.objects.get(name='Instructor') in self.request.user.groups.all()
+
+        return context
 
 
-def register(request):
-    from .forms import LearnerRegisterForm
-    from django.utils.encoding import force_bytes
-    from django.utils.http import urlsafe_base64_encode
-    from django.template.loader import render_to_string
-    from django.core.mail import EmailMessage
-    from django.contrib.sites.shortcuts import get_current_site
+from .forms import LearnerRegisterForm
+from django.contrib.sites.shortcuts import get_current_site
+from django.utils.http import urlsafe_base64_encode
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
+from django.utils.encoding import force_bytes
 
-    if request.method == 'POST':
-        form = LearnerRegisterForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
+class Register(View):
+
+    form = LearnerRegisterForm()
+
+    def get(self, request):
+        return render(request, 'learner/register.html', {'form': self.form})
+
+    def post(self, request):
+        self.form = LearnerRegisterForm(request.POST)
+
+        if self.form.is_valid():
+            user = self.form.save(commit=False)
             user.is_active = False
             user.save()
-            username = form.cleaned_data.get('username')
+            username = self.form.cleaned_data.get('username')
             messages.info(request, f'Account created for {username}. You have to click the confirmation link in the email in order to activate your account.')
 
             message = render_to_string('learner/new_acc_email.html', {
@@ -59,15 +81,13 @@ def register(request):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token':account_activation_token.make_token(user),
             })
-            to_email = form.cleaned_data.get('email')
+            to_email = self.form.cleaned_data.get('email')
             email = EmailMessage('Activate your account', message, to=[to_email])
             email.send()
 
             return redirect('login')
-    else:
-        form = LearnerRegisterForm()
-    return render(request, 'learner/register.html', {'form': form})
-
+        else:
+            return self.get(request=request)
 
 
 def activate(request, uidb64='', token=''):
@@ -101,11 +121,11 @@ def favorite(request):
     removed, added = False, False
     if obj in request.user.profile.favorites.all():
         request.user.profile.favorites.remove(obj)
-        print(obj, "removed as favorite")
+        #print(obj, "removed as favorite")
         removed = True
     else:
         request.user.profile.favorites.add(obj)
-        print(obj, "added as favorite")
+        #print(obj, "added as favorite")
         added = True
 
     output_data = {'workshop': obj.name, 'success': True, 'added': added, 'removed': removed}

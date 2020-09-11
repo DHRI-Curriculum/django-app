@@ -2,13 +2,12 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from . import views
+from views import FrontmatterView, PraxisView, LessonView
 
 app_name = 'workshop'
 
 urlpatterns = [
-  # path('', views.index, name='index'),
-  path('<str:slug>/', views.frontmatter, name='frontmatter'),
-  path('<str:slug>/theory-to-practice/', views.praxis, name='praxis'),
-  path('<str:slug>/lessons/', views.lesson, name='lesson'),
+  path('<str:slug>/', FrontmatterView.as_view(), name='frontmatter'),
+  path('<str:slug>/theory-to-practice/', PraxisView.as_view(), name='praxis'),
+  path('<str:slug>/lessons/', LessonView.as_view(), name='lesson'),
 ]

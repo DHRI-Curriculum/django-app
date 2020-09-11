@@ -7,10 +7,10 @@ from . import views
 app_name = 'learner'
 
 urlpatterns = [
-  path('', views.profile),
+  path('', views.Detail.as_view()),
   path('favorite/', views.favorite, name='favorite'),
   path('instructor-request/', views.instructor_request, name='instructor_request'),
   path('requests/', views.instructor_requests, name='instructor_requests'),
-  path('profile/<str:username>/', views.profile, name='profile'),
+  path('profile/<str:username>/', views.Detail.as_view(), name='profile'),
   path('activate/<uidb64>/<token>/', views.activate, name='activate'),
 ]
