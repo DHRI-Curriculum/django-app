@@ -1,20 +1,30 @@
 from django.shortcuts import render, get_object_or_404
 from .models import Term
 from lesson.models import Lesson
+from django.views.generic.list import ListView
+from django.views.generic.detail import DetailView
+import random
 
-def build_nav():
-    return {'all_terms': Term.objects.all()}
 
-def term(request, slug=None):
-    payload = build_nav()
-    payload['term'] = Term.objects.filter(slug=slug).last()
-    payload['lessons_with_term'] = Lesson.objects.filter(text__contains=f' {payload["term"]} ')
-    return render(request, 'glossary/term.html', payload)
+class Index(ListView):
+    model = Term
+    template_name = 'glossary/index.html'
+    context_object_name = 'all_terms'
 
-def index(request):
-    payload = build_nav()
-    import random
-    payload['random_items'] = []
-    if payload['all_terms'].count() > 4:
-        payload['random_items'] = random.sample(list(payload['all_terms']), 4)
-    return render(request, 'glossary/index.html', payload)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['random_items'] = []
+        if self.model.objects.count() > 4:
+            context['random_items'] = random.sample(list(self.model.objects.all()), 4)
+        return context
+
+
+class TermDetail(DetailView):
+    model = Term
+    template_name = 'glossary/term.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['lessons_with_term'] = Lesson.objects.filter(terms=self.get_object())
+        context['all_terms'] = self.model.objects.all()
+        return context

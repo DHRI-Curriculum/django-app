@@ -1,17 +1,14 @@
-from django import forms
 from django.shortcuts import render, HttpResponse, redirect, get_object_or_404
-from django.views.decorators.csrf import ensure_csrf_cookie
+from django.contrib import messages
+from django.views import View
+from django.contrib.auth.mixins import LoginRequiredMixin
+
 from lesson.models import Lesson
 from .forms import IssueForm
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 
 
-@ensure_csrf_cookie
 def index(request):
-  # page = Page.objects.filter(is_homepage=True).last()
   return redirect('website:index')
-  return render(request, 'feedback/index.html', {})
 
 
 def _close_or_redirect(request, username = None):
@@ -31,25 +28,26 @@ def _close_or_redirect(request, username = None):
         return redirect('website:index')
 
 
-@login_required()
-def feedback_popup(request, feedback_type, pk=None):
-
+class Feedback(LoginRequiredMixin, View):
     form = IssueForm()
-    payload = {'feedback_type': feedback_type}
 
-    if feedback_type == "lesson":
-        lesson = get_object_or_404(Lesson, pk=pk)
-        payload['lesson'] = lesson
-    elif feedback_type == "website":
-        pass
-    else:
-        return HttpResponse('''The requested feedback type (''' + feedback_type + ''') does not exist.''')
+    def get(self, request, feedback_type, pk=None):
+        payload = {'feedback_type': feedback_type}
+        if feedback_type == "lesson":
+            lesson = get_object_or_404(Lesson, pk=pk)
+            payload['lesson'] = lesson
+        elif feedback_type == "website":
+            pass
+        else:
+            return HttpResponse('''The requested feedback type (''' + feedback_type + ''') does not exist.''')
+        payload['form'] = self.form
+        return render(request, 'feedback/feedback_popup.html', payload)
 
-    if request.method == "POST":
-        form = IssueForm(request.POST)
+    def post(self, request, feedback_type, pk=None):
+        self.form = IssueForm(request.POST)
 
-        if form.is_valid():
-            feedback = form.save(commit=False)
+        if self.form.is_valid():
+            feedback = self.form.save(commit=False)
             feedback.user = request.user
             feedback.open = True
 
@@ -62,7 +60,3 @@ def feedback_popup(request, feedback_type, pk=None):
             feedback.save()
 
             return _close_or_redirect(request, username = feedback.user.username)
-
-    payload['form'] = form
-
-    return render(request, 'feedback/feedback_popup.html', payload)

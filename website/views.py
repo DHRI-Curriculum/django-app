@@ -2,39 +2,43 @@ from django.shortcuts import render, get_object_or_404
 from .models import Page
 from workshop.models import Workshop
 from library.models import Project, Reading, Resource, Tutorial
-from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.generic.detail import DetailView
+from django.views.generic import View
 
 
-payload = dict()
+class Index(DetailView):
+  model = Page
+  template_name = 'website/index.html'
+
+  def get_object(self):
+    return self.model.objects.filter(is_homepage=True).last()
 
 
-@ensure_csrf_cookie
-def index(request):
-  payload['page'] = Page.objects.filter(is_homepage=True).last()
-  return render(request, 'website/index.html', payload)
+class PageView(View):
+  model = Page
 
-@ensure_csrf_cookie
-def page(request, page_slug):
+  def get(self, request, **kwargs):
+    page = self.get_object()
+    context = self.get_context_data()
+    return render(request, page.template, context)
 
-  payload['page'] = get_object_or_404(Page, slug=page_slug)
+  def get_object(self):
+    return get_object_or_404(self.model, slug=self.kwargs.get('slug'))
 
-  if payload['page'].template == Page.Template.WORKSHOP_LIST:
-    payload['workshops'] = Workshop.objects.all()
+  def get_context_data(self, **kwargs):
+    context = dict()
+    page = self.get_object()
+    if page.template == Page.Template.WORKSHOP_LIST:
+      context['workshops'] = Workshop.objects.all()
 
-  if payload['page'].template == Page.Template.LIBRARY_LIST:
-    projects = Project.objects.all().order_by('title')
-    readings = Reading.objects.all().order_by('title')
-    resources = Resource.objects.all().order_by('title')
-    tutorials = Tutorial.objects.all().order_by('label')
+    if page.template == Page.Template.LIBRARY_LIST:
+      context['projects'] = Project.objects.all().order_by('title')[:3]
+      context['readings'] = Reading.objects.all().order_by('title')[:3]
+      context['resources'] = Resource.objects.all().order_by('title')[:3]
+      context['tutorials'] = Tutorial.objects.all().order_by('label')[:3]
+      context['projects_count'] = Project.objects.count()
+      context['readings_count'] = Reading.objects.count()
+      context['resources_count'] = Resource.objects.count()
+      context['tutorials_count'] = Tutorial.objects.count()
 
-    payload['projects'] = projects[:3]
-    payload['readings'] = readings[:3]
-    payload['resources'] = resources[:3]
-    payload['tutorials'] = tutorials[:3]
-
-    payload['projects_count'] = projects.count()
-    payload['readings_count'] = readings.count()
-    payload['resources_count'] = resources.count()
-    payload['tutorials_count'] = tutorials.count()
-
-  return render(request, payload['page'].template, payload)
+    return context

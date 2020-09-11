@@ -7,6 +7,6 @@ from . import views
 app_name = 'website'
 
 urlpatterns = [
-  path('', views.index, name='index'),
-  path('<str:page_slug>/', views.page, name='page'),
+  path('', views.Index.as_view(), name='index'),
+  path('<str:slug>/', views.PageView.as_view(), name='page'),
 ]

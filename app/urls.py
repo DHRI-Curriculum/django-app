@@ -17,7 +17,7 @@ urlpatterns = [
     path('feedback/', include('feedback.urls')),
     path('install/', include('install.urls')),
     path('insight/', include('insight.urls')),
-    path('sign-up/', learner_views.register, name='register'),
+    path('sign-up/', learner_views.Register.as_view(), name='register'),
     path('login/', auth_views.LoginView.as_view(template_name='learner/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='learner/logout.html'), name='logout'),
     path('reset-password/', auth_views.PasswordResetView.as_view(template_name='learner/password_reset.html'), name='password_reset'),

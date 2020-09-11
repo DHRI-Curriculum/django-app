@@ -46,22 +46,22 @@
         <p class="text-secondary">{{ user.email }}{% if user.is_staff and user.email %} | {% elif user.is_staff %}Staff{% endif %}</p>
         <p class="lead">{{ user.profile.bio | safe }}</p>
 
-        {% if profile.links.count %}
-          {% if profile.personal_links.count %}<p><strong class="mr-2">Personal links</strong>{% for link in profile.personal_links.all %}<a href="{{ link.url }}" class="badge bg-light text-dark mr-1" target="_blank">{{ link.label }}</a>{% endfor %}</p>{% endif %}
-          {% if profile.project_links.count %}<p><strong class="mr-2">Projects {{ contributor.full_name }} has worked on</strong>{% for link in profile.project_links.all %}<a href="{{ link.url }}" class="badge bg-light text-dark mr-1" target="_blank">{{ link.label }}</a>{% endfor %}</p>{% endif %}
+        {% if user.profile.links.count %}
+          {% if user.profile.personal_links.count %}<p><strong class="mr-2">Personal links</strong>{% for link in user.profile.personal_links.all %}<a href="{{ link.url }}" class="badge bg-light text-dark mr-1" target="_blank">{{ link.label }}</a>{% endfor %}</p>{% endif %}
+          {% if user.profile.project_links.count %}<p><strong class="mr-2">Projects {{ user.first_name }} {{ user.last_name}} has worked on</strong>{% for link in user.profile.project_links.all %}<a href="{{ link.url }}" class="badge bg-light text-dark mr-1" target="_blank">{{ link.label }}</a>{% endfor %}</p>{% endif %}
         {% endif %}
 
-        {% if favorites.count %}
+        {% if user.profile.favorites.count %}
           <p>Favorites:</p>
           <ul>
-            {% for w in favorites.all %}
+            {% for w in user.profile.favorites.all %}
               <li><a href="{% url "workshop:frontmatter" slug=w.slug %}">{{ w.name }}</a></li>
             {% endfor %}
           </ul>
         {% endif %}
         {% if user.is_staff %}
           <h3 class="mt-3 border-top pt-4">Collaborator</h3>
-          {% for x in collaborations_by_roles %}
+          {% for x in contributor.get_collaboration_by_role %}
             {% if x.list.count > 0 %}
               <h5 class="mt-4">{{ x.group }}</h5>
               <ul>
@@ -102,9 +102,9 @@
             {% endif %}
           </div>
           <p id="instructor">
-            {% if not instructor_requested and not is_instructor %}
+            {% if not user.profile.instructor_requested and not is_instructor %}
               <a id="instructor-request" class="btn btn-light btn-sm" data-url="/learner/instructor-request/" data-p="instructor">Request Instructor status</a>
-            {% elif instructor_requested%}
+            {% elif user.profile.instructor_requested%}
               <a id="instructor-request" class="disabled btn btn-light btn-sm">Instructor status requested</a>
             {% endif %}
           </p>

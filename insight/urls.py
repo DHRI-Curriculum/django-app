@@ -2,11 +2,11 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from . import views
+from .views import Index, InsightDetail
 
 app_name = 'insight'
 
 urlpatterns = [
-  path('', views.index, name='index'),
-  path('<str:slug>/', views.insight, name='insight'),
+  path('', Index.as_view(), name='index'),
+  path('<str:slug>/', InsightDetail.as_view(), name='insight'),
 ]
