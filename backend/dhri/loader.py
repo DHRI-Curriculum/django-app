@@ -450,6 +450,41 @@ def download_image(url, local_file):
         return local_file
 
 
+def search_term(slug):
+    from glossary.models import Term
+
+    if Term.objects.filter(slug=slug):
+        return Term.objects.filter(slug=slug)
+
+    term = slug.replace('-', ' ')
+    if Term.objects.filter(term=term):
+        return Term.objects.filter(term=term)
+
+    term = term.title()
+    if Term.objects.filter(term=term):
+        return Term.objects.filter(term=term)
+
+    return None
+
+
+def search_install(slug):
+    from install.models import Software
+
+    if Software.objects.filter(slug=slug):
+        return Software.objects.filter(slug=slug)
+
+    software = slug.replace('-', ' ')
+    if Software.objects.filter(software=software):
+        return Software.objects.filter(software=software)
+
+    software = software.title()
+    if Software.objects.filter(software=software):
+        return Software.objects.filter(software=software)
+
+    return None
+
+
+
 class LessonParser():
 
     def __init__(self, markdown:str, loader:object):
@@ -645,22 +680,70 @@ class LessonParser():
             for link in soup.find_all("a"):
                 href = link.get('href')
                 if not href:
-                    log.warning(f"A link with no href attribute detected in lesson: {link}")
+                    log.warning(f"A link with no `href` attribute detected in lesson: {link}")
                     continue
                 if "github.com/DHRI-Curriculum" in href:
-                    OUTBOUND_CLEAR = "".join(href.split("https://github.com/DHRI-Curriculum/")[1:])
+                    # internal link found
+                    if 'https://github.com/DHRI-Curriculum/' in href:
+                        OUTBOUND_CLEAR = "".join(href.split("https://github.com/DHRI-Curriculum/")[1:])
+                    elif 'https://www.github.com/DHRI-Curriculum/' in href:
+                        OUTBOUND_CLEAR = "".join(href.split("https://www.github.com/DHRI-Curriculum/")[1:])
+                    elif 'http://github.com/DHRI-Curriculum/' in href:
+                        OUTBOUND_CLEAR = "".join(href.split("http://github.com/DHRI-Curriculum/")[1:])
+                    elif 'http://www.github.com/DHRI-Curriculum/' in href:
+                        OUTBOUND_CLEAR = "".join(href.split("http://www.github.com/DHRI-Curriculum/")[1:])
                     if OUTBOUND_CLEAR.strip() == '': OUTBOUND_CLEAR = href
-                    print(OUTBOUND_CLEAR)
-                    # if it contains `raw=True`, we want to keep it...
-                    # 
-                    if OUTBOUND_CLEAR.startswith(REPO_CLEAR):
+                    if 'raw=True' in OUTBOUND_CLEAR:
+                        c = WebCache(href)
+                        link['target'] = '_blank'
+                    elif 'raw=True' not in OUTBOUND_CLEAR and OUTBOUND_CLEAR.startswith(REPO_CLEAR):
                         log.warning(f"The lesson `{title}` links to same workshop: {href}")
                     else:
-                        log.warning(f"The lesson `{title}` links to other workshop/root curriculum: {REPO_CLEAR} —> {OUTBOUND_CLEAR}")
+                        workshop = OUTBOUND_CLEAR.split('/')[0]
+
+                        if workshop == 'install':
+                            slug = OUTBOUND_CLEAR.split('/')[-1].split('.md')[0]
+                            s = search_install(slug)
+                            if s:
+                                if s.count() > 1:
+                                    s = s.last()
+                                    log.warning(f"Found a link that corresponded to more than one software in the site's installations ({slug}). Linking to the most recent ({s})...")
+                                elif s.count == 1:
+                                    log.log(f'Found a link to an installation instruction that corresponded to one already existing on the site. Adding...')
+                                else:
+                                    log.error(f'Cannot interpret result from searching for software on site.')
+                                link['href'] = f'/install/{s.slug}/'
+                            else:
+                                log.warning(f"Found a link to an installation instruction for a software that cannot be found in the site's installation instructions ({slug}). Will add link to general installation instead. You may want to add this installation instruction to the /install/ repo on GitHub.")
+                                link['href'] = '/install/'
+
+                        elif workshop == 'glossary':
+                            slug = OUTBOUND_CLEAR.split('/')[-1].split('.md')[0]
+                            s = search_term(slug)
+                            if s:
+                                if s.count() > 1:
+                                    s = s.last()
+                                    log.warning(f"Found a link that corresponded to more than one term in the glossary ({slug}). Linking to the most recent ({s})...")
+                                elif s.count == 1:
+                                    log.log(f'Found a link to the glossary that corresponded to a term existing on the site. Adding...')
+                                else:
+                                    log.error(f'Cannot interpret result from searching for term in lesson.')
+                                link['href'] = f'/terms/{s.slug}/'
+                            else:
+                                log.warning(f"Found a link to a term that cannot be found in the site's glossary ({slug}). Will add link to general glossary instead. You may want to add this term to the /glossary/ repo on GitHub.")
+                                link['href'] = '/terms/'
+
+                        else:
+                            log.warning(f"The lesson `{title}` links to other workshop/root curriculum: {REPO_CLEAR} —> {OUTBOUND_CLEAR}")
+                elif href.startswith('mailto:'):
+                    # email link found
+                    log.warning(f"A link was inserted into lesson `{title}` with a mailto-link: {link}")
                 elif href.startswith('http') or href.startswith('//'):
+                    # external link found
                     c = WebCache(href)
                     link['target'] = '_blank'
                 elif href.startswith('#'):
+                    # relative link found
                     log.log(f"The lesson `{title}` contains a relative href ({href}) which may or may not work in production.", color="yellow")
                 else:
                     g = re.search(r'(\d+).*(md)', href)
@@ -669,7 +752,7 @@ class LessonParser():
                         link['href'] = f'?page={order}'
                         log.log(f"The lesson `{title}` links to an internal file `{href}` and has been relinked to `?page={order}` instead.", color="yellow")
                     else:
-                        if ".png" in href or ".jpg" in href or ".gif" in href:
+                        if ".png" in href or ".jpg" in href or ".jpeg" in href or ".gif" in href:
                             filename = href.split('/')[-1]
                             local_url = f'/static/website/images/lessons/{REPO_CLEAR}/{filename}'
                             link['href'] = local_url
