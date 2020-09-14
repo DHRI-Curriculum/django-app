@@ -12,10 +12,32 @@
 
 {% block main %}
   <div class="row">
-    <div class="col-12">
-      <h4>This is just a placeholder</h4>
-      <p>Some text goes here...</p>
-      <a href="/workshops">&raquo; All workshops</a>
-    </div>
+      {% for workshop in website.workshops %}
+        <div class="col-xl-6 px-3 py-3">
+          <div class="card h-100">
+
+            <div class="card-header">
+              <h5 class="card-title m-0 bolder">{{ workshop.name }}</h5>
+            </div>
+
+            <div class="card-body">
+              {% if workshop.frontmatter.abstract %}<p class="card-text m-0">{{ workshop.frontmatter.abstract | markdown | safe }}</p>{% endif %}
+
+              {% if workshop.has_terms %}
+                <div class="mt-2 pt-1 border-top">
+                <strong class="mr-1">Key terms</strong>{% for term in workshop.terms %}
+                  <a tabindex="{{ forloop.counter0 }}" class="btn badge btn-light" data-popover-arrow="hello" data-container="body" data-toggle="popover" data-placement="top" data-title="{{ term }}" data-content="{{ term.explication | striptags }} <strong>Click to read more about {{ term}}</strong>" href="{% url 'glossary:term' term.slug %}">{{ term }}</a>
+                {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="card-footer text-right">
+              <a href="{% url 'workshop:frontmatter' slug=workshop.slug %}" class="btn btn-success">Start &raquo;</a>
+            </div>
+
+          </div>
+        </div>
+      {% endfor %}
   </div>
 {% endblock %}
