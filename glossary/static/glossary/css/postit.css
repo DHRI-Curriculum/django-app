@@ -46,28 +46,28 @@
   font-size: 0.8rem;
   }
   
-  #individual_note div#post-it-container:nth-child(1) {
+  #post-its div#post-it-container:nth-child(1) {
     -o-transform:rotate(-5deg);
     -webkit-transform:rotate(-5deg);
     -moz-transform:rotate(-5deg);
     position:relative;
     top:-1px;
   }
-  #individual_note div#post-it-container:nth-child(even) {
+  #post-its div#post-it-container:nth-child(even) {
     -o-transform:rotate(4deg);
     -webkit-transform:rotate(4deg);
     -moz-transform:rotate(4deg);
     position:relative;
     top:5px;
   }
-  #individual_note div#post-it-container:nth-child(4n) {
+  #post-its div#post-it-container:nth-child(4n) {
     -o-transform:rotate(-3deg);
     -webkit-transform:rotate(-3deg);
     -moz-transform:rotate(-3deg);
     position:relative;
     top:-5px;
   }
-  #individual_note div#post-it-container:nth-child(7n) {
+  #post-its div#post-it-container:nth-child(7n) {
     -o-transform:rotate(5deg);
     -webkit-transform:rotate(5deg);
     -moz-transform:rotate(5deg);
