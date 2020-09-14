@@ -701,6 +701,7 @@ class LessonParser():
                     else:
                         workshop = OUTBOUND_CLEAR.split('/')[0]
 
+                        '''
                         if workshop == 'install':
                             slug = OUTBOUND_CLEAR.split('/')[-1].split('.md')[0]
                             s = search_install(slug)
@@ -716,6 +717,11 @@ class LessonParser():
                             else:
                                 log.warning(f"Found a link to an installation instruction for a software that cannot be found in the site's installation instructions ({slug}). Will add link to general installation instead. You may want to add this installation instruction to the /install/ repo on GitHub.")
                                 link['href'] = '/install/'
+                        '''
+                        if workshop == 'install':
+                            slug = OUTBOUND_CLEAR.split('/')[-1].split('.md')[0]
+                            log.warning(f"Found a link to an installation instruction for a software that cannot be found in the site's installation instructions ({slug}). Will add link to general installation instead. You may want to add this installation instruction to the /install/ repo on GitHub.")
+                            link['href'] = '/install/'
 
                         elif workshop == 'glossary':
                             slug = OUTBOUND_CLEAR.split('/')[-1].split('.md')[0]

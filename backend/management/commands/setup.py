@@ -18,11 +18,11 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('--wipe', action='store_true')
+        parser.add_argument('--structure', action='store_true')
         # parser.add_argument('--verbose', action='store_true') # TODO: Create verbose mode here...
         group = parser.add_mutually_exclusive_group(required=True)
         group.add_argument('--repos', nargs='+', type=str)
         group.add_argument('--all', action='store_true')
-        group.add_argument('--structure', action='store_true')
 
     def handle(self, *args, **options):
         if options.get('wipe', False):
@@ -30,12 +30,6 @@ class Command(BaseCommand):
 
         if options.get('all', False) or options.get('structure', False):
             LOG.name = 'setup'
-
-            LOG.log("Automatic import activated: Attempting to generate glossary", force=True)
-            create_terms()
-
-            LOG.log("Automatic import activated: Attempting to generate installations", force=True)
-            create_installations()
 
             LOG.log("Automatic import activated: Attempting to generate pages", force=True)
             create_pages()
@@ -45,6 +39,12 @@ class Command(BaseCommand):
 
             LOG.log("Automatic import activated: Attempting to generate users", force=True)
             create_users()
+
+            LOG.log("Automatic import activated: Attempting to generate glossary", force=True)
+            create_terms()
+
+            LOG.log("Automatic import activated: Attempting to generate installations", force=True)
+            create_installations()
 
         repos = _get_repos(options)
 
@@ -296,7 +296,7 @@ class Command(BaseCommand):
                     else:
                         LOG.error(f'Have no way of processing {model} for app `praxis`. The `setup` script must be adjusted accordingly.', kill=False)
 
-        if options.get('all', False) or repos:
+        if options.get('all', False) or repos or options.get('structure', False):
             LOG.name = 'setup'
 
             LOG.log("Automatic import activated: Attempting to generate blurbs", force=True)
