@@ -251,7 +251,7 @@ class Command(BaseCommand):
                                 LOG.error(f'Cannot find a role for contributor {c.full_name}.', kill=True)
 
                             if not is_current or is_past:
-                                LOG.warning(f'Cannot find whether contributor {c.full_name} is current/past. Will automatically set to False.')
+                                LOG.warning(f'Cannot find whether contributor {c.full_name} is current/past. Will automatically set to past.')
 
                             # Create/get Collaboration
                             obj, created = Collaboration.objects.get_or_create(
