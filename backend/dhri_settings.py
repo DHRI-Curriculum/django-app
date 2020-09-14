@@ -247,12 +247,6 @@ AUTO_PAGES = [
         'template': 'workshop/workshop-list.html',
     },
     {
-        'name': 'About',
-        'slug': 'about',
-        'text': '<p class="lead">This is the about page.</p>',
-        'template': 'website/page.html',
-    },
-    {
         'name': 'Library',
         'slug': 'library',
         'text': '<p class="lead">This is the library page.</p>',
