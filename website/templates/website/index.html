@@ -26,7 +26,7 @@
               {% if workshop.has_terms %}
                 <div class="mt-2 pt-1 border-top">
                 <strong class="mr-1">Key terms</strong>{% for term in workshop.terms %}
-                  <a tabindex="{{ forloop.counter0 }}" class="btn badge btn-light" data-popover-arrow="hello" data-container="body" data-toggle="popover" data-placement="top" data-title="{{ term }}" data-content="{{ term.explication | striptags }} <strong>Click to read more about {{ term}}</strong>" href="{% url 'glossary:term' term.slug %}">{{ term }}</a>
+                  <a tabindex="{{ forloop.counter0 }}" class="btn badge btn-light" data-container="body" data-toggle="popover" data-placement="top" data-title="{{ term }}" data-content="{{ term.explication | striptags }} <strong>Click to read more about {{ term}}</strong>" href="{% url 'glossary:term' term.slug %}">{{ term }}</a>
                 {% endfor %}
                 </div>
               {% endif %}
