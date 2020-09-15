@@ -21,7 +21,7 @@ def create_users(AUTO_USERS=AUTO_USERS):
             # TODO: Remove `force=True` (sane checks)
             if User.objects.filter(username=username).count():
                 User.objects.filter(username=username).delete()
-                log.log(f"Deleted existing user `{username}`...", force=True)
+                log.log(f"Deleted existing user `{username}`...")
 
             if is_super:
                 user = User.objects.create_superuser(
@@ -31,7 +31,7 @@ def create_users(AUTO_USERS=AUTO_USERS):
                     last_name = u.get('last_name'),
                     email = u.get('email')
                 )
-                log.log(f'Added superuser `{user}`.', force=True)
+                log.log(f'Added superuser `{user}`.')
             else:
                 user = User.objects.create_user(
                     password = u.get('password'),
@@ -43,9 +43,9 @@ def create_users(AUTO_USERS=AUTO_USERS):
                 if is_staff:
                     user.is_staff=True
                     user.save()
-                    log.log(f'Added staff user `{user}`.', force=True)
+                    log.log(f'Added staff user `{user}`.')
                 else:
-                    log.log(f'Added user `{user}`.', force=True)
+                    log.log(f'Added user `{user}`.')
 
             # Profile
             if u.get('bio') or u.get('img'):
@@ -60,7 +60,7 @@ def create_users(AUTO_USERS=AUTO_USERS):
                     except FileNotFoundError:
                         log.error(f'Could not find image for user with username `{u.get("username")}`: Make sure the file exists: `{u.get("img")}` in the root directory of the app.')
                 user.profile.save()
-                log.log(f'Saved `{user.profile}` with bio information and photo.', force=True)
+                log.log(f'Saved `{user.profile}` with bio information and photo.')
 
             # Groups
             for group in u.get('groups', []):
