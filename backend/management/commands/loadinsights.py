@@ -9,6 +9,22 @@ from django.db.models.functions import Lower
 log = Logger(name='loadinsights')
 
 
+def wipe_insights():
+    log.log("Deep wipe of Insights activated.", force=True) #  The script will proceed in VERBOSE mode automatically?
+
+    Insight.objects.all().delete()
+    log.log(f'All Insights removed.', force=True)
+
+    Section.objects.all().delete()
+    log.log(f'All Sections removed.', force=True)
+
+    OperatingSystemSpecificSection.objects.all().delete()
+    log.log(f'All Operating System Specific Sections removed.', force=True)
+
+    loader = InsightLoader(force_download=True)
+    log.log(f'Install cache removed.', force=True)
+
+
 def create_insights():
 
     insights = InsightLoader()
@@ -76,16 +92,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if options.get('wipe', False):
-            Insight.objects.all().delete()
-            log.log(f'All Insights removed.', force=True)
-
-            Section.objects.all().delete()
-            log.log(f'All Sections removed.', force=True)
-
-            OperatingSystemSpecificSection.objects.all().delete()
-            log.log(f'All Operating System Specific Sections removed.', force=True)
-
-            loader = InsightLoader(force_download=True)
-            log.log(f'Install cache removed.', force=True)
+            wipe_insights()
 
         create_insights()

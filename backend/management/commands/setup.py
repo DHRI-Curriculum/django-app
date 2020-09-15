@@ -300,7 +300,7 @@ class Command(BaseCommand):
             create_blurbs()
 
             LOG.log("Automatic import activated: Attempting to generate insights", force=True)
-            create_insights({'wipe': options.get('wipe', False)})
+            create_insights()
 
 
 def _test_for_branch(d=''):

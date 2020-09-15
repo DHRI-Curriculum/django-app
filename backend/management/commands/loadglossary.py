@@ -8,6 +8,16 @@ from backend.dhri.loader import GlossaryLoader, process_links
 log = Logger(name='loadglossary')
 
 
+def wipe_terms():
+    log.log("Deep wipe of Glossary activated.", force=True) #  The script will proceed in VERBOSE mode automatically?
+
+    Term.objects.all().delete()
+    log.log(f'All Terms removed.', force=True)
+
+    GlossaryLoader(force_download=True)
+    log.log(f'Glossary cache removed.', force=True)
+
+
 def create_terms(glossary_repo=GLOSSARY_REPO):
     loader = GlossaryLoader(glossary_repo)
     # TODO: #166 Add something in the Glossary app that makes a clearer connection to which workshops that are linked to each term. Perhaps each lesson can have a ManyToMany relationship to the Terms?
@@ -42,10 +52,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if options.get('wipe', False):
-            Term.objects.all().delete()
-            log.log(f'All Terms removed.', force=True)
-
-            GlossaryLoader(force_download=True)
-            log.log(f'Glossary cache removed.', force=True)
+            wipe_terms()
 
         create_terms()
