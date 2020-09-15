@@ -1,10 +1,15 @@
+import re
+import os
+
+from pathlib import Path
+
 from django.core.management import BaseCommand
 from django.core.files import File
 from django.conf import settings
+
 from backend.dhri.log import Logger
 from backend.dhri.install_parser import InstallLoader
 from backend.models import Software, Instruction, Step, Screenshot
-import re, os
 
 
 log = Logger(name='loadinstalls')
@@ -21,7 +26,24 @@ def _get_order(step):
     return(order, step)
 
 
-from pathlib import Path
+def wipe_installations():
+    log.log("Deep wipe of Installations activated.", force=True) #  The script will proceed in VERBOSE mode automatically?
+
+    Software.objects.all().delete()
+    log.log(f'All Software removed.', force=True)
+
+    Instruction.objects.all().delete()
+    log.log(f'All Instructions removed.', force=True)
+
+    Step.objects.all().delete()
+    log.log(f'All Steps removed.', force=True)
+
+    Screenshot.objects.all().delete()
+    log.log(f'All Screenshots removed.', force=True)
+
+    loader = InstallLoader(force_download=True)
+    log.log(f'Install cache reset.', force=True)
+
 
 def create_installations():
 
@@ -36,7 +58,7 @@ def create_installations():
                 soft, created = Software.objects.get_or_create(software=software, operating_system=o_s)
                 log.created(created, f'{o_s} Software', soft.software, soft.id)
 
-                instr, created = Instruction.objects.get_or_create(software=soft, what=instructions.what, why=instructions.why)
+                instr, created = Instruction.objects.get_or_create(software=soft, what=instructions.what, why=instructions.why, image=instructions.image_url)
                 log.created(created, f'{o_s} Installation instructions', instr.software, instr.id)
 
                 for _, d in current_instructions.items():
