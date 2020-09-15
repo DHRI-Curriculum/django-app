@@ -8,6 +8,7 @@ SUPER:
     groups:
       - Team
     bio: Kalle Westerling is a Ph.D. Candidate in Theatre and Performance at The Graduate Center, CUNY, where he works on a dissertation about the history and aesthetics of male-identified bodies in 20th-century burlesque and 21st-century boylesque. He is also the project manager for the NEH-funded project “Expanding Communities of Practice,” aimed at helping to create infrastructure for digital humanities across several higher education institutions across the U.S.
+    pronouns: 'he/him'
     img: "user_setup/kalle-westerling.png"
 
   - first_name: Lisa
@@ -18,6 +19,7 @@ SUPER:
       - Team
     bio: "As Director of Digital Fellowship Programs, she leads 3 cohorts of graduate students: the GC Digital Fellows, Program Social Media Fellows, and Videography Fellows who work to extend and improve the critical use of digital technologies in research and teaching. Lisa is on the faculties of the M.A. in Liberal Studies, M.A. in Digital Humanities, and M.S. in Data Analytics and Visualization programs, and serves as Director of Research Projects for the CUNY Academic Commons, an academic social network designed to support faculty initiatives and build community through the use of technology in teaching and learning. Previously, she was Associate Director of Research Projects at the Roy Rosenzweig Center for History and New Media. Lisa holds a Ph.D in English from the University of Maryland, College Park. Her research, which uses computational methods such as text mining and machine learning to explore 21st century poetry, has appeared in the Journal of Digital Humanities, Debates in the Digital Humanities 2016, and PMLA."
     img: "user_setup/lisa-rhody.png"
+    pronouns: 'she/her'
 
   - first_name: Stephen
     last_name: Zweibel
@@ -27,6 +29,7 @@ SUPER:
       - Team
     bio: Stephen Zweibel supports digital project creation by GC researchers across the disciplines, helps preserve those projects, and supports faculty and students with their data-based research and data management needs. He also coordinates the library’s growing series of workshops on research skills and tools. Steve earned his master’s degree in library and information science from Long Island University in 2010, and received a master’s degree in the Digital Humanities track of the GC’s MALS program. As a MALS student, he built DH Box, a cloud-based computer lab for digital humanities research (including the tools Omeka, NLTK, IPython, R Studio, and Mallet). DH Box won a National Endowment for the Humanities Start-Up grant. Before coming to the Graduate Center, Steve was a visiting lecturer at Hunter College, where he built several useful library tools, including Augur, a web application to track reference question data; a mobile app for the CUNY library catalog; and Know Thy Shelf, a radio frequency identification (RFID)-based library inventory system.
     img: "user_setup/steve-zweibel.png"
+    pronouns: 'he/him'
 
 STAFF:
   - first_name: Administrator
@@ -35,6 +38,7 @@ STAFF:
     password: admin
     groups:
       - Team
+    pronouns: 'they'
 
   - first_name: Param
     last_name: Ajmera
@@ -75,6 +79,7 @@ STAFF:
     blurb:
       text: My first foray into data literacies began when I was considering the ethics of conducting a digital oral history archival project. Concerned with how my oral history interviews with queer and trans Asians may be manipulated or remixed without consent, I began to actively look for answers to my questions on doing digital projects with marginalized communities. This led to no easy answers, and I found myself at the beginning of a very complex but necessary journey through data literacies and ethics. What did become clear is that ethical considerations cannot stop at an IRB but has to be negotiated at every step of the way. Important questions that emerged in my process are:<br />a) Am I comfortable with the unintentional use of my data/results/analyses?<br />b) Who is benefiting from my project?, and<br />c) Who is left out in my analysis?<br />As we are living in a data saturated world, these questions also help in keeping me grounded and accountable. These questions also reflect the complexities of ethics in a digital project; there is no universal fit or easy answers. Drawing on my experiences, the workshop on data literacies will begin with exploring some of these concerns."
       workshop: data-literacies
+    pronouns: 'they'
 
   - first_name: Filipa
     last_name: Calado
@@ -148,3 +153,4 @@ USER:
     password: test
     groups:
       - Learner
+    pronouns: 'they'

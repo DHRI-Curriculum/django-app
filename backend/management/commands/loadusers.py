@@ -46,9 +46,11 @@ def create_users(AUTO_USERS=AUTO_USERS):
                     log.log(f'Added user `{user}`.')
 
             # Profile
-            if u.get('bio') or u.get('img'):
+            if u.get('bio') or u.get('img') or u.get('pronouns'):
                 if u.get('bio'):
                     user.profile.bio = u.get('bio')
+                if u.get('pronouns'):
+                    user.profile.pronouns = u.get('pronouns')
                 if u.get('img'):
                     try:
                         import os
