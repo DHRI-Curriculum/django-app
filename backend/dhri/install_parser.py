@@ -6,7 +6,7 @@ from pathlib import Path
 from collections import OrderedDict
 from bs4 import BeautifulSoup
 
-from .log import Logger, log_created
+from .log import Logger
 from .loader import _is_expired, download_image
 from .markdown import split_into_sections
 from .markdown_parser import PARSER

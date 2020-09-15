@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 from collections import OrderedDict
 
-from backend.dhri.log import Logger, log_created
+from backend.dhri.log import Logger
 from backend.dhri_settings import FORCE_DOWNLOAD, TEST_AGES, CACHE_DIRS, INSIGHT_REPO, STATIC_IMAGES
 from backend.dhri.loader import _is_expired
 from backend.dhri.markdown import split_into_sections

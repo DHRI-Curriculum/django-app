@@ -10,6 +10,8 @@ from pathlib import Path
 from bs4 import BeautifulSoup, Comment
 from requests.exceptions import HTTPError, MissingSchema
 
+from django.urls import reverse
+
 from backend.models import *
 
 from backend.dhri.exceptions import MissingCurriculumFile, MissingRequiredSection
@@ -453,33 +455,39 @@ def download_image(url, local_file):
 def search_term(slug):
     from glossary.models import Term
 
-    if Term.objects.filter(slug=slug):
-        return Term.objects.filter(slug=slug)
+    t = Term.objects.filter(slug=slug)
+    if t:
+        return t
 
     term = slug.replace('-', ' ')
-    if Term.objects.filter(term=term):
-        return Term.objects.filter(term=term)
+    t = Term.objects.filter(term=term)
+    if t:
+        return t
 
     term = term.title()
-    if Term.objects.filter(term=term):
-        return Term.objects.filter(term=term)
+    t = Term.objects.filter(term=term)
+    if t:
+        return t
 
     return None
 
 
-def search_install(slug):
+def search_software(slug):
     from install.models import Software
 
-    if Software.objects.filter(slug=slug):
-        return Software.objects.filter(slug=slug)
+    t = Software.objects.filter(software__icontains=slug)
+    if t:
+        return t
 
     software = slug.replace('-', ' ')
-    if Software.objects.filter(software=software):
-        return Software.objects.filter(software=software)
+    t = Software.objects.filter(software__icontains=software)
+    if t:
+        return t
 
     software = software.title()
-    if Software.objects.filter(software=software):
-        return Software.objects.filter(software=software)
+    t = Software.objects.filter(software__icontains=software)
+    if t:
+        return t
 
     return None
 
@@ -679,9 +687,11 @@ class LessonParser():
             # 2. Find and test links
             for link in soup.find_all("a"):
                 href = link.get('href')
+
                 if not href:
                     log.warning(f"A link with no `href` attribute detected in lesson: {link}")
                     continue
+
                 if "github.com/DHRI-Curriculum" in href:
                     # internal link found
                     if 'https://github.com/DHRI-Curriculum/' in href:
@@ -693,6 +703,7 @@ class LessonParser():
                     elif 'http://www.github.com/DHRI-Curriculum/' in href:
                         OUTBOUND_CLEAR = "".join(href.split("http://www.github.com/DHRI-Curriculum/")[1:])
                     if OUTBOUND_CLEAR.strip() == '': OUTBOUND_CLEAR = href
+
                     if 'raw=true' in OUTBOUND_CLEAR.lower() or 'raw.githubusercontent.com' in href.lower():
                         c = WebCache(href)
                         link['target'] = '_blank'
@@ -701,27 +712,20 @@ class LessonParser():
                     else:
                         workshop = OUTBOUND_CLEAR.split('/')[0]
 
-                        '''
                         if workshop == 'install':
                             slug = OUTBOUND_CLEAR.split('/')[-1].split('.md')[0]
-                            s = search_install(slug)
+                            s = search_software(slug)
+                            link_url = None
                             if s:
-                                if s.count() > 1:
-                                    s = s.last()
-                                    log.warning(f"Found a link that corresponded to more than one software in the site's installations ({slug}). Linking to the most recent ({s})...")
-                                elif s.count == 1:
-                                    log.log(f'Found a link to an installation instruction that corresponded to one already existing on the site. Adding...')
-                                else:
-                                    log.error(f'Cannot interpret result from searching for software on site.')
-                                link['href'] = f'/install/{s.slug}/'
+                                for software in s:
+                                    for i in software.instructions.all():
+                                        url = reverse('install:installation', args=[i.slug])
+                                        if not link_url: link_url = url
+                                link['href'] = link_url
+                                log.log(f"Found a link to an installation instruction for a software that was found in the site's installation instructions ({slug}). Added link to {link_url}.", force=True) # TODO: remove force here
                             else:
                                 log.warning(f"Found a link to an installation instruction for a software that cannot be found in the site's installation instructions ({slug}). Will add link to general installation instead. You may want to add this installation instruction to the /install/ repo on GitHub.")
                                 link['href'] = '/install/'
-                        '''
-                        if workshop == 'install':
-                            slug = OUTBOUND_CLEAR.split('/')[-1].split('.md')[0]
-                            log.warning(f"Found a link to an installation instruction for a software that cannot be found in the site's installation instructions ({slug}). Will add link to general installation instead. You may want to add this installation instruction to the /install/ repo on GitHub.")
-                            link['href'] = '/install/'
 
                         elif workshop == 'glossary':
                             slug = OUTBOUND_CLEAR.split('/')[-1].split('.md')[0]
@@ -729,12 +733,14 @@ class LessonParser():
                             if s:
                                 if s.count() > 1:
                                     s = s.last()
+                                    link['href'] = f'/terms/{s.slug}/'
                                     log.warning(f"Found a link that corresponded to more than one term in the glossary ({slug}). Linking to the most recent ({s})...")
                                 elif s.count == 1:
+                                    link['href'] = f'/terms/{s.slug}/'
                                     log.log(f'Found a link to the glossary that corresponded to a term existing on the site. Adding...')
                                 else:
-                                    log.error(f'Cannot interpret result from searching for term in lesson.')
-                                link['href'] = f'/terms/{s.slug}/'
+                                    link['href'] = '/terms/'
+                                    log.warning(f"Found a link to a term that cannot be found in the site's glossary ({slug}). Will add link to general glossary instead. You may want to add this term to the /glossary/ repo on GitHub.")
                             else:
                                 log.warning(f"Found a link to a term that cannot be found in the site's glossary ({slug}). Will add link to general glossary instead. You may want to add this term to the /glossary/ repo on GitHub.")
                                 link['href'] = '/terms/'
@@ -748,9 +754,12 @@ class LessonParser():
                     # external link found
                     c = WebCache(href)
                     link['target'] = '_blank'
-                elif 'lessons.md#' in href.lower() or href.startswith('#'):
+                elif 'lessons.md#' in href.lower() or (href.startswith('#') and link.text):
                     # relative link found
                     log.warning(f"The lesson `{title}` contains a relative href ({href}) which may or may not work in production. Change links in the repository's `lessons.md` file on GitHub to include absolute links.")
+                elif href.startswith('#') and not link.text:
+                    # GitHub placeholder link found
+                    pass
                 else:
                     g = re.search(r'(\d+).*(md)', href)
                     if g:

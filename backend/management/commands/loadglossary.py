@@ -1,6 +1,6 @@
 from django.core.management import BaseCommand
 from backend.dhri_settings import GLOSSARY_REPO
-from backend.dhri.log import Logger, log_created
+from backend.dhri.log import Logger
 from backend.models import Term, Reading, Tutorial
 from backend.dhri.loader import GlossaryLoader, process_links
 

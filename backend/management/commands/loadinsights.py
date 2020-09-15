@@ -1,6 +1,6 @@
 from django.core.management import BaseCommand
 from django.core.files import File
-from backend.dhri.log import Logger, log_created
+from backend.dhri.log import Logger
 from backend.dhri.insight_parser import InsightLoader
 from backend.models import Software, Insight, Section, OperatingSystemSpecificSection
 from django.db.models.functions import Lower
