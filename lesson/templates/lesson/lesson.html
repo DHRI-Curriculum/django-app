@@ -5,10 +5,104 @@
   <link rel="stylesheet" href="{% static 'glossary/css/postit.css' %}">
   <link rel="stylesheet" href="{% static 'lesson/css/pygment.css' %}">
   <link rel="stylesheet" href="{% static 'lesson/css/context.css' %}">
+  <link rel="stylesheet" href="{% static 'lesson/css/evaluation.css' %}">
   <link rel="stylesheet" href="{% static 'website/css/github.css' %}">
   <script>
     var next = {% if page_obj.has_next %}{{ page_obj.next_page_number }}{% else %}0{% endif %}
     var prev = {% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}0{% endif %}
+
+    Object.prototype.allFalse = function() {
+        for (var i in this) {
+            if (this[i] === true) return false;
+        }
+        return true;
+    }
+
+    function disable_all_elements(elemList) {
+      for (x in elemList) {
+        target_elem = elemList[x]
+        if (typeof target_elem == 'object') {
+          target_elem.classList.add('disabled');
+          target_elem.disabled = true;
+        }
+      }
+    }
+
+    function enable_all_elements(elemList) {
+      for (x in elemList) {
+        target_elem = elemList[x]
+        if (typeof target_elem == 'object') {
+          target_elem.classList.remove('disabled');
+          target_elem.disabled = false;
+        }
+      }
+    }
+
+    function submit_answer(e) {
+      answers = {}
+
+      for (x in e.target.elements) {
+        target_elem = e.target.elements[x]
+        if (typeof target_elem == 'object') {
+          if (target_elem.dataset.answer_id) {
+            answers[target_elem.dataset.answer_id] = target_elem.checked;
+          }
+        }
+      }
+
+      if (answers.allFalse()) {
+        alert('At least one response is true. Choose one!');
+        return false;
+      }
+
+      // disable all buttons and get all the answers
+      disable_all_elements(e.target.elements);
+
+      // get data from form
+      var question_id = e.target.dataset.question_id;
+      console.log(question_id);
+      console.log(answers)
+
+
+      // console.log(e);
+
+
+      fetch('/workshops/{{ workshop.slug }}/lessons/check-answer/', {
+          method: "POST",
+          credentials: "same-origin",
+          headers: {
+              "X-CSRFToken": getCookie("csrftoken"),
+              "Accept": "application/json",
+              "Content-Type": "application/json",
+              "Question": question_id,
+              "Answers": JSON.stringify(answers)
+          },
+          body: ''
+      }).then(function(response) { return response.json();
+      }).then(function(data) {
+          if (data.error == null) {
+            if (data.all_correct == true) {
+              console.log('set to true!')
+              // rgba(0, 170, 100, 0.1) !important
+              e.target.parentElement.parentElement.classList.remove('try-again')
+              e.target.parentElement.style = 'background-color: rgba(0, 170, 100, 0.1) !important;'
+              e.target.getElementsByTagName('button')[0].classList.remove('btn-primary')
+              e.target.getElementsByTagName('button')[0].classList.add('btn-success')
+              e.target.getElementsByTagName('button')[0].innerHTML = 'Correct answer!'
+            } else {
+              console.log('set to try again!')
+              e.target.parentElement.style = 'background-color: rgba(170, 0, 0, 0.1) !important;'
+              e.target.parentElement.parentElement.classList.add('try-again')
+              enable_all_elements(e.target.elements);
+            }
+          } else {
+            console.log("Error:", data.error);
+          }
+      }).catch(function(ex) {
+          console.log("Error:", ex);
+      });
+
+    }
   </script>
 {% endblock extra_head_material %}
 
@@ -84,4 +178,14 @@
 -->
 <script src="//cdn.jsdelivr.net/npm/velocity-animate@2.0/velocity.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/velocity-animate@2.0/velocity.ui.min.js"></script>
+<script>
+  var forms = document.getElementsByClassName('submit-answer');
+  for (let form of forms) {
+      form.addEventListener('submit', function(evt) {
+        evt.preventDefault();
+        submit_answer(evt);
+        evt.preventDefault();
+      });
+  }
+</script>
 {% endblock %}

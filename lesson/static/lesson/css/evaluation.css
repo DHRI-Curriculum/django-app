@@ -1,0 +1,15 @@
+.try-again::before {
+    background-color: rgba(170, 0, 0, 0.1);
+    color: red;
+    text-align: left;
+    font-size: 12px;
+    margin: 0px;
+    display: block;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+    padding-left: 10px;
+    padding-right: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    content: 'Try Again';
+}
