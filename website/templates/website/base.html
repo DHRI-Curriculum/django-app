@@ -13,7 +13,7 @@
     {% include "website/ie_warning.html" %}
     {% include "website/instructor_requests.html" %}
 
-    <div id="content" class="container mx-auto py-4">
+    <div id="content" class="container mx-auto py-2">
       {% if request.user.is_staff %}
           <div id="admin" class="zen-hideaway border shadow-sm p-2">
               <strong class="text-muted ml-2 mr-4 small">Admin tools</strong>{% block admin_edit %}{% endblock %}{% include 'website/admin-viewports.html' %}

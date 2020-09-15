@@ -1,7 +1,11 @@
 {% load markdownify %}
 
 <!--<h3><a href="/" class="dhri-hero text-decoration-none">Digital Humanities Research Institute Curriculum Website</a></h3>-->
-<h2>{{ workshop.name }}</h2>
+{% if workshop.image %}
+    <img src="{{ workshop.image }}" class="img-fluid" alt="{{ workshop.name }}">
+{% else%}
+    <h2>{{ workshop.name }}</h2>
+{% endif %}
 <div class="lead mt-4">
     {{ workshop.frontmatter.abstract | markdown | safe }}
 </div>

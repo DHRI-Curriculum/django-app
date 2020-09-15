@@ -128,7 +128,8 @@ class LoaderCache():
             'frontmatter': f'{self.loader.base_url}/frontmatter.md',
             'praxis': f'{self.loader.base_url}/theory-to-practice.md',
             'assessment': f'{self.loader.base_url}/assessment.md',
-            'lessons': f'{self.loader.base_url}/lessons.md'
+            'lessons': f'{self.loader.base_url}/lessons.md',
+            'image': f'{self.loader.base_url}/image.md'
         }
         self.data = {
             'meta': {
@@ -136,7 +137,8 @@ class LoaderCache():
                     'frontmatter': paths['frontmatter'],
                     'praxis': paths['praxis'],
                     'assessment': paths['assessment'],
-                    'lessons': paths['lessons']
+                    'lessons': paths['lessons'],
+                    'image': paths['image'],
                 },
                 'repo_url': self.loader.repo,
                 'user': self.loader.user,
@@ -147,7 +149,8 @@ class LoaderCache():
                 'frontmatter': self._load_raw_text(paths['frontmatter']),
                 'praxis': self._load_raw_text(paths['praxis']),
                 'assessment': self._load_raw_text(paths['assessment']),
-                'lessons': self._load_raw_text(paths['lessons'])
+                'lessons': self._load_raw_text(paths['lessons']),
+                'image': self._load_raw_text(paths['image'])
             }
         }
         self.save()
@@ -195,6 +198,7 @@ class HTMLParser(): # pylint: disable=too-few-public-methods
         self.frontmatter = self.content.get('frontmatter')
         self.praxis = self.content.get('praxis')
         self.assessment = self.content.get('assessment')
+        self.image = PARSER.convert(self.content.get('image'))
 
 
 def _normalize_data(data, section):
@@ -291,6 +295,7 @@ class Loader():
         self.frontmatter = split_into_sections(self.content.get('frontmatter'))
         self.praxis = split_into_sections(self.content.get('praxis'))
         self.assessment = split_into_sections(self.content.get('assessment'))
+        self.image = self.content.get('image')
         self.lessons = LessonParser(self.content.get('lessons'), loader=self).data
         self.lessons_html = LessonParser(self.content.get('lessons'), loader=self).html_data
 
@@ -318,7 +323,8 @@ class Loader():
             'frontmatter': self.frontmatter,
             'praxis': self.praxis,
             'assessment': self.assessment,
-            'lessons': self.lessons
+            'lessons': self.lessons,
+            'image': self.image
         }
 
         self._test_for_required_sections()
@@ -327,8 +333,32 @@ class Loader():
         self.has_praxis = len(self.praxis) > 0
         self.has_assessment = len(self.assessment) > 0
         self.has_lessons = len(self.lessons) > 0
+        self.has_image = len(self.image) > 0
 
         self._test_for_files()
+
+        # Fixing the image
+        REPO_CLEAR = self.repo.split("/")[-1]
+        soup = BeautifulSoup(self.as_html.image, 'lxml')
+        for image in soup.find_all("img")[:1]: # we stick with the first image here.
+            src = image.get('src')
+            if not src:
+                log.warning(f"A header image with no src attribute detected in workshop: {image}")
+                continue
+            filename = image['src'].split('/')[-1]
+            url = f'https://raw.githubusercontent.com/DHRI-Curriculum/{REPO_CLEAR}/{self.branch}/_django-meta/{filename}'
+            filename = filename.replace('%40', '@')
+            local_file = STATIC_IMAGES['WORKSHOP_HEADERS'] / Path(REPO_CLEAR) / filename
+
+            if '//' in url:
+                url = url.replace('//', '/').replace('https:/', 'https://').replace('http:/', 'http://')
+
+            download_image(url, local_file)
+            local_url = f'/static/website/images/workshop_headers/{REPO_CLEAR}/{filename}'
+            image['src'] = local_url
+            image['class'] = image.get('class', []) + ['img-fluid', 'd-block', 'my-4']
+
+        self.image_url = local_url
 
         # Mapping frontmatter sections
         self.abstract = self.frontmatter.get('abstract')
