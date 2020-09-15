@@ -358,7 +358,7 @@ class Loader():
             image['src'] = local_url
             image['class'] = image.get('class', []) + ['img-fluid', 'd-block', 'my-4']
 
-        self.image_url = local_url
+        self.image_url = local_url[1:]
 
         # Mapping frontmatter sections
         self.abstract = self.frontmatter.get('abstract')
