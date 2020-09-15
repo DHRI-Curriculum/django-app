@@ -334,7 +334,7 @@ class Loader():
         self.estimated_time = self.frontmatter.get('estimated_time')
         self.contributors = self.frontmatter.get('contributors')
         self.readings = self.frontmatter.get('readings')
-        self.projects = self.frontmatter.get('readings')
+        self.projects = self.frontmatter.get('projects')
         self.learning_objectives = self.frontmatter.get('learning_objectives')
         self.ethical_considerations = self.frontmatter.get('ethical_considerations')
 
@@ -722,10 +722,15 @@ class LessonParser():
                                         url = reverse('install:installation', args=[i.slug])
                                         if not link_url: link_url = url
                                 link['href'] = link_url
-                                log.log(f"Found a link to an installation instruction for a software that was found in the site's installation instructions ({slug}). Added link to {link_url}.", force=True) # TODO: remove force here
+                                log.log(f"Found a link to an installation instruction for a software that was found in the site's installation instructions ({slug}). Added link to {link_url}.")
                             else:
                                 log.warning(f"Found a link to an installation instruction for a software that cannot be found in the site's installation instructions ({slug}). Will add link to general installation instead. You may want to add this installation instruction to the /install/ repo on GitHub.")
                                 link['href'] = '/install/'
+
+                        elif workshop == 'insights':
+                            slug = OUTBOUND_CLEAR.split('/')[-1].split('.md')[0]
+                            print('TODO: link insight here...')
+
 
                         elif workshop == 'glossary':
                             slug = OUTBOUND_CLEAR.split('/')[-1].split('.md')[0]
@@ -733,10 +738,13 @@ class LessonParser():
                             if s:
                                 if s.count() > 1:
                                     s = s.last()
-                                    link['href'] = f'/terms/{s.slug}/'
-                                    log.warning(f"Found a link that corresponded to more than one term in the glossary ({slug}). Linking to the most recent ({s})...")
-                                elif s.count == 1:
-                                    link['href'] = f'/terms/{s.slug}/'
+                                    url = reverse('glossary:term', args=[s.slug])
+                                    link['href'] = url
+                                    log.warning(f"Found a link that corresponded to more than one term in the glossary ({slug}). Linking to the most recent ({url})...")
+                                elif s.count() == 1:
+                                    s = s.last()
+                                    url = reverse('glossary:term', args=[s.slug])
+                                    link['href'] = url
                                     log.log(f'Found a link to the glossary that corresponded to a term existing on the site. Adding...')
                                 else:
                                     link['href'] = '/terms/'
