@@ -43,7 +43,7 @@
     </div>
     <div class="col-sm-9">
         <h2 class="account-heading">{% if user.first_name and user.last_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user.username }}{% endif %}</h2>
-        <p class="text-secondary">{{ user.email }}{% if user.is_staff and user.email %} | {% elif user.is_staff %}Staff{% endif %}</p>
+        <p class="text-secondary">{% if user.profile.pronoun %}<em>{{ user.profile.pronoun }}</em> | {% endif %}{{ user.email }}{% if user.is_staff and user.email %} | {% elif user.is_staff %}Staff{% endif %}</p>
         <p class="lead">{{ user.profile.bio | safe }}</p>
 
         {% if user.profile.links.count %}

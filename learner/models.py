@@ -8,6 +8,7 @@ class Profile(models.Model):
     favorites = models.ManyToManyField('workshop.Workshop', blank=True)
     instructor_requested = models.BooleanField(default=False)
     bio = models.TextField(null=True, blank=True)
+    pronouns = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return f'{self.user.username}\'s Profile'
