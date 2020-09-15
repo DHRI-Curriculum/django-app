@@ -17,6 +17,7 @@ class Instruction(models.Model):
     software = models.ForeignKey(Software, on_delete=models.CASCADE, related_name='instructions')
     what = models.TextField(blank=True)
     why = models.TextField(blank=True)
+    image = models.ImageField(upload_to ='software_headers/', default='software_headers/default.jpg')
 
     def save(self, *args, **kwargs):
         slug = self.software.software.replace('-',' ').replace('/',' ') + '-' + self.software.operating_system.replace('-',' ').replace('/',' ')
