@@ -82,6 +82,13 @@ class Command(BaseCommand):
                 LOG.created(created, 'Workshop', workshop.name, workshop.id)
 
                 #LOG.name = LOG.original_name + "-lessons"
+                if l.has_image:
+                    print(l.image)
+                    print(l.as_html.image)
+                    workshop.image = l.image_url
+                    workshop.save()
+                    exit()
+
                 if l.has_lessons:
                     for lesson_data in l.as_html.lessons:
                         try:

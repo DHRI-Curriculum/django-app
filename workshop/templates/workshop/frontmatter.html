@@ -9,14 +9,15 @@
   {% include 'workshop/leftmenu/content.html' %}
 {% endblock %}
 
-{% block header %}
-
+{% block before_content %}
   {% if not request.user.is_authenticated %}
-    <div class="py-2" id="no-login">
+    <div class="w-100" id="no-login">
       <div class="alert alert-info">Note that you are not logged in. In order to save progress and interact with the workshops, you need to <a href="{% url 'login' %}">login</a> or <a href="{% url 'register' %}">create an account</a>.</div>
     </div>
   {% endif %}
+{% endblock %}
 
+{% block header %}
   <!--{% include 'workshop/workshop-wide-elements/navbar.html' %}-->
 {% endblock %}
 
