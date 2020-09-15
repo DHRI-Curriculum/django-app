@@ -18,8 +18,8 @@
 {% block main %}
     <h2 class="py-2">How to install {{ instruction.software.software }} for {{ instruction.software.operating_system }}</h2>
     <div class="lead pb-4 mb-4 border-bottom">
-        <p>{{ instruction.what | safe }}</p>
-        <p>{{ instruction.why | safe }}</p>
+        <p>{{ instruction.what | markdown | safe }}</p>
+        <p>{{ instruction.why | markdown | safe }}</p>
     </div>
     {% for step in instruction.steps.all %}
     <div class="row py-2 my-4">
@@ -31,7 +31,7 @@
         </div>
         <div class="col-12 col-md-8">
             {% for screenshot in step.screenshots.all %}
-                <a data-toggle="modal" data-target="#modal_{{ forloop.parentloop.counter }}"><img src="{{ screenshot.image.url }}" class="shadow shadow-sm border img-fluid" alt="{% if screenshot.alt_text == 'No alt text' %}{{ screenshot }}{% else %}{{ screenshot.alt_text }}{% endif %}"></a>
+                <a data-toggle="modal" data-target="#modal_{{ forloop.parentloop.counter }}"><img src="{{ screenshot.image.url }}" class="shadow shadow-sm border img-fluid mb-2" alt="{% if screenshot.alt_text == 'No alt text' %}{{ screenshot }}{% else %}{{ screenshot.alt_text }}{% endif %}"></a>
                 <div class="modal fade" id="modal_{{ forloop.parentloop.counter }}" tabindex="-1" aria-labelledby="modal_{{ forloop.parentloop.counter }}_label" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-xl">
                         <div class="modal-content">
