@@ -10,6 +10,8 @@ from pathlib import Path
 from bs4 import BeautifulSoup, Comment
 from requests.exceptions import HTTPError, MissingSchema
 
+from django.urls import reverse
+
 from backend.models import *
 
 from backend.dhri.exceptions import MissingCurriculumFile, MissingRequiredSection
@@ -69,15 +71,16 @@ def _is_expired(path, age_checker=TEST_AGES['ROOT'], force_download=FORCE_DOWNLO
 
 
 def process_links(input, obj):
-    """<#TODO: doctstr>"""
+    """<#TODO: docstr>"""
     links = extract_links(input)
     if links:
         title, url = links[0]
     else:
         return(None, None)
     if len(links) > 1:
-        link_list = "\n    - ".join([x[1][:50] for x in links[1:]])
-        log.warning(f'One project seems to contain more than one URL, but only one ({url[:50]}) is captured: {link_list}')
+        link_list = '\n    - ' + "\n    - ".join([x[1][:50] for x in links[1:]])
+        log.warning(f'One project seems to contain more than one URL, but only one ({url[:50]}) is captured:')
+        print(link_list)
     if title == None or title == '':
         from backend.dhri.webcache import WebCache
         title = WebCache(url).title
@@ -332,7 +335,7 @@ class Loader():
         self.estimated_time = self.frontmatter.get('estimated_time')
         self.contributors = self.frontmatter.get('contributors')
         self.readings = self.frontmatter.get('readings')
-        self.projects = self.frontmatter.get('readings')
+        self.projects = self.frontmatter.get('projects')
         self.learning_objectives = self.frontmatter.get('learning_objectives')
         self.ethical_considerations = self.frontmatter.get('ethical_considerations')
 
@@ -448,6 +451,62 @@ def download_image(url, local_file):
             return None
     else:
         return local_file
+
+
+def search_term(slug):
+    from glossary.models import Term
+
+    t = Term.objects.filter(slug=slug)
+    if t:
+        return t
+
+    term = slug.replace('-', ' ')
+    t = Term.objects.filter(term=term)
+    if t:
+        return t
+
+    term = term.title()
+    t = Term.objects.filter(term=term)
+    if t:
+        return t
+
+    return None
+
+
+def search_software(slug):
+    from install.models import Software
+
+    t = Software.objects.filter(software__icontains=slug)
+    if t:
+        return t
+
+    software = slug.replace('-', ' ')
+    t = Software.objects.filter(software__icontains=software)
+    if t:
+        return t
+
+    software = software.title()
+    t = Software.objects.filter(software__icontains=software)
+    if t:
+        return t
+
+    return None
+
+
+def search_insight(slug):
+    from insight.models import Insight
+
+    t = Insight.objects.filter(slug__icontains=slug)
+    if t:
+        return t
+
+    title = slug.replace('-', ' ')
+    t = Insight.objects.filter(title__icontains=title)
+    if t:
+        return t
+
+    return None
+
 
 
 class LessonParser():
@@ -644,24 +703,103 @@ class LessonParser():
             # 2. Find and test links
             for link in soup.find_all("a"):
                 href = link.get('href')
+
                 if not href:
-                    log.warning(f"A link with no href attribute detected in lesson: {link}")
+                    log.warning(f"A link with no `href` attribute detected in lesson: {link}")
                     continue
+
                 if "github.com/DHRI-Curriculum" in href:
-                    OUTBOUND_CLEAR = "".join(href.split("https://github.com/DHRI-Curriculum/")[1:])
+                    # internal link found
+                    if 'https://github.com/DHRI-Curriculum/' in href:
+                        OUTBOUND_CLEAR = "".join(href.split("https://github.com/DHRI-Curriculum/")[1:])
+                    elif 'https://www.github.com/DHRI-Curriculum/' in href:
+                        OUTBOUND_CLEAR = "".join(href.split("https://www.github.com/DHRI-Curriculum/")[1:])
+                    elif 'http://github.com/DHRI-Curriculum/' in href:
+                        OUTBOUND_CLEAR = "".join(href.split("http://github.com/DHRI-Curriculum/")[1:])
+                    elif 'http://www.github.com/DHRI-Curriculum/' in href:
+                        OUTBOUND_CLEAR = "".join(href.split("http://www.github.com/DHRI-Curriculum/")[1:])
                     if OUTBOUND_CLEAR.strip() == '': OUTBOUND_CLEAR = href
-                    print(OUTBOUND_CLEAR)
-                    # if it contains `raw=True`, we want to keep it...
-                    # 
-                    if OUTBOUND_CLEAR.startswith(REPO_CLEAR):
+
+                    if 'raw=true' in OUTBOUND_CLEAR.lower() or 'raw.githubusercontent.com' in href.lower():
+                        c = WebCache(href)
+                        link['target'] = '_blank'
+                    elif 'raw=true' not in OUTBOUND_CLEAR.lower() and OUTBOUND_CLEAR.lower().startswith(REPO_CLEAR.lower()):
                         log.warning(f"The lesson `{title}` links to same workshop: {href}")
                     else:
-                        log.warning(f"The lesson `{title}` links to other workshop/root curriculum: {REPO_CLEAR} —> {OUTBOUND_CLEAR}")
+                        workshop = OUTBOUND_CLEAR.split('/')[0]
+
+                        if workshop == 'install':
+                            slug = OUTBOUND_CLEAR.split('/')[-1].split('.md')[0]
+                            s = search_software(slug)
+                            link_url = None
+                            if s:
+                                for software in s:
+                                    for i in software.instructions.all():
+                                        url = reverse('install:installation', args=[i.slug])
+                                        if not link_url: link_url = url
+                                link['href'] = link_url
+                                log.log(f"Found a link to an installation instruction for a software that was found in the site's installation instructions ({slug}). Added link to {link_url}.")
+                            else:
+                                log.warning(f"Found a link to an installation instruction for a software that cannot be found in the site's installation instructions ({slug}). Will add link to general installation instead. You may want to add this installation instruction to the /install/ repo on GitHub.")
+                                link['href'] = '/install/'
+
+                        elif workshop == 'insights':
+                            slug = OUTBOUND_CLEAR.split('/')[-1].split('.md')[0]
+                            s = search_insight(slug)
+                            if s:
+                                if s.count() > 1:
+                                    s = s.last()
+                                    url = reverse('insight:insight', args=[s.slug])
+                                    link['href'] = url
+                                    log.warning(f"Found a link to an insight that corresponded to more than one insight on the site ({slug}). Linking to the most recent ({url})...")
+                                elif s.count() == 1:
+                                    s = s.last()
+                                    url = reverse('insight:insight', args=[s.slug])
+                                    link['href'] = url
+                                    log.log(f'Found a link to an insight that corresponded to an existing insight on the site. Adding...', force=True) # TODO: sanity check, remove when done
+                                else:
+                                    link['href'] = '/insight/'
+                                    log.warning(f"Could not interpret result when searching for an insight on the site ({slug}). Result generated was: {s}. Will add link to general insights instead. You may want to add this term to the /insight/ repo on GitHub.")
+                            else:
+                                link['href'] = '/insight/'
+                                log.warning(f"Could not find an insight on the site ({slug}). Result generated was: {s}. Will add link to general insights instead. You may want to add this term to the /insight/ repo on GitHub.")
+
+                        elif workshop == 'glossary':
+                            slug = OUTBOUND_CLEAR.split('/')[-1].split('.md')[0]
+                            s = search_term(slug)
+                            if s:
+                                if s.count() > 1:
+                                    s = s.last()
+                                    url = reverse('glossary:term', args=[s.slug])
+                                    link['href'] = url
+                                    log.warning(f"Found a link that corresponded to more than one term in the glossary ({slug}). Linking to the most recent ({url})...")
+                                elif s.count() == 1:
+                                    s = s.last()
+                                    url = reverse('glossary:term', args=[s.slug])
+                                    link['href'] = url
+                                    log.log(f'Found a link to the glossary that corresponded to a term existing on the site. Adding...')
+                                else:
+                                    link['href'] = '/terms/'
+                                    log.warning(f"Could not interpret result when searching for a term in the site's glossary ({slug}). Result generated was: {s}. Will add link to general glossary instead. You may want to add this term to the /glossary/ repo on GitHub.")
+                            else:
+                                log.warning(f"Found a link to a term that cannot be found in the site's glossary ({slug}). Will add link to general glossary instead. You may want to add this term to the /glossary/ repo on GitHub.")
+                                link['href'] = '/terms/'
+
+                        else:
+                            log.warning(f"The lesson `{title}` links to other workshop/root curriculum: {REPO_CLEAR} —> {OUTBOUND_CLEAR}")
+                elif href.startswith('mailto:'):
+                    # email link found
+                    log.warning(f"A link was inserted into lesson `{title}` with a mailto-link: {link}")
                 elif href.startswith('http') or href.startswith('//'):
+                    # external link found
                     c = WebCache(href)
                     link['target'] = '_blank'
-                elif href.startswith('#'):
-                    log.log(f"The lesson `{title}` contains a relative href ({href}) which may or may not work in production.", color="yellow")
+                elif 'lessons.md#' in href.lower() or (href.startswith('#') and link.text):
+                    # relative link found
+                    log.warning(f"The lesson `{title}` contains a relative href ({href}) which may or may not work in production. Change links in the repository's `lessons.md` file on GitHub to include absolute links.")
+                elif href.startswith('#') and not link.text:
+                    # GitHub placeholder link found
+                    pass
                 else:
                     g = re.search(r'(\d+).*(md)', href)
                     if g:
@@ -669,7 +807,7 @@ class LessonParser():
                         link['href'] = f'?page={order}'
                         log.log(f"The lesson `{title}` links to an internal file `{href}` and has been relinked to `?page={order}` instead.", color="yellow")
                     else:
-                        if ".png" in href or ".jpg" in href or ".gif" in href:
+                        if ".png" in href or ".jpg" in href or ".jpeg" in href or ".gif" in href:
                             filename = href.split('/')[-1]
                             local_url = f'/static/website/images/lessons/{REPO_CLEAR}/{filename}'
                             link['href'] = local_url
@@ -697,13 +835,10 @@ class LessonParser():
 
             # 5. Replace body with string_soup, after cleaning it up
             html_body = string_soup
-                # .replace('<html><body>', '').replace('</body></html>', '').replace('\n<br />\n', '').replace('\n<br />\n', '').replace('<br />', '</p><p>').replace('<br/>', '</p><p>').replace('<br>', '</p><p>')
 
-            # 6. Clean up any challenge and solution data
+            # 6. Clean up any challenge and solution data (insert any such edits here)
             html_challenge = html_challenge
-                #.replace('\n<br />\n', '').replace('\n<br />\n', '').replace('<br />', '</p><p>').replace('<br/>', '</p><p>').replace('<br>', '</p><p>')
             html_solution = html_solution
-                #.replace('\n<br />\n', '').replace('\n<br />\n', '').replace('<br />', '</p><p>').replace('<br/>', '</p><p>').replace('<br>', '</p><p>')
 
             html_data = {
                     'title': title,
@@ -735,12 +870,9 @@ class GlossaryCache():
             log.warning(f'{self.path} does not exist so downloading glossary cache...')
             self._setup_raw_content()
 
-        if force_download == True:
-            log.warning(f'Force download is set to True so downloading glossary cache...')
-            self._setup_raw_content()
-
-        if self.expired == True:
-            log.warning(f'File is expired (set to {self.expired}) so downloading glossary cache...')
+        if force_download == True or self.expired == True:
+            if force_download == True:
+                log.warning(f'Force download is set to True or cache file has expired so downloading glossary cache...')
             self._setup_raw_content()
 
         self.data = self.load()

@@ -1,14 +1,10 @@
 """manage.py setup command"""
 
 from django.core.management import BaseCommand
-
-
 from .imports import *
-
 
 # Set up logger
 LOG = Logger(name='setup')
-
 
 class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
@@ -18,11 +14,11 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('--wipe', action='store_true')
+        parser.add_argument('--structure', action='store_true')
         # parser.add_argument('--verbose', action='store_true') # TODO: Create verbose mode here...
         group = parser.add_mutually_exclusive_group(required=True)
         group.add_argument('--repos', nargs='+', type=str)
         group.add_argument('--all', action='store_true')
-        group.add_argument('--structure', action='store_true')
 
     def handle(self, *args, **options):
         if options.get('wipe', False):
@@ -31,20 +27,23 @@ class Command(BaseCommand):
         if options.get('all', False) or options.get('structure', False):
             LOG.name = 'setup'
 
-            LOG.log("Automatic import activated: Attempting to generate glossary", force=True)
-            create_terms()
-
-            LOG.log("Automatic import activated: Attempting to generate installations", force=True)
-            create_installations()
-
-            LOG.log("Automatic import activated: Attempting to generate pages", force=True)
+            LOG.log("Automatic import activated: Generating pages", force=True)
             create_pages()
 
-            LOG.log("Automatic import activated: Attempting to generate groups", force=True)
+            LOG.log("Automatic import activated: Generating groups", force=True)
             create_groups()
 
-            LOG.log("Automatic import activated: Attempting to generate users", force=True)
+            LOG.log("Automatic import activated: Generating users", force=True)
             create_users()
+
+            LOG.log("Automatic import activated: Generating glossary", force=True)
+            create_terms()
+
+            LOG.log("Automatic import activated: Generating installations", force=True)
+            create_installations()
+
+            LOG.log("Automatic import activated: Generating insights", force=True)
+            create_insights()
 
         repos = _get_repos(options)
 
@@ -235,7 +234,7 @@ class Command(BaseCommand):
                                 last_name = contributor.get('last_name'),
                                 url = contributor.get('url'),
                             )
-                            LOG.created(created, 'Contributor', c.full_name, c.id)
+                            LOG.created(created, 'Contributor', c.full_name, c.id, warning_color='green')
 
                             if user:
                                 c.profile = user.profile
@@ -251,7 +250,7 @@ class Command(BaseCommand):
                                 LOG.error(f'Cannot find a role for contributor {c.full_name}.', kill=True)
 
                             if not is_current or is_past:
-                                LOG.warning(f'Cannot find whether contributor {c.full_name} is current/past. Will automatically set to False.')
+                                LOG.warning(f'Cannot find whether contributor {c.full_name} is current/past. Will automatically set to past.')
 
                             # Create/get Collaboration
                             obj, created = Collaboration.objects.get_or_create(
@@ -260,8 +259,9 @@ class Command(BaseCommand):
                                 role = role,
                                 current = is_current
                             )
-
                             frontmatter.contributors.add(c)
+
+                            LOG.created(created, 'Collaboration', f'between {obj.contributor.full_name} and {obj.frontmatter.workshop}', obj.id, warning_color='green')
 
                     else:
                         LOG.error(f'Have no way of processing {model} for app `frontmatter`. The `setup` script must be adjusted accordingly.', kill=False)
@@ -296,14 +296,11 @@ class Command(BaseCommand):
                     else:
                         LOG.error(f'Have no way of processing {model} for app `praxis`. The `setup` script must be adjusted accordingly.', kill=False)
 
-        if options.get('all', False) or repos:
+        if options.get('all', False) or repos or options.get('structure', False):
             LOG.name = 'setup'
 
-            LOG.log("Automatic import activated: Attempting to generate blurbs", force=True)
+            LOG.log("Automatic import activated: Generating blurbs", force=True)
             create_blurbs()
-
-            LOG.log("Automatic import activated: Attempting to generate insights", force=True)
-            create_insights()
 
 
 def _test_for_branch(d=''):

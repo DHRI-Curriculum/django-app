@@ -6,7 +6,7 @@ from pathlib import Path
 from collections import OrderedDict
 from bs4 import BeautifulSoup
 
-from .log import Logger, log_created
+from .log import Logger
 from .loader import _is_expired, download_image
 from .markdown import split_into_sections
 from .markdown_parser import PARSER
@@ -36,12 +36,8 @@ class InstallCache():
             self.log.warning(f'{self.path} does not exist so downloading install cache...')
             self._setup_raw_content()
 
-        if force_download == True:
-            self.log.warning(f'Force download is set to True so downloading install cache...')
-            self._setup_raw_content()
-
-        if self.expired == True:
-            self.log.warning(f'File is expired (set to {self.expired}) so downloading install cache...')
+        if force_download == True or self.expired == True:
+            self.log.warning(f'Force download is set to True or cache file has expired so downloading install cache...')
             self._setup_raw_content()
 
         self.data = self.load()

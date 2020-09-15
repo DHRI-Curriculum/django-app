@@ -1,7 +1,7 @@
 from django.core.management import BaseCommand
 from django.core.files import File
 from django.conf import settings
-from backend.dhri.log import Logger, log_created
+from backend.dhri.log import Logger
 from backend.dhri.install_parser import InstallLoader
 from backend.models import Software, Instruction, Step, Screenshot
 import re, os

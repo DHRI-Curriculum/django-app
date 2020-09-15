@@ -19,7 +19,7 @@ SUPER:
     bio: "As Director of Digital Fellowship Programs, she leads 3 cohorts of graduate students: the GC Digital Fellows, Program Social Media Fellows, and Videography Fellows who work to extend and improve the critical use of digital technologies in research and teaching. Lisa is on the faculties of the M.A. in Liberal Studies, M.A. in Digital Humanities, and M.S. in Data Analytics and Visualization programs, and serves as Director of Research Projects for the CUNY Academic Commons, an academic social network designed to support faculty initiatives and build community through the use of technology in teaching and learning. Previously, she was Associate Director of Research Projects at the Roy Rosenzweig Center for History and New Media. Lisa holds a Ph.D in English from the University of Maryland, College Park. Her research, which uses computational methods such as text mining and machine learning to explore 21st century poetry, has appeared in the Journal of Digital Humanities, Debates in the Digital Humanities 2016, and PMLA."
     img: "user_setup/lisa-rhody.png"
 
-  - first_name: Steve
+  - first_name: Stephen
     last_name: Zweibel
     username: steve
     password: admin

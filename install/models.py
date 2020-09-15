@@ -14,7 +14,7 @@ class Software(models.Model):
 
 class Instruction(models.Model):
     slug = models.CharField(max_length=200, blank=True)
-    software = models.ForeignKey(Software, on_delete=models.CASCADE)
+    software = models.ForeignKey(Software, on_delete=models.CASCADE, related_name='instructions')
     what = models.TextField(blank=True)
     why = models.TextField(blank=True)
 

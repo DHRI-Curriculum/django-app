@@ -139,7 +139,7 @@ class Praxis(models.Model):
         return f'Praxis collection for workshop {self.workshop.name}'
 
     class Meta:
-      verbose_name_plural = "Praxes"
+      verbose_name_plural = "praxes"
 
 class Blurb(models.Model):
     workshop = models.ForeignKey(Workshop, on_delete=models.CASCADE)
