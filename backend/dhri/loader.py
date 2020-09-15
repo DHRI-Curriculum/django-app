@@ -693,10 +693,10 @@ class LessonParser():
                     elif 'http://www.github.com/DHRI-Curriculum/' in href:
                         OUTBOUND_CLEAR = "".join(href.split("http://www.github.com/DHRI-Curriculum/")[1:])
                     if OUTBOUND_CLEAR.strip() == '': OUTBOUND_CLEAR = href
-                    if 'raw=True' in OUTBOUND_CLEAR:
+                    if 'raw=true' in OUTBOUND_CLEAR.lower() or 'raw.githubusercontent.com' in href.lower():
                         c = WebCache(href)
                         link['target'] = '_blank'
-                    elif 'raw=True' not in OUTBOUND_CLEAR and OUTBOUND_CLEAR.startswith(REPO_CLEAR):
+                    elif 'raw=true' not in OUTBOUND_CLEAR.lower() and OUTBOUND_CLEAR.lower().startswith(REPO_CLEAR.lower()):
                         log.warning(f"The lesson `{title}` links to same workshop: {href}")
                     else:
                         workshop = OUTBOUND_CLEAR.split('/')[0]
@@ -748,9 +748,9 @@ class LessonParser():
                     # external link found
                     c = WebCache(href)
                     link['target'] = '_blank'
-                elif href.startswith('#'):
+                elif 'lessons.md#' in href.lower() or href.startswith('#'):
                     # relative link found
-                    log.log(f"The lesson `{title}` contains a relative href ({href}) which may or may not work in production.", color="yellow")
+                    log.warning(f"The lesson `{title}` contains a relative href ({href}) which may or may not work in production. Change links in the repository's `lessons.md` file on GitHub to include absolute links.")
                 else:
                     g = re.search(r'(\d+).*(md)', href)
                     if g:
@@ -786,13 +786,10 @@ class LessonParser():
 
             # 5. Replace body with string_soup, after cleaning it up
             html_body = string_soup
-                # .replace('<html><body>', '').replace('</body></html>', '').replace('\n<br />\n', '').replace('\n<br />\n', '').replace('<br />', '</p><p>').replace('<br/>', '</p><p>').replace('<br>', '</p><p>')
 
-            # 6. Clean up any challenge and solution data
+            # 6. Clean up any challenge and solution data (insert any such edits here)
             html_challenge = html_challenge
-                #.replace('\n<br />\n', '').replace('\n<br />\n', '').replace('<br />', '</p><p>').replace('<br/>', '</p><p>').replace('<br>', '</p><p>')
             html_solution = html_solution
-                #.replace('\n<br />\n', '').replace('\n<br />\n', '').replace('<br />', '</p><p>').replace('<br/>', '</p><p>').replace('<br>', '</p><p>')
 
             html_data = {
                     'title': title,

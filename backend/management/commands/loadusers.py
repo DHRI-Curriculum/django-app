@@ -20,8 +20,8 @@ def create_users(AUTO_USERS=AUTO_USERS):
 
             # TODO: Remove `force=True` (sane checks)
             if User.objects.filter(username=username).count():
-                log.log(f"Deleting existing user `{username}`...", force=True)
                 User.objects.filter(username=username).delete()
+                log.log(f"Deleted existing user `{username}`...", force=True)
 
             if is_super:
                 user = User.objects.create_superuser(
@@ -31,7 +31,7 @@ def create_users(AUTO_USERS=AUTO_USERS):
                     last_name = u.get('last_name'),
                     email = u.get('email')
                 )
-                log.log(f'Superuser `{user}` added.', force=True)
+                log.log(f'Added superuser `{user}`.', force=True)
             else:
                 user = User.objects.create_user(
                     password = u.get('password'),
@@ -43,9 +43,9 @@ def create_users(AUTO_USERS=AUTO_USERS):
                 if is_staff:
                     user.is_staff=True
                     user.save()
-                    log.log(f'Staff user `{user}` added.', force=True)
+                    log.log(f'Added staff user `{user}`.', force=True)
                 else:
-                    log.log(f'User `{user}` added.', force=True)
+                    log.log(f'Added user `{user}`.', force=True)
 
             # Profile
             if u.get('bio') or u.get('img'):
@@ -58,19 +58,18 @@ def create_users(AUTO_USERS=AUTO_USERS):
                             user.profile.image = File(f, name=os.path.basename(f.name))
                             user.profile.save()
                     except FileNotFoundError:
-                        print(f'Could not find image for user with username `{u.get("username")}`: Make sure the file exists: `{u.get("img")}` in the root directory of the app.')
-                        exit()
+                        log.error(f'Could not find image for user with username `{u.get("username")}`: Make sure the file exists: `{u.get("img")}` in the root directory of the app.')
                 user.profile.save()
-                log.log(f'`{user.profile}` saved with bio information and photo.', force=True)
+                log.log(f'Saved `{user.profile}` with bio information and photo.', force=True)
 
             # Groups
             for group in u.get('groups', []):
                 try:
                     if Group.objects.get(name=group):
                         Group.objects.get(name=group).user_set.add(user)
-                        log.log(f'{user} --> added to `{group}`.')
+                        log.log(f'Added user `{user}` to group `{group}`.')
                 except:
-                    log.error(f'Error: Could not add {user} to group {group}.')
+                    log.error(f'Error: Could not add {user} to group {group}.', kill=False)
                     log.error(f'If you are certain that the group should exist, try running `manage.py create_groups` first.')
 
             # Links

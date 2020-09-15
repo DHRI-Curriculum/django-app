@@ -1,14 +1,10 @@
 """manage.py setup command"""
 
 from django.core.management import BaseCommand
-
-
 from .imports import *
-
 
 # Set up logger
 LOG = Logger(name='setup')
-
 
 class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
@@ -235,7 +231,7 @@ class Command(BaseCommand):
                                 last_name = contributor.get('last_name'),
                                 url = contributor.get('url'),
                             )
-                            LOG.created(created, 'Contributor', c.full_name, c.id)
+                            LOG.created(created, 'Contributor', c.full_name, c.id, warning_color='green')
 
                             if user:
                                 c.profile = user.profile
@@ -260,8 +256,9 @@ class Command(BaseCommand):
                                 role = role,
                                 current = is_current
                             )
-
                             frontmatter.contributors.add(c)
+
+                            LOG.created(created, 'Collaboration', f'between {obj.contributor.full_name} and {obj.frontmatter.workshop}', obj.id, warning_color='green')
 
                     else:
                         LOG.error(f'Have no way of processing {model} for app `frontmatter`. The `setup` script must be adjusted accordingly.', kill=False)
