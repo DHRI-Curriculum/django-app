@@ -756,7 +756,7 @@ class LessonParser():
                                     s = s.last()
                                     url = reverse('insight:insight', args=[s.slug])
                                     link['href'] = url
-                                    log.log(f'Found a link to an insight that corresponded to an existing insight on the site. Adding...', force=True) # TODO: sanity check, remove when done
+                                    log.log(f'Found a link to an insight that corresponded to an existing insight on the site. Adding...')
                                 else:
                                     link['href'] = '/insight/'
                                     log.warning(f"Could not interpret result when searching for an insight on the site ({slug}). Result generated was: {s}. Will add link to general insights instead. You may want to add this term to the /insight/ repo on GitHub.")
