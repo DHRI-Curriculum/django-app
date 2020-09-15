@@ -49,7 +49,7 @@
           <div class="card h-100">
 
             {% if workshop.image %}
-              <a href="{% url 'workshop:frontmatter' slug=workshop.slug %}"><img src="{{ workshop.image }}" class="card-img-top" alt="{{ workshop.name }}"></a>
+              <a href="{% url 'workshop:frontmatter' slug=workshop.slug %}"><img src="/{{ workshop.image }}" class="card-img-top" alt="{{ workshop.name }}"></a>
             {% endif %}
             <div class="card-body">
               {% if not workshop.image %}

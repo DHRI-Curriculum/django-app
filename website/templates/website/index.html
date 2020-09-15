@@ -16,11 +16,10 @@
         <div class="col-xl-6 px-3 py-3">
           <div class="card h-100">
 
-            <div class="card-header">
-              <h5 class="card-title m-0 bolder">{{ workshop.name }}</h5>
-            </div>
-
             <div class="card-body">
+              {% if not workshop.image %}
+                <h5 class="card-title m-0 bolder">{{ workshop.name }}</h5>
+              {% endif %}
               {% if workshop.frontmatter.abstract %}<p class="card-text m-0">{{ workshop.frontmatter.abstract | markdown | safe }}</p>{% endif %}
 
               {% if workshop.has_terms %}
