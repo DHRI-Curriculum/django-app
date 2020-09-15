@@ -16,6 +16,9 @@
         <div class="col-xl-6 px-3 py-3">
           <div class="card h-100">
 
+            {% if workshop.image %}
+              <a href="{% url 'workshop:frontmatter' slug=workshop.slug %}"><img src="/{{ workshop.image }}" class="card-img-top" alt="{{ workshop.name }}"></a>
+            {% endif %}
             <div class="card-body">
               {% if not workshop.image %}
                 <h5 class="card-title m-0 bolder">{{ workshop.name }}</h5>
