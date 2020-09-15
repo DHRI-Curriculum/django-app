@@ -42,6 +42,9 @@ class Command(BaseCommand):
             LOG.log("Automatic import activated: Generating installations", force=True)
             create_installations()
 
+            LOG.log("Automatic import activated: Generating insights", force=True)
+            create_insights()
+
         repos = _get_repos(options)
 
         if repos:
@@ -298,9 +301,6 @@ class Command(BaseCommand):
 
             LOG.log("Automatic import activated: Generating blurbs", force=True)
             create_blurbs()
-
-            LOG.log("Automatic import activated: Generating insights", force=True)
-            create_insights()
 
 
 def _test_for_branch(d=''):
