@@ -27,19 +27,19 @@ class Command(BaseCommand):
         if options.get('all', False) or options.get('structure', False):
             LOG.name = 'setup'
 
-            LOG.log("Automatic import activated: Attempting to generate pages", force=True)
+            LOG.log("Automatic import activated: Generating pages", force=True)
             create_pages()
 
-            LOG.log("Automatic import activated: Attempting to generate groups", force=True)
+            LOG.log("Automatic import activated: Generating groups", force=True)
             create_groups()
 
-            LOG.log("Automatic import activated: Attempting to generate users", force=True)
+            LOG.log("Automatic import activated: Generating users", force=True)
             create_users()
 
-            LOG.log("Automatic import activated: Attempting to generate glossary", force=True)
+            LOG.log("Automatic import activated: Generating glossary", force=True)
             create_terms()
 
-            LOG.log("Automatic import activated: Attempting to generate installations", force=True)
+            LOG.log("Automatic import activated: Generating installations", force=True)
             create_installations()
 
         repos = _get_repos(options)
@@ -296,10 +296,10 @@ class Command(BaseCommand):
         if options.get('all', False) or repos or options.get('structure', False):
             LOG.name = 'setup'
 
-            LOG.log("Automatic import activated: Attempting to generate blurbs", force=True)
+            LOG.log("Automatic import activated: Generating blurbs", force=True)
             create_blurbs()
 
-            LOG.log("Automatic import activated: Attempting to generate insights", force=True)
+            LOG.log("Automatic import activated: Generating insights", force=True)
             create_insights()
 
 
