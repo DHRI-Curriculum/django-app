@@ -17,23 +17,25 @@
         <h4>Questions</h4>
         {% for eval in lesson.evaluations.all %}
             {% for question in eval.questions.all %}
-                <div class="bg-super-light rounded-lg p-4">
-                    <p class="mt-2"><strong>{{ question.label | safe }}</strong>{% if question.has_answers %}{% if question.has_multiple_answers %} (Select all that apply){% elif question.has_single_answer %} (Select one of the following){% endif %}{% endif %}</p>
-                    {% if question.has_answers %}
-                        <form class="mt-0">
-                            {% for answer in question.answers.all %}
-                                <div class="form-check">
-                                    <input class="form-check-input" {% if question.has_multiple_answers %}type="checkbox" value="" id="flexCheck{{ answer.id }}"{% elif question.has_single_answer %}type="radio" name="flexRadio{{ question.id }}" id="flexRadio{{ answer.id }}"{% endif %}>
-                                    <label class="form-check-label" for="{% if question.has_multiple_answers %}flexCheck{{ answer.id }}{% elif question.has_single_answer %}flexRadio{{ answer.id }}{% endif %}">
-                                        {{ answer.label | safe }}
-                                    </label>
-                                </div>
-                            {% endfor %}
-                            <div class="mt-2"><button type="submit" class="btn btn-primary">Check my answer</button></div>
-                        </form>
-                    {% else %}
-                        <em>This question has no answer. It is a reflective question.</em>
-                    {% endif %}
+                <div class="bg-super-light rounded-lg mt-2">
+                    <div class="p-4">
+                        <p class="mt-2"><strong>{{ question.label | safe }}</strong>{% if question.has_answers %}{% if question.has_multiple_answers %} (Select all that apply){% elif question.has_single_answer %} (Select one of the following){% endif %}{% endif %}</p>
+                        {% if question.has_answers %}
+                            <form class="mt-0 submit-answer" data-question_id="{{ question.id }}">
+                                {% for answer in question.answers.all %}
+                                    <div class="form-check">
+                                        <input class="form-check-input" {% if question.has_multiple_answers %}type="checkbox" value="" id="answer{{ answer.id }}" data-answer_id="{{ answer.id }}"{% elif question.has_single_answer %}type="radio" data-answer_id="{{ answer.id }}" name="question{{ question.id }}" id="answer{{ answer.id }}"{% endif %}>
+                                        <label class="form-check-label" for="{% if question.has_multiple_answers %}answer{{ answer.id }}{% elif question.has_single_answer %}answer{{ answer.id }}{% endif %}">
+                                            {{ answer.label | safe }}
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                                <div class="mt-2"><button class="btn btn-primary">Check my answer</button></div>
+                            </form>
+                        {% else %}
+                            <em>This question has no answer. It is a reflective question.</em>
+                        {% endif %}
+                    </div>
                 </div>
             {% endfor %}
         {% endfor %}
