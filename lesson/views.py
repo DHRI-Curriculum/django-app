@@ -8,7 +8,6 @@ from .models import Answer
 class CheckAnswer(View):
 
     def post(self, request, *args, **kwargs):
-        print(request.headers)
         question_id = request.headers.get('Question')
         answers = request.headers.get('Answers')
         try:
@@ -20,7 +19,6 @@ class CheckAnswer(View):
 
         for answer_id, response in answers.items():
             a = Answer.objects.get(pk=answer_id)
-            print(a, answer_id, response, a.is_correct)
             correct[answer_id] = response == a.is_correct
 
         return JsonResponse({
