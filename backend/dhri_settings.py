@@ -237,7 +237,8 @@ STATIC_IMAGES = {
     'LESSONS': os.path.join(settings.BASE_DIR, 'website/static/website/images/lessons/'),
     'INSTALL': os.path.join(settings.BASE_DIR, 'media/installation_screenshots/'),
     'INSIGHT': os.path.join(settings.BASE_DIR, 'insight/static/insight/images/'),
-    'WORKSHOP_HEADERS': os.path.join(settings.BASE_DIR, 'website/static/website/images/workshop_headers/')
+    'WORKSHOP_HEADERS': os.path.join(settings.BASE_DIR, 'website/static/website/images/workshop_headers/'),
+    'SOFTWARE_HEADERS': os.path.join(settings.BASE_DIR, 'website/static/website/images/software_headers/')
 }
 
 AUTO_PAGES = [

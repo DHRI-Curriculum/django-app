@@ -100,6 +100,13 @@ class InstallParser():
         return(order, step)
 
     def __init__(self, data:str):
+        self.image, self.image_html = None, None
+
+        if data.splitlines()[0].startswith('!['):
+            self.image = data.splitlines()[0]
+            self.image_html = PARSER.convert(self.image)
+            data = '\n'.join(data.splitlines()[1:])
+
         self.software = list(split_into_sections(data, level_granularity=1).keys())[0]
         self.software, self.what, self.why, self.windows, self.mac_os = None, None, None, None, None
         self._instructions, self.instructions, self.additional_sections = dict(), {'mac os': '', 'windows': ''}, OrderedDict()
@@ -124,6 +131,28 @@ class InstallParser():
                 self.instructions['windows'] = text
                 continue
             self.additional_sections[section] = text
+
+        # Get the image
+        if self.image_html:
+            soup = BeautifulSoup(self.image_html, 'lxml')
+            for image in soup.find_all("img")[:1]: # we stick with the first image here.
+                src = image.get('src')
+                if not src:
+                    self.log.warning(f"A header image with no src attribute detected in installation instructions: {image}")
+                    continue
+                filename = image['src'].split('/')[-1]
+                url = src
+                filename = filename.replace('%40', '@')
+                local_file = STATIC_IMAGES['SOFTWARE_HEADERS'] / filename
+
+                if '//' in url:
+                    url = url.replace('//', '/').replace('https:/', 'https://').replace('http:/', 'http://')
+
+                download_image(url, local_file)
+                local_url = f'/static/website/images/software_headers/{filename}'
+                image['src'] = local_url
+
+            self.image_url = local_url[1:]
 
         # Correct the instruction lists into sections
         operating_systems = ['mac os', 'windows']
