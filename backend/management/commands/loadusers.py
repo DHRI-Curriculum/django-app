@@ -14,11 +14,9 @@ def create_users(AUTO_USERS=AUTO_USERS):
         for u in AUTO_USERS[cat]:
             is_staff = cat == 'STAFF'
             is_super = cat == 'SUPER'
-            # is_user = cat == 'USER' # not currently in use
 
             username = u.get('username')
 
-            # TODO: Remove `force=True` (sane checks)
             if User.objects.filter(username=username).count():
                 User.objects.filter(username=username).delete()
                 log.log(f"Deleted existing user `{username}`...")
