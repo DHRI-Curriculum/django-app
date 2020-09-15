@@ -15,6 +15,10 @@ def wipe():
         model.objects.all().delete()
         log.log(f'All {model._meta.verbose_name_plural} removed.', force=True) #  The script will proceed in VERBOSE mode automatically?
 
+    # Then do deep wipes:
+    wipe_terms()
+    wipe_insights()
+
 
 class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
@@ -24,5 +28,3 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         wipe()
-        wipe_terms()
-        wipe_insights()

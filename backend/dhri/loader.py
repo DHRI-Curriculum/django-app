@@ -740,7 +740,7 @@ class LessonParser():
                                     log.log(f'Found a link to the glossary that corresponded to a term existing on the site. Adding...')
                                 else:
                                     link['href'] = '/terms/'
-                                    log.warning(f"Found a link to a term that cannot be found in the site's glossary ({slug}). Will add link to general glossary instead. You may want to add this term to the /glossary/ repo on GitHub.")
+                                    log.warning(f"Could not interpret result when searching for a term in the site's glossary ({slug}). Result generated was: {s}. Will add link to general glossary instead. You may want to add this term to the /glossary/ repo on GitHub.")
                             else:
                                 log.warning(f"Found a link to a term that cannot be found in the site's glossary ({slug}). Will add link to general glossary instead. You may want to add this term to the /glossary/ repo on GitHub.")
                                 link['href'] = '/terms/'
@@ -830,12 +830,9 @@ class GlossaryCache():
             log.warning(f'{self.path} does not exist so downloading glossary cache...')
             self._setup_raw_content()
 
-        if force_download == True:
-            log.warning(f'Force download is set to True so downloading glossary cache...')
-            self._setup_raw_content()
-
-        if self.expired == True:
-            log.warning(f'File is expired (set to {self.expired}) so downloading glossary cache...')
+        if force_download == True or self.expired == True:
+            if force_download == True:
+                log.warning(f'Force download is set to True or cache file has expired so downloading glossary cache...')
             self._setup_raw_content()
 
         self.data = self.load()
