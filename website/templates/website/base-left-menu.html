@@ -29,7 +29,7 @@
           <div id="left-menu-wrapper">{% block leftmenu %}{% endblock %}</div>
         </div>
         <div class="col-12 col-md-9" id="left-menu-main">
-          <p class="small text-muted"><a href="#" id="toggle_menu">&laquo; Hide selection menu</a></p>
+          <!--<p class="small text-muted"><a href="#" id="toggle_menu">&laquo; Hide selection menu</a></p>-->
           {% if request.user.is_staff %}
               <div id="admin" class="zen-hideaway border shadow-sm p-2 d-none d-sm-block">
                   <strong class="text-muted ml-2 mr-4 small">Admin tools</strong>{% block admin_edit %}{% endblock %}{% include 'website/admin-viewports.html' %}
