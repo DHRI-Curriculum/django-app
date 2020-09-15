@@ -729,8 +729,24 @@ class LessonParser():
 
                         elif workshop == 'insights':
                             slug = OUTBOUND_CLEAR.split('/')[-1].split('.md')[0]
-                            print('TODO: link insight here...')
-
+                            s = search_insight(slug)
+                            if s:
+                                if s.count() > 1:
+                                    s = s.last()
+                                    url = reverse('insight:insight', args=[s.slug])
+                                    link['href'] = url
+                                    log.warning(f"Found a link to an insight that corresponded to more than one insight on the site ({slug}). Linking to the most recent ({url})...")
+                                elif s.count() == 1:
+                                    s = s.last()
+                                    url = reverse('insight:insight', args=[s.slug])
+                                    link['href'] = url
+                                    log.log(f'Found a link to an insight that corresponded to an existing insight on the site. Adding...')
+                                else:
+                                    link['href'] = '/insight/'
+                                    log.warning(f"Could not interpret result when searching for an insight on the site ({slug}). Result generated was: {s}. Will add link to general insights instead. You may want to add this term to the /insight/ repo on GitHub.")
+                            else:
+                                link['href'] = '/insight/'
+                                log.warning(f"Could not find an insight on the site ({slug}). Result generated was: {s}. Will add link to general insights instead. You may want to add this term to the /insight/ repo on GitHub.")
 
                         elif workshop == 'glossary':
                             slug = OUTBOUND_CLEAR.split('/')[-1].split('.md')[0]
