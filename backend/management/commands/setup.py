@@ -172,7 +172,7 @@ class Command(BaseCommand):
                                 if obj.count() == 1:
                                     obj = obj.last()
                                     lesson.terms.add(obj)
-                                    LOG.log(f'Term {obj.term} has been added to lesson {lesson.order} for workshop {lesson.workshop.name}.', force=True) # TODO: remove `force=True`
+                                    LOG.log(f'Term {obj.term} has been added to lesson {lesson.order} for workshop {lesson.workshop.name}.')
 
                     del order
 
