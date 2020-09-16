@@ -184,6 +184,10 @@ TEST_AGES = {
 # If set to True, the script will override the cache every time (effectively disregarding TEST_AGES above)
 FORCE_DOWNLOAD = False
 
+IMAGE_CACHE = {
+    'INSTALL': '.loader-cache/images/install'
+}
+
 
 ##### Dev features ##############################
 
@@ -355,3 +359,7 @@ for cat in AUTO_USERS:
             if not u.get(section):
                 print(f'User setup file does not contain section `{section}` (in user with username `{u.get("username")}`). Make sure all the users in the `{USER_SETUP}` file contains all the required sections: `{"`, `".join(REQUIRED_IN_USERS)}`.') # TODO: Figure out import of log and change `print` to `log.error` here
                 exit()
+
+for _, dir in IMAGE_CACHE.items():
+    IMAGE_CACHE[_] = Path(dir)
+    if not IMAGE_CACHE[_].exists(): IMAGE_CACHE[_].mkdir(parents=True)

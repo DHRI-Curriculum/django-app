@@ -11,15 +11,7 @@ from .loader import _is_expired, download_image
 from .markdown import split_into_sections
 from .markdown_parser import PARSER
 
-from backend.dhri_settings import FORCE_DOWNLOAD, TEST_AGES, CACHE_DIRS, STATIC_IMAGES, INSTALL_REPO
-
-# TODO: Move to backend.dhri_settings
-IMAGE_CACHE = {
-    'INSTALL': '.loader-cache/images/install'
-}
-for _, dir in IMAGE_CACHE.items():
-    IMAGE_CACHE[_] = Path(dir)
-    if not IMAGE_CACHE[_].exists(): IMAGE_CACHE[_].mkdir(parents=True)
+from backend.dhri_settings import FORCE_DOWNLOAD, TEST_AGES, CACHE_DIRS, STATIC_IMAGES, INSTALL_REPO, IMAGE_CACHE
 
 
 class InstallCache():
