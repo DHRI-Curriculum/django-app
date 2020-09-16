@@ -53,7 +53,6 @@ class Command(BaseCommand):
 
                 if not repo:
                     repo = d
-                #LOG.error(f"Cannot understand repo {repo}.")
 
                 LOG.log(f"Starting import: {repo} ({branch})", force=True)
 
@@ -276,6 +275,7 @@ class Command(BaseCommand):
                     if model == Praxis:
                         praxis, created = model.objects.get_or_create(
                             workshop = workshop,
+                            intro = l.praxis_intro,
                             defaults = {
                                 'discussion_questions': l.discussion_questions,
                                 'next_steps': l.next_steps
@@ -296,6 +296,13 @@ class Command(BaseCommand):
                             obj, created = model.objects.get_or_create(annotation = annotation, title = title, url = url)
                             LOG.created(created, 'Reading', obj.title, obj.id)
                             praxis.further_readings.add(obj)
+
+                    elif model == Project:
+                        for annotation in l.further_projects:
+                            title, url = process_links(annotation, 'project')
+                            obj, created = model.objects.get_or_create(annotation = annotation, title = title, url = url)
+                            LOG.created(created, 'Project', obj.title, obj.id)
+                            praxis.further_projects.add(obj)
 
                     else:
                         LOG.error(f'Have no way of processing {model} for app `praxis`. The `setup` script must be adjusted accordingly.', kill=False)

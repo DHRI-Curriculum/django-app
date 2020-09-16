@@ -128,6 +128,7 @@ class EthicalConsideration(models.Model):
 
 
 class Praxis(models.Model):
+    intro = models.TextField(max_length=3000, blank=True, null=True)
     discussion_questions = models.TextField(max_length=3000, blank=True, null=True)
     next_steps = models.TextField(max_length=3000, blank=True, null=True)
     further_readings = models.ManyToManyField(Reading, related_name='praxis')
