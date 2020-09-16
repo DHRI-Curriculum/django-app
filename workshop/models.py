@@ -128,10 +128,11 @@ class EthicalConsideration(models.Model):
 
 
 class Praxis(models.Model):
-    discussion_questions = models.TextField(max_length=3000, blank=True, null=True)
-    next_steps = models.TextField(max_length=3000, blank=True, null=True)
+    intro = models.TextField(max_length=3000, blank=True, null=True)
+    # discussion_questions = models.TextField(max_length=3000, blank=True, null=True)
+    # next_steps = models.TextField(max_length=3000, blank=True, null=True)
     further_readings = models.ManyToManyField(Reading, related_name='praxis')
-    more_projects = models.ManyToManyField(Project, related_name='praxis')
+    further_projects = models.ManyToManyField(Project, related_name='praxis')
     more_resources = models.ManyToManyField(Resource, related_name='praxis')
     tutorials = models.ManyToManyField(Tutorial, related_name='praxis')
     workshop = models.OneToOneField(Workshop, on_delete=models.CASCADE)
@@ -142,6 +143,7 @@ class Praxis(models.Model):
     class Meta:
       verbose_name_plural = "praxes"
 
+
 class Blurb(models.Model):
     workshop = models.ForeignKey(Workshop, on_delete=models.CASCADE)
     text = models.TextField()
@@ -149,3 +151,21 @@ class Blurb(models.Model):
 
     def __str__(self):
       return(f'Blurb for workshop {self.workshop.name} by {self.user}')
+
+
+class NextStep(models.Model):
+    praxis = models.ForeignKey(Praxis, on_delete=models.CASCADE, related_name='next_steps')
+    label = models.TextField(max_length=500)
+    order = models.PositiveSmallIntegerField()
+
+    class Meta:
+      ordering = ('order',)
+
+
+class DiscussionQuestion(models.Model):
+    praxis = models.ForeignKey(Praxis, on_delete=models.CASCADE, related_name='discussion_questions')
+    label = models.TextField(max_length=500)
+    order = models.PositiveSmallIntegerField()
+
+    class Meta:
+      ordering = ('order',)

@@ -211,6 +211,7 @@ NORMALIZING_SECTIONS = {
         'resources': ['Resources (optional)', 'Resource (optional)', 'Resources optional', 'Resource optional'],
     },
     'theory-to-practice': {
+        'intro': ['Theory to Practice'],
         'discussion_questions': ['Discussion Questions'],
         'tutorials': ['Other Tutorials'],
         'further_projects': ['Projects or Challenges to Try'],

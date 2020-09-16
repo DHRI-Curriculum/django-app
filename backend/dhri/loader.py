@@ -42,10 +42,12 @@ SECTIONS = {
         'projects': (Project, False),
     },
     'praxis': {
-        'discussion_questions': (Praxis, False),
-        'next_steps': (Praxis, False),
+        'intro': (Praxis, False),
+        'discussion_questions': (DiscussionQuestion, False),
+        'next_steps': (NextStep, False),
         'tutorials': (Tutorial, False),
         'further_readings': (Reading, False),
+        'further_projects': (Project, False),
     },
     'assessment': {
         # FIXME #3: add here
@@ -316,6 +318,7 @@ class Loader():
         self.praxis['next_steps'] = [str(_) for _ in as_list(self.praxis.get('next_steps'))]
         self.praxis['tutorials'] = [str(_) for _ in as_list(self.praxis.get('tutorials'))]
         self.praxis['further_readings'] = [str(_) for _ in as_list(self.praxis.get('further_readings'))]
+        self.praxis['further_projects'] = [str(_) for _ in as_list(self.praxis.get('further_projects'))]
 
         self.as_html = HTMLParser(self)
 
@@ -370,10 +373,12 @@ class Loader():
         self.ethical_considerations = self.frontmatter.get('ethical_considerations')
 
         # Mapping praxis sections
+        self.praxis_intro = self.praxis.get('intro')
         self.discussion_questions = self.praxis.get('discussion_questions')
         self.next_steps = self.praxis.get('next_steps')
         self.tutorials = self.praxis.get('tutorials')
         self.further_readings = self.praxis.get('further_readings')
+        self.further_projects = self.praxis.get('further_projects')
 
 
 class ContributorParser():
