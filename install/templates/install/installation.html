@@ -1,8 +1,8 @@
-{% extends 'website/base-left-menu.html' %}
+{% extends 'website/base-secondary-menu.html' %}
 {% load markdownify admin_urls lessontags static crispy_forms_tags %}
 
-{% block leftmenu %}
-    {% include 'install/left-menu/content.html' %}
+{% block secondary_menu %}
+    {% include 'install/navbar-install.html' %}
 {% endblock %}
 
 {% block admin_edit %}
@@ -44,12 +44,12 @@
         <div class="col-12">
             <h3 class="mb-3">Step {{ step.order }}{% if step.header %}: {{ step.header | markdown | striptags | safe }}{% endif %}</h3>
         </div>
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-lg-4">
             <div class="lead">{{ step.text | safe }}</div>
         </div>
-        <div class="col-12 col-md-8">
+        <div class="col-12 col-lg-8">
             {% for screenshot in step.screenshots.all %}
-                <a data-toggle="modal" data-target="#modal_{{ forloop.parentloop.counter }}"><img src="{{ screenshot.image.url }}" class="shadow shadow-sm border img-fluid mb-2" alt="{% if screenshot.alt_text == 'No alt text' %}{{ screenshot }}{% else %}{{ screenshot.alt_text }}{% endif %}"></a>
+                <a style="cursor: pointer;" data-toggle="modal" data-target="#modal_{{ forloop.parentloop.counter }}"><img src="{{ screenshot.image.url }}" class="shadow shadow-sm border img-fluid mb-2" alt="{% if screenshot.alt_text == 'No alt text' %}{{ screenshot }}{% else %}{{ screenshot.alt_text }}{% endif %}"></a>
                 <div class="modal fade" id="modal_{{ forloop.parentloop.counter }}" tabindex="-1" aria-labelledby="modal_{{ forloop.parentloop.counter }}_label" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered modal-xl">
                         <div class="modal-content">

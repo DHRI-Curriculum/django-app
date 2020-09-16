@@ -6,7 +6,9 @@ from django.urls import reverse
 
 
 def get_installation_menu_items():
-    all_instructions = Instruction.objects.all()
+    all_instructions = Instruction.objects.all().order_by(
+        'software__software', 'software__operating_system'
+    )
     per_software, per_os = dict(), dict()
     for x in all_instructions:
         if not x.software.software in per_software: per_software[x.software.software] = list()
