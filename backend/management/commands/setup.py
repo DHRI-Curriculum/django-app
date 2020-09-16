@@ -229,7 +229,7 @@ class Command(BaseCommand):
                             if user.count() >= 1:
                                 user = user.last()
                             else:
-                                LOG.warning(f'Unable to find existing user for contributor {contributor.get("first_name", "")} {contributor.get("last_name", "")}')
+                                LOG.warning(f'No user exists with name `{contributor.get("first_name", "")} {contributor.get("last_name", "")}`.')
 
                             # Create/get Contributor
                             c, created = model.objects.get_or_create(
@@ -277,8 +277,8 @@ class Command(BaseCommand):
                             workshop = workshop,
                             intro = l.praxis_intro,
                             defaults = {
-                                'discussion_questions': l.discussion_questions,
-                                'next_steps': l.next_steps
+                                #'discussion_questions': l.discussion_questions,
+                                #'next_steps': l.next_steps
                             }
                         )
                         LOG.created(created, 'Theory-to-practice for', praxis.workshop, praxis.id)
@@ -303,6 +303,20 @@ class Command(BaseCommand):
                             obj, created = model.objects.get_or_create(annotation = annotation, title = title, url = url)
                             LOG.created(created, 'Project', obj.title, obj.id)
                             praxis.further_projects.add(obj)
+
+                    elif model == DiscussionQuestion:
+                        order = 1
+                        for label in l.discussion_questions:
+                            obj, created = model.objects.get_or_create(praxis=praxis, label=label, order=order)
+                            LOG.created(created, 'Discussion Question', obj.label, obj.id)
+                            order += 1
+
+                    elif model == NextStep:
+                        order = 1
+                        for label in l.next_steps:
+                            obj, created = model.objects.get_or_create(praxis=praxis, label=label, order=order)
+                            LOG.created(created, 'Next Step', obj.label, obj.id)
+                            order += 1
 
                     else:
                         LOG.error(f'Have no way of processing {model} for app `praxis`. The `setup` script must be adjusted accordingly.', kill=False)

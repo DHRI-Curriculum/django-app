@@ -10,7 +10,7 @@
   <div id="hero">
     {% include 'workshop/praxis-elements/hero.html' %}
     <div class="lead mt-4">
-      [text will be here]
+      {{ praxis.intro | markdown | safe }}
     </div>
   </div><!-- /hero -->
 </div>
@@ -48,24 +48,28 @@
 
 <div class="row pt-5">
 
-  {% if praxis.next_steps %}
-  <div class="col-12 mt-5">
-    <h3>Next Steps</h3>
-    <hr />
-    <div class="lead mt-4">
-      {{ praxis.next_steps | markdown | safe }}
+  {% if praxis.next_steps.count %}
+    <div class="col-12 mt-5">
+      <h3>Next Steps</h3>
+      <hr />
+      {% for x in praxis.next_steps.all %}
+        <div class="lead mt-4">
+          {{ x.label | markdown | safe }}
+        </div>
+      {% endfor %}
     </div>
-  </div>
   {% endif %}
 
-  {% if praxis.discussion_questions %}
-  <div class="col-12 mt-5">
-    <h3>Discussion Questions</h3>
-    <hr />
-    <div class="lead mt-4">
-      {{ praxis.discussion_questions | markdown | safe }}
+  {% if praxis.discussion_questions.count %}
+    <div class="col-12 mt-5">
+      <h3>Discussion Questions</h3>
+      <hr />
+      {% for x in praxis.discussion_questions.all %}
+        <div class="lead mt-4">
+          {{ x.label | markdown | safe }}
+        </div>
+      {% endfor %}
     </div>
-  </div>
   {% endif %}
 
   {% if praxis.tutorials.count %}

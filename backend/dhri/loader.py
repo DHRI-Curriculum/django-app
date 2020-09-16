@@ -43,8 +43,8 @@ SECTIONS = {
     },
     'praxis': {
         'intro': (Praxis, False),
-        'discussion_questions': (Praxis, False),
-        'next_steps': (Praxis, False),
+        'discussion_questions': (DiscussionQuestion, False),
+        'next_steps': (NextStep, False),
         'tutorials': (Tutorial, False),
         'further_readings': (Reading, False),
         'further_projects': (Project, False),
