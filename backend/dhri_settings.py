@@ -281,12 +281,6 @@ for path in DJANGO_PATHS:
 for cat in STATIC_IMAGES:
     STATIC_IMAGES[cat] = Path(STATIC_IMAGES[cat])
 
-'''
-def _test(constant=None, as_type=bool):
-    if not isinstance(constant, as_type): log.error(f'{constant}` provided must be a {as_type}.', raise_error=ConstantError)
-    return(True)
-'''
-
 def _check_normalizer(dictionary=NORMALIZING_SECTIONS):
     for section in NORMALIZING_SECTIONS:
         all_ = [x.lower() for x in list(chain.from_iterable([x for x in NORMALIZING_SECTIONS[section].values()]))]
