@@ -1,4 +1,4 @@
-{% load static %}
+{% load static startswith %}
 
 <!doctype html>
 <html lang="en">
@@ -7,10 +7,12 @@
     <!-- Extra head material -->
     {% block extra_head_material %}{% endblock %}
   </head>
-  <body>
+  <body {% if version|startswith:"0." %}style="padding-top: 35px !important;"{% endif %}>
+
+    {% if version|startswith:"0." %}{% include "website/warnings/alpha.html" %}{% endif %}
 
     {% include "website/navbar-2.html" %}
-    {% include "website/ie_warning.html" %}
+    {% include "website/warnings/ie.html" %}
     {% include "website/instructor_requests.html" %}
 
     <div id="content" class="container mx-auto py-2">
