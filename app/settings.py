@@ -97,6 +97,9 @@ DATABASES = {
         'OPTIONS': {
             'read_default_file': os.path.join(BASE_DIR, 'sql.cnf'), # '/etc/mysql/my.cnf',
         },
+        'TEST': {
+            'NAME': 'dhinstit_curriculum_test',
+        },
     }
 }
 
