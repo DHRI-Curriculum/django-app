@@ -4,5 +4,5 @@ python:
   - "3.8"
 install:
   - pip install -r requirements.txt
-  - cat 'teststring' > ./django_secret_key.txt
+  - echo 'teststring' > ./django_secret_key.txt
 script: python ./manage.py test || python3 ./manage.py test
