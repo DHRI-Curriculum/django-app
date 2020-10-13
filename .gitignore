@@ -143,3 +143,4 @@ fixtures.json
 secrets.yml
 *.ipynb
 sql.cnf
+test.py
