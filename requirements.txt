@@ -13,3 +13,4 @@ six==1.15.0
 markdown==3.2.2
 PyGithub==1.51
 mysqlclient==2.0.1
+pyyaml==5.3.1
