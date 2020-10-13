@@ -8,5 +8,5 @@ services:
   - mysql
 install:
   - "pip install -r requirements.txt"
-  - "echo 'django-secret: blabla\nemail-password: password\ngithub-token: 321abc\nzotero-key: TODO' > secrets.yml"
+  - "echo 'django-secret: blabla\nemail-password: password\ngithub-token: 321abc\nzotero-key: TODO' > ./secrets.yml"
 script: python ./manage.py test || python3 ./manage.py test
