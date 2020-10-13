@@ -149,10 +149,12 @@ DJANGO_PATHS = {
 
 # API key locations
 
+'''
 KEYS = {
-    'ZOTERO': os.path.join(settings.BASE_DIR, 'zotero-api-key.txt.txt'),
-    'GITHUB': os.path.join(settings.BASE_DIR, 'github_token_key.txt')
+    'ZOTERO': settings.SECRETS.get('zotero-key'),
+    'GITHUB': settings.SECRETS.get('github-token')
 }
+'''
 
 
 # Auto replacement in titles
@@ -319,17 +321,21 @@ if TERMINAL_WIDTH > MAX_TERMINAL_WIDTH: TERMINAL_WIDTH = MAX_TERMINAL_WIDTH
 
 saved_prefix = '----> '
 
+'''
 try:
     with open(KEYS['GITHUB'], 'r') as f:
         GITHUB_TOKEN = f.read()
 except:
     GITHUB_TOKEN = None
+'''
 
+'''
 try:
     with open(KEYS['ZOTERO'], 'r') as f:
         ZOTERO_API_KEY = f.read()
 except:
     ZOTERO_API_KEY = None
+'''
 
 import yaml
 try:
