@@ -8,7 +8,7 @@ from workshop.models import Workshop, Collaboration, Contributor
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic.detail import DetailView
 from django.views.generic import View
-
+from django.template.loader import get_template
 
 
 class Detail(DetailView):
@@ -85,7 +85,7 @@ class Register(View):
             html_message = get_template('learner/new_acc_email.html').render(context)
             to_email = self.form.cleaned_data.get('email')
             email = EmailMultiAlternatives('Activate your account', text_message, 'Digital Humanities Research Institute <info@dhinstitutes.org>', [to_email])
-            msg.attach_alternative(html_content, "text/html")
+            email.attach_alternative(html_message, "text/html")
             email.send()
 
             return redirect('login')
