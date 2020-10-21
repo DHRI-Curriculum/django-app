@@ -163,12 +163,9 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4' # TODO: Should be bootstrap5 once there is s
 LOGIN_REDIRECT_URL = 'website:index'
 LOGIN_URL = 'login'
 
-#import socket
-EMAIL_USE_TLS = True
-# EMAIL_USE_SSL = False
-EMAIL_HOST = 'smtp.gmail.com'
-#EMAIL_HOST = socket.gethostbyname('mail.dhinstitutes.org')
-EMAIL_HOST_USER = 'dhresearchinstitute@gmail.com'
-# EMAIL_HOST_PASSWORD = Path(f'{os.path.join(BASE_DIR, "email_password.txt")}').read_text()
+EMAIL_PORT = 465
+EMAIL_HOST = 'dhinstitutes.org'
+EMAIL_HOST_USER = 'curriculum@dhinstitutes.org'
 EMAIL_HOST_PASSWORD = SECRETS.get('email-password')
-EMAIL_PORT = 587
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
