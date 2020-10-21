@@ -1,0 +1,6 @@
+{% autoescape off %}
+Welcome!
+Hi {% if user.first_name and user.last_name %}{{ user.first_name }} {{ user.last_name }}{% elif user.first_name %}{{ user.first_name }}{% else %}{{ user.username }}{% endif %},
+Please click on this link to confirm your registration:
+http://{{ domain }}{% url 'learner:activate' uidb64=uid token=token %}
+{% endautoescape %}

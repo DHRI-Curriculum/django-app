@@ -55,7 +55,7 @@ from .forms import LearnerRegisterForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode
 from django.template.loader import render_to_string
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMultiAlternatives
 from django.utils.encoding import force_bytes
 
 class Register(View):
@@ -75,14 +75,17 @@ class Register(View):
             username = self.form.cleaned_data.get('username')
             messages.info(request, f'Account created for {username}. You have to click the confirmation link in the email in order to activate your account.')
 
-            message = render_to_string('learner/new_acc_email.html', {
+            context = {
                 'user': user,
                 'domain': get_current_site(request).domain,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user),
-            })
+            }
+            text_message = get_template('learner/new_acc_email.txt').render(context)
+            html_message = get_template('learner/new_acc_email.html').render(context)
             to_email = self.form.cleaned_data.get('email')
-            email = EmailMessage('Activate your account', message, to=[to_email])
+            email = EmailMultiAlternatives('Activate your account', text_message, 'Digital Humanities Research Institute <info@dhinstitutes.org>', [to_email])
+            msg.attach_alternative(html_content, "text/html")
             email.send()
 
             return redirect('login')
