@@ -79,7 +79,7 @@ class Register(View):
                 'user': user,
                 'domain': get_current_site(request).domain,
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                'token':account_activation_token.make_token(user),
+                'token': account_activation_token.make_token(user),
             })
             to_email = self.form.cleaned_data.get('email')
             email = EmailMessage('Activate your account', message, to=[to_email])

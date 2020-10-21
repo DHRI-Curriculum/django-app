@@ -165,7 +165,7 @@ LOGIN_URL = 'login'
 
 EMAIL_PORT = 465
 EMAIL_HOST = 'dhinstitutes.org'
-EMAIL_HOST_USER = 'curriculum@dhinstitutes.org'
+EMAIL_HOST_USER = SECRETS.get('email-account')
 EMAIL_HOST_PASSWORD = SECRETS.get('email-password')
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
