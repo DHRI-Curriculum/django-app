@@ -13,7 +13,8 @@ class LearnerRegisterForm(UserCreationForm):
         fields = ['username', 'email', 'password1', 'password2', 'first_name', 'last_name']
 
     def clean(self):
-       email = self.cleaned_data.get('email')
-       if User.objects.filter(email=email).exists():
+        self.cleaned_data = super().clean()
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
             raise ValidationError("Email address has to be unique (this address already exists).")
-       return self.cleaned_data
+        return self.cleaned_data
