@@ -1,3 +1,7 @@
+**Note that a lot of this has changed in recent updates, and the following information is severely outdated.**
+
+---
+
 # Changing Settings
 
 All the settings for the DHRI script lives inside `/backend/dhri_settings.py`. This is a list of the out-of-the-box settings (as of alpha-3) and an explanatio of what they do.
@@ -239,14 +243,6 @@ AUTO_USERS = {
 }
 ```
 
-### FIXTURE_PATH
-
-~~This is where the final fixtures JSON file will be saved~~ **This setting is not in use as of alpha-3.** #TODO: Ensure
-
-```py
-FIXTURE_PATH = 'app/fixtures.json'
-```
-
 ### BACKEND_AUTO, REPO_AUTO, BRANCH_AUTO
 
 **These settings are not in use as of alpha-3.** #TODO: Ensure
@@ -264,18 +260,6 @@ These two set the automatic and maximum size for terminal output.
 ```py
 MAX_TERMINAL_WIDTH = 140
 AUTO_TERMINAL_WIDTH = 70
-```
-
-### DJANGO_PATHS
-
-**These settings are not in use as of alpha-3.** #TODO: Ensure
-
-```py
-DJANGO_PATHS = {
-      'DJANGO': 'app/',
-      'DB': 'app/db.sqlite3',
-      'MANAGE': 'app/manage.py',
-   }
 ```
 
 ### ZOTERO_API_KEY
