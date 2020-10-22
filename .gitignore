@@ -145,3 +145,4 @@ secrets.yml
 sql.cnf
 test.py
 secrets.py
+_extra
