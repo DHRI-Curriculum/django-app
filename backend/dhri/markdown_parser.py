@@ -61,11 +61,11 @@ class GitHubParserCache():
 
     def _setup_raw_content(self):
         """Queries GitHub for the html text for a given string"""
-        if not settings.SECRETS.get('github-token'):
+        if not settings.GITHUB_TOKEN:
             log.error('GitHub API token is not correctly set up in backend.dhri_settings — correct the error and try again')
 
         string = str(self.string)
-        g = Github(settings.SECRETS.get('github-token'))
+        g = Github(settings.GITHUB_TOKEN)
 
         exceptions = list()
         fatal = False
