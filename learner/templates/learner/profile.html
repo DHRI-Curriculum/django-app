@@ -62,22 +62,22 @@
           <div style="height:50px;line-height:50px">
             {% if user.is_active %}
               <span class="px-2">
-                {% include 'website/snippets/bootstrap-icon.html' with icon="checkbox" %}<span class="pl-small">Active</span>
+                {% include 'website/snippets/bootstrap-icon.html' with icon="check-square" %}<span class="pl-small">Active</span>
               </span>
             {% endif %}
             {% if user.is_staff %}
               <span class="px-2">
-                {% include 'website/snippets/bootstrap-icon.html' with icon="checkbox" %}<span class="pl-small">Staff</span>
+                {% include 'website/snippets/bootstrap-icon.html' with icon="check-square" %}<span class="pl-small">Staff</span>
               </span>
             {% endif %}
             {% if user.is_superuser %}
               <span class="px-2">
-                {% include 'website/snippets/bootstrap-icon.html' with icon="checkbox" %}<span class="pl-small">Superuser</span>
+                {% include 'website/snippets/bootstrap-icon.html' with icon="check-square" %}<span class="pl-small">Superuser</span>
               </span>
             {% endif %}
             {% if is_instructor %}
               <span class="px-2">
-                {% include 'website/snippets/bootstrap-icon.html' with icon="checkbox" %}<span class="pl-small">Instructor</span>
+                {% include 'website/snippets/bootstrap-icon.html' with icon="check-square" %}<span class="pl-small">Instructor</span>
               </span>
             {% endif %}
           </div>
