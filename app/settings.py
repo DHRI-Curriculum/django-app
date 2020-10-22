@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-from secrets import SECRET_KEY, EMAIL_HOST_PASSWORD, EMAIL_HOST_USER, GITHUB_TOKEN, ZOTERO_KEY
+from .secrets import SECRET_KEY, EMAIL_HOST_PASSWORD, EMAIL_HOST_USER, GITHUB_TOKEN, ZOTERO_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
