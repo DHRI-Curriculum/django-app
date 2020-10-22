@@ -2,17 +2,9 @@
 {% load markdownify admin_urls lessontags static %}
 
 {% block admin_edit %}
-  <a target="_blank" href="/admin" class="text-decoration-none small">
-    {% include 'website/snippets/bootstrap-icon.html' with icon="menu-app-fill" %}<span class="ml-1 mr-4">Django admin</span>
-  </a>
-
-  <a href="{% url 'admin:auth_user_change' user.id %}" class="text-decoration-none small">
-    {% include 'website/snippets/bootstrap-icon.html' with icon="person-badge" %}<span class="ml-1 mr-4">Edit user</span>
-  </a>
-
-  <a target="_blank" href="{% url 'admin:learner_profile_change' user.profile.id %}" class="text-decoration-none small">
-    {% include 'website/snippets/bootstrap-icon.html' with icon="person-lines-fill" %}<span class="ml-1">Edit profile</span>
-  </a>
+  <a class="text-decoration-none dropdown-item admin-link-django" target="_blank" href="{% url 'admin:index' %}">Django admin</a>
+  <a class="text-decoration-none dropdown-item admin-link-edit-user" target="_blank" href="{% url 'admin:auth_user_change' user.id %}">Edit user</a>
+  <a class="text-decoration-none dropdown-item admin-link-edit-profile" target="_blank" href="{% url 'admin:learner_profile_change' user.profile.id %}">Edit profile</a>
 {% endblock %}
 
 

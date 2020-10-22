@@ -11,16 +11,30 @@
 
     {% if version|startswith:"0." %}{% include "website/warnings/alpha.html" %}{% endif %}
 
-    {% include "website/navbar-2.html" %}
+    {% include "website/navbar-2.html" with underline_menu_present=True %}
+    <div class="d-flex justify-content-between justify-content-end nav-scroller bg-white shadow-sm">
+      {% block secondary_menu %}{% endblock %}
+
+      <nav class="nav ml-auto">
+        {% if request.user.is_authenticated %}
+            <a class="nav-link dropdown-toggle" href="#" id="UserDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ request.user.username }}</a>
+
+            <div class="dropdown-menu dropdown-menu-special shadow" aria-labelledby="dropdown">
+            {% include 'website/snippets/user-menu.html' %}
+                {% if request.user.is_staff %}
+                    {% block admin_edit %}{% endblock %}
+                    {% include 'website/admin-viewports.html' %}
+                {% endif %}
+            </div>
+        {% else %}
+          {% include 'website/snippets/login-menu.html' %}
+        {% endif %}
+      </nav>
+    </div>
     {% include "website/warnings/ie.html" %}
     {% include "website/instructor_requests.html" %}
 
     <div id="content" class="container mx-auto py-2">
-      {% if request.user.is_staff %}
-          <div id="admin" class="zen-hideaway border shadow-sm p-2">
-              <strong class="text-muted ml-2 mr-4 small">Admin tools</strong>{% block admin_edit %}{% endblock %}{% include 'website/admin-viewports.html' %}
-          </div>
-      {% endif %}
       {% block header %}{% endblock %}
       {% include "website/messages.html" %}
       {% block hero %}{% endblock %}

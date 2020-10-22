@@ -1,8 +1,8 @@
-{% extends 'website/base-secondary-menu.html' %}
-{% load markdownify admin_urls lessontags static crispy_forms_tags %}
+{% extends 'website/base.html' %}
+{% load markdownify admin_urls lessontags static crispy_forms_tags install_navigation %}
 
 {% block secondary_menu %}
-    {% include 'install/navbar-install.html' %}
+    {% install_navigation %}
 {% endblock %}
 
 {% block main %}

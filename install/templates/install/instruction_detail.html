@@ -1,14 +1,12 @@
-{% extends 'website/base-secondary-menu.html' %}
-{% load markdownify admin_urls lessontags static crispy_forms_tags %}
+{% extends 'website/base.html' %}
+{% load markdownify admin_urls lessontags static crispy_forms_tags install_navigation %}
 
 {% block secondary_menu %}
-    {% include 'install/navbar-install.html' %}
+    {% install_navigation %}
 {% endblock %}
 
 {% block admin_edit %}
-  <a href="{% url 'admin:install_instruction_change' instruction.id  %}" class="text-decoration-none small">
-    {% include 'website/snippets/bootstrap-icon.html' with icon="pen" %}<span class="ml-1 mr-4">Edit</span>
-  </a>
+  <a class="text-decoration-none dropdown-item admin-link-edit" target="_blank" href="{% url 'admin:install_instruction_change' instruction.id %}">Edit</a>
 {% endblock %}
 
 {% block before_content %}

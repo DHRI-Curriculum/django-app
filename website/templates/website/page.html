@@ -2,15 +2,7 @@
 {% load markdownify %}
 
 {% block admin_edit %}
-  <a target="_blank" href="/admin" class="text-decoration-none small">
-      {% include 'website/snippets/bootstrap-icon.html' with icon="menu-app-fill" %}<span class="ml-1 mr-4">Django admin</span>
-  </a>
-
-  <!-- TODO: Fix this href
-  <a href="url 'admin:website_page_change' page.id" class="text-decoration-none small">
-    {% include 'website/snippets/bootstrap-icon.html' with icon="pen" %}<span class="ml-1 mr-4">Edit page</span>
-  </a>
-  -->
+  <a class="text-decoration-none dropdown-item admin-link-django" target="_blank" href="{% url 'admin:index' %}">Django admin</a>
 {% endblock %}
 
 

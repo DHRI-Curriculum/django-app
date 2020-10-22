@@ -3,13 +3,8 @@
 
 
 {% block admin_edit %}
-  <a target="_blank" href="/admin" class="text-decoration-none small">
-    {% include 'website/snippets/bootstrap-icon.html' with icon="menu-app-fill" %}<span class="mr-4">Django admin</span>
-  </a>
-
-  <a href="{% url 'admin:glossary_term_change' term.id  %}" class="text-decoration-none small">
-    {% include 'website/snippets/bootstrap-icon.html' with icon="bi-pen" %}<span class="mr-4">Edit term</span>
-  </a>
+  <a class="text-decoration-none dropdown-item admin-link-django" target="_blank" href="{% url 'admin:index' %}">Django admin</a>
+  <a class="text-decoration-none dropdown-item admin-link-edit" target="_blank" href="{% url 'admin:glossary_term_change' term.id %}">Edit {{ term.term }}</a>
 {% endblock %}
 
 

@@ -1,4 +1,4 @@
-{% extends 'website/base-left-menu.html' %}
+{% extends 'website/base.html' %}
 {% load markdownify admin_urls lessontags static %}
 
 {% block extra_head_material %}
@@ -7,6 +7,10 @@
 
 {% block leftmenu %}
   {% include 'workshop/leftmenu/content.html' %}
+{% endblock %}
+
+{% block secondary_menu %}
+    <!-- #TODO -->
 {% endblock %}
 
 {% block before_content %}
@@ -61,17 +65,9 @@
 
 
 {% block admin_edit %}
-  <a target="_blank" href="/admin" class="text-decoration-none small">
-      {% include 'website/snippets/bootstrap-icon.html' with icon="menu-app-fill" %}<span class="ml-1 mr-4">Django admin</span>
-  </a>
-
-  <a href="{% url 'admin:workshop_frontmatter_change' frontmatter.id  %}" class="text-decoration-none small">
-    {% include 'website/snippets/bootstrap-icon.html' with icon="pen" %}Edit Frontmatter Page</span>
-  </a>
-
-  <a target="_blank" href="https://www.github.com/{{ workshop.parent_repo }}/blob/{{ workshop.parent_branch }}/frontmatter.md" class="text-decoration-none small">
-    {% include 'website/snippets/bootstrap-icon.html' with icon="file-earmark-code" %}<span class="ml-1">See on GitHub</span>
-  </a>
+  <a class="text-decoration-none dropdown-item admin-link-django" target="_blank" href="{% url 'admin:index' %}">Django admin</a>
+  <a class="text-decoration-none dropdown-item admin-link-edit" target="_blank" href="{% url 'admin:workshop_frontmatter_change' frontmatter.id  %}">Edit frontmatter</a>
+  <a class="text-decoration-none dropdown-item admin-link-github" target="_blank" href="https://www.github.com/{{ workshop.parent_repo }}/blob/{{ workshop.parent_branch }}/frontmatter.md">See on GitHub</a>
 {% endblock %}
 
 

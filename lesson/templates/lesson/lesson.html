@@ -114,17 +114,9 @@
 {% endblock %}
 
 {% block admin_edit %}
-  <a target="_blank" href="/admin" class="text-decoration-none small">
-      {% include 'website/snippets/bootstrap-icon.html' with icon="menu-app-fill" %}<span class="ml-1 mr-4">Django admin</span>
-  </a>
-
-  <a href="{% url 'admin:lesson_lesson_change' lesson.id  %}" class="text-decoration-none small">
-      {% include 'website/snippets/bootstrap-icon.html' with icon="pen" %}<span class="ml-1 mr-4">Edit lesson</span>
-  </a>
-
-  <a target="_blank" href="https://www.github.com/{{ workshop.parent_repo }}/blob/{{ workshop.parent_branch }}/lessons.md" class="text-decoration-none small">
-      {% include 'website/snippets/bootstrap-icon.html' with icon="file-earmark-code" %}<span class="ml-1">See on GitHub</span>
-  </a>
+  <a class="text-decoration-none dropdown-item admin-link-django" target="_blank" href="{% url 'admin:index' %}">Django admin</a>
+  <a class="text-decoration-none dropdown-item admin-link-edit" target="_blank" href="{% url 'admin:lesson_lesson_change' lesson.id %}">Edit lesson</a>
+  <a class="text-decoration-none dropdown-item admin-link-github" target="_blank" href="https://www.github.com/{{ workshop.parent_repo }}/blob/{{ workshop.parent_branch }}/lessons.md">See on GitHub</a>
 {% endblock %}
 
 {% block main %}

@@ -6,15 +6,12 @@ from .models import Insight
 
 class Index(ListView):
     model = Insight
-    template_name = 'insight/index.html'
-    context_object_name = 'all_insights'
 
 
 class InsightDetail(DetailView):
     model = Insight
-    template_name = 'insight/insight.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['all_insights'] = self.model.objects.all()
+        context['object_list'] = self.model.objects.all()
         return context

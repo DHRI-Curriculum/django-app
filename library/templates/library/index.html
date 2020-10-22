@@ -1,4 +1,4 @@
-{% extends 'website/base-secondary-menu.html' %}
+{% extends 'website/base.html' %}
 {% load markdownify %}
 {% load static %}
 
@@ -12,7 +12,7 @@
 
 {% block admin_edit %}
   <!-- TODO: fix this href
-  <a href="url 'admin:website_page_change' page.id  " class="text-decoration-none small">
+  <a href="url 'admin:website_page_change' page.id  " class="text-decoration-none dropdown-item">
     {% include 'website/snippets/bootstrap-icon.html' with icon="pen" %}<span class="ml-1 mr-4">Edit page</span>
   </a>
    -->

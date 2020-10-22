@@ -19,7 +19,6 @@ def get_letter_nav():
 @register.simple_tag(takes_context=True)
 def glossary_navigation(context):
     letter_nav = get_letter_nav()
-    print()
 
     html = '''<nav class="d-flex justify-content-center" id="glossary-nav" aria-label="Glossary navigation"><ul class="pagination pagination-sm">'''
     for letter, exists in letter_nav.items():
