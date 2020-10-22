@@ -3,36 +3,20 @@
 
 {% block admin_edit %}
   <a target="_blank" href="/admin" class="text-decoration-none small">
-      <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-menu-app-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-      <path fill-rule="evenodd" d="M0 1.5A1.5 1.5 0 0 1 1.5 0h2A1.5 1.5 0 0 1 5 1.5v2A1.5 1.5 0 0 1 3.5 5h-2A1.5 1.5 0 0 1 0 3.5v-2zM14 7H2a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1zM2 6a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2H2z"/>
-      <path fill-rule="evenodd" d="M15 11H1v-1h14v1zM2 12.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5z"/>
-    </svg><span class="ml-1 mr-4">Django admin</span>
+    {% include 'website/snippets/bootstrap-icon.html' with icon="menu-app-fill" %}<span class="ml-1 mr-4">Django admin</span>
   </a>
 
   <a href="{% url 'admin:auth_user_change' user.id %}" class="text-decoration-none small">
-    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-badge" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd" d="M12 1H4a1 1 0 0 0-1 1v11.755S4 12 8 12s5 1.755 5 1.755V2a1 1 0 0 0-1-1zM4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4z"/>
-        <path fill-rule="evenodd" d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 2.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5z"/>
-      </svg><span class="ml-1 mr-4">Edit user</span>
+    {% include 'website/snippets/bootstrap-icon.html' with icon="person-badge" %}<span class="ml-1 mr-4">Edit user</span>
   </a>
 
   <a target="_blank" href="{% url 'admin:learner_profile_change' user.profile.id %}" class="text-decoration-none small">
-    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-lines-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path fill-rule="evenodd" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm7 1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm-2-3a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm0-3a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5zm2 9a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5z"/>
-    </svg><span class="ml-1">Edit profile</span>
+    {% include 'website/snippets/bootstrap-icon.html' with icon="person-lines-fill" %}<span class="ml-1">Edit profile</span>
   </a>
 {% endblock %}
 
 
 {% block main %}
-<svg width="0" height="0">
-  <defs>
-    <g id="checkbox">
-      <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path fill-rule="evenodd" d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z"/>
-    </g>
-  </defs>
-</svg>
-
 <div class="row py-4">
   {% if is_me or request.user.is_staff or user.is_staff %}
     <div class="col-sm-3"><!--left col-->
@@ -78,26 +62,22 @@
           <div style="height:50px;line-height:50px">
             {% if user.is_active %}
               <span class="px-2">
-                <svg viewBox="0 0 16 16" class="bi bi-check-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><use xlink:href="#checkbox" /></svg>
-                <span class="pl-small">Active</span>
+                {% include 'website/snippets/bootstrap-icon.html' with icon="checkbox" %}<span class="pl-small">Active</span>
               </span>
             {% endif %}
             {% if user.is_staff %}
               <span class="px-2">
-                <svg viewBox="0 0 16 16" class="bi bi-check-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><use xlink:href="#checkbox" /></svg>
-                <span class="pl-small">Staff</span>
+                {% include 'website/snippets/bootstrap-icon.html' with icon="checkbox" %}<span class="pl-small">Staff</span>
               </span>
             {% endif %}
             {% if user.is_superuser %}
               <span class="px-2">
-                <svg viewBox="0 0 16 16" class="bi bi-check-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><use xlink:href="#checkbox" /></svg>
-                <span class="pl-small">Superuser</span>
+                {% include 'website/snippets/bootstrap-icon.html' with icon="checkbox" %}<span class="pl-small">Superuser</span>
               </span>
             {% endif %}
             {% if is_instructor %}
               <span class="px-2">
-                <svg viewBox="0 0 16 16" class="bi bi-check-circle" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><use xlink:href="#checkbox" /></svg>
-                <span class="pl-small">Instructor</span>
+                {% include 'website/snippets/bootstrap-icon.html' with icon="checkbox" %}<span class="pl-small">Instructor</span>
               </span>
             {% endif %}
           </div>

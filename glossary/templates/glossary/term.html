@@ -4,20 +4,12 @@
 
 {% block admin_edit %}
   <a target="_blank" href="/admin" class="text-decoration-none small">
-      <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-menu-app-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-      <path fill-rule="evenodd" d="M0 1.5A1.5 1.5 0 0 1 1.5 0h2A1.5 1.5 0 0 1 5 1.5v2A1.5 1.5 0 0 1 3.5 5h-2A1.5 1.5 0 0 1 0 3.5v-2zM14 7H2a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8a1 1 0 0 0-1-1zM2 6a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2H2z"/>
-      <path fill-rule="evenodd" d="M15 11H1v-1h14v1zM2 12.5a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5z"/>
-    </svg><span class="ml-1 mr-4">Django admin</span>
+    {% include 'website/snippets/bootstrap-icon.html' with icon="menu-app-fill" %}<span class="mr-4">Django admin</span>
   </a>
 
   <a href="{% url 'admin:glossary_term_change' term.id  %}" class="text-decoration-none small">
-    <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-pen" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-      <path fill-rule="evenodd" d="M5.707 13.707a1 1 0 0 1-.39.242l-3 1a1 1 0 0 1-1.266-1.265l1-3a1 1 0 0 1 .242-.391L10.086 2.5a2 2 0 0 1 2.828 0l.586.586a2 2 0 0 1 0 2.828l-7.793 7.793zM3 11l7.793-7.793a1 1 0 0 1 1.414 0l.586.586a1 1 0 0 1 0 1.414L5 13l-3 1 1-3z"/>
-      <path fill-rule="evenodd" d="M9.854 2.56a.5.5 0 0 0-.708 0L5.854 5.855a.5.5 0 0 1-.708-.708L8.44 1.854a1.5 1.5 0 0 1 2.122 0l.293.292a.5.5 0 0 1-.707.708l-.293-.293z"/>
-      <path d="M13.293 1.207a1 1 0 0 1 1.414 0l.03.03a1 1 0 0 1 .03 1.383L13.5 4 12 2.5l1.293-1.293z"/>
-    </svg><span class="ml-1 mr-4">Edit term</span>
+    {% include 'website/snippets/bootstrap-icon.html' with icon="bi-pen" %}<span class="mr-4">Edit term</span>
   </a>
-
 {% endblock %}
 
 
@@ -25,6 +17,7 @@
 {% block extra_head_material %}
   <link rel="stylesheet" href="{% static 'lesson/css/pygment.css' %}">
   <link rel="stylesheet" href="{% static 'website/css/github.css' %}">
+  <link rel="stylesheet" href="{% static 'glossary/css/glossary.css' %}">
   <link rel="stylesheet" href="{% static 'glossary/css/glossary_nav.css' %}">
 {% endblock %}
 
@@ -50,8 +43,7 @@
                         {% for reading in term.readings.all %}
                             <div class="p-2 my-3 rounded-lg linked-comment">
                                 <a class="text-decoration-none" target="_blank" href="{{ reading.url }}">
-                                {{ reading.title }}
-                                <svg class="ml-2 bi bi-arrow-up-right-circle" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/> <path fill-rule="evenodd" d="M10.5 5h-4a.5.5 0 0 0 0 1h2.793l-4.147 4.146a.5.5 0 0 0 .708.708L10 6.707V9.5a.5.5 0 0 0 1 0v-4a.5.5 0 0 0-.5-.5z"/> </svg>
+                                    {{ reading.title }}{% include 'website/snippets/bootstrap-icon.html' with icon="arrow-up-right-circle" %}
                                 </a>
                                 {% if reading.annotation %}<div class="small"><strong>Annotation:</strong> {{ reading.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
                             </div>
@@ -65,8 +57,7 @@
                         {% for tutorial in term.tutorials.all %}
                             <div class="p-2 my-3 rounded-lg linked-comment">
                                 <a class="text-decoration-none" target="_blank" href="{{ tutorial.url }}">
-                                {{ tutorial.label }}
-                                <svg class="ml-2 bi bi-arrow-up-right-circle" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/> <path fill-rule="evenodd" d="M10.5 5h-4a.5.5 0 0 0 0 1h2.793l-4.147 4.146a.5.5 0 0 0 .708.708L10 6.707V9.5a.5.5 0 0 0 1 0v-4a.5.5 0 0 0-.5-.5z"/> </svg>
+                                    {{ tutorial.label }}{% include 'website/snippets/bootstrap-icon.html' with icon="arrow-up-right-circle" %}
                                 </a>
                                 {% if tutorial.annotation %}<div class="small"><strong>Annotation:</strong> {{ tutorial.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
                             </div>
