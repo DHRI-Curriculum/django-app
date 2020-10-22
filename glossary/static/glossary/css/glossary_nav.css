@@ -1,3 +1,6 @@
 #glossary-nav .pagination::before {
-    content: 'Glossary'
+    content: 'Glossary';
+    padding-right: 1em;
+    font-weight: bold;
+    color: #ddd;
 }
