@@ -63,7 +63,7 @@ AUTO_PAGES = [
 ##### Standard settings ##############################
 
 # Where user info is stored:
-USER_SETUP = 'user_setup.yml'
+USER_SETUP = os.path.join(settings.BASE_DIR, '_preload/user_setup.yml')
 
 BACKEND_AUTO = 'Github'
 REPO_AUTO = ''
