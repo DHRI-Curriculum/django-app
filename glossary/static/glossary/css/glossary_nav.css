@@ -1,0 +1,3 @@
+#glossary-nav .pagination::before {
+    content: 'Glossary'
+}

@@ -1,5 +1,5 @@
-{% extends 'website/base-left-menu.html' %}
-{% load markdownify admin_urls lessontags static crispy_forms_tags %}
+{% extends 'website/base.html' %}
+{% load markdownify admin_urls lessontags static crispy_forms_tags glossary_navigation %}
 
 
 {% block admin_edit %}
@@ -25,6 +25,7 @@
 {% block extra_head_material %}
   <link rel="stylesheet" href="{% static 'lesson/css/pygment.css' %}">
   <link rel="stylesheet" href="{% static 'website/css/github.css' %}">
+  <link rel="stylesheet" href="{% static 'glossary/css/glossary_nav.css' %}">
 {% endblock %}
 
 {% block leftmenu %}
@@ -33,7 +34,10 @@
 
 
 {% block main %}
-<div class="row py-4">
+    {% glossary_navigation %}
+    <div class="row py-4">
+
+    <hr />
     <div class="col-12">
         <div class="pt-3">
             <h1>{{ term.term }}</h1>

@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from django.urls import reverse
 
 class Term(models.Model):
     term = models.TextField()
@@ -18,3 +19,6 @@ class Term(models.Model):
 
     class Meta:
         ordering = ['term']
+
+    def get_absolute_url(self):
+        return reverse('glossary:letter', kwargs={'letter': self.term[0].upper(), 'slug': self.slug })

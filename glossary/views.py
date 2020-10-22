@@ -6,6 +6,10 @@ from django.views.generic.detail import DetailView
 import random
 
 
+
+
+
+
 class Index(ListView):
     model = Term
     template_name = 'glossary/index.html'
@@ -17,6 +21,14 @@ class Index(ListView):
         if self.model.objects.count() > 4:
             context['random_items'] = random.sample(list(self.model.objects.all()), 4)
         return context
+
+
+class TermNav(ListView):
+    model = Term
+
+    def get_queryset(self):
+        print(self.kwargs)
+        return Term.objects.filter(term__startswith=self.kwargs.get('slug'))
 
 
 class TermDetail(DetailView):

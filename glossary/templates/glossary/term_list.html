@@ -1,0 +1,63 @@
+{% extends 'website/base.html' %}
+{% load markdownify admin_urls lessontags static crispy_forms_tags get_item glossary_navigation %}
+
+{% block extra_head_material %}
+  <link rel="stylesheet" href="{% static 'glossary/css/postit.css' %}">
+  <link rel="stylesheet" href="{% static 'glossary/css/glossary.css' %}">
+  <link rel="stylesheet" href="{% static 'glossary/css/glossary_nav.css' %}">
+{% endblock %}
+
+{% block main %}
+    {% glossary_navigation %}
+
+    <hr />
+
+    <h2>Terms starting with {{ request.resolver_match.kwargs.slug }}</h2>
+    <ul>
+        {% for term in object_list %}
+            <li><a href="#{{ term.slug }}" data-scroll="{{ term.slug }}">{{ term }}</a></li>
+        {% endfor %}
+    </ul>
+
+    {% for term in object_list %}
+        <h3 class="h4 pt-5 border-bottom pb-3 mb-4 term_header">{{ term.term }}<a class="ml-2 term_header_link" name="{{ term.slug }}" href="{% url 'glossary:term' term.slug %}"><svg class="bi" width="14" height="14" fill="currentColor"><use xlink:href="/static/website/images/bootstrap-icons.svg#link-45deg"/></svg></a></h3>
+        <p class="lead small">{{ term.explication | markdown | safe }}</p>
+        {% if term.readings.count or term.tutorials.count %}
+            <div class="row py-2">
+                {% if term.readings.count %}
+                    <div class="{% if term.readings.count and term.tutorials.count %}col-6{% else %}col-12{% endif %}">
+                        <h4 class="h5">Readings</h4>
+                        {% for reading in term.readings.all %}
+                            <div class="p-2 my-3 rounded-lg linked-comment">
+                                <a class="text-decoration-none" target="_blank" href="{{ reading.url }}">
+                                {{ reading.title }}
+                                <svg class="ml-2 bi bi-arrow-up-right-circle" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/> <path fill-rule="evenodd" d="M10.5 5h-4a.5.5 0 0 0 0 1h2.793l-4.147 4.146a.5.5 0 0 0 .708.708L10 6.707V9.5a.5.5 0 0 0 1 0v-4a.5.5 0 0 0-.5-.5z"/> </svg>
+                                </a>
+                                {% if reading.annotation %}<div class="small"><strong>Annotation:</strong> {{ reading.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                {% if term.tutorials.count %}
+                    <div class="{% if term.readings.count and term.tutorials.count %}col-6{% else %}col-12{% endif %}">
+                        <h4 class="h5">Tutorials</h4>
+                        {% for tutorial in term.tutorials.all %}
+                            <div class="p-2 my-3 rounded-lg linked-comment">
+                                <a class="text-decoration-none" target="_blank" href="{{ tutorial.url }}">
+                                {{ tutorial.label }}
+                                <svg class="ml-2 bi bi-arrow-up-right-circle" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"> <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/> <path fill-rule="evenodd" d="M10.5 5h-4a.5.5 0 0 0 0 1h2.793l-4.147 4.146a.5.5 0 0 0 .708.708L10 6.707V9.5a.5.5 0 0 0 1 0v-4a.5.5 0 0 0-.5-.5z"/> </svg>
+                                </a>
+                                {% if tutorial.annotation %}<div class="small"><strong>Annotation:</strong> {{ tutorial.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endblock %}
+
+{% block javascript %}
+    <script src="/static/glossary/js/scroll.js"></script>
+{% endblock %}

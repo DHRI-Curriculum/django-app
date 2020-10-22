@@ -3,7 +3,7 @@
         <ul class="nav flex-column">
             {% for t in all_terms %}
                 <li class="nav-item mb-2">
-                    <a href="{% url "glossary:term" t.slug %}">{{ t }}</a>
+                    <a href="{ url "glossary:term" t.slug # TODO }">{{ t }}</a>
                 </li>
             {% endfor %}
         </ul>
