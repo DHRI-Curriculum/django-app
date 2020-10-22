@@ -9,6 +9,8 @@
 
 {% block main %}
 
+    {% glossary_navigation %}
+
     {% if random_items %}
       <div class="d-flex flex-column">
         <h3>Test your knowledge</h3>
@@ -20,10 +22,5 @@
         </div>
       </div>
     {% endif %}
-
-    <hr />
-
-    {% glossary_navigation %}
-
 
 {% endblock %}

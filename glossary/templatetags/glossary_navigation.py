@@ -9,7 +9,10 @@ register = template.Library()
 
 def get_letter_nav():
     d = dict()
-    for letter in '"ABCDEFGHIJKLMNOPQRSTUVWXYZ':
+    letters = [x for x in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ']
+    for t in Term.objects.all().order_by('term'):
+        if not t.term[:1].upper() in letters: letters.append(t.term[:1].upper())
+    for letter in letters:
         d[letter] = Term.objects.filter(term__startswith=letter).exists()
     return d
 
