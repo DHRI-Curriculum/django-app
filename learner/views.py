@@ -26,8 +26,11 @@ class Detail(DetailView):
         try:
             return self.contributor_obj
         except:
-            self.contributor_obj = Contributor.objects.get(profile=self.get_user_object().profile)
-            return self.contributor_obj
+            try:
+                self.contributor_obj = Contributor.objects.get(profile=self.get_user_object().profile)
+                return self.contributor_obj
+            except:
+                return None
 
     def get_object(self):
         user_obj = self.get_user_object()
