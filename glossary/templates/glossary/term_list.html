@@ -12,7 +12,7 @@
 
     <hr />
 
-    <h2>Terms starting with {{ request.resolver_match.kwargs.slug }}</h2>
+    <h2>Terms starting with {{ slug }}</h2>
     <ul>
         {% for term in object_list %}
             <li><a href="#{{ term.slug }}" data-scroll="{{ term.slug }}">{{ term }}</a></li>
@@ -20,7 +20,7 @@
     </ul>
 
     {% for term in object_list %}
-        <h3 class="h4 pt-5 border-bottom pb-3 mb-4 term_header">{{ term.term }}<a class="text-decoration-none ml-1 term_header_link" name="{{ term.slug }}" href="{% url 'glossary:term' term.slug %}">{% include 'website/snippets/bootstrap-icon.html' with icon="link-45deg" classes="bi" %}</a></h3>
+        <h3 class="h4 term_header pt-5 pb-2 mb-2 border-bottom">{{ term.term }}<a class="text-decoration-none ml-1 term_header_link" name="{{ term.slug }}" href="{% url 'glossary:term' term.slug %}">{% include 'website/snippets/bootstrap-icon.html' with icon="link-45deg" classes="bi" %}</a></h3>
         <p class="lead small">{{ term.explication | markdown | safe }}</p>
         {% if term.readings.count or term.tutorials.count %}
             <div class="row py-2">

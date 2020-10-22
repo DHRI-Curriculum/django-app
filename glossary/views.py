@@ -9,26 +9,23 @@ import random
 
 
 
-
-class Index(ListView):
+class TermList(ListView):
     model = Term
-    template_name = 'glossary/index.html'
-    context_object_name = 'all_terms'
+
+    def get_slug(self):
+        slug = self.kwargs.get('slug')
+        if not slug:
+            return 'A'
+        return slug
+
+    def get_queryset(self):
+        slug = self.get_slug()
+        return Term.objects.filter(term__istartswith=slug)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['random_items'] = []
-        if self.model.objects.count() > 4:
-            context['random_items'] = random.sample(list(self.model.objects.all()), 4)
+        context['slug'] = self.get_slug()
         return context
-
-
-class TermNav(ListView):
-    model = Term
-
-    def get_queryset(self):
-        print(self.kwargs)
-        return Term.objects.filter(term__startswith=self.kwargs.get('slug'))
 
 
 class TermDetail(DetailView):
@@ -38,5 +35,4 @@ class TermDetail(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['lessons_with_term'] = Lesson.objects.filter(terms=self.get_object())
-        context['all_terms'] = self.model.objects.all()
         return context
