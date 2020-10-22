@@ -25,6 +25,8 @@ class TermList(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['slug'] = self.get_slug()
+        if self.model.objects.count() > 4:
+            context['random_items'] = random.sample(list(self.model.objects.all()), 4)
         return context
 
 
@@ -34,5 +36,4 @@ class TermDetail(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['lessons_with_term'] = Lesson.objects.filter(terms=self.get_object())
         return context
