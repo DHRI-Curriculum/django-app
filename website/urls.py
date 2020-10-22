@@ -8,5 +8,5 @@ app_name = 'website'
 
 urlpatterns = [
   path('', views.Index.as_view(), name='index'),
-  path('<str:slug>/', views.PageView.as_view(), name='page'),
+  # path('<str:slug>/', views.PageView.as_view(), name='page'),
 ]

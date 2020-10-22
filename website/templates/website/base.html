@@ -17,12 +17,22 @@
 
       <nav class="nav ml-auto">
         {% if request.user.is_authenticated %}
-            <a class="nav-link dropdown-toggle" href="#" id="UserDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ request.user.username }}</a>
+            <a class="nav-link dropdown-toggle" href="#" id="UserDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {% if request.user.first_name and request.user.last_name %}
+                {{ request.user.first_name }} {{ request.user.last_name }}
+              {% elif request.user.first_name %}
+                {{ request.user.first_name }}
+              {% else %}
+                {{ request.user.username }}
+              {% endif %}
+            </a>
 
             <div class="dropdown-menu dropdown-menu-special shadow" aria-labelledby="dropdown">
             {% include 'website/snippets/user-menu.html' %}
                 {% if request.user.is_staff %}
+                    <li><hr class="dropdown-divider"></li>
                     {% block admin_edit %}{% endblock %}
+                    <li><hr class="dropdown-divider"></li>
                     {% include 'website/admin-viewports.html' %}
                 {% endif %}
             </div>

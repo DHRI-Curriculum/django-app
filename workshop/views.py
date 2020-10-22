@@ -1,10 +1,15 @@
-from django.shortcuts import render, HttpResponse, get_object_or_404
+from django.shortcuts import render, HttpResponse, get_object_or_404, HttpResponseRedirect
 from django.core.paginator import Paginator
 from workshop.models import Workshop, Collaboration, Blurb
 from lesson.models import Lesson
 from learner.models import Profile
 from django.conf import settings
-from django.views.generic.detail import DetailView
+from django.views.generic import View, DetailView, ListView
+
+
+class IndexRedirect(View):
+    def get(self, request):
+        return HttpResponseRedirect('/')
 
 
 class FrontmatterView(DetailView):
