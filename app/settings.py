@@ -20,15 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = Path(f'{os.path.join(BASE_DIR, "django_secret_key.txt")}').read_text()
-
-from yaml import load, Loader
-
-with open('secrets.yml') as f:
-    SECRETS = load(f, Loader=Loader)
-
-SECRET_KEY = SECRETS.get('django-secret')
+from secrets import SECRET_KEY, EMAIL_HOST_PASSWORD, EMAIL_HOST_USER, GITHUB_TOKEN, ZOTERO_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
