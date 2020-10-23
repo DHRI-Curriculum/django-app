@@ -7,9 +7,7 @@
   <link rel="stylesheet" href="{% static 'glossary/css/glossary_nav.css' %}">
 {% endblock %}
 
-{% block secondary_menu %}
-    {% glossary_navigation_secondary %}
-{% endblock %}
+{% block secondary_menu %}{% glossary_navigation_secondary %}{% endblock %}
 
 {% block main %}
     {% glossary_navigation %}
