@@ -165,18 +165,13 @@ def get_pending_requests():
     return pending_requests
 
 
-def instructor_requests(request):
-    if request.method == "GET":
-        if not request.user.is_superuser:
-            return HttpResponseForbidden()
+from django.views.generic import View
 
-        pending_requests = get_pending_requests()
+class InstructorRequests(View):
 
-        return render(request, 'learner/requests.html', {'pending_requests': pending_requests})
-    else:
+    def post(self, request, *args, **kwargs):
         instructor = Group.objects.get(name='Instructor')
         username = request.headers.get('username')
-        print(username)
         user = get_object_or_404(User, username=username)
 
         user.groups.add(instructor)
@@ -185,3 +180,11 @@ def instructor_requests(request):
 
         output_data = {'success': True}
         return JsonResponse(output_data)
+
+    def get(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            return HttpResponseForbidden()
+
+        pending_requests = get_pending_requests()
+
+        return render(request, 'learner/requests.html', {'pending_requests': pending_requests})

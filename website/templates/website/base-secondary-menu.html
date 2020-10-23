@@ -11,7 +11,7 @@
 
     {% if version|startswith:"0." %}{% include "website/warnings/alpha.html" %}{% endif %}
 
-    {% include "website/navbar-2.html" with underline_menu_present=True %}
+    {% include "website/navbar-2.html" %}
     <div class="d-flex nav-scroller bg-white shadow-sm justify-content-between">
       {% block secondary_menu %}{% endblock %}
 

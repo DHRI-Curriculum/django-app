@@ -1,4 +1,5 @@
 {% load static startswith %}
+{% load main_navigation %}
 
 <!doctype html>
 <html lang="en">
@@ -7,12 +8,13 @@
     <!-- Extra head material -->
     {% block extra_head_material %}{% endblock %}
   </head>
-  <body {% if version|startswith:"0." %}style="padding-top: 35px !important;"{% endif %}>
+  <body>
 
     {% if version|startswith:"0." %}{% include "website/warnings/alpha.html" %}{% endif %}
 
-    {% include "website/navbar-2.html" with underline_menu_present=True %}
-    <div class="d-flex justify-content-between justify-content-end nav-scroller bg-white shadow-sm">
+    {% main_navigation %}
+
+    <div class="d-flex justify-content-between justify-content-end nav-scroller shadow-sm" style="background-color:rgb(61 84 108);">
       {% block secondary_menu %}{% endblock %}
 
       <nav class="nav ml-auto">

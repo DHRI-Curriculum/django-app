@@ -374,3 +374,20 @@ div.dropdown-submenu {
     margin-left: -15px;
     width: 15px;
 }
+
+.workshop-button::before {
+    width: 1.25em;
+    line-height: 0;
+    content: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='0.7em' height='0.7em' viewBox='0 0 16 16'><path fill='none' stroke='rgba(255,255,255,.5)' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/></svg>");
+    transition: transform 0.35s ease;
+    transform-origin: .3em 50%;
+}
+.workshop-button.collapsed::before {
+    transform: rotate(0deg) !important;
+}
+.workshop-button:not(.collapsed)::before {
+    transform: rotate(90deg) !important;
+}
+.workshop-button:not(.collapsed) {
+    font-weight: 700;
+}
