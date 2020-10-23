@@ -1,6 +1,6 @@
 <div class="lesson-feedback py-2 border-top">
     <span class="text-muted">
-    {% include 'website/snippets/bootstrap-icon.html' with icon="exclamation" %}
+    {% include 'website/snippets/bootstrap-icon.html' with icon="exclamation-square-fill" %}
     </span>
     <a class="text-muted small text-decoration-none" href="{% url "feedback:feedback_popup" feedback_type="lesson" pk=lesson.id %}?close=true" onclick="window.open('{% url "feedback:feedback_popup" feedback_type="lesson" pk=lesson.id %}?close=true','popup','width=600,height=600'); return false;">
     Report a problem with this lesson.
