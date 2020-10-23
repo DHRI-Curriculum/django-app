@@ -28,8 +28,8 @@ def main_navigation(context):
     <a class="navbar-brand d-inline-flex flex-row align-items-center" href="{reverse('website:index')}">
         <img src="{settings.STATIC_URL}website/images/logo.png" width="50" height="50" alt="Logotype for Digital Humanities Research Institute">
         <div class="d-inline-flex flex-column">
-            <div class="text-white ml-3 small d-none d-md-block">Digital Humanities Research Institute</div>
-            <div class="text-white ml-3 small d-block d-md-none">DHRI</div>
+            <div style="color: #4a6886 !important;" class="ml-3 small d-none d-md-block">Digital Humanities Research Institute</div>
+            <div style="color: #4a6886 !important;" class="ml-3 small d-block d-md-none">DHRI</div>
             <div class="text-white ml-3">Curriculum</div>
         </div>
     </a>
