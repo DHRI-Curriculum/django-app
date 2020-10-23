@@ -65,11 +65,10 @@ def main_navigation(context):
 
     #### Start mini menus
     html += '<div id="mini-menus" class="container-fluid">'
-
     # Workshops mini menu
     html += '''<div class="collapse row pt-0 pb-5 px-4 bg-primary" id="allWorkshops"><div class="col-12 my-3"><h5 class="text-white h4">Workshops</h5></div>'''
     for workshop in obj['workshops']:
-        html += '<div class="col-12 col-sm-4 mb-3"><div class="card h-100" style="box-shadow: 0 1rem 3rem rgba(0,0,0,0.375) !important;">'
+        html += '<div class="col-12 col-sm-6 col-xl-4 mb-3"><div class="card h-100" style="box-shadow: 0 1rem 3rem rgba(0,0,0,0.375) !important;">'
         if workshop.image:
             html += f'''<a href="{ reverse('workshop:frontmatter', kwargs={'slug':workshop.slug}) }" class="stretched-link"><img src="/{ workshop.image }" class="card-img-top" alt="{ workshop.name }"></a>'''
         else:
@@ -82,7 +81,7 @@ def main_navigation(context):
     # Installations mini menu
     html += '''<div class="collapse row pt-0 pb-5 px-4 bg-primary" id="allInstallations"><div class="col-12 my-3"><h5 class="text-white h4">Installations</h5></div>'''
     for installation in obj['installations']:
-        html += '<div class="col-12 col-sm-4 mb-3"><div class="card h-100" style="box-shadow: 0 1rem 3rem rgba(0,0,0,0.375) !important;">'
+        html += '<div class="col-12 col-sm-6 col-xl-4 mb-3"><div class="card h-100" style="box-shadow: 0 1rem 3rem rgba(0,0,0,0.375) !important;">'
         if installation.image:
             html += f'''<a href="{ reverse('install:installation', kwargs={'slug':installation.slug}) }" class="stretched-link"><img src="/{ installation.image }" class="card-img-top" alt="{ installation.software.software }"></a>'''
         else:
