@@ -11,13 +11,13 @@
 {% block main %}
 <div class="row py-4">
   {% if is_me or request.user.is_staff or user.is_staff %}
-    <div class="col-sm-3"><!--left col-->
+    <div class="col-3"><!--left col-->
 
         <div class="text-center">
             <img src="{{ user.profile.image.url }}" class="avatar img-circle img-thumbnail" alt="avatar">
         </div>
     </div>
-    <div class="col-sm-9">
+    <div class="col-9">
         <h2 class="account-heading">{% if user.first_name and user.last_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user.username }}{% endif %}</h2>
         <p class="text-secondary">{% if user.profile.pronouns %}<em>{{ user.profile.pronouns }}</em> | {% endif %}{{ user.email }}{% if user.is_staff and user.email %} | {% elif user.is_staff %}Staff{% endif %}</p>
         <p class="lead">{{ user.profile.bio | safe }}</p>
@@ -27,14 +27,24 @@
           {% if user.profile.project_links.count %}<p><strong class="mr-2">Projects {{ user.first_name }} {{ user.last_name}} has worked on</strong>{% for link in user.profile.project_links.all %}<a href="{{ link.url }}" class="badge bg-light text-dark mr-1" target="_blank">{{ link.label }}</a>{% endfor %}</p>{% endif %}
         {% endif %}
 
+        {% if user.profile.progress_set.count %}
+          <h3 class="mt-3 border-top pt-4">Workshops</h3>
+          <ul>
+          {% for progress in user.profile.progress_set.all %}
+            <li><a href="{% url 'workshop:frontmatter' slug=progress.workshop.slug %}">{{ progress.workshop }}</a> (go to <a href="{% url 'workshop:lesson' slug=progress.workshop.slug %}?page={{ progress.page }}">current page</a> in progress)</li>
+          {% endfor %}
+          </ul>
+        {% endif %}
+
         {% if user.profile.favorites.count %}
-          <p>Favorites:</p>
+          <h4 class="mt-2 pt-3">Favorites:</p>
           <ul>
             {% for w in user.profile.favorites.all %}
               <li><a href="{% url "workshop:frontmatter" slug=w.slug %}">{{ w.name }}</a></li>
             {% endfor %}
           </ul>
         {% endif %}
+
         {% if user.is_staff %}
           <h3 class="mt-3 border-top pt-4">Collaborator</h3>
           {% for x in contributor.get_collaboration_by_role %}

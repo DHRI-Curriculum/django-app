@@ -12,12 +12,29 @@ class Software(models.Model):
         return f'{self.software} ({self.operating_system})'
 
 
+class InstructionManager(models.Manager):
+    def by_software(self):
+        l = dict()
+        for s in Software.objects.all().order_by('software'):
+            if not s.software in l: l[s.software] = dict()
+            l[s.software][s.operating_system] = Instruction.objects.get(software=s)
+        return l
+
+    def by_os(self):
+        l = dict()
+        for s in Software.objects.all().order_by('software'):
+            if not s.operating_system in l: l[s.operating_system] = dict()
+            l[s.operating_system][s.software] = Instruction.objects.get(software=s)
+        return l
+
+
 class Instruction(models.Model):
     slug = models.CharField(max_length=200, blank=True)
     software = models.ForeignKey(Software, on_delete=models.CASCADE, related_name='instructions')
     what = models.TextField(blank=True)
     why = models.TextField(blank=True)
     image = models.ImageField(upload_to ='software_headers/', default='software_headers/default.jpg')
+    objects = InstructionManager()
 
     def save(self, *args, **kwargs):
         slug = self.software.software.replace('-',' ').replace('/',' ') + '-' + self.software.operating_system.replace('-',' ').replace('/',' ')

@@ -1,0 +1,21 @@
+<div class="collapse pt-0 pb-5 px-4 bg-primary" id="allWorkshops">
+    <div class="row border-bottom">
+        <div class="col-12 my-3">
+            <h5 class="text-white h4">Your Workshops</h5>
+        </div>
+
+        {% for workshop in with_progress %}
+            {% include 'website/menu-elements/fragments/workshop.html' %}
+        {% endfor %}
+    </div>
+
+    <div class="row">
+        <div class="col-12 my-3">
+            <h5 class="text-white h4">All Workshops</h5>
+        </div>
+
+        {% for workshop in all %}
+            {% include 'website/menu-elements/fragments/workshop.html' %}
+        {% endfor %}
+    </div>
+</div>

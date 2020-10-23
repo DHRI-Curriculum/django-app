@@ -1,0 +1,12 @@
+<div class="dropdown-submenu">
+    <a class="dropdown-item dropdown-toggle" data-toggle="dropdown" href="#">
+        {{ software }}
+    </a>
+    <div class="dropdown-menu dropdown-menu-special shadow-sm">
+        {% for instruction in instructions %}
+            <a class="dropdown-item" href="{% url 'install:installation' slug=instruction.slug %}">
+                {{ instruction.software.operating_system }}
+            </a>
+        {% endfor %}
+    </div>
+</div>
