@@ -62,29 +62,9 @@ def main_navigation(context):
   </div>
 </nav>
     '''
-    #return mark_safe(html)
-    """
-    html = f'''
-    <div class="d-flex flex-row align-items-center p-3 px-4 bg-primary text-light">
-        <p class="my-0 mb-0 mr-auto font-weight-normal no-touch">
-            <a href="{reverse('website:index')}" class="text-light text-decoration-none">
-                <img src="{settings.STATIC_URL}website/images/logo.png" width="50" height="50" alt="" class="mr-2">
-                <span class="d-inline-block"><strong>Curriculum</strong> | DHRI</span>
-            </a>
-        </p>
-        <nav class="my-md-0 zen-hideaway navbar navbar-expand-md" id="website-wide-nav">
-            <a class="d-inline-flex align-items-center p-2 text-light text-decoration-none workshop-button collapsed" style="cursor:pointer;" data-toggle="collapse" data-target="#allWorkshops" data-parent="#website-wide-nav" aria-controls="allWorkshops" aria-expanded="false" aria-label="Toggle all workshop navigation">Workshops</a>
-            <a class="d-inline-flex align-items-center p-2 text-light text-decoration-none workshop-button collapsed" style="cursor:pointer;" data-toggle="collapse" data-target="#allInstallations" data-parent="#website-wide-nav" aria-controls="allInstallations" aria-expanded="false" aria-label="Toggle all installation navigation">Installations</a>
-            <a class="d-inline-flex align-items-center p-2 text-light text-decoration-none workshop-button collapsed" style="cursor:pointer;" data-toggle="collapse" data-target="#allInsights" data-parent="#website-wide-nav" aria-controls="allInsights" aria-expanded="false" aria-label="Toggle all installation navigation">Insights</a>
-            <a class="d-inline-flex align-items-center p-2 text-light text-decoration-none" href="/library/">Library</a>
-            <a class="d-inline-flex align-items-center p-2 text-light text-decoration-none" href="/terms/">Terms</a>
-            <!--<a class="text-nowrap p-2 text-light text-decoration-none" href="http://www.dhinstitutes.org">Digital Humanities Research Institute</a>-->
-        </nav>
-    </div>'''
 
-    """
     #### Start mini menus
-    # html += '<div id="mini-menus">'
+    html += '<div id="mini-menus" class="container-fluid">'
 
     # Workshops mini menu
     html += '''<div class="collapse row pt-0 pb-5 px-4 bg-primary" id="allWorkshops"><div class="col-12 my-3"><h5 class="text-white h4">Workshops</h5></div>'''
@@ -124,6 +104,6 @@ def main_navigation(context):
     html += '</div>'
 
     #### End mini menus
-    # html += '</div>'
+    html += '</div>'
 
     return mark_safe(html)
