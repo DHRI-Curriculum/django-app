@@ -23,7 +23,7 @@ def main_navigation(context):
     obj = get_all_objects()
 
     html = f'''
-<nav class="navbar navbar-expand-sm navbar-light bg-primary">
+<nav class="navbar navbar-expand-sm navbar-light bg-primary zen-hideaway">
   <div class="container-fluid d-none d-sm-flex justify-content-between">
     <a class="navbar-brand d-inline-flex flex-row align-items-center" href="{reverse('website:index')}">
         <img src="{settings.STATIC_URL}website/images/logo.png" width="50" height="50" alt="Logotype for Digital Humanities Research Institute">
