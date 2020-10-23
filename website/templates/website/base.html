@@ -15,33 +15,35 @@
     {% main_navigation %}
 
     <div class="d-flex justify-content-between justify-content-end nav-scroller shadow-sm zen-hideaway" style="background-color:rgb(61 84 108);">
-      {% block secondary_menu %}{% endblock %}
+      <div class="container-xxl">
+        {% block secondary_menu %}{% endblock %}
 
-      <nav class="nav ml-auto">
-        {% if request.user.is_authenticated %}
-            <a class="nav-link text-white dropdown-toggle" href="#" id="UserDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              {% if request.user.first_name and request.user.last_name %}
-                {{ request.user.first_name }} {{ request.user.last_name }}
-              {% elif request.user.first_name %}
-                {{ request.user.first_name }}
-              {% else %}
-                {{ request.user.username }}
-              {% endif %}
-            </a>
-
-            <div class="dropdown-menu dropdown-menu-special shadow" aria-labelledby="dropdown">
-            {% include 'website/snippets/user-menu.html' %}
-                {% if request.user.is_staff %}
-                    <li><hr class="dropdown-divider"></li>
-                    {% block admin_edit %}{% endblock %}
-                    <li><hr class="dropdown-divider"></li>
-                    {% include 'website/admin-viewports.html' %}
+        <nav class="nav ml-auto">
+          {% if request.user.is_authenticated %}
+              <a class="nav-link text-white dropdown-toggle" href="#" id="UserDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {% if request.user.first_name and request.user.last_name %}
+                  {{ request.user.first_name }} {{ request.user.last_name }}
+                {% elif request.user.first_name %}
+                  {{ request.user.first_name }}
+                {% else %}
+                  {{ request.user.username }}
                 {% endif %}
-            </div>
-        {% else %}
-          {% include 'website/snippets/login-menu.html' %}
-        {% endif %}
-      </nav>
+              </a>
+
+              <div class="dropdown-menu dropdown-menu-special shadow" aria-labelledby="dropdown">
+              {% include 'website/snippets/user-menu.html' %}
+                  {% if request.user.is_staff %}
+                      <li><hr class="dropdown-divider"></li>
+                      {% block admin_edit %}{% endblock %}
+                      <li><hr class="dropdown-divider"></li>
+                      {% include 'website/admin-viewports.html' %}
+                  {% endif %}
+              </div>
+          {% else %}
+            {% include 'website/snippets/login-menu.html' %}
+          {% endif %}
+        </nav>
+      </div>
     </div>
     {% include "website/warnings/ie.html" %}
     {% include "website/instructor_requests.html" %}
