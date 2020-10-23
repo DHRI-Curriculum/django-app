@@ -2,9 +2,10 @@ from django.shortcuts import render, HttpResponse, get_object_or_404, HttpRespon
 from django.core.paginator import Paginator
 from workshop.models import Workshop, Collaboration, Blurb
 from lesson.models import Lesson
-from learner.models import Profile
+from learner.models import Profile, Progress
 from django.conf import settings
 from django.views.generic import View, DetailView, ListView
+from django.contrib import messages
 
 
 class IndexRedirect(View):
@@ -96,6 +97,23 @@ class LessonView(DetailView):
 
     self.page_obj = self.paginator.get_page(self.page_number)
     self.percentage = round(self.page_number / self.paginator.num_pages * 100)
+
+    # TODO: Check if logged in, and if so, set the Progress for the Profile + Workshop to page_number
+    if self.request.user.is_authenticated:
+      if Progress.objects.filter(profile=self.request.user.profile, workshop=workshop).exists():
+        if Progress.objects.filter(profile=self.request.user.profile, workshop=workshop).count() > 1:
+          Progress.objects.filter(profile=self.request.user.profile, workshop=workshop).delete()
+        else:
+          progress_obj = Progress.objects.get(profile=self.request.user.profile, workshop=workshop)
+          if progress_obj.page < self.page_number:
+            progress_obj.page = self.page_number
+            progress_obj.save()
+          elif progress_obj.page == self.page_number:
+            pass # we are on the same page as the progress..
+          else:
+            messages.success(self.request, f'You have already completed this lesson. <a href="?page={progress_obj.page}">Jump to the last one you completed.</a>')
+      else:
+        Progress.objects.create(profile=self.request.user.profile, workshop=workshop, page=self.page_number)
 
     return self.page_obj.object_list[0]
 

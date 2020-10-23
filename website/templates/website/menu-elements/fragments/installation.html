@@ -1,0 +1,25 @@
+<div class="col-12 col-sm-6 col-xl-4 mb-3">
+    <div class="card h-100" style="box-shadow: 0 1rem 3rem rgba(0,0,0,0.375) !important;">
+            {% for os, instruction in data.items %}
+                {% if forloop.first %}
+                    {% if instruction.image %}
+                        <div class="card-img">
+                            <a href="{% url 'install:installation' slug=instruction.slug %}" class="stretched-link"><img src="/{{ instruction.image }}" class="card-img-top" alt="{{ instruction.software.software }}"></a>
+                        </div>
+                    {% else %}
+                    {% endif %}
+                    <div class="card-img-overlay d-flex flex-column justify-content-between">
+                        <h5 class="card-title m-0 bolder"></h5>
+                        <div class="btn-group font-weight-bolder">
+                            Instructions for operating system:
+                        </div>
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                {% endif %}
+                            <a type="button" class="btn btn-primary" href="{% url 'install:installation' slug=instruction.slug %}">{{ instruction.software.operating_system }}</a>
+                {% if forloop.last %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+    </div>
+</div>
