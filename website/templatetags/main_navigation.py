@@ -25,8 +25,13 @@ def main_navigation(context):
     html = f'''
 <nav class="navbar navbar-expand-sm navbar-light bg-primary">
   <div class="container-fluid d-none d-sm-flex justify-content-between">
-    <a class="navbar-brand" href="{reverse('website:index')}">
-        <img src="{settings.STATIC_URL}website/images/logo.png" width="50" height="50" alt="#TODO">
+    <a class="navbar-brand d-inline-flex flex-row align-items-center" href="{reverse('website:index')}">
+        <img src="{settings.STATIC_URL}website/images/logo.png" width="50" height="50" alt="Logotype for Digital Humanities Research Institute">
+        <div class="d-inline-flex flex-column">
+            <div class="text-white ml-3 small d-none d-md-block">Digital Humanities Research Institute</div>
+            <div class="text-white ml-3 small d-block d-md-none">DHRI</div>
+            <div class="text-white ml-3">Curriculum</div>
+        </div>
     </a>
     <div class="">
         <div class="ml-auto collapse navbar-collapse" id="navbarSupportedContent">
