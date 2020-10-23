@@ -13,6 +13,12 @@ class Index(DetailView):
   def get_object(self):
     return self.model.objects.filter(is_homepage=True).last()
 
+  def get_context_data(self, **kwargs):
+      context = super().get_context_data(**kwargs)
+      context["object_list"] = Workshop.objects.all()
+      return context
+
+
 
 class PageView(View):
   model = Page

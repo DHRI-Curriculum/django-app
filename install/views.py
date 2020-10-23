@@ -10,7 +10,7 @@ from django.urls import reverse
 class Index(ListView):
     model = Instruction
     # template_name = 'install/index.html'
-    context_object_name = 'all_instructions'
+    # context_object_name = 'all_instructions'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

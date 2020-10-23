@@ -7,7 +7,7 @@
 
 {% block main %}
     <div class="row">
-      {% regroup all_instructions by software.software as per_software %}
+      {% regroup object_list by software.software as per_software %}
 
       {% for group in per_software %}
         {% for instruction in group.list %}

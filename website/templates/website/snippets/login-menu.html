@@ -1,6 +1,6 @@
-<a class="nav-link" href="{% url 'login' %}{% if not request.get_full_path == '/logout/' %}?next={{ request.get_full_path|urlencode }}{% endif %}" id="meta-btn">
+<a class="nav-link text-white" href="{% url 'login' %}{% if not request.get_full_path == '/logout/' %}?next={{ request.get_full_path|urlencode }}{% endif %}" id="meta-btn">
     Login
 </a>
-<a class="nav-link" href="{% url 'register' %}" id="meta-btn">
+<a class="nav-link text-white" href="{% url 'register' %}" id="meta-btn">
     Register
 </a>

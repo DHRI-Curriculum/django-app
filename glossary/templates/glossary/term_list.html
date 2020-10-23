@@ -1,10 +1,14 @@
 {% extends 'website/base.html' %}
-{% load markdownify admin_urls lessontags static crispy_forms_tags get_item glossary_navigation %}
+{% load markdownify admin_urls lessontags static crispy_forms_tags get_item glossary_navigation glossary_navigation_secondary %}
 
 {% block extra_head_material %}
   <link rel="stylesheet" href="{% static 'glossary/css/postit.css' %}">
   <link rel="stylesheet" href="{% static 'glossary/css/glossary.css' %}">
   <link rel="stylesheet" href="{% static 'glossary/css/glossary_nav.css' %}">
+{% endblock %}
+
+{% block secondary_menu %}
+    {% glossary_navigation_secondary %}
 {% endblock %}
 
 {% block main %}

@@ -13,9 +13,9 @@ register = template.Library()
 
 def get_all_objects():
     return {
-        'insights': Insight.objects.all(),
-        'workshops': Workshop.objects.all(),
-        'installations': Instruction.objects.all()
+        'insights': Insight.objects.all().order_by('title'),
+        'workshops': Workshop.objects.all().order_by('name'),
+        'installations': Instruction.objects.all().order_by('software__operating_system')
     }
 
 @register.simple_tag(takes_context=True)
