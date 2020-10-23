@@ -24,7 +24,7 @@ def main_navigation(context):
 
     html = f'''
 <nav class="navbar navbar-expand-sm navbar-light bg-primary zen-hideaway">
-  <div class="container-fluid d-none d-sm-flex justify-content-between">
+  <div class="container-xxl d-none d-sm-flex justify-content-between">
     <a class="navbar-brand d-inline-flex flex-row align-items-center" href="{reverse('website:index')}">
         <img src="{settings.STATIC_URL}website/images/logo.png" width="50" height="50" alt="Logotype for Digital Humanities Research Institute">
         <div class="d-inline-flex flex-column">
@@ -47,7 +47,7 @@ def main_navigation(context):
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
   </div>
 
-  <div class="container-fluid d-flex d-sm-none align-items-start">
+  <div class="container-xxl d-flex d-sm-none align-items-start">
       <a class="navbar-brand" href="{reverse('website:index')}">
           <img src="{settings.STATIC_URL}website/images/logo.png" width="150" height="150" alt="#TODO">
       </a>
@@ -58,7 +58,7 @@ def main_navigation(context):
           </ul>
       </div>
   </div>
-  <div class="container-fluid d-flex flex-row d-sm-none mt-4 border-top pt-2 border-dark">
+  <div class="container-xl d-flex flex-row d-sm-none mt-4 border-top pt-2 border-dark">
       <ul class="navbar-nav flex-row">
           <li><a class="d-inline-flex align-items-center p-2 text-light text-decoration-none workshop-button collapsed" style="cursor:pointer;" data-toggle="collapse" data-target="#allWorkshops" aria-controls="allWorkshops" aria-expanded="false" aria-label="Toggle all workshop navigation">Workshops</a></li>
           <li><a class="d-inline-flex align-items-center p-2 text-light text-decoration-none workshop-button collapsed" style="cursor:pointer;" data-toggle="collapse" data-target="#allInstallations" aria-controls="allInstallations" aria-expanded="false" aria-label="Toggle all installation navigation">Installations</a></li>
@@ -69,7 +69,7 @@ def main_navigation(context):
     '''
 
     #### Start mini menus
-    html += '<div id="mini-menus" class="container-fluid">'
+    html += '<div id="mini-menus"><div class="container-xxl">'
     # Workshops mini menu
     html += '''<div class="collapse row pt-0 pb-5 px-4 bg-primary" id="allWorkshops"><div class="col-12 my-3"><h5 class="text-white h4">Workshops</h5></div>'''
     for workshop in obj['workshops']:
@@ -108,6 +108,6 @@ def main_navigation(context):
     html += '</div>'
 
     #### End mini menus
-    html += '</div>'
+    html += '</div></div>'
 
     return mark_safe(html)
