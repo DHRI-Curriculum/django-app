@@ -95,7 +95,7 @@ def main_navigation(context):
     # Insights mini menu
     html += '''<div class="collapse row pt-0 pb-5 px-4 bg-primary" id="allInsights"><div class="col-12 my-3"><h5 class="text-white h4">Insights</h5></div>'''
     for insight in obj['insights']:
-        html += '<div class="col-12 col-sm-4 mb-3"><div class="card h-100" style="box-shadow: 0 1rem 3rem rgba(0,0,0,0.375) !important;">'
+        html += '<div class="col-12 col-sm-6 col-xl-4 mb-3"><div class="card h-100" style="box-shadow: 0 1rem 3rem rgba(0,0,0,0.375) !important;">'
         html += f'''<div class="card-body">
                         <h5 class="card-title m-0 bolder"><a href="{ reverse('insight:insight', kwargs={'slug':insight.slug}) }" class="stretched-link">{ insight.title }</a></h5>
                     </div>'''
