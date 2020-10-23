@@ -20,7 +20,7 @@ def get_letter_nav():
 def glossary_navigation(context):
     letter_nav = get_letter_nav()
 
-    html = '''<nav class="d-none d-md-flex justify-content-center" id="glossary-nav" aria-label="Glossary navigation"><ul class="pagination pagination-sm">'''
+    html = '''<nav class="my-4 d-none d-md-flex justify-content-center" id="glossary-nav" aria-label="Glossary navigation"><ul class="pagination pagination-sm">'''
     for letter, exists in letter_nav.items():
         disabled, aria_disabled = 'disabled', 'true'
         current = context.get('slug') == letter

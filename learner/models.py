@@ -34,3 +34,9 @@ class ProfileLink(models.Model):
 
     def __str__(self):
         return f'{self.url}'
+
+class Progress(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    workshop = models.ForeignKey('workshop.Workshop', on_delete=models.CASCADE)
+    page = models.IntegerField(default=0)
+    modified = models.DateField(auto_now=True)
