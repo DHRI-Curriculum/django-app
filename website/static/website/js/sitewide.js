@@ -31,14 +31,17 @@ document.querySelector('[data-toggle=collapse][data-target="#topNavbarToggleExte
 
 
 all_workshops_collapse().addEventListener('show.bs.collapse', () => {
+    console.log('all workshops shown!');
     if (all_installations_collapse() != null) { all_installations_collapse().hide(); }
     if (all_insights_collapse() != null) { all_insights_collapse().hide(); }
 });
 all_installations().addEventListener('show.bs.collapse', () => {
+    console.log('all installations shown!');
     if (all_workshops_collapse() != null) { all_workshops_collapse().hide(); }
     if (all_insights_collapse() != null) { all_insights_collapse().hide(); }
 });
 all_insights().addEventListener('show.bs.collapse', () => {
+    console.log('all insights shown!');
     if (all_workshops_collapse() != null) { all_workshops_collapse().hide(); }
     if (all_installations_collapse() != null) { all_installations_collapse().hide(); }
 });
