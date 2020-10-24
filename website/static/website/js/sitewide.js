@@ -69,7 +69,7 @@ all_insights()._element.addEventListener('show.bs.collapse', () => {
     if (all_installations_collapse() != null) { all_installations_collapse().hide(); }
 });
 
-top_menu_collapse().addEventListener('hide.bs.collapse', () => {
+top_menu_collapse()._element.addEventListener('hide.bs.collapse', () => {
     if (all_workshops_collapse() != null) { all_workshops_collapse().hide(); }
     if (all_installations_collapse() != null) { all_installations_collapse().hide(); }
     if (all_insights_collapse() != null) { all_insights_collapse().hide(); }
