@@ -15,6 +15,13 @@ if (top_menu_collapse() == null) {
     });
 }
 
+if (all_workshops_collapse() == null) {
+    console.log('setting up new all workshops element...')
+    new bootstrap.Collapse(all_workshops, {
+        toggle: true
+    });
+}
+
 /*
 document.querySelector('[data-toggle=collapse][data-target="#topNavbarToggleExternal"]').addEventListener('click', (evt) => {
     console.log('click detected');
