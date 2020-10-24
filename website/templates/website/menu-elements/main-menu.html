@@ -3,7 +3,7 @@
 <nav class="navbar navbar-expand-sm navbar-light bg-primary zen-hideaway flex-sm-column{% if not is_home %} collapse{% endif %}"{% if not is_home %} id="topNavbarToggleExternal"{% endif %}>
 
   <div class="container-fluid d-none d-md-flex justify-content-between">
-    <a class="navbar-brand d-inline-flex flex-row align-items-center" href="{reverse('website:index')}">
+    <a class="navbar-brand d-inline-flex flex-row align-items-center" href="{% url 'website:index' %}">
         <img src="{% static 'website/images/logo.png' %}" width="50" height="50" alt="Logotype for Digital Humanities Research Institute">
         <div class="d-inline-flex flex-column">
             <div style="color: #4a6886 !important;" class="ml-3 small d-none d-md-block">Digital Humanities Research Institute</div>
@@ -25,7 +25,7 @@
   </div>
 
   <div class="container-fluid d-flex d-md-none align-items-start">
-      <a class="navbar-brand" href="{reverse('website:index')}">
+      <a class="navbar-brand" href="{% url 'website:index' %}">
           <img src="{% static 'website/images/logo.png' %}" width="150" height="150" alt="Logotype for Digital Humanities Research Institute">
       </a>
       <div class="">
