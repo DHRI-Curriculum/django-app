@@ -30,7 +30,7 @@
       </a>
       <div class="">
           <ul class="navbar-nav flex-column">
-              <li class="d-inline-flex d-md-none"><a class="d-inline-flex align-items-center p-2 text-light text-decoration-none" href="{% url 'learner:profile' username=request.user.username %}">{{ request.user.username }}</a></li>
+              {% if request.user.is_authenticated %}<li class="d-inline-flex d-md-none"><a class="d-inline-flex align-items-center p-2 text-light text-decoration-none" href="{% url 'learner:profile' username=request.user.username %}">{{ request.user.username }}</a></li>{% endif %}
               <li><a class="d-inline-flex align-items-center p-2 text-light text-decoration-none" href="/library/">Library</a></li>
               <li><a class="d-inline-flex align-items-center p-2 text-light text-decoration-none" href="/terms/">Terms</a></li>
           </ul>

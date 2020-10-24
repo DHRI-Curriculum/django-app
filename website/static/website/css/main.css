@@ -425,5 +425,17 @@ div.dropdown-submenu {
       visibility: visible;
   }
   .nav-scroller {
-      cursor: pointer;
+      /* cursor: pointer; */
+  }
+
+  .admin-menu-part:not(:empty) {
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    padding: 0px;
+    margin-bottom: 0.3em;
+  }
+  .admin-menu-part:empty {
+    border-bottom: 1px solid #ddd;
+    padding: 0px;
+    margin: 0px 0px 7px 0px;
   }

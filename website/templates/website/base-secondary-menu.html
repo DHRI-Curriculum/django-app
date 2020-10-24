@@ -27,13 +27,6 @@
                 <li><a class="dropdown-item" href="#">Something else here</a></li>
               </ul>
             </div>
-            <!--
-              <a class="nav-link dropdown-toggle" href="#" id="UserDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ request.user.username }}</a>
-              <div class="dropdown-menu dropdown-menu-special shadow" aria-labelledby="dropdown" style=""><div class="dropdown-submenu">
-              <div class="dropdown-menu dropdown-menu-special shadow-sm">
-                  <a class="dropdown-item" href="{% url 'learner:profile' request.user.username %}">Firefox</a><a class="dropdown-item" href="/install/git-and-git-bash-windows/">Git (and Git Bash)</a>
-              <a class="nav-link" href="" id="meta-btn">{% if request.user.first_name and request.user.last_name %}{{ request.user.first_name }} {{ request.user.last_name }}{% else %}{{ request.user.username }}{% endif %}</a> | <a class="nav-link" href="{% url 'logout' %}" id="meta-btn">Log out</a>
-            -->
         {% else %}
             <a class="nav-link" href="{% url 'login' %}{% if not request.get_full_path == '/logout/' %}?next={{ request.get_full_path|urlencode }}{% endif %}" id="meta-btn">Login</a>
             <a class="nav-link" href="{% url 'register' %}" id="meta-btn">Register</a>

@@ -100,20 +100,21 @@ class LessonView(DetailView):
 
     # TODO: Check if logged in, and if so, set the Progress for the Profile + Workshop to page_number
     if self.request.user.is_authenticated:
-      if Progress.objects.filter(profile=self.request.user.profile, workshop=workshop).exists():
-        if Progress.objects.filter(profile=self.request.user.profile, workshop=workshop).count() > 1:
-          Progress.objects.filter(profile=self.request.user.profile, workshop=workshop).delete()
-        else:
-          progress_obj = Progress.objects.get(profile=self.request.user.profile, workshop=workshop)
-          if progress_obj.page < self.page_number:
-            progress_obj.page = self.page_number
-            progress_obj.save()
-          elif progress_obj.page == self.page_number:
-            pass # we are on the same page as the progress..
+      if self.request.user.profile:
+        if Progress.objects.filter(profile=self.request.user.profile, workshop=workshop).exists():
+          if Progress.objects.filter(profile=self.request.user.profile, workshop=workshop).count() > 1:
+            Progress.objects.filter(profile=self.request.user.profile, workshop=workshop).delete()
           else:
-            messages.success(self.request, f'You have already completed this lesson. <a href="?page={progress_obj.page}">Jump to the last one you completed.</a>')
-      else:
-        Progress.objects.create(profile=self.request.user.profile, workshop=workshop, page=self.page_number)
+            progress_obj = Progress.objects.get(profile=self.request.user.profile, workshop=workshop)
+            if progress_obj.page < self.page_number:
+              progress_obj.page = self.page_number
+              progress_obj.save()
+            elif progress_obj.page == self.page_number:
+              pass # we are on the same page as the progress..
+            else:
+              messages.success(self.request, f'You have already completed this lesson. <a href="?page={progress_obj.page}">Jump to the last one you completed.</a>')
+        else:
+          Progress.objects.create(profile=self.request.user.profile, workshop=workshop, page=self.page_number)
 
     return self.page_obj.object_list[0]
 

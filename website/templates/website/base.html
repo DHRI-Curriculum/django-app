@@ -16,11 +16,18 @@
 
     <div class="nav-scroller shadow-sm zen-hideaway" style="background-color:rgb(61 84 108);">
       <div class="container-xxl d-flex justify-content-between justify-content-end">
+        {% if not is_home %}
+          <nav class="nav" style="padding-left: 2rem !important;">
+            <a class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNavbarToggleExternal" aria-controls="topNavbarToggleExternal" aria-expanded="false" aria-label="Toggle navigation"></a>
+          </nav>
+        {% endif %}
+
+
         {% block secondary_menu %}{% endblock %}
 
         <nav class="nav ml-auto">
           {% if request.user.is_authenticated %}
-              <a class="nav-link text-white dropdown-toggle" href="#" id="UserDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a class="d-none d-md-block nav-link text-white dropdown-toggle" href="#" id="UserDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 {% if request.user.first_name and request.user.last_name %}
                   {{ request.user.first_name }} {{ request.user.last_name }}
                 {% elif request.user.first_name %}
@@ -33,9 +40,7 @@
               <div class="dropdown-menu dropdown-menu-special shadow" aria-labelledby="dropdown">
               {% include 'website/snippets/user-menu.html' %}
                   {% if request.user.is_staff %}
-                      <li><hr class="dropdown-divider"></li>
-                      {% block admin_edit %}{% endblock %}
-                      <li><hr class="dropdown-divider"></li>
+                    <ul class="admin-menu-part">{% block admin_edit %}{% endblock %}</ul>
                       {% include 'website/admin-viewports.html' %}
                   {% endif %}
               </div>

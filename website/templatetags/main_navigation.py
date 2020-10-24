@@ -27,7 +27,7 @@ def get_all_objects(context):
         },
         'installations': Instruction.objects.by_software()
     }
-    if context.get('user'):
+    if context.request.user.is_authenticated:
         d['workshops']['with_progress'] = get_workshops_with_progress(context.get('user').profile)
     return d
 
