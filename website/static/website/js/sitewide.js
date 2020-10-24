@@ -58,12 +58,12 @@ all_workshops_collapse()._element.addEventListener('show.bs.collapse', () => {
     if (all_installations_collapse() != null) { all_installations_collapse().hide(); }
     if (all_insights_collapse() != null) { all_insights_collapse().hide(); }
 });
-all_installations()._element.addEventListener('show.bs.collapse', () => {
+all_installations_collapse()._element.addEventListener('show.bs.collapse', () => {
     console.log('all installations shown!');
     if (all_workshops_collapse() != null) { all_workshops_collapse().hide(); }
     if (all_insights_collapse() != null) { all_insights_collapse().hide(); }
 });
-all_insights()._element.addEventListener('show.bs.collapse', () => {
+all_insights_collapse()._element.addEventListener('show.bs.collapse', () => {
     console.log('all insights shown!');
     if (all_workshops_collapse() != null) { all_workshops_collapse().hide(); }
     if (all_installations_collapse() != null) { all_installations_collapse().hide(); }
