@@ -1,8 +1,12 @@
 var top_menu = document.querySelector('#topNavbarToggleExternal');
-var top_navbar = () => { return bootstrap.Collapse.getInstance(top_menu); }
-var all_workshops = () => { return bootstrap.Collapse.getInstance(document.querySelector('#allWorkshops')); }
-var all_installations = () => { return bootstrap.Collapse.getInstance(document.querySelector('#allInstallations')); }
-var all_insights = () => { return bootstrap.Collapse.getInstance(document.querySelector('#allInsights')); }
+var all_workshops = document.querySelector('#allWorkshops');
+var all_installations = document.querySelector('#allInstallations');
+var all_insights = document.querySelector('#allInsights');
+
+var top_menu_collapse = () => { return bootstrap.Collapse.getInstance(top_menu); }
+var all_workshops_collapse = () => { return bootstrap.Collapse.getInstance(all_workshops); }
+var all_installations_collapse = () => { return bootstrap.Collapse.getInstance(all_installations); }
+var all_insights_collapse = () => { return bootstrap.Collapse.getInstance(all_insights); }
 
 
 /*
@@ -25,10 +29,24 @@ document.querySelector('[data-toggle=collapse][data-target="#topNavbarToggleExte
 });
 */
 
-top_menu.addEventListener('hide.bs.collapse', () => {
-    if (all_workshops() != null) { all_workshops().hide(); }
-    if (all_installations() != null) { all_installations().hide(); }
-    if (all_insights() != null) { all_insights().hide(); }
+
+all_workshops_collapse().addEventListener('show.bs.collapse', () => {
+    if (all_installations_collapse() != null) { all_installations_collapse().hide(); }
+    if (all_insights_collapse() != null) { all_insights_collapse().hide(); }
+});
+all_installations().addEventListener('show.bs.collapse', () => {
+    if (all_workshops_collapse() != null) { all_workshops_collapse().hide(); }
+    if (all_insights_collapse() != null) { all_insights_collapse().hide(); }
+});
+all_insights().addEventListener('show.bs.collapse', () => {
+    if (all_workshops_collapse() != null) { all_workshops_collapse().hide(); }
+    if (all_installations_collapse() != null) { all_installations_collapse().hide(); }
+});
+
+top_menu_collapse().addEventListener('hide.bs.collapse', () => {
+    if (all_workshops_collapse() != null) { all_workshops_collapse().hide(); }
+    if (all_installations_collapse() != null) { all_installations_collapse().hide(); }
+    if (all_insights_collapse() != null) { all_insights_collapse().hide(); }
 
     window.scrollTo({
         top: 0,
@@ -36,22 +54,9 @@ top_menu.addEventListener('hide.bs.collapse', () => {
     });
 } );
 
-top_menu.addEventListener('show.bs.collapse', () => {
+top_menu_collapse().addEventListener('show.bs.collapse', () => {
     window.scrollTo({
         top: 0,
         behavior: 'smooth'
     });
 } );
-
-document.querySelector('#allWorkshops').addEventListener('show.bs.collapse', () => {
-    if (all_installations() != null) { all_installations().hide(); }
-    if (all_insights() != null) { all_insights().hide(); }
-});
-document.querySelector('#allInstallations').addEventListener('show.bs.collapse', () => {
-    if (all_workshops() != null) { all_workshops().hide(); }
-    if (all_insights() != null) { all_insights().hide(); }
-});
-document.querySelector('#allInsights').addEventListener('show.bs.collapse', () => {
-    if (all_workshops() != null) { all_workshops().hide(); }
-    if (all_installations() != null) { all_installations().hide(); }
-});
