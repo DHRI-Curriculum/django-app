@@ -8,6 +8,12 @@ var all_workshops_collapse = () => { return bootstrap.Collapse.getInstance(all_w
 var all_installations_collapse = () => { return bootstrap.Collapse.getInstance(all_installations); }
 var all_insights_collapse = () => { return bootstrap.Collapse.getInstance(all_insights); }
 
+if (top_menu_collapse() == null) {
+    console.log('setting up new navbar element...')
+    new bootstrap.Collapse(top_menu, {
+        toggle: true
+    });
+}
 
 /*
 document.querySelector('[data-toggle=collapse][data-target="#topNavbarToggleExternal"]').addEventListener('click', (evt) => {
