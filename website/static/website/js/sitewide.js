@@ -8,18 +8,28 @@ var all_workshops_collapse = () => { return bootstrap.Collapse.getInstance(all_w
 var all_installations_collapse = () => { return bootstrap.Collapse.getInstance(all_installations); }
 var all_insights_collapse = () => { return bootstrap.Collapse.getInstance(all_insights); }
 
-if (top_menu_collapse() == null) {
-    console.log('setting up new navbar element...')
-    new bootstrap.Collapse(top_menu, {
-        toggle: true
-    });
+try {
+    if (top_menu_collapse() == null) {
+        console.log('setting up new navbar element...')
+        new bootstrap.Collapse(top_menu, {
+            toggle: true
+        });
+    }
+} catch (error) {
+    console.log('cannot set up navbar element');
+    console.log(error);
 }
 
-if (all_workshops_collapse() == null) {
-    console.log('setting up new all workshops element...')
-    new bootstrap.Collapse(all_workshops, {
-        toggle: true
-    });
+try {
+    if (all_workshops_collapse() == null) {
+        console.log('setting up new all workshops element...')
+        new bootstrap.Collapse(all_workshops, {
+            toggle: true
+        });
+    }
+} catch (error) {
+    console.log('cannot set up workshops element');
+    console.log(error);
 }
 
 /*
