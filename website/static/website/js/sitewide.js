@@ -32,6 +32,30 @@ try {
     console.log(error);
 }
 
+try {
+    if (all_installations_collapse() == null) {
+        console.log('setting up new all installations element...')
+        new bootstrap.Collapse(all_installations, {
+            toggle: true
+        });
+    }
+} catch (error) {
+    console.log('cannot set up installations element');
+    console.log(error);
+}
+
+try {
+    if (all_insights_collapse() == null) {
+        console.log('setting up new all insights element...')
+        new bootstrap.Collapse(all_insights, {
+            toggle: true
+        });
+    }
+} catch (error) {
+    console.log('cannot set up insights element');
+    console.log(error);
+}
+
 /*
 document.querySelector('[data-toggle=collapse][data-target="#topNavbarToggleExternal"]').addEventListener('click', (evt) => {
     console.log('click detected');
