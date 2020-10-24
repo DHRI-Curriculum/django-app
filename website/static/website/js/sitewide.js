@@ -12,7 +12,7 @@ try {
     if (top_menu_collapse() == null) {
         console.log('setting up new navbar element...')
         new bootstrap.Collapse(top_menu, {
-            toggle: true
+            toggle: false
         });
     }
 } catch (error) {
@@ -24,7 +24,7 @@ try {
     if (all_workshops_collapse() == null) {
         console.log('setting up new all workshops element...')
         new bootstrap.Collapse(all_workshops, {
-            toggle: true
+            toggle: false
         });
     }
 } catch (error) {
@@ -36,7 +36,7 @@ try {
     if (all_installations_collapse() == null) {
         console.log('setting up new all installations element...')
         new bootstrap.Collapse(all_installations, {
-            toggle: true
+            toggle: false
         });
     }
 } catch (error) {
@@ -48,7 +48,7 @@ try {
     if (all_insights_collapse() == null) {
         console.log('setting up new all insights element...')
         new bootstrap.Collapse(all_insights, {
-            toggle: true
+            toggle: false
         });
     }
 } catch (error) {
