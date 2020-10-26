@@ -25,6 +25,12 @@
     position: absolute;
     width: 100%;
     height: 100%;
+    /* backface-visibility: hidden; */
+    /* Solution from https://stackoverflow.com/questions/42744573/backface-visibility-not-working-in-safari/45145977 */
+    -webkit-perspective: 0;
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translate3d(0,0,0);
+    visibility:visible;
     backface-visibility: hidden;
     background: #ffc;
   }
