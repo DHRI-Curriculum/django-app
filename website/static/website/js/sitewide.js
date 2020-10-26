@@ -9,18 +9,6 @@ var all_installations_collapse = () => { return bootstrap.Collapse.getInstance(a
 var all_insights_collapse = () => { return bootstrap.Collapse.getInstance(all_insights); }
 
 try {
-    if (top_menu_collapse() == null) {
-        // console.log('setting up new navbar element...')
-        new bootstrap.Collapse(top_menu, {
-            toggle: false
-        });
-    }
-} catch (error) {
-    console.log('cannot set up navbar element');
-    console.log(error);
-}
-
-try {
     if (all_workshops_collapse() == null) {
         // console.log('setting up new all workshops element...')
         new bootstrap.Collapse(all_workshops, {
@@ -56,26 +44,6 @@ try {
     console.log(error);
 }
 
-/*
-document.querySelector('[data-toggle=collapse][data-target="#topNavbarToggleExternal"]').addEventListener('click', (evt) => {
-    console.log('click detected');
-    console.log(evt)
-    if (evt.target.dataset.target == '#topNavbarToggleExternal') {
-        if (top_navbar() != null) {
-            console.log('toggling navbar');
-            top_navbar().toggle();
-        } else {
-            if (top_menu != null) {
-                console.log('setting up new navbar element');
-                new bootstrap.Collapse(top_menu, {
-                    toggle: true
-                });
-            }
-        }
-    }
-});
-*/
-
 
 all_workshops_collapse()._element.addEventListener('show.bs.collapse', () => {
     console.log('all workshops shown!');
@@ -92,6 +60,20 @@ all_insights_collapse()._element.addEventListener('show.bs.collapse', () => {
     if (all_workshops_collapse() != null) { all_workshops_collapse().hide(); }
     if (all_installations_collapse() != null) { all_installations_collapse().hide(); }
 });
+
+try {
+    if (top_menu_collapse() == null && top_menu != null) {
+        // console.log('setting up new navbar element...')
+        new bootstrap.Collapse(top_menu, {
+            toggle: false
+        });
+    } else if (top_menu_collapse() == null && top_menu == null) {
+        console.log('no interactivity with top menu on this page.')
+    }
+} catch (error) {
+    console.log('cannot set up navbar element');
+    console.log(error);
+}
 
 if (top_menu_collapse() != null) {
     top_menu_collapse()._element.addEventListener('hide.bs.collapse', () => {
