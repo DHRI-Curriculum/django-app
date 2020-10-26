@@ -1,0 +1,11 @@
+<div class="collapse pt-0 pb-5 px-4 bg-primary" id="allInstallations">
+    <div class="row">
+        <div class="col-12 my-3">
+            <h5 class="text-white h4">Installations</h5>
+        </div>
+
+        {% for software, data in all.items %}
+            {% include 'website/fragments/main-navbar/fragments/installation.html' %}
+        {% endfor %}
+    </div>
+</div>

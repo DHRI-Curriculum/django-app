@@ -1,37 +1,26 @@
 {% extends 'website/base.html' %}
-{% load markdownify %}
-{% load static %}
+{% load static markdownify %}
+
 
 {% block hero %}
-<div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-  <h1 class="display-4">Library</h1>
-  {{ page.text | safe }}
-</div>
+    <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Library</h1>
+    <p class="lead">Introductory text to the library. Should live in the new pedagagogy part of the website settings.</p>
+    </div>
 {% endblock %}
 
 
-{% block admin_edit %}
-  <!-- TODO: fix this href
-  <a href="url 'admin:website_page_change' page.id  " class="text-decoration-none dropdown-item">
-    {% include 'website/snippets/bootstrap-icon.html' with icon="pen" %}<span class="ml-1 mr-4">Edit page</span>
-  </a>
-   -->
-{% endblock %}
+{% block secondary_menu %}<!-- TODO -->{% endblock %}
 
-{% block secondary_menu %}
-    <!-- {% include "library/navbar-library.html" %} -->
-{% endblock %}
 
 {% block main %}
-  <div class="container">
     <div class="row">
-
         <div class="col-12 col-sm-6 mt-4 mt-md-2 overflow-hidden">
             <h4>All Projects</h4>
             <hr />
-            <p style="font-size:1.05rem;">Here is an introductory paragraph about what "projects" mean on the website...</p>
+            <p class="lead">Here is an introductory paragraph about what "projects" mean on the website...</p>
             <div id="project-list">
-                {% include 'library/projects.html' %}
+                {% include 'library/fragments/projects.html' %}
             </div>
             <div class="text-center">
                 <a id="loadMoreProjects" class="btn btn-light btn-sm" data-page="2" data-url="/library/load-projects/" data-div="project-list">Load More</a>
@@ -42,9 +31,9 @@
         <div class="col-12 col-sm-6 mt-4 mt-md-2 overflow-hidden">
             <h4>All Readings</h4>
             <hr />
-            <p style="font-size:1.05rem;">Here is an introductory paragraph about what "readings" mean on the website...</p>
+            <p class="lead">Here is an introductory paragraph about what "readings" mean on the website...</p>
             <div id="reading-list">
-                {% include 'library/readings.html' %}
+                {% include 'library/fragments/readings.html' %}
             </div>
             <div class="text-center">
                 <a id="loadMoreReadings" class="btn btn-light btn-sm" data-page="2" data-url="/library/load-readings/" data-div="reading-list">Load More</a>
@@ -55,9 +44,9 @@
         <div class="col-12 col-sm-6 mt-4 mt-md-2 overflow-hidden">
             <h4>All Resources</h4>
             <hr />
-            <p style="font-size:1.05rem;">Here is an introductory paragraph about what "resources" mean on the website...</p>
+            <p class="lead">Here is an introductory paragraph about what "resources" mean on the website...</p>
             <div id="resource-list">
-                {% include 'library/resources.html' %}
+                {% include 'library/fragments/resources.html' %}
             </div>
             <div class="text-center">
                 <a id="loadMoreResources" class="btn btn-light btn-sm" data-page="2" data-url="/library/load-resources/" data-div="resource-list">Load More</a>
@@ -68,9 +57,9 @@
         <div class="col-12 col-sm-6 mt-4 mt-md-2 overflow-hidden">
             <h4>All Tutorials</h4>
             <hr />
-            <p style="font-size:1.05rem;">Here is an introductory paragraph about what "tutorials" mean on the website...</p>
+            <p class="lead">Here is an introductory paragraph about what "tutorials" mean on the website...</p>
             <div id="tutorial-list">
-                {% include 'library/tutorials.html' %}
+                {% include 'library/fragments/tutorials.html' %}
             </div>
             <div class="text-center">
                 <a id="loadMoreTutorials" class="btn btn-light btn-sm" data-page="2" data-url="/library/load-tutorials/" data-div="tutorial-list">Load More</a>
@@ -78,7 +67,6 @@
         </div>
 
     </div>
-  </div>
 {% endblock %}
 
 

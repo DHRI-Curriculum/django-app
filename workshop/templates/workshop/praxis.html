@@ -1,14 +1,14 @@
 {% extends 'website/base.html' %}
-{% load markdownify admin_urls lessontags static %}
+{% load markdownify static %}
 
 {% block header %}
-    {% include 'workshop/workshop-wide-elements/navbar.html' %}
+    {% include 'workshop/fragments/workshop-wide/navbar.html' %}
 {% endblock %}
 
 {% block hero %}
 <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-left">
   <div id="hero">
-    {% include 'workshop/praxis-elements/hero.html' %}
+    {% include 'workshop/fragments/praxis/hero.html' %}
     <div class="lead mt-4">
       {{ praxis.intro | markdown | safe }}
     </div>

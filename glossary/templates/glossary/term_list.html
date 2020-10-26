@@ -1,10 +1,9 @@
 {% extends 'website/base.html' %}
-{% load markdownify admin_urls lessontags static crispy_forms_tags get_item glossary_navigation glossary_navigation_secondary %}
+{% load markdownify static glossary_navigation glossary_navigation_secondary %}
 
 {% block extra_head_material %}
   <link rel="stylesheet" href="{% static 'glossary/css/postit.css' %}">
   <link rel="stylesheet" href="{% static 'glossary/css/glossary.css' %}">
-  <link rel="stylesheet" href="{% static 'glossary/css/glossary_nav.css' %}">
 {% endblock %}
 
 {% block secondary_menu %}{% glossary_navigation_secondary %}{% endblock %}
@@ -12,60 +11,64 @@
 {% block main %}
     {% glossary_navigation %}
 
-    <h2>Terms starting with {{ slug }}</h2>
-    <ul>
-        {% for term in object_list %}
-            <li><a href="#{{ term.slug }}" data-scroll="{{ term.slug }}">{{ term }}</a></li>
-        {% endfor %}
-    </ul>
+    <div class="row">
+        <div class="col-12 col-xl-8">
+            <h2>Terms starting with {{ slug }}</h2>
+            <ul>
+                {% for term in object_list %}
+                    <li><a href="#{{ term.slug }}" data-scroll="{{ term.slug }}">{{ term }}</a></li>
+                {% endfor %}
+            </ul>
 
-    {% for term in object_list %}
-        <h3 class="h4 term_header pt-5 pb-2 mb-2 border-bottom"><a class="text-decoration-none text-black ml-1 term_header_link" name="{{ term.slug }}" href="{% url 'glossary:term' term.slug %}">{{ term.term }}</a></h3>
-        <p class="lead small">{{ term.explication | markdown | safe }}</p>
-        {% if term.readings.count or term.tutorials.count %}
-            <div class="row py-2">
-                {% if term.readings.count %}
-                    <div class="{% if term.readings.count and term.tutorials.count %}col-6{% else %}col-12{% endif %}">
-                        <h4 class="h5">Readings</h4>
-                        {% for reading in term.readings.all %}
-                            <div class="p-2 my-3 rounded-lg linked-comment">
-                                <a class="text-decoration-none" target="_blank" href="{{ reading.url }}">
-                                    {{ reading.title }}{% include 'website/snippets/bootstrap-icon.html' with icon="arrow-up-right-circle" %}
-                                </a>
-                                {% if reading.annotation %}<div class="small"><strong>Annotation:</strong> {{ reading.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
+            {% for term in object_list %}
+                <h3 class="h4 term_header pt-5 pb-2 mb-2 border-bottom"><a class="text-decoration-none text-black ml-1 term_header_link" name="{{ term.slug }}" href="{% url 'glossary:term' term.slug %}">{{ term.term }}</a></h3>
+                <p class="lead small">{{ term.explication | markdown | safe }}</p>
+                {% if term.readings.count or term.tutorials.count %}
+                    <div class="row py-2">
+                        {% if term.readings.count %}
+                            <div class="{% if term.readings.count and term.tutorials.count %}col-6{% else %}col-12{% endif %}">
+                                <h4 class="h5">Readings</h4>
+                                {% for reading in term.readings.all %}
+                                    <div class="p-2 my-3 rounded-lg linked-comment">
+                                        <a class="text-decoration-none" target="_blank" href="{{ reading.url }}">
+                                            {{ reading.title }}{% include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" %}
+                                        </a>
+                                        {% if reading.annotation %}<div class="small"><strong>Annotation:</strong> {{ reading.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
+                                    </div>
+                                {% endfor %}
                             </div>
-                        {% endfor %}
+                        {% endif %}
+
+                        {% if term.tutorials.count %}
+                            <div class="{% if term.readings.count and term.tutorials.count %}col-6{% else %}col-12{% endif %}">
+                                <h4 class="h5">Tutorials</h4>
+                                {% for tutorial in term.tutorials.all %}
+                                    <div class="p-2 my-3 rounded-lg linked-comment">
+                                        <a class="text-decoration-none" target="_blank" href="{{ tutorial.url }}">
+                                            {{ tutorial.label }}{% include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" %}
+                                        </a>
+                                        {% if tutorial.annotation %}<div class="small"><strong>Annotation:</strong> {{ tutorial.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                     </div>
                 {% endif %}
+            {% endfor %}
+        </div>
 
-                {% if term.tutorials.count %}
-                    <div class="{% if term.readings.count and term.tutorials.count %}col-6{% else %}col-12{% endif %}">
-                        <h4 class="h5">Tutorials</h4>
-                        {% for tutorial in term.tutorials.all %}
-                            <div class="p-2 my-3 rounded-lg linked-comment">
-                                <a class="text-decoration-none" target="_blank" href="{{ tutorial.url }}">
-                                    {{ tutorial.label }}{% include 'website/snippets/bootstrap-icon.html' with icon="arrow-up-right-circle" %}
-                                </a>
-                                {% if tutorial.annotation %}<div class="small"><strong>Annotation:</strong> {{ tutorial.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
-                            </div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
+        {% if random_items %}
+            <div class="col-12 col-xl-4 pt-5 pt-xl-0 mt-5 mt-xl-0 border-top border-xl-none">
+                <h3 class="border-bottom pb-2 mb-2">Test your knowledge</h3>
+                <p class="lead">Can you define the terms below? Hover over each of them to read a preview of the definitions.</p>
+                <div class="post-its row d-inline-flex">
+                {% for term in random_items %}
+                    {% include 'glossary/fragments/postit.html' %}
+                {% endfor %}
+                </div>
             </div>
         {% endif %}
-    {% endfor %}
-
-    {% if random_items %}
-      <div class="pt-5 mt-5 border-top">
-        <h3 class="border-bottom pb-2 mb-2">Test your knowledge</h3>
-        <p class="lead">Can you define the terms below? Hover over each of them to read a preview of the definitions.</p>
-        <div class="post-its row d-inline-flex">
-          {% for term in random_items %}
-            {% include 'glossary/snippets/postit.html' %}
-          {% endfor %}
-        </div>
-      </div>
-    {% endif %}
+    </div>
 
 {% endblock %}
 

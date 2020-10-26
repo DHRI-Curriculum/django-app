@@ -1,6 +1,0 @@
-#glossary-nav .pagination::before {
-    content: 'Glossary';
-    padding-right: 1em;
-    font-weight: bold;
-    color: #ddd;
-}

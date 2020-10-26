@@ -84,8 +84,8 @@ class Register(View):
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': account_activation_token.make_token(user),
             }
-            text_message = get_template('learner/new_acc_email.txt').render(context)
-            html_message = get_template('learner/new_acc_email.html').render(context)
+            text_message = get_template('learner/fragments/email/new_acc_email.txt').render(context)
+            html_message = get_template('learner/fragments/email/new_acc_email.html').render(context)
             to_email = self.form.cleaned_data.get('email')
             email = EmailMultiAlternatives('Activate your account', text_message, 'Digital Humanities Research Institute <info@dhinstitutes.org>', [to_email])
             email.attach_alternative(html_message, "text/html")
@@ -171,8 +171,7 @@ class InstructorRequests(View):
 
     def post(self, request, *args, **kwargs):
         instructor = Group.objects.get(name='Instructor')
-        username = request.headers.get('username')
-        user = get_object_or_404(User, username=username)
+        user = get_object_or_404(User, username=request.user.username)
 
         user.groups.add(instructor)
         user.profile.instructor_requested = False

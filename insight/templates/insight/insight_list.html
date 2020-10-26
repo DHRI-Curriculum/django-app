@@ -1,13 +1,4 @@
 {% extends 'website/base.html' %}
-{% load markdownify admin_urls lessontags static crispy_forms_tags %}
-
-{% block leftmenu %}
-    {% include 'insight/left-menu/content.html' %}
-{% endblock %}
-
-{% block secondary_menu %}
-    <!-- #TODO -->
-{% endblock %}
 
 {% block main %}
     <div class="row">
@@ -24,7 +15,4 @@
             </div>
         {% endfor %}
     </div>
-{% endblock %}
-
-{% block javascript %}
 {% endblock %}

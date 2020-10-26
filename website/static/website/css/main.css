@@ -440,3 +440,9 @@ div.dropdown-submenu {
     padding: 0px;
     margin: 0px 0px 7px 0px;
   }
+
+@media (min-width: 1200px) {
+    .border-xl-none {
+        border: none !important;
+    }
+}

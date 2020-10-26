@@ -1,68 +1,11 @@
 {% extends 'website/base.html' %}
-{% load markdownify admin_urls lessontags static %}
+{% load markdownify static %}
+
 
 {% block extra_head_material %}
-  <link rel="stylesheet" href="{% static 'glossary/css/postit.css' %}">
-  <link rel="stylesheet" href="{% static 'workshop/css/frontmatter.css' %}">
+    <link rel="stylesheet" href="{% static 'glossary/css/postit.css' %}">
+    <link rel="stylesheet" href="{% static 'workshop/css/frontmatter.css' %}">
 {% endblock %}
-
-{% block leftmenu %}
-  {% include 'workshop/leftmenu/content.html' %}
-{% endblock %}
-
-{% block secondary_menu %}
-    <!-- #TODO -->
-{% endblock %}
-
-{% block before_content %}
-  {% if not request.user.is_authenticated %}
-    <div class="w-100" id="no-login">
-      <div class="alert alert-info">Note that you are not logged in. In order to save progress and interact with the workshops, you need to <a href="{% url 'login' %}">login</a> or <a href="{% url 'register' %}">create an account</a>.</div>
-    </div>
-  {% endif %}
-{% endblock %}
-
-{% block header %}
-  <!--{% include 'workshop/workshop-wide-elements/navbar.html' %}-->
-{% endblock %}
-
-
-{% block hero %}
-
-  <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-left">
-
-    <div class="d-flex justify-content-end border-bottom mb-3">
-    {% if request.user.is_authenticated %}
-      <div class="py-2 px-3" id="favorite">
-          {% if user_favorited %}
-              <strong>Favorite:</strong> <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-star-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg" id="remove-favorite" data-url="/learner/favorite/" data-workshop="{{ workshop.slug }}" data-div="favorite">
-                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" style="pointer-events: none;" />
-              </svg>
-            </a>
-          {% else %}
-            <strong>Favorite:</strong> <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-star" fill="currentColor" xmlns="http://www.w3.org/2000/svg" id="add-favorite" data-url="/learner/favorite/" data-workshop="{{ workshop.slug }}" data-div="favorite">
-              <path fill-rule="evenodd" d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767l-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288l1.847-3.658 1.846 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.564.564 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" style="pointer-events: none;" />
-            </svg>
-          {% endif %}
-        </div>
-      {% endif %}
-      <div class="py-2 px-3" id="views">
-        <p><strong>Views:</strong> {{ workshop.views }}</p>
-      </div>
-      <div class="py-2 px-2" id="time_estimated">
-        <span class="text-muted small">This workshop is estimated to take {{ frontmatter.estimated_time }} hours to complete.</span>
-      </div>
-      <div class="py-2 px-3" id="updated">
-        <p><strong>Last updated:</strong> {{ workshop.updated }}</p>
-      </div>
-    </div>
-    <div id="hero">
-      {% include 'workshop/frontmatter-elements/hero.html' %}
-    </div><!-- /hero -->
-  </div>
-
-{% endblock %}
-
 
 
 {% block admin_edit %}
@@ -72,8 +15,45 @@
 {% endblock %}
 
 
-{% block main %}
+{% block before_content %}
+    {% if not request.user.is_authenticated %}
+        <div class="w-100" id="no-login">
+            <div class="alert alert-info">Note that you are not logged in. In order to save progress and interact with the workshops, you need to <a href="{% url 'login' %}">login</a> or <a href="{% url 'register' %}">create an account</a>.</div>
+        </div>
+    {% endif %}
+{% endblock %}
 
+
+{% block hero %}
+    <div class="d-flex justify-content-end border-bottom pt-3 mb-3" id="workshop-meta">
+        {% if request.user.is_authenticated %}
+            <div class="py-2 px-3" id="favorite">
+                {% if user_favorited %}
+                    <strong>Favorite:</strong> <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-star-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg" id="remove-favorite" data-url="/learner/favorite/" data-workshop="{{ workshop.slug }}" data-div="favorite"><path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.283.95l-3.523 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z" style="pointer-events: none;" /></svg></a>
+                {% else %}
+                    <strong>Favorite:</strong> <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-star" fill="currentColor" xmlns="http://www.w3.org/2000/svg" id="add-favorite" data-url="/learner/favorite/" data-workshop="{{ workshop.slug }}" data-div="favorite"><path fill-rule="evenodd" d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767l-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288l1.847-3.658 1.846 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.564.564 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z" style="pointer-events: none;" /></svg>
+                {% endif %}
+            </div>
+        {% endif %}
+        <div class="py-2 px-3" id="views">
+            <p><strong>Views:</strong> {{ workshop.views }}</p>
+        </div>
+        <div class="py-2 px-2" id="time_estimated">
+            <span class="text-muted small">This workshop is estimated to take {{ frontmatter.estimated_time }} hours to complete.</span>
+        </div>
+        <div class="py-2 px-3" id="updated">
+            <p><strong>Last updated:</strong> {{ workshop.updated }}</p>
+        </div>
+    </div>
+
+    <div id="hero">
+        {% include 'workshop/fragments/frontmatter/hero.html' %}
+    </div><!-- /hero -->
+
+{% endblock %}
+
+
+{% block main %}
   {% if current_authors %}
     <div class="row">
       <div class="col-12">
@@ -173,7 +153,7 @@
         {% for reading in frontmatter.readings.all %}
           <div class="p-2 my-3 rounded-lg linked-comment">
             <a class="text-decoration-none" target="_blank" href="{{ reading.url }}">
-              {{ reading.title }}{% include 'website/snippets/bootstrap-icon.html' with icon="arrow-up-right-circle" %}
+              {{ reading.title }}{% include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" %}
             </a>
             {% if reading.annotation %}<div class="small"><strong>Annotation:</strong> {{ reading.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
           </div>
@@ -190,7 +170,7 @@
           <div class="p-2 my-3 rounded-lg linked-comment">
             {% if project.url != None %}
               <a class="text-decoration-none" target="_blank" href="{{ project.url }}">
-                {{ project.title }}{% include 'website/snippets/bootstrap-icon.html' with icon="arrow-up-right-circle" %}
+                {{ project.title }}{% include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" %}
               </a>
             {% endif %}
             {% if project.annotation %}
@@ -209,7 +189,7 @@
           <div class="border-bottom py-1 my-3"><h4>Contributing Authors</h4></div>
           <div class="py-1 my-1"><h6>Past</h6></div>
           {% for c in past_authors %}
-            {% include 'workshop/frontmatter-elements/collaborator_row.html' %}
+            {% include 'workshop/fragments/frontmatter/collaborator_row.html' %}
           {% endfor %}
         </div>
       {% endif %}
@@ -220,13 +200,13 @@
           {% if current_reviewers %}
             <div class="py-1 my-1"><h6>Current</h6></div>
             {% for c in current_reviewers %}
-              {% include 'workshop/frontmatter-elements/collaborator_row.html' %}
+              {% include 'workshop/fragments/frontmatter/collaborator_row.html' %}
             {% endfor %}
           {% endif %}
           {% if past_reviewers %}
             <div class="py-1 my-1"><h6>Past</h6></div>
             {% for c in past_reviewers %}
-              {% include 'workshop/frontmatter-elements/collaborator_row.html' %}
+              {% include 'workshop/fragments/frontmatter/collaborator_row.html' %}
             {% endfor %}
           {% endif %}
         </div>
@@ -238,13 +218,13 @@
           {% if current_editors %}
             <div class="py-1 my-1"><h6>Current</h6></div>
             {% for c in current_editors %}
-              {% include 'workshop/frontmatter-elements/collaborator_row.html' %}
+              {% include 'workshop/fragments/frontmatter/collaborator_row.html' %}
             {% endfor %}
           {% endif %}
           {% if past_editors %}
             <div class="py-1 my-1"><h6>Past</h6></div>
             {% for c in past_editors %}
-              {% include 'workshop/frontmatter-elements/collaborator_row.html' %}
+              {% include 'workshop/fragments/frontmatter/collaborator_row.html' %}
             {% endfor %}
           {% endif %}
         </div>
@@ -260,7 +240,7 @@
     var additional_terms = ''
       {% for term in all_terms %}
         {% if forloop.counter > 6 %}
-            additional_terms += `{% include 'glossary/snippets/postit.html' %}`;
+            additional_terms += `{% include 'glossary/fragments/postit.html' %}`;
         {% endif %}
       {% endfor %}
     more_terms_button = document.querySelector('a[data-target="#moreTerms"]')
