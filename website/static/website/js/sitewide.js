@@ -93,34 +93,39 @@ all_insights_collapse()._element.addEventListener('show.bs.collapse', () => {
     if (all_installations_collapse() != null) { all_installations_collapse().hide(); }
 });
 
-top_menu_collapse()._element.addEventListener('hide.bs.collapse', () => {
-    if (all_workshops_collapse() != null) { all_workshops_collapse().hide(); }
-    if (all_installations_collapse() != null) { all_installations_collapse().hide(); }
-    if (all_insights_collapse() != null) { all_insights_collapse().hide(); }
+if (top_menu_collapse() != 'null') {
+    top_menu_collapse()._element.addEventListener('hide.bs.collapse', () => {
+        if (all_workshops_collapse() != null) { all_workshops_collapse().hide(); }
+        if (all_installations_collapse() != null) { all_installations_collapse().hide(); }
+        if (all_insights_collapse() != null) { all_insights_collapse().hide(); }
 
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-} );
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    } );
 
-top_menu_collapse()._element.addEventListener('show.bs.collapse', () => {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-} );
+    top_menu_collapse()._element.addEventListener('show.bs.collapse', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    } );
 
-document.getElementById('secondaryMenu').addEventListener('click', evt => {
-    if (evt.delegateTarget == undefined) {
-        if (evt.target.tagName == 'A') {
-            console.log('clicked an actual link..');
+    document.getElementById('secondaryMenu').addEventListener('click', evt => {
+        if (evt.delegateTarget == undefined) {
+            if (evt.target.tagName == 'A') {
+                console.log('clicked an actual link..');
+            } else {
+                top_menu_collapse().toggle();
+                evt.stopPropagation();
+            }
         } else {
-            top_menu_collapse().toggle();
-            evt.stopPropagation();
+            console.log('clicked an actual thing...!');
         }
-    } else {
-        console.log('clicked an actual thing...!');
     }
+    );
+} else {
+    console.log('navbar interactivity not initiated because it is not collapsible.');
 }
-);
+
