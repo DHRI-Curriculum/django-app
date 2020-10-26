@@ -6,9 +6,6 @@ from django.views.generic.detail import DetailView
 import random
 
 
-
-
-
 class TermList(ListView):
     model = Term
 
@@ -32,7 +29,6 @@ class TermList(ListView):
 
 class TermDetail(DetailView):
     model = Term
-    # template_name = 'glossary/term.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
