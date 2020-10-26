@@ -21,7 +21,7 @@
                 {% for instruction in instructions %}
                     {% if forloop.first %}<p class="text-muted" style="font-size:60%">{{ instruction.what | striptags | safe }}</p>{% endif %}
                     {% if forloop.first %}<div class="btn-group" role="group" aria-label="install-group-sm-{{ software }}">{% endif %}
-                    <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'install:installation' slug=instruction.slug %}">{{ instruction.software.operating_system }}</a>
+                    <a class="btn btn-sm btn-outline-secondary" href="{% url 'install:installation' slug=instruction.slug %}">{{ instruction.software.operating_system }}</a>
                     {% if forloop.last %}</div>{% endif %}
                 {% endfor %}
             </div>
@@ -35,7 +35,7 @@
                     <div class="py-3">
                         <strong class="h5">{{ instruction.software.software }}</strong>
                         <p class="text-muted" style="font-size:60%">{{ instruction.what | striptags | safe }}</p>
-                        <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'install:installation' slug=instruction.slug %}">Installation instructions</a>
+                        <a class="btn btn-sm btn-outline-secondary" href="{% url 'install:installation' slug=instruction.slug %}">Installation instructions</a>
                     </div>
                 {% endfor %}
             </div>
@@ -46,7 +46,7 @@
                     <div class="py-3">
                         <strong class="h5">{{ instruction.software.software }}</strong>
                         <p class="text-muted" style="font-size:60%">{{ instruction.what | striptags | safe }}</p>
-                        <a type="button" class="btn btn-sm btn-outline-secondary" href="{% url 'install:installation' slug=instruction.slug %}">Installation instructions</a>
+                        <a class="btn btn-sm btn-outline-secondary" href="{% url 'install:installation' slug=instruction.slug %}">Installation instructions</a>
                     </div>
                 {% endfor %}
             </div>

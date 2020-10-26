@@ -25,7 +25,6 @@
                         <div class="btn-group" role="group" aria-label="install-group{{ software }}">
             {% endif %}
                         <a href="{% url 'install:installation' slug=instruction.slug %}" class="card-link">Install for {{ instruction.software.operating_system }}</a>
-                        <!-- <a type="button" class="btn btn-sm btn-primary" href="{% url 'install:installation' slug=instruction.slug %}">{{ instruction.software.operating_system }}</a> -->
             {% if forloop.last %}
                         </div>
                     </div>
