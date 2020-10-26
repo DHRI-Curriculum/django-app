@@ -93,7 +93,7 @@ all_insights_collapse()._element.addEventListener('show.bs.collapse', () => {
     if (all_installations_collapse() != null) { all_installations_collapse().hide(); }
 });
 
-if (top_menu_collapse() != 'null') {
+if (top_menu_collapse() != null) {
     top_menu_collapse()._element.addEventListener('hide.bs.collapse', () => {
         if (all_workshops_collapse() != null) { all_workshops_collapse().hide(); }
         if (all_installations_collapse() != null) { all_installations_collapse().hide(); }
