@@ -107,6 +107,8 @@ if (top_menu_collapse() != null) {
         }
     }
     );
+
+    document.getElementById('secondaryMenu').style.cursor = 'pointer';
 } else {
     console.log('navbar interactivity not initiated because it is not collapsible.');
 }
