@@ -7,7 +7,7 @@ from . import views
 app_name = 'library'
 
 urlpatterns = [
-  # path('', views.index, name='index'),
+  path('', views.Index.as_view(), name='index'),
   path('project/<str:pk>/', views.project_details, name='project_details'),
   path('load-projects/', views.lazyload_projects, name='project_lazyloader'),
   path('load-readings/', views.lazyload_readings, name='reading_lazyloader'),
