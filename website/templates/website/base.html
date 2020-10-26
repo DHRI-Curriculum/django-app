@@ -4,13 +4,13 @@
 <!doctype html>
 <html lang="en">
   <head>
-    {% include "website/head.html" %}
+    {% include "website/fragments/head.html" %}
     <!-- Extra head material -->
     {% block extra_head_material %}{% endblock %}
   </head>
   <body>
 
-    {% if version|startswith:"0." %}{% include "website/warnings/alpha.html" %}{% endif %}
+    {% if version|startswith:"0." %}{% include "website/fragments/warnings/alpha.html" %}{% endif %}
 
     {% main_navigation %}
 
@@ -38,39 +38,40 @@
               </a>
 
               <div class="dropdown-menu dropdown-menu-special shadow" aria-labelledby="dropdown">
-              {% include 'website/snippets/user-menu.html' %}
+              {% include 'website/fragments/user-menu.html' %}
                   {% if request.user.is_staff %}
                     <ul class="admin-menu-part">{% block admin_edit %}{% endblock %}</ul>
-                      {% include 'website/admin-viewports.html' %}
+                      {% include 'website/fragments/admin-menu/viewports.html' %}
                   {% endif %}
               </div>
           {% else %}
-            {% include 'website/snippets/login-menu.html' %}
+            {% include 'website/fragments/login-menu.html' %}
           {% endif %}
         </nav>
       </div>
     </div>
-    {% include "website/warnings/ie.html" %}
-    {% include "website/instructor_requests.html" %}
+    {% include "website/fragments/warnings/ie.html" %}
+    {% include "website/fragments/instructor_requests.html" %}
 
-    <div id="content" class="container-xxl mx-auto py-2">
+    <div id="content" class="container-xxl">
       {% block header %}{% endblock %}
-      {% include "website/messages.html" %}
+      {% include "website/fragments/messages.html" %}
+      {% block before_content %}{% endblock %}
       {% block hero %}{% endblock %}
       {% block main %}{% endblock %}
     </div>
 
     <div id="footer" class="container mx-auto">
       <footer class="pt-4 my-5 border-top zen-hideaway">
-        {% include 'website/footer.html' %}
+        {% include 'website/fragments/footer.html' %}
       </footer>
     </div>
 
-    {% include 'website/index-elements/logos.html' %}
+    {% include 'website/fragments/logos.html' %}
 
-    {% include "website/bootstrap.html" %}
+    {% include "website/fragments/bootstrap.html" %}
     <script src="{% static 'website/js/sitewide.js' %}"></script>
     <!-- Page specific Javascript -->{% block javascript %}{% endblock %}
-    {% include "website/instructor_requests_toaster.html" %}
+    {% include "website/fragments/instructor_requests_toaster.html" %}
   </body>
 </html>

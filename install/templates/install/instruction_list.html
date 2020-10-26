@@ -1,9 +1,7 @@
 {% extends 'website/base.html' %}
-{% load markdownify admin_urls lessontags static crispy_forms_tags install_navigation %}
+{% load install_navigation %}
 
-{% block secondary_menu %}
-    {% install_navigation %}
-{% endblock %}
+{% block secondary_menu %}{% install_navigation %}{% endblock %}
 
 {% block main %}
     <div class="row">
@@ -32,19 +30,4 @@
             {% endfor %}
       {% endfor %}
     </div>
-{% endblock %}
-
-
-{% block javascript %}
-<script>
-    var triggerTabList = [].slice.call(document.querySelectorAll('#leftmenu a'))
-    triggerTabList.forEach(function (triggerEl) {
-    var tabTrigger = new bootstrap.Tab(triggerEl)
-
-    triggerEl.addEventListener('click', function (e) {
-        e.preventDefault()
-        tabTrigger.show()
-    })
-    })
-</script>
 {% endblock %}

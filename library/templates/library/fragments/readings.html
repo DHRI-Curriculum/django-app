@@ -1,0 +1,21 @@
+{% load markdownify %}
+
+{% for reading in readings %}
+    <div class="p-2 my-3 rounded-lg linked-comment">
+        <a class="text-decoration-none" target="_blank" href="{{ reading.url }}">
+            {{ reading.title }}
+            {% include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" %}
+        </a>
+        <div class="small">
+            {% if reading.annotation %}
+                <strong>Annotation:</strong> {{ reading.annotation | stringformat:"s" | markdown | safe | striptags }}
+            {% endif %}
+            {% for praxis in reading.praxis.all %}
+                <span class="badge bg-dark"><a class="text-white text-decoration-none" href="{% url 'workshop:frontmatter' slug=praxis.workshop.slug %}">{{ praxis.workshop }}</a></span>
+            {% endfor %}
+            {% for frontmatter in reading.frontmatters.all %}
+                <span class="badge bg-dark"><a class="text-white text-decoration-none" href="{% url 'workshop:frontmatter' slug=frontmatter.workshop.slug %}">{{ frontmatter.workshop }}</a></span>
+            {% endfor %}
+        </div>
+    </div>
+{% endfor %}

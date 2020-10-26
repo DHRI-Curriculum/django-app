@@ -1,22 +1,22 @@
 {% extends 'website/base.html' %}
-{% load markdownify admin_urls lessontags static crispy_forms_tags glossary_navigation glossary_navigation_secondary %}
+{% load markdownify static glossary_navigation glossary_navigation_secondary %}
 
 
 {% block admin_edit %}
-  <a class="text-decoration-none dropdown-item admin-link-django" target="_blank" href="{% url 'admin:index' %}">Django admin</a>
-  <a class="text-decoration-none dropdown-item admin-link-edit" target="_blank" href="{% url 'admin:glossary_term_change' term.id %}">Edit {{ term.term }}</a>
+    <a class="text-decoration-none dropdown-item admin-link-django" target="_blank" href="{% url 'admin:index' %}">Django admin</a>
+    <a class="text-decoration-none dropdown-item admin-link-edit" target="_blank" href="{% url 'admin:glossary_term_change' term.id %}">Edit {{ term.term }}</a>
 {% endblock %}
-
 
 
 {% block extra_head_material %}
-  <link rel="stylesheet" href="{% static 'lesson/css/pygment.css' %}">
-  <link rel="stylesheet" href="{% static 'website/css/github.css' %}">
-  <link rel="stylesheet" href="{% static 'glossary/css/glossary.css' %}">
-  <link rel="stylesheet" href="{% static 'glossary/css/glossary_nav.css' %}">
+    <link rel="stylesheet" href="{% static 'lesson/css/pygment.css' %}">
+    <link rel="stylesheet" href="{% static 'website/css/github.css' %}">
+    <link rel="stylesheet" href="{% static 'glossary/css/glossary.css' %}">
 {% endblock %}
 
+
 {% block secondary_menu %}{% glossary_navigation_secondary %}{% endblock %}
+
 
 {% block main %}
     {% glossary_navigation %}
@@ -38,7 +38,7 @@
                             {% for reading in term.readings.all %}
                                 <div class="p-2 my-3 rounded-lg linked-comment">
                                     <a class="text-decoration-none" target="_blank" href="{{ reading.url }}">
-                                        {{ reading.title }}{% include 'website/snippets/bootstrap-icon.html' with icon="arrow-up-right-circle" %}
+                                        {{ reading.title }}{% include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" %}
                                     </a>
                                     {% if reading.annotation %}<div class="small"><strong>Annotation:</strong> {{ reading.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
                                 </div>
@@ -52,7 +52,7 @@
                             {% for tutorial in term.tutorials.all %}
                                 <div class="p-2 my-3 rounded-lg linked-comment">
                                     <a class="text-decoration-none" target="_blank" href="{{ tutorial.url }}">
-                                        {{ tutorial.label }}{% include 'website/snippets/bootstrap-icon.html' with icon="arrow-up-right-circle" %}
+                                        {{ tutorial.label }}{% include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" %}
                                     </a>
                                     {% if tutorial.annotation %}<div class="small"><strong>Annotation:</strong> {{ tutorial.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
                                 </div>

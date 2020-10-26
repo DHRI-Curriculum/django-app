@@ -1,5 +1,5 @@
 {% extends 'website/base.html' %}
-{% load markdownify admin_urls lessontags static %}
+{% load markdownify static %}
 
 {% block extra_head_material %}
   <link rel="stylesheet" href="{% static 'glossary/css/postit.css' %}">
@@ -107,7 +107,7 @@
 {% endblock extra_head_material %}
 
 {% block header %}
-  {% include 'workshop/workshop-wide-elements/navbar.html' %}
+  {% include 'workshop/fragments/workshop-wide/navbar.html' %}
 {% endblock %}
 
 {% block hero %}
@@ -120,30 +120,21 @@
 {% endblock %}
 
 {% block main %}
-  {% include 'lesson/lesson-elements/next-prev.html' %}
-
+  {% include 'lesson/fragments/next-prev.html' %}
   <div class="row">
-
     <div class="markdown-body col-12 py-3" id="lesson-content">
-
       <h1>{{ lesson.order }}. {{ lesson.title }}</h1>
-
       <div class="lesson-text py-3">
         {{ lesson.text | markdown | safe }}
       </div>
     </div>
-
     <div class="col-12 py-3" id="lesson-extra-content">
-        {% include 'lesson/lesson-elements/evaluation.html' %}
-        {% include 'lesson/lesson-elements/report-error.html' %}
+        {% include 'lesson/fragments/evaluation.html' %}
+        {% include 'lesson/fragments/report-error.html' %}
     </div>
-
   </div>
-
-  {% include 'lesson/lesson-elements/pagination.html' %}
-  {% include 'lesson/lesson-elements/progress.html' %}
-
-
+  {% include 'lesson/fragments/pagination.html' %}
+  {% include 'lesson/fragments/progress.html' %}
 {% endblock %}
 
 

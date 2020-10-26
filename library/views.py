@@ -34,7 +34,7 @@ def lazyload_projects(request):
         projects = paginator.page(paginator.num_pages)
 
     projects_html = loader.render_to_string(
-        'library/projects.html',
+        'library/fragments/projects.html',
         {'projects': projects}
     )
     output_data = { 'html': projects_html, 'has_next': projects.has_next() }
@@ -52,7 +52,7 @@ def lazyload_readings(request):
         readings = paginator.page(paginator.num_pages)
 
     html = loader.render_to_string(
-        'library/readings.html',
+        'library/fragments/readings.html',
         {'readings': readings}
     )
     output_data = { 'html': html, 'has_next': readings.has_next() }
@@ -70,7 +70,7 @@ def lazyload_resources(request):
         resources = paginator.page(paginator.num_pages)
 
     html = loader.render_to_string(
-        'library/resources.html',
+        'library/fragments/resources.html',
         {'resources': resources}
     )
     output_data = { 'html': html, 'has_next': resources.has_next() }
@@ -88,7 +88,7 @@ def lazyload_tutorials(request):
         tutorials = paginator.page(paginator.num_pages)
 
     html = loader.render_to_string(
-        'library/tutorials.html',
+        'library/fragments/tutorials.html',
         {'tutorials': tutorials}
     )
     output_data = { 'html': html, 'has_next': tutorials.has_next() }

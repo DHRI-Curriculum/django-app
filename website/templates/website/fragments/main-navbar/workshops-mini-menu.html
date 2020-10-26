@@ -1,0 +1,23 @@
+<div class="collapse pt-0 pb-5 px-4 bg-primary" id="allWorkshops">
+    {% if request.user.is_authenticated %}
+        <div class="row border-bottom">
+            <div class="col-12 my-3">
+                <h5 class="text-white h4">Your Workshops</h5>
+            </div>
+
+            {% for workshop in with_progress %}
+                {% include 'website/fragments/main-navbar/fragments/workshop.html' %}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-12 my-3">
+            <h5 class="text-white h4">{% if request.user.is_authenticated %}All {% endif %}Workshops</h5>
+        </div>
+
+        {% for workshop in all %}
+            {% include 'website/fragments/main-navbar/fragments/workshop.html' %}
+        {% endfor %}
+    </div>
+</div>

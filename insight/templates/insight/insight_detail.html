@@ -1,13 +1,4 @@
 {% extends 'website/base.html' %}
-{% load markdownify admin_urls lessontags static crispy_forms_tags %}
-
-{% block leftmenu %}
-    {% include 'insight/left-menu/content.html' %}
-{% endblock %}
-
-{% block secondary_menu %}
-    <!-- #TODO -->
-{% endblock %}
 
 {% block admin_edit %}
   <a class="text-decoration-none dropdown-item admin-link-edit" target="_blank" href="{% url 'admin:insight_insight_change' insight.id %}">Edit</a>
@@ -40,9 +31,4 @@
         {% endfor %}
     </div>
     {% endfor %}
-{% endblock %}
-
-
-{% block javascript %}
-
 {% endblock %}

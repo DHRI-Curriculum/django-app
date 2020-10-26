@@ -3,22 +3,22 @@
 <!doctype html>
 <html lang="en">
   <head>
-    {% include "website/head.html" %}
+    {% include "website/fragments/head.html" %}
     <!-- Extra head material -->
     {% block extra_head_material %}{% endblock %}
   </head>
   <body>
-    {% include "website/navbar-simple.html" %}
-    {% include "website/warnings/ie.html" %}
+    {% include "website/fragments/main-navbar/simple.html" %}
+    {% include "website/fragments/warnings/ie.html" %}
 
     <div id="content" class="container mx-auto py-2">
-      {% include "website/messages.html" %}
+      {% include "website/fragments/messages.html" %}
       {% block main %}{% endblock %}
     </div>
 
-    {% include "website/bootstrap.html" %}
+    {% include "website/fragments/bootstrap.html" %}
     <script src="{% static 'website/js/sitewide.js' %}"></script>
     <!-- Page specific Javascript -->{% block javascript %}{% endblock %}
-    {% include "website/instructor_requests_toaster.html" %}
+    {% include "website/fragments/instructor_requests_toaster.html" %}
   </body>
 </html>
