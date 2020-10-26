@@ -113,10 +113,8 @@ top_menu_collapse()._element.addEventListener('show.bs.collapse', () => {
 
 document.getElementById('secondaryMenu').addEventListener('click', evt => {
     if (evt.delegateTarget == undefined) {
-        console.log('clicked nowhere!');
+        top_menu_collapse().toggle();
         evt.stopPropagation();
-    } else if (evt.delegateTarget.id == 'userDropdown') {
-        console.log('clicked dropdown!')
     } else {
         console.log('clicked an actual thing...!')
     }
