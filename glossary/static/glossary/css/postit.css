@@ -13,6 +13,7 @@
     width: 100%;
     height: 100%;
     transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
     transition: all 500ms linear;
     text-overflow: clip;
   }
