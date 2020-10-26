@@ -111,7 +111,7 @@ top_menu_collapse().addEventListener('show.bs.collapse', () => {
     });
 } );
 
-document.getElementById('nav-scroller').addEventListener('click', d => {
+document.getElementById('secondaryMenu').addEventListener('click', d => {
     if (d.delegateTarget == undefined) {
         console.log('clicked nowhere!');
     }
