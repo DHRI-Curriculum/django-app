@@ -2,7 +2,7 @@ from backend import models
 from django.conf import settings
 import os
 
-VERSION = '0.6'
+VERSION = '0.7'
 
 AUTO_REPOS = [
     ('command-line', 'v2.0'),
