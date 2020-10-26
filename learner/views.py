@@ -66,6 +66,8 @@ class Register(View):
     form = LearnerRegisterForm()
 
     def get(self, request):
+        if request.user.is_authenticated:
+            return redirect('website:index')
         return render(request, 'learner/register.html', {'form': self.form})
 
     def post(self, request):
