@@ -776,7 +776,7 @@ class LessonParser():
                                 log.log(f"Found a link to an installation instruction for a software that was found in the site's installation instructions ({slug}). Added link to {link_url}.")
                             else:
                                 log.warning(f"Found a link to an installation instruction for a software that cannot be found in the site's installation instructions ({slug}). Will add link to general installation instead. You may want to add this installation instruction to the /install/ repo on GitHub.")
-                                link['href'] = '/install/'
+                                link['href'] = reverse('install:index')
 
                         elif workshop == 'insights':
                             slug = OUTBOUND_CLEAR.split('/')[-1].split('.md')[0]
@@ -793,10 +793,10 @@ class LessonParser():
                                     link['href'] = url
                                     log.log(f'Found a link to an insight that corresponded to an existing insight on the site. Adding...')
                                 else:
-                                    link['href'] = '/insight/'
+                                    link['href'] = reverse('insight:index')
                                     log.warning(f"Could not interpret result when searching for an insight on the site ({slug}). Result generated was: {s}. Will add link to general insights instead. You may want to add this term to the /insight/ repo on GitHub.")
                             else:
-                                link['href'] = '/insight/'
+                                link['href'] = reverse('insight:index')
                                 log.warning(f"Could not find an insight on the site ({slug}). Result generated was: {s}. Will add link to general insights instead. You may want to add this term to the /insight/ repo on GitHub.")
 
                         elif workshop == 'glossary':
@@ -814,11 +814,11 @@ class LessonParser():
                                     link['href'] = url
                                     log.log(f'Found a link to the glossary that corresponded to a term existing on the site. Adding...')
                                 else:
-                                    link['href'] = '/terms/'
+                                    link['href'] = reverse('glossary:index')
                                     log.warning(f"Could not interpret result when searching for a term in the site's glossary ({slug}). Result generated was: {s}. Will add link to general glossary instead. You may want to add this term to the /glossary/ repo on GitHub.")
                             else:
+                                link['href'] = reverse('glossary:index')
                                 log.warning(f"Found a link to a term that cannot be found in the site's glossary ({slug}). Will add link to general glossary instead. You may want to add this term to the /glossary/ repo on GitHub.")
-                                link['href'] = '/terms/'
 
                         else:
                             log.warning(f"The lesson `{title}` links to other workshop/root curriculum: {REPO_CLEAR} —> {OUTBOUND_CLEAR}")
