@@ -25,7 +25,7 @@
 
         {% block secondary_menu %}{% endblock %}
 
-        <div class="nav ml-auto">s
+        <div class="nav ml-auto">
           {% if request.user.is_authenticated %}
               <a class="d-none d-md-block nav-link text-white dropdown-toggle pr-0" href="#" id="UserDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 {% if request.user.first_name and request.user.last_name %}
