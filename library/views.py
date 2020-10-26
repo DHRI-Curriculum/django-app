@@ -3,12 +3,24 @@ from django.template import loader
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.http import JsonResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.generic import ListView
+
 
 from .models import Reading, Resource, Tutorial, Project
 
 
 payload = dict()
 
+
+class Index(ListView):
+    models = [Reading, Resource, Tutorial, Project]
+    template_name = 'library/index.html'
+
+    def get_queryset(self):
+        _ = dict()
+        for model in self.models:
+            _[model._meta.verbose_name_plural] = model.objects.all()
+        return(_)
 
 def lazyload_projects(request):
     page = request.headers.get('page')
