@@ -7,10 +7,10 @@ from django.urls import reverse
 
 class Index(ListView):
     model = Instruction
+    template_name = 'install/instruction_list.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        return context
+    def get_queryset(self):
+        return self.model.objects.by_software()
 
 
 class Detail(DetailView):
