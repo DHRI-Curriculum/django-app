@@ -3,6 +3,7 @@
 
 {% block extra_head_material %}
   <link rel="stylesheet" href="{% static 'glossary/css/postit.css' %}">
+  <link rel="stylesheet" href="{% static 'workshop/css/frontmatter.css' %}">
 {% endblock %}
 
 {% block leftmenu %}
@@ -255,6 +256,23 @@
 
 
 {% block javascript %}
+  <script>
+    var additional_terms = ''
+      {% for term in all_terms %}
+        {% if forloop.counter > 6 %}
+            additional_terms += `{% include 'glossary/snippets/postit.html' %}`;
+        {% endif %}
+      {% endfor %}
+    more_terms_button = document.querySelector('a[data-target="#moreTerms"]')
+    if (more_terms_button) {
+      more_terms_button.addEventListener('click', () => {
+        more_terms_button.ariaExpanded = true
+        document.querySelector('#moreBtn').classList.add('d-none');
+        document.querySelector('#moreBtn').classList.remove('d-flex');
+        document.querySelector('#moreTerms').innerHTML += additional_terms;
+      });
+    }
+  </script>
   <script src="{% static 'workshop/js/navbar.js' %}" crossorigin="anonymous"></script>
   <script src="{% static 'workshop/js/favorite.js' %}" crossorigin="anonymous"></script>
 {% endblock %}

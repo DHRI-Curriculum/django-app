@@ -1,4 +1,4 @@
-#post-it-container {
+.post-it-container {
     position: relative;
     margin: 25px;
     width: 10em;
@@ -6,17 +6,17 @@
     z-index: 1;
     float:left;
   }
-  #post-it-container {
+  .post-it-container {
     perspective: 1000px;
   }
-  #post-it-card {
+  .post-it-card {
     width: 100%;
     height: 100%;
     transform-style: preserve-3d;
     transition: all 500ms linear;
     text-overflow: clip;
   }
-  #post-it-container:hover #post-it-card {
+  .post-it-container:hover .post-it-card {
     transform: rotateY(180deg);
     cursor:pointer;
   }
@@ -26,9 +26,18 @@
     height: 100%;
     backface-visibility: hidden;
     background: #ffc;
+    display: -webkit-box !important;
+    display: -ms-flexbox !important;
+    display: flex !important;
+    -webkit-box-pack: center !important;
+    -ms-flex-pack: center !important;
+    justify-content: center !important;
+    -webkit-box-align: center !important;
+    -ms-flex-align: center !important;
+    align-items: center !important;
   }
   .face.back {
-    display: block;
+    display: block !important;
     transform: rotateY(180deg);
     box-sizing: border-box;
     font-size:0.7rem;
@@ -40,34 +49,32 @@
   div.term {
   color: #151515;
   display: block;
-  height: 100%;
-  width: 100%;
   text-align: center;
   font-size: 0.8rem;
   }
   
-  #post-its div#post-it-container:nth-child(1) {
+  .post-its div.post-it-container:nth-child(1) {
     -o-transform:rotate(-5deg);
     -webkit-transform:rotate(-5deg);
     -moz-transform:rotate(-5deg);
     position:relative;
     top:-1px;
   }
-  #post-its div#post-it-container:nth-child(even) {
+  .post-its div.post-it-container:nth-child(even) {
     -o-transform:rotate(4deg);
     -webkit-transform:rotate(4deg);
     -moz-transform:rotate(4deg);
     position:relative;
     top:5px;
   }
-  #post-its div#post-it-container:nth-child(4n) {
+  .post-its div.post-it-container:nth-child(4n) {
     -o-transform:rotate(-3deg);
     -webkit-transform:rotate(-3deg);
     -moz-transform:rotate(-3deg);
     position:relative;
     top:-5px;
   }
-  #post-its div#post-it-container:nth-child(7n) {
+  .post-its div.post-it-container:nth-child(7n) {
     -o-transform:rotate(5deg);
     -webkit-transform:rotate(5deg);
     -moz-transform:rotate(5deg);
