@@ -32,3 +32,8 @@ document.getElementById('loadMoreProjects').addEventListener('click', function(e
 document.getElementById('loadMoreReadings').addEventListener('click', function(e) { load_more(e); });
 document.getElementById('loadMoreTutorials').addEventListener('click', function(e) { load_more(e); });
 document.getElementById('loadMoreResources').addEventListener('click', function(e) { load_more(e); });
+
+document.getElementById('loadMoreProjects').click();
+document.getElementById('loadMoreReadings').click();
+document.getElementById('loadMoreTutorials').click();
+document.getElementById('loadMoreResources').click();
