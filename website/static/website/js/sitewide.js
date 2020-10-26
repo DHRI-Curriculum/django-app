@@ -110,3 +110,10 @@ top_menu_collapse().addEventListener('show.bs.collapse', () => {
         behavior: 'smooth'
     });
 } );
+
+document.getElementById('nav-scroller').addEventListener('click', d => {
+    if (d.delegateTarget == undefined) {
+        console.log('clicked nowhere!');
+    }
+}
+);
