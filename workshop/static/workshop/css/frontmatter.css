@@ -1,0 +1,7 @@
+a[data-target='#moreTerms']:hover {
+    color: white !important;
+}
+
+a[data-target="#moreTerms"][aria-expanded="true"] {
+    display: none !important;
+}

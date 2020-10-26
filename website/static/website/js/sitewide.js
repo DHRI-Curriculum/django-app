@@ -10,7 +10,7 @@ var all_insights_collapse = () => { return bootstrap.Collapse.getInstance(all_in
 
 try {
     if (top_menu_collapse() == null) {
-        console.log('setting up new navbar element...')
+        // console.log('setting up new navbar element...')
         new bootstrap.Collapse(top_menu, {
             toggle: false
         });
@@ -22,7 +22,7 @@ try {
 
 try {
     if (all_workshops_collapse() == null) {
-        console.log('setting up new all workshops element...')
+        // console.log('setting up new all workshops element...')
         new bootstrap.Collapse(all_workshops, {
             toggle: false
         });
@@ -34,7 +34,7 @@ try {
 
 try {
     if (all_installations_collapse() == null) {
-        console.log('setting up new all installations element...')
+        // console.log('setting up new all installations element...')
         new bootstrap.Collapse(all_installations, {
             toggle: false
         });
@@ -46,7 +46,7 @@ try {
 
 try {
     if (all_insights_collapse() == null) {
-        console.log('setting up new all insights element...')
+        // console.log('setting up new all insights element...')
         new bootstrap.Collapse(all_insights, {
             toggle: false
         });
