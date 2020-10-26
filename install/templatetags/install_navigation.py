@@ -14,7 +14,7 @@ def install_navigation(context):
     # Opening
     html = '<nav class="nav">'
 
-    html += '<a class="nav-link text-primary" href="/install/"><strong>Installations</strong></a>' # TODO: replace with reverse
+    html += f'<a class="nav-link text-primary" href="{reverse("install:index")}"><strong>Installations</strong></a>'
 
     # By software
     html += '<a class="nav-link dropdown-toggle text-white" href="#" id="installBySoftware" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">By Software</a>'
