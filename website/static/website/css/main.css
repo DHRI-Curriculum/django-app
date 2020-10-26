@@ -390,6 +390,7 @@ div.dropdown-submenu {
 }
 .workshop-button:not(.collapsed) {
     font-weight: 700;
+    border-bottom: 1px #dddddd2b solid;
 }
 
 .navbar-toggler[data-target="#topNavbarToggleExternal"]:not([aria-expanded=true])::before {

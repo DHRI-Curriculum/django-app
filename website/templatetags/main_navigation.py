@@ -38,7 +38,7 @@ def main_navigation(context):
     html = get_template('website/menu-elements/main-menu.html').render({'request': context.request, 'is_home': context.request.get_full_path() == '/'}) # Warning: is_home is also defined in a context processor
 
     #### Start mini menus
-    html += '<div id="mini-menus"><div class="container-xxl">'
+    html += '<div id="mini-menus" class="bg-primary"><div class="container-xxl">'
 
     # Workshops mini menu
     html += get_template('website/menu-elements/workshops-mini-menu.html').render({'with_progress': obj['workshops']['with_progress'], 'all': obj['workshops']['all']})
