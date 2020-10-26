@@ -33,7 +33,7 @@
             </div>
             {% if num_terms > 6 %}
                 <div id="moreBtn" class="d-flex p-2 justify-content-center align-items-center">
-                    <a class="btn btn-sm btn-outline-primary p-2 btn btn-outline-primary d-inline-flex justify-content-center align-items-center" type="button" data-target="#moreTerms" aria-expanded="false" aria-controls="moreTerms"><svg width="1em" height="1em" viewBox="0 0 16 16" class="mr-1 bi bi-plus-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"></path></svg> {{ num_terms }} terms</a>
+                    <a class="btn btn-sm btn-outline-primary p-2 btn btn-outline-primary d-inline-flex justify-content-center align-items-center" data-target="#moreTerms" aria-expanded="false" aria-controls="moreTerms"><svg width="1em" height="1em" viewBox="0 0 16 16" class="mr-1 bi bi-plus-circle-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3v-3z"></path></svg> {{ num_terms }} terms</a>
                 </div>
             {% endif %}
         {% endif %}
@@ -42,5 +42,5 @@
 
 
 <div class="d-flex align-items-end flex-column">
-    <a href="{% url 'workshop:frontmatter' workshop.slug %}lessons/" type="button" class="btn btn-success btn-lg text-light">Get started</a>
+    <a href="{% url 'workshop:frontmatter' workshop.slug %}lessons/" class="btn btn-success btn-lg text-light">Get started</a>
 </div>
