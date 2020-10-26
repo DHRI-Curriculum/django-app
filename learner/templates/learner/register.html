@@ -3,7 +3,12 @@
 
 {% block main %}
     <div class="row py-4">
-        <div class="col-12">
+        <div class="col-4 py-5 my-5">
+            {% if request.user.is_authenticated %}
+            <div class="border-top pt-3 mt-3">
+                <p>It looks like you are already logged in. <a href="{% url 'logout' %}">Log out before you try to register as another user.</p>
+            </div>
+            {% else %}
             <form method="POST">{% csrf_token %}
                 <fieldset class="form-group">
                     <legend class="border-bottom mb-4">Become a learner</legend>
@@ -13,9 +18,10 @@
                     <button class="btn btn-outline-info" type="submit">Sign Up</button>
                 </div>
             </form>
-            <div class="border-top pt-3">
+            <div class="border-top pt-3 mt-3">
                 <small class="text-muted">Already have an account? <a class="ml-2" href="">Sign in here</a>.</small>
             </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

@@ -1,4 +1,4 @@
 {% if request.user.is_authenticated %}
     <a class="dropdown-item" href="{% url 'learner:profile' request.user.username %}">Profile</a>
-    <a class="dropdown-item" href="{% url 'admin:logout' %}">Log out</a>
+    <a class="dropdown-item" href="{% url 'logout' %}">Log out</a>
 {% endif %}
