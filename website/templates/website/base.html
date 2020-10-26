@@ -14,20 +14,20 @@
 
     {% main_navigation %}
 
-    <div class="nav-scroller shadow-sm zen-hideaway" style="background-color:rgb(61 84 108);" id="secondaryMenu">
+    <nav class="nav-scroller shadow-sm zen-hideaway" style="background-color:rgb(61 84 108);" id="secondaryMenu">
       <div class="container-xxl d-flex justify-content-between justify-content-end">
         {% if not is_home %}
-          <nav class="nav" style="padding-left: 2rem !important;">
+          <div class="nav">
             <a class="navbar-toggler" data-toggle="collapse" data-target="#topNavbarToggleExternal" aria-controls="topNavbarToggleExternal" aria-expanded="false" aria-label="Toggle navigation"></a>
-          </nav>
+          </div>
         {% endif %}
 
 
         {% block secondary_menu %}{% endblock %}
 
-        <nav class="nav ml-auto">
+        <div class="nav ml-auto">s
           {% if request.user.is_authenticated %}
-              <a class="d-none d-md-block nav-link text-white dropdown-toggle" href="#" id="UserDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a class="d-none d-md-block nav-link text-white dropdown-toggle pr-0" href="#" id="UserDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 {% if request.user.first_name and request.user.last_name %}
                   {{ request.user.first_name }} {{ request.user.last_name }}
                 {% elif request.user.first_name %}
@@ -47,9 +47,9 @@
           {% else %}
             {% include 'website/fragments/login-menu.html' %}
           {% endif %}
-        </nav>
+        </div>
       </div>
-    </div>
+    </nav>
     {% include "website/fragments/warnings/ie.html" %}
     {% include "website/fragments/instructor_requests.html" %}
 
