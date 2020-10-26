@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.com/DHRI-Curriculum/django-app.svg?token=qsoYACcVqJuqMoXfJy84&branch=alpha-6)](https://travis-ci.com/DHRI-Curriculum/django-app)
 
-This is the alpha 6 version of the DHRI's curriculum website (created as a django app).
+This is the alpha 7 version of the DHRI's curriculum website (created as a django app).
 
 ---
 
@@ -25,7 +25,7 @@ In order to explain the workflow of what happens in the application, here is a v
 
 ![Visualization of the flow](_docs/django-flow.png)
 
-When the **end user** sends a HTTP request to the server, **Django** (in reality, Django's `wsgi` application, but we will not get into that now) will handle the request, and use its internal settings to send appropriate queries to the **backend database**. In this `alpha-3` version, the database backend is a sqlite database, but in a future version we will use MySQL or PostgreSQL. The database will send back its results, and Django will send the response to its **template generator**, which will create the response (in HTML format, in most cases, to the end user).
+When the **end user** sends a HTTP request to the server, **Django** (in reality, Django's `wsgi` application, but we will not get into that now) will handle the request, and use its internal settings to send appropriate queries to the **backend database**. In this version (and the previous one), the database backend is a MySQL database. The database will send back its results, and Django will send the response to its **template generator**, which will create the response (in HTML format, in most cases, to the end user).
 
 On the **administrator**'s side, we can interact with django through the built-in `manage.py` command, via the command line. With our Django application comes a custom-built command that can run through Django's `manage.py`, and it's called `downloaddata`. The easiest way to run it, is to run `python manage.py downloaddata --wipe --all` (for more information about this command, see [Populate Database](_docs/populate.md)).
 
