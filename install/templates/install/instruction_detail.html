@@ -12,13 +12,13 @@
 {% block before_content %}
 
         {% if 'macintosh' in request.META.HTTP_USER_AGENT.lower and not 'mac' in instruction.software.operating_system.lower %}
-            <div class="w-100" id="no-login">
+            <div class="w-100 py-5" id="no-login">
                 <div class="alert alert-info">
                     Note that you are viewing instructions for {{ instruction.software.operating_system }} but you are on a macOS computer. <strong><a href="{% url 'install:installation' slug=other_os_slug %}">Click here to visit the installation instructions for your computer.</a></strong>
                 </div>
             </div>
         {% elif 'windows' in request.META.HTTP_USER_AGENT.lower and not 'windows' in instruction.software.operating_system.lower %}
-            <div class="w-100" id="no-login">
+            <div class="w-100 py-5" id="no-login">
                 <div class="alert alert-info">
                     Note that you are viewing instructions for {{ instruction.software.operating_system }} but you are on a Windows computer. <strong><a href="{% url 'install:installation' slug=other_os_slug %}">Click here to visit the installation instructions for your computer.</a></strong>
                 </div>
