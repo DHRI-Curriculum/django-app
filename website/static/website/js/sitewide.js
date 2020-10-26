@@ -113,10 +113,14 @@ top_menu_collapse()._element.addEventListener('show.bs.collapse', () => {
 
 document.getElementById('secondaryMenu').addEventListener('click', evt => {
     if (evt.delegateTarget == undefined) {
-        top_menu_collapse().toggle();
-        evt.stopPropagation();
+        if (evt.target.tagName == 'A') {
+            console.log('clicked an actual link..');
+        } else {
+            top_menu_collapse().toggle();
+            evt.stopPropagation();
+        }
     } else {
-        console.log('clicked an actual thing...!')
+        console.log('clicked an actual thing...!');
     }
 }
 );
