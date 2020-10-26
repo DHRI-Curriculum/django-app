@@ -104,7 +104,7 @@ top_menu_collapse()._element.addEventListener('hide.bs.collapse', () => {
     });
 } );
 
-top_menu_collapse().addEventListener('show.bs.collapse', () => {
+top_menu_collapse()._element.addEventListener('show.bs.collapse', () => {
     window.scrollTo({
         top: 0,
         behavior: 'smooth'
