@@ -7,6 +7,7 @@ class Insight(models.Model):
     slug = models.CharField(max_length=200, blank=True)
     software = models.ManyToManyField(Software)
     text = models.TextField(blank=True, null=True)
+    # TODO: Add image field
 
     def save(self, *args, **kwargs):
         _ = self.title.replace('-',' ').replace('/',' ')

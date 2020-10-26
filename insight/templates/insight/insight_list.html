@@ -15,7 +15,7 @@
             <div class="col-lg-6 px-3 py-3">
                 <div class="card text-center h-100">
                     <div class="card-body">
-                        <img src="https://cdn.searchenginejournal.com/wp-content/uploads/2020/06/how-to-use-python-to-monitor-and-measure-website-performance-5ed76ef838ff3-760x400.png" class="card-img-top" alt="<!-- TODO -->">
+                        <img src="https://cdn.searchenginejournal.com/wp-content/uploads/2020/06/how-to-use-python-to-monitor-and-measure-website-performance-5ed76ef838ff3-760x400.png" class="card-img-top" alt="{{ insight.title }}">
                         <h5 class="card-title pt-3">{{ insight.title }}</h5>
                         <p class="card-text">{{ insight.text | safe }}</p>
                         <a type="button" class="btn btn-sm btn-primary stretched-link" href="{% url 'insight:insight' insight.slug %}">Start</a>
