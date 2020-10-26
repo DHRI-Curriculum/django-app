@@ -3,11 +3,11 @@
 
 {% block main %}
     <div class="row py-4 justify-content-center">
-        <div class="col-4">
+        <div class="col-4 py-5 my-5">
             {% if request.user.is_authenticated %}
                 You are already logged in.
             {% else %}
-                <form method="POST">{% csrf_token %}
+                <form method="POST" class="p-4 bg-light rounded-lg">{% csrf_token %}
                     <fieldset class="form-group">
                         <legend class="border-bottom mb-4">Log in</legend>
                         {{ form | crispy }}
@@ -16,7 +16,7 @@
                         <button class="btn btn-outline-info" type="submit">Log in</button>
                     </div>
                 </form>
-                <div class="border-top pt-3">
+                <div class="border-top pt-3 mt-5">
                     <small class="text-muted">Need an account? <a class="ml-2" href="{% url 'register' %}">Register here</a>.</small>
                 </div>
             {% endif %}
