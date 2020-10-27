@@ -37,13 +37,6 @@
                 {% endif %}
               </a>
 
-          {% else %}
-            {% include 'website/fragments/login-menu.html' %}
-          {% endif %}
-        </div>
-      </div>
-    </nav>
-          {% if request.user.is_authenticated %}
               <div class="dropdown-menu dropdown-menu-special shadow" aria-labelledby="dropdown">
               {% include 'website/fragments/user-menu.html' %}
                   {% if request.user.is_staff %}
@@ -51,9 +44,12 @@
                       {% include 'website/fragments/admin-menu/viewports.html' %}
                   {% endif %}
               </div>
+          {% else %}
+            {% include 'website/fragments/login-menu.html' %}
           {% endif %}
-
-
+        </div>
+      </div>
+    </nav>
     {% include "website/fragments/warnings/ie.html" %}
     {% include "website/fragments/instructor_requests.html" %}
 
