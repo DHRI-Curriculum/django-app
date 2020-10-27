@@ -24,6 +24,15 @@
 
 
         {% block secondary_menu %}{% endblock %}
+          {% if request.user.is_authenticated %}
+              <div class="dropdown-menu dropdown-menu-special shadow" aria-labelledby="dropdown">
+              {% include 'website/fragments/user-menu.html' %}
+                  {% if request.user.is_staff %}
+                    <ul class="admin-menu-part">{% block admin_edit %}{% endblock %}</ul>
+                      {% include 'website/fragments/admin-menu/viewports.html' %}
+                  {% endif %}
+              </div>
+          {% endif %}
 
         <div class="nav ml-auto">
           {% if request.user.is_authenticated %}
@@ -37,13 +46,6 @@
                 {% endif %}
               </a>
 
-              <div class="dropdown-menu dropdown-menu-special shadow" aria-labelledby="dropdown">
-              {% include 'website/fragments/user-menu.html' %}
-                  {% if request.user.is_staff %}
-                    <ul class="admin-menu-part">{% block admin_edit %}{% endblock %}</ul>
-                      {% include 'website/fragments/admin-menu/viewports.html' %}
-                  {% endif %}
-              </div>
           {% else %}
             {% include 'website/fragments/login-menu.html' %}
           {% endif %}
