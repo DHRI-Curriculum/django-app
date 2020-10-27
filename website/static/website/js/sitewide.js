@@ -110,7 +110,7 @@ if (top_menu_collapse() != null) {
 
     document.getElementById('secondaryMenu').style.cursor = 'pointer';
 } else {
-    console.log('navbar interactivity not initiated because it is not collapsible.');
+    console.log('normal navbar interactivity not initiated because it is not collapsible.');
 
     document.getElementById('secondaryMenu').addEventListener('click', evt => {
         if (evt.delegateTarget == undefined) {
@@ -125,5 +125,7 @@ if (top_menu_collapse() != null) {
             }
         }
     });
+
+    document.getElementById('secondaryMenu').style.cursor = 'pointer';
 }
 
