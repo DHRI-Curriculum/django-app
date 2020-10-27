@@ -288,7 +288,7 @@ div#admin {
     /* position: relative; */
     z-index: 2;
     height: auto;
-    overflow-y: hidden;
+    /* overflow-y: hidden; <—— interferes with popup */
 }
 
 .dropdown-menu-special {
