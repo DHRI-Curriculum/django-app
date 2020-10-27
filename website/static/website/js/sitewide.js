@@ -111,5 +111,19 @@ if (top_menu_collapse() != null) {
     document.getElementById('secondaryMenu').style.cursor = 'pointer';
 } else {
     console.log('navbar interactivity not initiated because it is not collapsible.');
+
+    document.getElementById('secondaryMenu').addEventListener('click', evt => {
+        if (evt.delegateTarget == undefined) {
+            if (evt.target.tagName == 'A') {
+                console.log('clicked an actual link..');
+            } else {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+                evt.stopPropagation();
+            }
+        }
+    });
 }
 
