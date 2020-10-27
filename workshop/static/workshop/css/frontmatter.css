@@ -5,3 +5,20 @@ a[data-target='#moreTerms']:hover {
 a[data-target="#moreTerms"][aria-expanded="true"] {
     display: none !important;
 }
+
+.border-top-double {
+    border-top: 6px double #dee2e6 !important;
+}
+
+.sidebar {
+    font-size: 85%;
+}
+
+a[data-term='true'] {
+    transition: all 0.3s ease-in-out;
+}
+
+a[data-term='true']:hover {
+    -webkit-box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
+}
