@@ -1,16 +1,25 @@
 {% extends 'website/base.html' %}
-{% load markdownify %}
+{% load markdownify static snippet %}
 
-
-{% block hero %}
-<div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-left">
-    <div id="hero">
-      {% include 'website/fragments-index/hero.html' %}
-    </div><!-- /hero -->
-  </div>
+{% block before_container %}
+  <section class="jumbotron px-4 py-5" style="border-radius: unset; background-image: url({% static 'website/images/bg-pattern.png' %});">
+    <div class="container-xxl">
+      <div class="d-flex align-items-center">
+        <img src="{% static 'website/images/logo.png' %}" class="img-fluid mr-4" style="max-height:150px;" alt="Graphic that depicts: Digital Humanities Research Institute logotype">
+        <div class="text-primary">
+          <h1 class="h2 mb-3">Further Expanding Digital Humanities Communities of Practice</h1>
+          <p style="font-size:1.2rem;">The Digital Humanities Research Institute (DHRI) is an intensive, community-oriented, and foundational approach to learning technical skills in service of humanities teaching and learning. You can read more about the project on <a href="//dhinstitutes.org">our main website</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 {% endblock %}
 
 {% block main %}
+<h1 class="h3 dhri-hero">Digital Humanities Research Institute</h1>
+<h1 class="h2 display-4">Curriculum Website</h1>
+  {% snippet "introduction-website" %}
+  {% snippet "introduction-curriculum" %}
   <h2>All workshops</h2>
   <div class="row" data-masonry='{"percentPosition": true }'>
       {% for workshop in object_list %}

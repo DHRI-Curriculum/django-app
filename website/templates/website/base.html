@@ -53,13 +53,16 @@
     {% include "website/fragments/warnings/ie.html" %}
     {% include "website/fragments/instructor_requests.html" %}
 
-    <div id="content" class="container-xxl px-3 py-3 px-md-5 py-md-5">
-      {% block header %}{% endblock %}
-      {% include "website/fragments/messages.html" %}
-      {% block before_content %}{% endblock %}
-      {% block hero %}{% endblock %}
-      {% block main %}{% endblock %}
-    </div>
+    {% block before_container %}{% endblock %}
+    <section id="content">
+      <div class="container-xxl{% if not is_home %} px-3 py-3 px-md-5 py-md-5{% endif %}">
+        {% block header %}{% endblock %}
+        {% include "website/fragments/messages.html" %}
+        {% block before_content %}{% endblock %}
+        {% block hero %}{% endblock %}
+        {% block main %}{% endblock %}
+      </div>
+    </section>
 
     {% include 'website/fragments/logos.html' %}
 
