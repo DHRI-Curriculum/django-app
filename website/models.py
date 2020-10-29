@@ -2,7 +2,6 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-
 class Page(models.Model):
     class Template(models.TextChoices):
         STANDARD = 'website/page.html', _('Standard')
@@ -12,8 +11,17 @@ class Page(models.Model):
     name = models.CharField(max_length=200)
     slug = models.CharField(max_length=200, blank=True)
     text = models.TextField()
-    template = models.CharField(max_length=100, choices=Template.choices, default=Template.STANDARD)
+    template = models.CharField(
+        max_length=100, choices=Template.choices, default=Template.STANDARD)
     is_homepage = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.name}'
+
+
+class Snippet(models.Model):
+    identifier = models.CharField(max_length=50, unique=True)
+    snippet = models.TextField()
+
+    def __str__(self):
+        return f'{self.identifier}'

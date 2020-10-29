@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
+from .secrets import SECRET_KEY, EMAIL_HOST_PASSWORD, EMAIL_HOST_USER, GITHUB_TOKEN, ZOTERO_KEY
 import os
 from pathlib import Path
 
@@ -20,7 +21,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-from .secrets import SECRET_KEY, EMAIL_HOST_PASSWORD, EMAIL_HOST_USER, GITHUB_TOKEN, ZOTERO_KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'feedback.apps.FeedbackConfig',
     'install.apps.InstallConfig',
     'insight.apps.InsightConfig',
+    'snippets.apps.SnippetsConfig',
     'backend',
     'adminsortable',
     'crispy_forms'
@@ -90,11 +91,12 @@ WSGI_APPLICATION = 'app.wsgi.application'
 
 DATABASES = {
     'default': {
-        #'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'django.db.backends.mysql',
         'OPTIONS': {
-            'read_default_file': os.path.join(BASE_DIR, 'sql.cnf'), # '/etc/mysql/my.cnf',
+            # '/etc/mysql/my.cnf',
+            'read_default_file': os.path.join(BASE_DIR, 'sql.cnf'),
         },
         'TEST': {
             'NAME': 'dhinstit_curriculum_test',
@@ -150,7 +152,8 @@ MEDIA_URL = '/media/'
 
 SESSION_SAVE_EVERY_REQUEST = True
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4' # TODO: Should be bootstrap5 once there is support
+# TODO: Should be bootstrap5 once there is support
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = 'website:index'
 LOGIN_URL = 'login'
