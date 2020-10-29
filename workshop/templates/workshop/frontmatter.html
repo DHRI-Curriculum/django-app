@@ -1,5 +1,5 @@
 {% extends 'website/base.html' %}
-{% load markdownify static %}
+{% load markdownify static snippet %}
 
 
 {% block extra_head_material %}
@@ -56,7 +56,7 @@
             {% if frontmatter.ethical_considerations.count %}
                 <div class="col-12 col-xl-4 mt-4 mt-md-2 overflow-hidden">
                     <h4 class="py-4 border-bottom">Ethical considerations</h4>
-                    <p style="font-size:1.05rem;">Here is an introductory paragraph about what ethical considerations mean. It might contain <a href="/library/">a link</a> to more information about why we include information about ethics on this level of the website.</p>
+                    {% snippet "introduction-ethical-considerations" %}
                     {% for label in frontmatter.ethical_considerations.all %}
                         {{ label | as_string | markdown | safe }}
                     {% endfor %}
@@ -66,7 +66,7 @@
             {% if frontmatter.readings.count %}
                 <div class="col-12 col-xl-4 mt-4 mt-md-2 overflow-hidden">
                     <h4 class="py-4 border-bottom">Readings before you get started</h4>
-                    <p style="font-size:1.05rem;">Here is an introductory paragraph about what the following readings are. It might contain <a href="/library/">a link</a> to our "library" for the curriculum website, which can contain all kinds of information.</p>
+                    {% snippet "introduction-readings" %}
                     {% for reading in frontmatter.readings.all %}
                         <div class="p-2 my-3 rounded-lg linked-comment">
                             <a class="text-decoration-none" target="_blank" href="{{ reading.url }}">
@@ -81,7 +81,7 @@
             {% if frontmatter.projects.count %}
                 <div class="col-12 col-xl-4 mt-4 mt-md-2 overflow-hidden">
                     <h4 class="py-4 border-bottom">Projects related to {{ workshop.name }}</h4>
-                    <p style="font-size:1.05rem;">Here is an introductory paragraph about what the following projects are and why they are listed here. It might contain <a href="/library/">a link</a> to our "library" for the curriculum website, which can contain all kinds of information.</p>
+                    {% snippet "introduction-projects" %}
                     {% for project in frontmatter.projects.all %}
                         <div class="p-2 my-3 rounded-lg linked-comment">
                             {% if project.url != None %}
@@ -138,8 +138,8 @@
 
             <div class="col-12 pb-2">
               <h3 class="mt-5 pt-4 pb-4 border-top-double border-bottom">Before you start</h3>
-              <div class="lead mt-4">
-                Here is an introduction to the section "Before you start," and something about what it means.
+              <div class="mt-4">
+                {% snippet "introduction-before-you-start" %}
               </div>
               <hr />
             </div>
@@ -147,7 +147,7 @@
             <div class="col-12 col-md-6">
               {% if frontmatter.prerequisites.count %}
               <h4 class="py-4 border-bottom">Prerequisites</h4>
-              <p style="font-size:1.05rem;">Here is an introductory paragraph about what a prerequisite means. This should go in the new site model probably.</p>
+              {% snippet "introduction-prerequisites" %}
                 {% for prerequisite in frontmatter.prerequisites.all %}
                   {{ prerequisite }}
                 {% endfor %}
@@ -156,8 +156,8 @@
 
             <div class="col-12 col-md-6">
               {% if frontmatter.resources.count %}
-              <h4 class="py-4 border-bottom">Requirements</h4>
-              <p style="font-size:1.05rem;">Here is an introductory paragraph about what a requirement means. This should go in the new site model probably.</p>
+              <h4 class="py-4 border-bottom">Resources</h4>
+              {% snippet "introduction-resources" %}
                 {% for resource in frontmatter.resources.all %}
                   {{ resource }}
                 {% endfor %}
