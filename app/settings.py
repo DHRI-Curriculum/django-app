@@ -145,7 +145,7 @@ STATICFILE_DIRS = [
 ]
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_ROOT = '/home/dhinstit/static.dhinstitutes.org/curriculum'
-STATIC_URL = 'https://static.dhinstitutes.org/curriculum/'
+STATIC_URL = '//static.dhinstitutes.org/curriculum/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
