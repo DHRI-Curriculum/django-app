@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'feedback.apps.FeedbackConfig',
     'install.apps.InstallConfig',
     'insight.apps.InsightConfig',
-    'snippets.apps.SnippetsConfig',
     'backend',
     'adminsortable',
     'crispy_forms'
