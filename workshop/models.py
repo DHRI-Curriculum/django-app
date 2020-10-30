@@ -83,7 +83,7 @@ class Frontmatter(CurlyQuotesMixin, models.Model):
 
     workshop = models.OneToOneField(
         Workshop, related_name="frontmatter", on_delete=models.CASCADE)
-    abstract = models.TextField(max_length=1000, blank=True, null=True)
+    abstract = models.TextField()
     estimated_time = models.PositiveSmallIntegerField(
         blank=True, null=True, help_text="assign full minutes")
     projects = models.ManyToManyField(

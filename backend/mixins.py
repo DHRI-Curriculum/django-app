@@ -26,7 +26,10 @@ class CurlyQuotesMixin:
 
     def save(self, *args, **kwargs):
         for field in self.curly_fields:
-            html = getattr(self, field)
+            html = getattr(self, field, None)
+            if html == None or html == '' or html == 'NULL':
+                continue
+            print(field, '-->', html)
             soup = BeautifulSoup(html, 'lxml')
             for text_node in soup.find_all(string=True):
                 text_node.replaceWith(quote_converter(text_node))
