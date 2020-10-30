@@ -1,8 +1,12 @@
 from django.db import models
 from django.utils.text import slugify
 from install.models import Software
+from backend.mixins import CurlyQuotesMixin
 
-class Insight(models.Model):
+
+class Insight(CurlyQuotesMixin, models.Model):
+    curly_fields = ['text']
+
     title = models.CharField(max_length=80, unique=True)
     slug = models.CharField(max_length=200, blank=True)
     software = models.ManyToManyField(Software)
@@ -10,7 +14,7 @@ class Insight(models.Model):
     # TODO: Add image field
 
     def save(self, *args, **kwargs):
-        _ = self.title.replace('-',' ').replace('/',' ')
+        _ = self.title.replace('-', ' ').replace('/', ' ')
         self.slug = slugify(_)
         super(Insight, self).save()
 
@@ -21,8 +25,11 @@ class Insight(models.Model):
         ordering = ['title']
 
 
-class Section(models.Model):
-    insight = models.ForeignKey(Insight, on_delete=models.CASCADE, related_name='sections')
+class Section(CurlyQuotesMixin, models.Model):
+    curly_fields = ['text']
+
+    insight = models.ForeignKey(
+        Insight, on_delete=models.CASCADE, related_name='sections')
     order = models.PositiveSmallIntegerField()
     title = models.CharField(max_length=80)
     text = models.TextField(blank=True, null=True)
@@ -34,8 +41,11 @@ class Section(models.Model):
         ordering = ['order']
 
 
-class OperatingSystemSpecificSection(models.Model):
-    section = models.ForeignKey(Section, on_delete=models.CASCADE, related_name='os_specific_sections')
+class OperatingSystemSpecificSection(CurlyQuotesMixin, models.Model):
+    curly_fields = ['text']
+
+    section = models.ForeignKey(
+        Section, on_delete=models.CASCADE, related_name='os_specific_sections')
     operating_system = models.CharField(max_length=80)
     text = models.TextField(blank=True, null=True)
 

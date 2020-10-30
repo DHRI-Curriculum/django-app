@@ -1,9 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
+from backend.mixins import CurlyQuotesMixin
 
-class Profile(models.Model):
+
+class Profile(CurlyQuotesMixin, models.Model):
+    curly_fields = ['bio']
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(default='default.png', upload_to='profile_pictures')
+    image = models.ImageField(default='default.png',
+                              upload_to='profile_pictures')
     email_confirmed = models.BooleanField(default=False)
     favorites = models.ManyToManyField('workshop.Workshop', blank=True)
     instructor_requested = models.BooleanField(default=False)
@@ -19,6 +24,7 @@ class Profile(models.Model):
     def project_links(self):
         return self.links.filter(cat='PR')
 
+
 class ProfileLink(models.Model):
     PERSONAL = 'PE'
     PROJECT = 'PR'
@@ -27,13 +33,15 @@ class ProfileLink(models.Model):
         (PROJECT, 'Projects'),
     ]
 
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='links')
+    profile = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name='links')
     label = models.CharField(max_length=70)
     url = models.URLField()
     cat = models.CharField(max_length=2, choices=CAT_CHOICES, default=PROJECT)
 
     def __str__(self):
         return f'{self.url}'
+
 
 class Progress(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
