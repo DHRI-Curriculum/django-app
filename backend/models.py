@@ -19,7 +19,6 @@ ALL_MODELS = [
     Resource,
     Reading,
     Praxis,
-    Page,
     Workshop,
     Term,
     Software,
