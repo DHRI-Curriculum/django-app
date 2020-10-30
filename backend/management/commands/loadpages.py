@@ -1,6 +1,8 @@
 from django.core.management import BaseCommand
 from backend.dhri_settings import AUTO_PAGES
 from backend.dhri.log import Logger
+
+'''
 from backend.models import Page
 
 
@@ -28,3 +30,4 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         create_pages(AUTO_PAGES)
+'''

@@ -1,5 +1,3 @@
-from workshop.models import Workshop
-from website.models import Page
 from django.contrib.auth.models import User, Group
 from learner.models import Profile
 from backend.dhri_settings import VERSION
@@ -27,8 +25,6 @@ def add_to_all_contexts(request):
     context_data['is_home'] = request.get_full_path() == '/'
     context_data['website'] = dict()
     context_data['version'] = VERSION
-    # context_data['website']['workshops'] = Workshop.objects.all()
-    # context_data['website']['pages'] = Page.objects.all()
     if request.user.is_staff:
         context_data['website']['instructor_requests'] = get_pending_requests()
 
