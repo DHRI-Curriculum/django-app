@@ -18,7 +18,10 @@
 {% block main %}
 <h1 class="h3 dhri-hero">Page Not Found</h1>
 <p class="lead">Unfortunately, we were unable to find the page you requested.</p>
+{% endblock %}
 
-{{ request }}
-{{ request.GET }}
+{% block javascript %}
+<script>
+    top_menu_collapse().show();
+</script>
 {% endblock %}
