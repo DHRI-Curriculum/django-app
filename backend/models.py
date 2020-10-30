@@ -1,33 +1,45 @@
+# from api.models import *
 from assessment.models import *
+# from feedback.models import *
+from glossary.models import *
+from insight.models import *
+from install.models import *
 from learner.models import *
 from lesson.models import *
 from library.models import *
 from website.models import *
 from workshop.models import *
-from glossary.models import *
-from install.models import *
-from insight.models import *
+
 
 ALL_MODELS = [
+    ### app: assessment
+    Answer, Question, QuestionType,
+
+    ### app: feedback
+    # Issue,
+
+    ### app: learner
+    ProfileLink, Progress,
     # Profile,
-    Frontmatter,
-    LearningObjective,
-    EthicalConsideration,
-    Contributor,
-    Tutorial,
-    Project,
-    Resource,
-    Reading,
-    Praxis,
-    Workshop,
+
+    ### app: lesson
+    Lesson, Challenge, Solution, Evaluation, Question, Answer,
+
+    ### app: library
+    Tutorial, Project, Resource, Reading,
+
+    ### app: website
+    Snippet,
+
+    ### app: workshop
+    Workshop, Contributor, Frontmatter, Collaboration, LearningObjective, EthicalConsideration, Praxis, Blurb, NextStep, DiscussionQuestion,
+
+    ### app: glossary
     Term,
-    Software,
-    Instruction,
-    Step,
-    Screenshot,
-    Collaboration,
-    Blurb,
-    Insight,
-    Section,
-    OperatingSystemSpecificSection
+
+    ### app: install
+    Software, Instruction, Step, Screenshot,
+
+    ### app: insight
+    Insight, Section, OperatingSystemSpecificSection,
 ]
