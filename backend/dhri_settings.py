@@ -1,3 +1,8 @@
+import yaml
+from backend.dhri.exceptions import ConstantError
+from pathlib import Path
+from datetime import timedelta
+from itertools import chain
 from backend import models
 from django.conf import settings
 import os
@@ -31,7 +36,6 @@ AUTO_GROUPS = {
         models.Resource: ['add', 'change', 'delete', 'view'],
         models.Reading: ['add', 'change', 'delete', 'view'],
         models.Praxis: ['add', 'change', 'delete', 'view'],
-        models.Page: ['add', 'change', 'delete', 'view'],
         models.Workshop: ['add', 'change', 'delete', 'view'],
     },
 
@@ -83,7 +87,8 @@ REPLACEMENTS = {
 
 CACHE_DIRS = {
     'ROOT': '.loader-cache/',
-    'PARSER': '/tmp/.gh-api-cache/', # .loader-cache/parser/ # TODO: For documentation - it's good to keep this in a unique directory on the hard drive...
+    # .loader-cache/parser/ # TODO: For documentation - it's good to keep this in a unique directory on the hard drive...
+    'PARSER': '/tmp/.gh-api-cache/',
     'WEB': '.loader-cache/web/',
     'ZOTERO': '.loader-cache/zotero/'
 }
@@ -111,8 +116,6 @@ IMAGE_CACHE = {
 
 # If VERBOSE is set to True, every output message will display the source module (good for troubleshooting)
 VERBOSE = False
-
-
 
 
 NORMALIZING_SECTIONS = {
@@ -159,9 +162,7 @@ STATIC_IMAGES = {
 }
 
 
-
-
-###### REMOVED FEATURES (So can likely be removed)
+# REMOVED FEATURES (So can likely be removed)
 
 # If set to True, resets all the DHRI curriculum database elements automatically before script runs (not recommended in production)
 # AUTO_RESET = True # TODO: I believe this isn't in use anymore
@@ -180,7 +181,7 @@ DJANGO_PATHS = {
         'DB': 'app/db.sqlite3',
         'MANAGE': 'app/manage.py',
     }
-''' # TODO: Remove, after making sure the app works.
+'''  # TODO: Remove, after making sure the app works.
 
 
 '''
@@ -263,38 +264,36 @@ AUTO_USERS = {
 '''
 
 
-#### MAKE NO CHANGES BELOW
+# MAKE NO CHANGES BELOW
 
-
-from itertools import chain
-from datetime import timedelta
-from pathlib import Path
-import os
-from backend.dhri.exceptions import ConstantError
 
 '''
 DJANGO_PATHS['DB'] = Path(DJANGO_PATHS['DB'])
 
 for path in DJANGO_PATHS:
     DJANGO_PATHS[path] = Path(__file__).absolute().parent.parent / DJANGO_PATHS[path]
-''' # TODO: Remove after making sure the app works
+'''  # TODO: Remove after making sure the app works
 
 for cat in STATIC_IMAGES:
     STATIC_IMAGES[cat] = Path(STATIC_IMAGES[cat])
 
+
 def _check_normalizer(dictionary=NORMALIZING_SECTIONS):
     for section in NORMALIZING_SECTIONS:
-        all_ = [x.lower() for x in list(chain.from_iterable([x for x in NORMALIZING_SECTIONS[section].values()]))]
+        all_ = [x.lower() for x in list(chain.from_iterable(
+            [x for x in NORMALIZING_SECTIONS[section].values()]))]
 
         if max([all_.count(x) for x in set(all_)]) > 1:
-            raise ConstantError('NORMALIZING_SECTIONS is confusing: multiple alternative strings for normalizing.')
+            raise ConstantError(
+                'NORMALIZING_SECTIONS is confusing: multiple alternative strings for normalizing.')
 
     return(True)
 
 
 for DIR in CACHE_DIRS:
     CACHE_DIRS[DIR] = Path(CACHE_DIRS[DIR])
-    if not CACHE_DIRS[DIR].exists(): CACHE_DIRS[DIR].mkdir()
+    if not CACHE_DIRS[DIR].exists():
+        CACHE_DIRS[DIR].mkdir()
 
 TEST_AGES['ROOT'] = timedelta(days=TEST_AGES['ROOT'])
 TEST_AGES['PARSER'] = timedelta(days=TEST_AGES['PARSER'])
@@ -315,24 +314,27 @@ try:
 except:
     TERMINAL_WIDTH = 70
 
-if TERMINAL_WIDTH > MAX_TERMINAL_WIDTH: TERMINAL_WIDTH = MAX_TERMINAL_WIDTH
+if TERMINAL_WIDTH > MAX_TERMINAL_WIDTH:
+    TERMINAL_WIDTH = MAX_TERMINAL_WIDTH
 
 
 saved_prefix = '----> '
 
 
-import yaml
 try:
     with open(USER_SETUP, 'r') as f:
         AUTO_USERS = yaml.safe_load(f)
 except FileNotFoundError:
-    print(f'Cannot open {USER_SETUP} to read the automatic user information. Make sure your `dhri_settings.py` file contains the correct filename.') # TODO: Figure out import of log and change `print` to `log.error` here
+    # TODO: Figure out import of log and change `print` to `log.error` here
+    print(f'Cannot open {USER_SETUP} to read the automatic user information. Make sure your `dhri_settings.py` file contains the correct filename.')
     exit()
 except yaml.parser.ParserError as e:
-    print(f'Cannot parse file {USER_SETUP}: {e}') # TODO: Figure out import of log and change `print` to `log.error` here
+    # TODO: Figure out import of log and change `print` to `log.error` here
+    print(f'Cannot parse file {USER_SETUP}: {e}')
     exit()
 except yaml.scanner.ScannerError as e:
-    print(f'Cannot parse file {USER_SETUP}: {e}') # TODO: Figure out import of log and change `print` to `log.error` here
+    # TODO: Figure out import of log and change `print` to `log.error` here
+    print(f'Cannot parse file {USER_SETUP}: {e}')
     exit()
 
 REQUIRED_IN_USERS = ['first_name', 'last_name', 'username', 'password']
@@ -341,9 +343,12 @@ for cat in AUTO_USERS:
     for u in AUTO_USERS[cat]:
         for section in REQUIRED_IN_USERS:
             if not u.get(section):
-                print(f'User setup file does not contain section `{section}` (in user with username `{u.get("username")}`). Make sure all the users in the `{USER_SETUP}` file contains all the required sections: `{"`, `".join(REQUIRED_IN_USERS)}`.') # TODO: Figure out import of log and change `print` to `log.error` here
+                # TODO: Figure out import of log and change `print` to `log.error` here
+                print(
+                    f'User setup file does not contain section `{section}` (in user with username `{u.get("username")}`). Make sure all the users in the `{USER_SETUP}` file contains all the required sections: `{"`, `".join(REQUIRED_IN_USERS)}`.')
                 exit()
 
 for _, dir in IMAGE_CACHE.items():
     IMAGE_CACHE[_] = Path(dir)
-    if not IMAGE_CACHE[_].exists(): IMAGE_CACHE[_].mkdir(parents=True)
+    if not IMAGE_CACHE[_].exists():
+        IMAGE_CACHE[_].mkdir(parents=True)

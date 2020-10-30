@@ -16,7 +16,7 @@ from backend.dhri.text import auto_replace
 from .wipe import wipe
 from .loadglossary import create_terms
 from .loadinstalls import create_installations
-from .loadpages import create_pages
+#from .loadpages import create_pages
 from .loadgroups import create_groups, Group
 from .loadusers import create_users, User
 from .loadblurbs import create_blurbs
