@@ -320,22 +320,25 @@ if TERMINAL_WIDTH > MAX_TERMINAL_WIDTH:
 
 saved_prefix = '----> '
 
-
+AUTO_USERS = dict()
 try:
     with open(USER_SETUP, 'r') as f:
         AUTO_USERS = yaml.safe_load(f)
 except FileNotFoundError:
     # TODO: Figure out import of log and change `print` to `log.error` here
     print(f'Cannot open {USER_SETUP} to read the automatic user information. Make sure your `dhri_settings.py` file contains the correct filename.')
-    exit()
+    print('This means that the script will skip the user setup. Run `manage.py createsuperuser` to be able to access the backend.')
+    # exit()
 except yaml.parser.ParserError as e:
     # TODO: Figure out import of log and change `print` to `log.error` here
     print(f'Cannot parse file {USER_SETUP}: {e}')
-    exit()
+    print('This means that the script will skip the user setup. Run `manage.py createsuperuser` to be able to access the backend.')
+    # exit()
 except yaml.scanner.ScannerError as e:
     # TODO: Figure out import of log and change `print` to `log.error` here
     print(f'Cannot parse file {USER_SETUP}: {e}')
-    exit()
+    print('This means that the script will skip the user setup. Run `manage.py createsuperuser` to be able to access the backend.')
+    # exit()
 
 REQUIRED_IN_USERS = ['first_name', 'last_name', 'username', 'password']
 # AUTO_USERS testing data

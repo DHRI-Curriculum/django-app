@@ -24,22 +24,22 @@ def create_users(AUTO_USERS=AUTO_USERS):
             if is_super:
                 user = User.objects.create_superuser(
                     username=username,
-                    password = u.get('password'),
-                    first_name = u.get('first_name'),
-                    last_name = u.get('last_name'),
-                    email = u.get('email')
+                    password=u.get('password'),
+                    first_name=u.get('first_name'),
+                    last_name=u.get('last_name'),
+                    email=u.get('email')
                 )
                 log.log(f'Added superuser `{user}`.')
             else:
                 user = User.objects.create_user(
-                    password = u.get('password'),
+                    password=u.get('password'),
                     username=username,
-                    first_name = u.get('first_name'),
-                    last_name = u.get('last_name'),
-                    email = u.get('email')
+                    first_name=u.get('first_name'),
+                    last_name=u.get('last_name'),
+                    email=u.get('email')
                 )
                 if is_staff:
-                    user.is_staff=True
+                    user.is_staff = True
                     user.save()
                     log.log(f'Added staff user `{user}`.')
                 else:
@@ -55,12 +55,15 @@ def create_users(AUTO_USERS=AUTO_USERS):
                     try:
                         import os
                         with open(u.get('img'), 'rb') as f:
-                            user.profile.image = File(f, name=os.path.basename(f.name))
+                            user.profile.image = File(
+                                f, name=os.path.basename(f.name))
                             user.profile.save()
                     except FileNotFoundError:
-                        log.error(f'Could not find image for user with username `{u.get("username")}`: Make sure the file exists: `{u.get("img")}` in the root directory of the app.')
+                        log.error(
+                            f'Could not find image for user with username `{u.get("username")}`: Make sure the file exists: `{u.get("img")}` in the root directory of the app.')
                 user.profile.save()
-                log.log(f'Saved `{user.profile}` with bio information and photo.')
+                log.log(
+                    f'Saved `{user.profile}` with bio information and photo.')
 
             # Groups
             for group in u.get('groups', []):
@@ -69,16 +72,18 @@ def create_users(AUTO_USERS=AUTO_USERS):
                         Group.objects.get(name=group).user_set.add(user)
                         log.log(f'Added user `{user}` to group `{group}`.')
                 except:
-                    log.error(f'Error: Could not add {user} to group {group}.', kill=False)
-                    log.error(f'If you are certain that the group should exist, try running `manage.py create_groups` first.')
+                    log.error(
+                        f'Error: Could not add {user} to group {group}.', kill=False)
+                    log.error(
+                        f'If you are certain that the group should exist, try running `manage.py create_groups` first.')
 
             # Links
             for link in u.get('links', []):
                 obj, created = ProfileLink.objects.get_or_create(
-                    profile = user.profile,
-                    label = link.get('text'),
-                    url = link.get('url'),
-                    cat = link.get('cat')
+                    profile=user.profile,
+                    label=link.get('text'),
+                    url=link.get('url'),
+                    cat=link.get('cat')
                 )
                 log.created(created, 'Link', obj.url, obj.id)
 
@@ -90,4 +95,8 @@ class Command(BaseCommand):
     help = 'Create default users'
 
     def handle(self, *args, **options):
-        create_users(AUTO_USERS)
+        if len(AUTO_USERS):
+            create_users(AUTO_USERS)
+        else:
+            log.warning(
+                'No auto user information set up. Will skip automatic import of users.')

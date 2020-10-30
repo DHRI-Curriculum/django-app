@@ -14,8 +14,10 @@ def create_blurbs(AUTO_USERS=AUTO_USERS):
             if u.get('blurb'):
                 user = User.objects.get(username=u.get('username'))
                 if user:
-                    text = u.get('blurb', {'text': None, 'workshop': None}).get('text')
-                    workshop = u.get('blurb', {'text': None, 'workshop': None}).get('workshop')
+                    text = u.get(
+                        'blurb', {'text': None, 'workshop': None}).get('text')
+                    workshop = u.get(
+                        'blurb', {'text': None, 'workshop': None}).get('workshop')
                     if text and workshop:
                         try:
                             w = Workshop.objects.get(slug=workshop)
@@ -23,19 +25,22 @@ def create_blurbs(AUTO_USERS=AUTO_USERS):
                             w = None
                         if w:
                             obj, created = Blurb.objects.get_or_create(
-                                workshop = w,
-                                user = user,
-                                defaults = {
+                                workshop=w,
+                                user=user,
+                                defaults={
                                     'text': text
                                 }
                             )
                             log.created(created, 'Blurb', obj.workshop, obj.id)
                         else:
-                            log.error(f'Workshop {workshop} does not exist. You may need to run `manage.py setup --repo {workshop}` before you run this command.', kill=False)
+                            log.error(
+                                f'Workshop {workshop} does not exist. You may need to run `manage.py setup --repo {workshop}` before you run this command.', kill=False)
                     else:
-                        log.error(f'Blurb data for user `{u.get("username")}` is not complete. You need to provide text and a workshop shortcode.', kill=False)
+                        log.error(
+                            f'Blurb data for user `{u.get("username")}` is not complete. You need to provide text and a workshop shortcode.', kill=False)
                 else:
-                    log.error(f'User `{u.get("username")}` does not exist. You may need to run `manage.py loadusers` before you run this command.', kill=False)
+                    log.error(
+                        f'User `{u.get("username")}` does not exist. You may need to run `manage.py loadusers` before you run this command.', kill=False)
 
 
 class Command(BaseCommand):
@@ -45,4 +50,8 @@ class Command(BaseCommand):
     help = 'Create blurbs'
 
     def handle(self, *args, **options):
-        create_blurbs(AUTO_USERS)
+        if len(AUTO_USERS):
+            create_blurbs(AUTO_USERS)
+        else:
+            log.warning(
+                'No auto user information set up. Will skip automatic import of blurbs for users.')
