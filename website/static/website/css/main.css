@@ -489,6 +489,7 @@ div.dropdown-submenu {
 @media screen and (max-width: 576px) {
     .jumbotron-heading {
         font-size: 4vw !important;
+        padding-top: 1rem !important;
     }
     .jumbotron-text {
         font-size: 3vw !important;
