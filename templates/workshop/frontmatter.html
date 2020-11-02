@@ -39,13 +39,7 @@
             <h2>{{ workshop.name }}</h2>
         {% endif %}
 
-        <div class="row mt-4">
-            <div class="col-12 lead">
-                {{ workshop.frontmatter.abstract | markdown | safe }}
-            </div>
-
-        </div>
-        <div class="row d-xl-none sidebar justify-content-center">
+        <div class="row mt-4 d-xl-none sidebar justify-content-center">
             <div class="col-6 col-md-4">
                 {% include 'workshop/fragments/frontmatter/favorite-button.html' %}
             </div>
@@ -55,6 +49,13 @@
             <div class="col-6">
                 {% include 'workshop/fragments/frontmatter/get-started-button.html' %}
             </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12 lead">
+                {{ workshop.frontmatter.abstract | markdown | safe }}
+            </div>
+
         </div>
 
         <h3 class="mt-5 pt-4 pb-4 border-top-double border-bottom">Contexts</h3>
