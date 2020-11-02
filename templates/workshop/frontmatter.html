@@ -36,14 +36,18 @@
         {% endif %}
 
         <div class="row mt-4">
-            <div class="col-9 col-xl-12 lead">
+            <div class="col-12 lead">
                 {{ workshop.frontmatter.abstract | markdown | safe }}
             </div>
 
-            <div class="col-3 d-xl-none sidebar">
+        </div>
+        <div class="row d-xl-none sidebar">
+            <div class="col-6">
                 {% include 'workshop/fragments/frontmatter/favorite-button.html' %}
-                {% include 'workshop/fragments/frontmatter/dashboard.html' %}
                 {% include 'workshop/fragments/frontmatter/get-started-button.html' %}
+            </div>
+            <div class="col-6">
+                {% include 'workshop/fragments/frontmatter/dashboard.html' %}
             </div>
         </div>
 
