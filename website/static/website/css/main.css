@@ -520,6 +520,7 @@ div.dropdown-submenu {
     font-size: 1rem !important;
     background-color: #35587c !important;
     height: 35px !important;
+    color: #ecf0f1 !important;
 }
 
 @media screen and (max-width: 576px) {
