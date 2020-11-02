@@ -3,72 +3,72 @@
 
 <!doctype html>
 <html lang="en">
-  <head>
-    {% include "website/fragments/head.html" %}
-    <!-- Extra head material -->
-    {% block extra_head_material %}{% endblock %}
-  </head>
-  <body>
+    <head>
+        {% include "website/fragments/head.html" %}
+        <!-- Extra head material -->
+        {% block extra_head_material %}{% endblock %}
+    </head>
+    <body>
 
-    {% if version|startswith:"0." %}{% include "website/fragments/warnings/alpha.html" %}{% endif %}
+        {% if version|startswith:"0." %}{% include "website/fragments/warnings/alpha.html" %}{% endif %}
 
-    {% main_navigation %}
+        {% main_navigation %}
 
-    <nav class="sticky-top nav-scroller shadow-sm zen-hideaway" style="background-color:rgb(61 84 108);" id="secondaryMenu">
-      <div class="container-xxl d-flex justify-content-between justify-content-end">
-        {% if not is_home %}
-          <div class="nav">
-            <a class="navbar-toggler" data-toggle="collapse" data-target="#topNavbarToggleExternal" aria-controls="topNavbarToggleExternal" aria-expanded="false" aria-label="Toggle navigation"></a>
-          </div>
-        {% endif %}
-
-
-        {% block secondary_menu %}{% endblock %}
-
-        <div class="nav ml-auto">
-          {% if request.user.is_authenticated %}
-              <a class="d-none d-md-block nav-link text-white dropdown-toggle pr-0" href="#" id="UserDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {% if request.user.first_name and request.user.last_name %}
-                  {{ request.user.first_name }} {{ request.user.last_name }}
-                {% elif request.user.first_name %}
-                  {{ request.user.first_name }}
-                {% else %}
-                  {{ request.user.username }}
+        <nav class="sticky-top shadow-sm zen-hideaway" style="background-color:rgb(61 84 108);" id="secondaryMenu">
+            <div class="container-xxl d-flex justify-content-between justify-content-end">
+                {% if not is_home %}
+                    <div class="nav">
+                        <a class="navbar-toggler" data-toggle="collapse" data-target="#topNavbarToggleExternal" aria-controls="topNavbarToggleExternal" aria-expanded="false" aria-label="Toggle navigation"></a>
+                    </div>
                 {% endif %}
-              </a>
 
-              <div class="dropdown-menu dropdown-menu-special shadow" aria-labelledby="dropdown">
-              {% include 'website/fragments/user-menu.html' %}
-                  {% if request.user.is_staff %}
-                    <ul class="admin-menu-part">{% block admin_edit %}{% endblock %}</ul>
-                      {% include 'website/fragments/admin-menu/viewports.html' %}
-                  {% endif %}
-              </div>
-          {% else %}
-            {% include 'website/fragments/login-menu.html' %}
-          {% endif %}
-        </div>
-      </div>
-    </nav>
-    {% include "website/fragments/warnings/ie.html" %}
-    {% include "website/fragments/instructor_requests.html" %}
 
-    {% block before_container %}{% endblock %}
-    <section id="content">
-      <div class="container-xxl{% if not is_home %} px-3 py-3 px-md-5 py-md-5{% endif %}">
-        {% block header %}{% endblock %}
-        {% include "website/fragments/messages.html" %}
-        {% block before_content %}{% endblock %}
-        {% block hero %}{% endblock %}
-        {% block main %}{% endblock %}
-      </div>
-    </section>
+                {% block secondary_menu %}{% endblock %}
 
-    {% include 'website/fragments/logos.html' %}
+                <div class="nav ml-auto">
+                    {% if request.user.is_authenticated %}
+                            <a class="d-none d-md-block nav-link text-white dropdown-toggle pr-0" href="#" id="UserDropdown" data-boundary="scrollParent" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {% if request.user.first_name and request.user.last_name %}
+                                    {{ request.user.first_name }} {{ request.user.last_name }}
+                                {% elif request.user.first_name %}
+                                    {{ request.user.first_name }}
+                                {% else %}
+                                    {{ request.user.username }}
+                                {% endif %}
+                            </a>
 
-    {% include "website/fragments/bootstrap.html" %}
-    <script src="{% static 'website/js/sitewide.js' %}"></script>
-    <!-- Page specific Javascript -->{% block javascript %}{% endblock %}
-    {% include "website/fragments/instructor_requests_toaster.html" %}
-  </body>
+                            <div class="dropdown-menu dropdown-menu-special shadow" aria-labelledby="UserDropdown">
+                            {% include 'website/fragments/user-menu.html' %}
+                                    {% if request.user.is_staff %}
+                                        <ul class="admin-menu-part">{% block admin_edit %}{% endblock %}</ul>
+                                            {% include 'website/fragments/admin-menu/viewports.html' %}
+                                    {% endif %}
+                            </div>
+                    {% else %}
+                        {% include 'website/fragments/login-menu.html' %}
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+        {% include "website/fragments/warnings/ie.html" %}
+        {% include "website/fragments/instructor_requests.html" %}
+
+        {% block before_container %}{% endblock %}
+        <section id="content">
+            <div class="container-xxl{% if not is_home %} px-3 py-3 px-md-5 py-md-5{% endif %}">
+                {% block header %}{% endblock %}
+                {% include "website/fragments/messages.html" %}
+                {% block before_content %}{% endblock %}
+                {% block hero %}{% endblock %}
+                {% block main %}{% endblock %}
+            </div>
+        </section>
+
+        {% include 'website/fragments/logos.html' %}
+
+        {% include "website/fragments/bootstrap.html" %}
+        <script src="{% static 'website/js/sitewide.js' %}"></script>
+        <!-- Page specific Javascript -->{% block javascript %}{% endblock %}
+        {% include "website/fragments/instructor_requests_toaster.html" %}
+    </body>
 </html>
