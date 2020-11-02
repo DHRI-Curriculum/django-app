@@ -504,3 +504,30 @@ div.dropdown-submenu {
         font-size: 1.2rem !important;
     }
 }
+
+.funding-text {
+    font-size: 0.9rem !important;
+    color: #7b8a8b !important;
+}
+
+@media screen and (max-width: 576px) {
+    .funding-text {
+        font-size: 2vh !important;
+    }
+}
+
+.alpha-notice {
+    font-size: 1rem !important;
+    background-color: #35587c !important;
+    color: #ecf0f1 !important;
+    height: 35px !important;
+}
+
+@media screen and (max-width: 576px) {
+    .alpha-notice {
+        font-size: 0.7rem !important;
+        height: 50px !important;
+        background-color: #35587c !important;
+        color: #ecf0f1 !important;
+    }
+}
