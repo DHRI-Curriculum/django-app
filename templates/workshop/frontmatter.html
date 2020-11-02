@@ -10,9 +10,9 @@
 
 
 {% block admin_edit %}
-  <a class="text-decoration-none dropdown-item admin-link-django" target="_blank" href="{% url 'admin:index' %}">Django admin</a>
-  <a class="text-decoration-none dropdown-item admin-link-edit" target="_blank" href="{% url 'admin:workshop_frontmatter_change' frontmatter.id  %}">Edit frontmatter</a>
-  <a class="text-decoration-none dropdown-item admin-link-github" target="_blank" href="https://www.github.com/{{ workshop.parent_repo }}/blob/{{ workshop.parent_branch }}/frontmatter.md">See on GitHub</a>
+    <a class="text-decoration-none dropdown-item admin-link-django" target="_blank" href="{% url 'admin:index' %}">Django admin</a>
+    <a class="text-decoration-none dropdown-item admin-link-edit" target="_blank" href="{% url 'admin:workshop_frontmatter_change' frontmatter.id  %}">Edit frontmatter</a>
+    <a class="text-decoration-none dropdown-item admin-link-github" target="_blank" href="https://www.github.com/{{ workshop.parent_repo }}/blob/{{ workshop.parent_branch }}/frontmatter.md">See on GitHub</a>
 {% endblock %}
 
 
@@ -25,7 +25,12 @@
 {% endblock %}
 
 {% block secondary_menu %}
-    <a href="#" class="btn btn-sm btn-outline-success">Start</a>
+    <div class="navbar p-0 ml-2">
+        <a href="{% url 'workshop:frontmatter' workshop.slug %}lessons/" class="btn btn-sm btn-outline-success mr-3">Start</a>
+        <div>
+          {{ lessons }}
+        </div>
+    </div>
 {% endblock %}
 
 
