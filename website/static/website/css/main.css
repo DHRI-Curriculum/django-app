@@ -512,7 +512,7 @@ div.dropdown-submenu {
 
 @media screen and (max-width: 576px) {
     .funding-text {
-        font-size: 1vh !important;
+        font-size: 2vh !important;
     }
 }
 
