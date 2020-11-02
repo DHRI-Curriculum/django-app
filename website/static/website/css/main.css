@@ -504,3 +504,14 @@ div.dropdown-submenu {
         font-size: 1.2rem !important;
     }
 }
+
+.funding-text {
+    font-size: 0.9rem !important;
+    color: #7b8a8b !important;
+}
+
+@media screen and (max-width: 576px) {
+    .funding-text {
+        font-size: 1vh !important;
+    }
+}
