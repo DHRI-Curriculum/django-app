@@ -518,10 +518,13 @@ div.dropdown-submenu {
 
 .alpha-notice {
     font-size: 1rem !important;
+    background-color: #35587c !important;
+    height: 35px !important;
 }
 
 @media screen and (max-width: 576px) {
     .alpha-notice {
         font-size: 0.7rem !important;
+        height: 50px !important;
     }
 }
