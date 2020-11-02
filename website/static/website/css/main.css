@@ -485,3 +485,22 @@ div.dropdown-submenu {
         border: none !important;
     }
 }
+
+@media screen and (max-width: 576px) {
+    .jumbotron-heading {
+        font-size: 4vw !important;
+        padding-top: 1rem !important;
+    }
+    .jumbotron-text {
+        font-size: 3vw !important;
+    }
+}
+
+@media screen and (min-width: 576px) {
+    .jumbotron-heading {
+        font-size: 2.5rem !important;
+    }
+    .jumbotron-text {
+        font-size: 1.2rem !important;
+    }
+}
