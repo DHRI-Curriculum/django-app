@@ -515,3 +515,13 @@ div.dropdown-submenu {
         font-size: 1vh !important;
     }
 }
+
+.alpha-notice {
+    font-size: 1rem !important;
+}
+
+@media screen and (max-width: 576px) {
+    .alpha-notice {
+        font-size: 0.7rem !important;
+    }
+}
