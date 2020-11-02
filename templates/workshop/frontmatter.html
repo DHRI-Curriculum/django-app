@@ -28,7 +28,7 @@
     <div class="navbar p-0 ml-2">
         <a href="{% url 'workshop:frontmatter' workshop.slug %}lessons/" class="btn btn-sm btn-outline-success mr-3">Start</a>
         <div>
-          {{ lessons }}
+          {{ workshop.lessons }}
         </div>
     </div>
 {% endblock %}
