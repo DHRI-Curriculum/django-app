@@ -13,6 +13,13 @@ class IndexRedirect(View):
         return HttpResponseRedirect('/')
 
 
+def get_progress(workshop=None, profile=None):
+    try:
+        return Progress.objects.get(profile=profile, workshop=workshop).page
+    except:
+        return False
+
+
 class FrontmatterView(DetailView):
     model = Workshop
     template_name = 'workshop/frontmatter.html'
@@ -52,6 +59,12 @@ class FrontmatterView(DetailView):
             workshop=context['workshop']).order_by('user__last_name')
 
         context['is_frontmatter'] = True
+
+        if self.request.user.is_authenticated:
+            context['has_progress'] = get_progress(
+                context['workshop'], self.request.user.profile)
+        else:
+            context['has_progress'] = False
 
         return context
 
