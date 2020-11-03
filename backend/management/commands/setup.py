@@ -180,19 +180,23 @@ class Command(BaseCommand):
 
                         if lesson_data['keywords']:
                             for d in lesson_data['keywords']:
-                                obj = Term.objects.filter(term=d.get('title'))
-                                if obj.count() > 1:
-                                    obj = obj.last()
+                                test = Term.objects.filter(
+                                    term=d.get('title')).count()
+                                if test == 1:
+                                    obj = Term.objects.get(term=d.get('title'))
                                     LOG.warning(
                                         f'Term {d.get("title")} is not unique so will assign the latest added term to lesson {lesson.order} in workshop {lesson.workshop.name}: Preview of explication: {obj.explication[:30]}...')
-                                elif obj.count() == 0:
+                                elif test == 0:
                                     LOG.warning(
                                         f'Term {d.get("title")} cannot be found, so it will not be added to lesson {lesson.order} in workshop {lesson.workshop.name}.')
-                                if obj.count() == 1:
-                                    obj = obj.last()
-                                    lesson.terms.add(obj)
-                                    LOG.log(
-                                        f'Term {obj.term} has been added to lesson {lesson.order} for workshop {lesson.workshop.name}.')
+                                    continue
+                                else:
+                                    obj = Term.objects.filter(
+                                        term=d.get('title')).last()
+
+                                lesson.terms.add(obj)
+                                LOG.log(
+                                    f'Term {obj.term} has been added to lesson {lesson.order} for workshop {lesson.workshop.name}.')
 
                     del order
 
