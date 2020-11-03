@@ -1,0 +1,19 @@
+<div class="navbar p-0 ml-2">
+    {% if is_frontmatter %}
+        {% if has_progress %}
+            <a href="{% url 'workshop:frontmatter' workshop.slug %}lessons/?page={{ has_progress }}" class="btn btn-sm btn-info mr-3">Resume</a>
+        {% else %}
+            <a href="{% url 'workshop:frontmatter' workshop.slug %}lessons/" class="btn btn-sm btn-outline-success mr-3">Quick Start</a>
+        {% endif %}
+    {% endif %}
+    <a class="mr-3 text-white btn btn-sm" href="{% url 'workshop:frontmatter' slug=workshop.slug %}">{% if is_frontmatter %}<strong>{% endif %}{{ workshop.name }}{% if is_frontmatter %}</strong>{% endif %}</a>
+    <a class="mr-3 text-white btn btn-sm dropdown-toggle" href="#" id="LessonDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Lessons</a>
+    <div class="dropdown-menu dropdown-menu-special shadow" aria-labelledby="LessonDropdown">
+        <ul class="navbar-nav mr-auto">
+            {% for lesson in workshop.lessons.all %}
+                <li><a class="dropdown-item text-white" href="{% url 'workshop:lesson' slug=workshop.slug %}?page={{ lesson.order }}">{{ lesson }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <a class="mr-3 text-white btn btn-sm" href="{% url 'workshop:praxis' slug=workshop.slug %}">{% if is_praxis %}<strong>{% endif %}Theory to Practice{% if is_praxis %}</strong>{% endif %}</a>
+</div>

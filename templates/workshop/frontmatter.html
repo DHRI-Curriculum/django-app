@@ -10,9 +10,9 @@
 
 
 {% block admin_edit %}
-  <a class="text-decoration-none dropdown-item admin-link-django" target="_blank" href="{% url 'admin:index' %}">Django admin</a>
-  <a class="text-decoration-none dropdown-item admin-link-edit" target="_blank" href="{% url 'admin:workshop_frontmatter_change' frontmatter.id  %}">Edit frontmatter</a>
-  <a class="text-decoration-none dropdown-item admin-link-github" target="_blank" href="https://www.github.com/{{ workshop.parent_repo }}/blob/{{ workshop.parent_branch }}/frontmatter.md">See on GitHub</a>
+    <a class="text-decoration-none dropdown-item admin-link-django" target="_blank" href="{% url 'admin:index' %}">Django admin</a>
+    <a class="text-decoration-none dropdown-item admin-link-edit" target="_blank" href="{% url 'admin:workshop_frontmatter_change' frontmatter.id  %}">Edit frontmatter</a>
+    <a class="text-decoration-none dropdown-item admin-link-github" target="_blank" href="https://www.github.com/{{ workshop.parent_repo }}/blob/{{ workshop.parent_branch }}/frontmatter.md">See on GitHub</a>
 {% endblock %}
 
 
@@ -25,26 +25,38 @@
 {% endblock %}
 
 
+{% block secondary_menu %}
+    {% include 'workshop/fragments/secondary-menu.html' %}
+{% endblock %}
+
+
 {% block main %}
 
 <div class="row">
-    <div class="col-12 col-xl-9">
+    <div class="col-12 col-lg-9">
         {% if workshop.image %}
             <img src="/{{ workshop.image }}" class="img-fluid" alt="{{ workshop.name }}">
         {% else%}
             <h2>{{ workshop.name }}</h2>
         {% endif %}
 
+        <div class="row mt-4 d-lg-none sidebar justify-content-center">
+            <div class="col-6 col-md-4">
+                {% include 'workshop/fragments/frontmatter/favorite-button.html' %}
+            </div>
+            <div class="col-6 col-md-4">
+                {% include 'workshop/fragments/frontmatter/dashboard.html' with margin='m-0' %}
+            </div>
+            <div class="col-6">
+                {% include 'workshop/fragments/frontmatter/get-started-button.html' with margin='m-0' %}
+            </div>
+        </div>
+
         <div class="row mt-4">
-            <div class="col-9 col-xl-12 lead">
+            <div class="col-12 lead">
                 {{ workshop.frontmatter.abstract | markdown | safe }}
             </div>
 
-            <div class="col-3 d-xl-none sidebar">
-                {% include 'workshop/fragments/frontmatter/favorite-button.html' %}
-                {% include 'workshop/fragments/frontmatter/dashboard.html' %}
-                {% include 'workshop/fragments/frontmatter/get-started-button.html' %}
-            </div>
         </div>
 
         <h3 class="mt-5 pt-4 pb-4 border-top-double border-bottom">Contexts</h3>
@@ -171,13 +183,13 @@
 
     </div>
 
-    <div class="d-none d-xl-block col-xl-3 sidebar">
+    <div class="d-none d-lg-block col-lg-3 sidebar">
         {% include 'workshop/fragments/frontmatter/favorite-button.html' %}
         {% include 'workshop/fragments/frontmatter/dashboard.html' %}
         {% include 'workshop/fragments/frontmatter/get-started-button.html' %}
 
         {% if num_terms > 0 %}
-            <div class="d-none d-xl-block">
+            <div class="d-none d-lg-block">
                 <h3 class="py-4 border-bottom">Glossary</h4>
                 <p class="lead mt-2">These are the glossary terms that you will learn how to define in this workshop.</p>
                 {% for term in all_terms %}

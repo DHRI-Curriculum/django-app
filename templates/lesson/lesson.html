@@ -64,9 +64,6 @@
       console.log(answers)
 
 
-      // console.log(e);
-
-
       fetch('/workshops/{{ workshop.slug }}/lessons/check-answer/', {
           method: "POST",
           credentials: "same-origin",
@@ -106,12 +103,11 @@
   </script>
 {% endblock extra_head_material %}
 
-{% block header %}
-  {% include 'workshop/fragments/workshop-wide/navbar.html' %}
+
+{% block secondary_menu %}
+    {% include 'workshop/fragments/secondary-menu.html' %}
 {% endblock %}
 
-{% block hero %}
-{% endblock %}
 
 {% block admin_edit %}
   <a class="text-decoration-none dropdown-item admin-link-django" target="_blank" href="{% url 'admin:index' %}">Django admin</a>

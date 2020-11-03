@@ -1,9 +1,11 @@
 {% extends 'base.html' %}
 {% load markdownify static %}
 
-{% block header %}
-    {% include 'workshop/fragments/workshop-wide/navbar.html' %}
+
+{% block secondary_menu %}
+    {% include 'workshop/fragments/secondary-menu.html' %}
 {% endblock %}
+
 
 {% block hero %}
 <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-left">
@@ -15,7 +17,6 @@
   </div><!-- /hero -->
 </div>
 {% endblock %}
-
 
 
 {% block admin_edit %}
