@@ -8,14 +8,14 @@
                         </div>
                     {% else %}
                     {% endif %}
-                    <div class="card-img-overlay d-flex flex-column justify-content-between">
+                    <div class="card-img-overlay d-flex flex-column justify-content-center align-items-center">
                         <h5 class="card-title m-0 bolder"></h5>
-                        <div class="btn-group font-weight-bolder">
+                        <div class="w-75 font-weight-bolder text-center">
                             Instructions for operating system:
                         </div>
                         <div class="btn-group" role="group" aria-label="Basic example">
                 {% endif %}
-                            <a class="btn btn-primary" href="{% url 'install:installation' slug=instruction.slug %}">{{ instruction.software.operating_system }}</a>
+                            <a class="btn btn-primary btn-sm" href="{% url 'install:installation' slug=instruction.slug %}" style="min-width:100px;">{{ instruction.software.operating_system }}</a>
                 {% if forloop.last %}
                         </div>
                     </div>
