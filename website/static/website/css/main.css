@@ -531,3 +531,9 @@ div.dropdown-submenu {
         color: #ecf0f1 !important;
     }
 }
+
+@media screen and (max-width: 576px) {
+    .avatar {
+        max-height: 100px;
+    }
+}
