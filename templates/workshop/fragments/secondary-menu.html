@@ -9,5 +9,5 @@
             {% endfor %}
         </ul>
     </div>
-    <a class="mr-3 text-white btn btn-sm" href="{% url 'workshop:praxis' slug=workshop.slug %}">{% if is_praxis %}<strong>{% endif %}Theory to Practice{% if is_frontmatter %}</strong>{% endif %}</a>
+    <a class="mr-3 text-white btn btn-sm" href="{% url 'workshop:praxis' slug=workshop.slug %}">{% if is_praxis %}<strong>{% endif %}Theory to Practice{% if is_praxis %}</strong>{% endif %}</a>
 </div>
