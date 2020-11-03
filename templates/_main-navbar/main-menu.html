@@ -1,7 +1,7 @@
 {% load static %}
 
 <nav class="navbar navbar-expand-sm navbar-light bg-primary zen-hideaway flex-sm-column{% if not is_home %} collapse{% endif %}"{% if not is_home %} id="topNavbarToggleExternal"{% endif %}>
-
+    <!-- menu medium and up -->
     <div class="container-xxl d-none d-md-flex justify-content-between">
         <a class="navbar-brand d-inline-flex flex-row align-items-center" href="{% url 'website:index' %}">
             <img src="{% static 'website/images/logo.png' %}" width="50" height="50" alt="Logotype for Digital Humanities Research Institute">
@@ -24,6 +24,7 @@
         </div>
     </div>
 
+    <!-- small menu -->
     <div class="container-xxl d-flex d-md-none align-items-start">
         <a class="navbar-brand" href="{% url 'website:index' %}">
             <img src="{% static 'website/images/logo.png' %}" width="150" height="150" alt="Logotype for Digital Humanities Research Institute">
