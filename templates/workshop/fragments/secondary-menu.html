@@ -1,8 +1,7 @@
 <div class="navbar p-0 ml-2">
     {% if is_frontmatter %}
-        {{ has_progress }}
         {% if has_progress %}
-            <p>Resume</p>
+            <a href="{% url 'workshop:frontmatter' workshop.slug %}lessons/?page={{ has_progress }}" class="btn btn-sm btn-info mr-3">Resume</a>
         {% else %}
             <a href="{% url 'workshop:frontmatter' workshop.slug %}lessons/" class="btn btn-sm btn-outline-success mr-3">Quick Start</a>
         {% endif %}
