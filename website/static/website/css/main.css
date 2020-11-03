@@ -536,5 +536,9 @@ div.dropdown-submenu {
     .avatar {
         max-height: 125px;
         max-width: 125px;
+        /* trying cropping */
+        background-position: center center;
+        background-repeat: no-repeat;
+        overflow: hidden;
     }
 }
