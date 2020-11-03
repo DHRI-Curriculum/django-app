@@ -551,4 +551,7 @@ div.dropdown-submenu {
     #LessonDropdown {
         font-size: 80%;
     }
+    #frontmatterMenuButton {
+        display: none;
+    }
 }

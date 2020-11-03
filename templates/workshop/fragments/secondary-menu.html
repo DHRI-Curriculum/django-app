@@ -1,9 +1,9 @@
 <div class="navbar p-0 ml-2">
     {% if is_frontmatter %}
         {% if has_progress %}
-            <a href="{% url 'workshop:frontmatter' workshop.slug %}lessons/?page={{ has_progress }}" class="btn btn-sm btn-info mr-0 mr-sm-3">Resume</a>
+            <a href="{% url 'workshop:frontmatter' workshop.slug %}lessons/?page={{ has_progress }}" class="btn btn-sm btn-info mr-0 mr-sm-3" id="frontmatterMenuButton">Resume</a>
         {% else %}
-            <a href="{% url 'workshop:frontmatter' workshop.slug %}lessons/" class="btn btn-sm btn-outline-success mr-0 mr-sm-3">Quick Start</a>
+            <a href="{% url 'workshop:frontmatter' workshop.slug %}lessons/" class="btn btn-sm btn-outline-success mr-0 mr-sm-3" id="frontmatterMenuButton">Quick Start</a>
         {% endif %}
     {% endif %}
     <a class="mr-0 mr-sm-3 text-white btn btn-sm" href="{% url 'workshop:frontmatter' slug=workshop.slug %}">{% if is_frontmatter %}<strong>{% endif %}{{ workshop.name }}{% if is_frontmatter %}</strong>{% endif %}</a>
