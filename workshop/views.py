@@ -85,6 +85,9 @@ class PraxisView(DetailView):
         context['lessons'] = self.get_object().lessons.all()
         context['praxis'] = self.get_object().praxis
         context['frontmatter'] = self.get_object().frontmatter
+
+        context['is_praxis'] = True
+
         return context
 
 
