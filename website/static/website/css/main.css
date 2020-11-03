@@ -486,7 +486,7 @@ div.dropdown-submenu {
     }
 }
 
-@media screen and (max-width: 576px) {
+@media (max-width: 576px) {
     .jumbotron-heading {
         font-size: 4vw !important;
         padding-top: 1rem !important;
@@ -496,7 +496,7 @@ div.dropdown-submenu {
     }
 }
 
-@media screen and (min-width: 576px) {
+@media (min-width: 576px) {
     .jumbotron-heading {
         font-size: 2.5rem !important;
     }
@@ -510,7 +510,7 @@ div.dropdown-submenu {
     color: #7b8a8b !important;
 }
 
-@media screen and (max-width: 576px) {
+@media (max-width: 576px) {
     .funding-text {
         font-size: 2vh !important;
     }
@@ -523,11 +523,35 @@ div.dropdown-submenu {
     height: 35px !important;
 }
 
-@media screen and (max-width: 576px) {
+@media (max-width: 576px) {
     .alpha-notice {
         font-size: 0.7rem !important;
         height: 50px !important;
         background-color: #35587c !important;
         color: #ecf0f1 !important;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .avatar {
+        max-height: 125px;
+        max-width: 125px;
+        /* trying cropping */
+        object-fit: cover;
+    }
+}
+
+@media (max-width: 576px) {
+    #topNavbarToggleExternal {
+        font-size: 80%;
+    }
+    #secondaryMenu {
+        font-size: 80%;
+    }
+    #LessonDropdown {
+        font-size: 80%;
+    }
+    #frontmatterMenuButton {
+        display: none;
     }
 }
