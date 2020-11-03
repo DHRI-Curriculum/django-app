@@ -542,7 +542,7 @@ div.dropdown-submenu {
 }
 
 @media (max-width: 576px) {
-    #topNavbarToggleExternal {
+    nav:first-of-type {
         font-size: 80%;
     }
     #secondaryMenu {
