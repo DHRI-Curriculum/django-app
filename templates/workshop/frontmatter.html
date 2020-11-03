@@ -27,8 +27,8 @@
 {% block secondary_menu %}
     <div class="navbar p-0 ml-2">
         {% if is_frontmatter %}<a href="{% url 'workshop:frontmatter' workshop.slug %}lessons/" class="btn btn-sm btn-outline-success mr-3">Quick Start</a>{% endif %}
-        <a class="mr-3 text-white" href="{% url 'workshop:frontmatter' slug=workshop.slug %}">{{ workshop.name }}</a>
-        <a class="mr-3 text-white dropdown-toggle" href="#" id="LessonDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Lessons</a>
+        <a class="mr-3 text-white btn btn-sm" href="{% url 'workshop:frontmatter' slug=workshop.slug %}">{{ workshop.name }}</a>
+        <a class="mr-3 text-white btn btn-sm dropdown-toggle" href="#" id="LessonDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Lessons</a>
         <div class="dropdown-menu dropdown-menu-special shadow" aria-labelledby="LessonDropdown">
           <ul class="navbar-nav mr-auto">
             {% for lesson in workshop.lessons.all %}
@@ -36,7 +36,7 @@
             {% endfor %}
           </ul>
         </div>
-        <a class="mr-3 text-white" href="{% url 'workshop:praxis' slug=workshop.slug %}">Theory to Practice</a>
+        <a class="mr-3 text-white btn btn-sm" href="{% url 'workshop:praxis' slug=workshop.slug %}">Theory to Practice</a>
     </div>
 {% endblock %}
 
