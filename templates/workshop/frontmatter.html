@@ -33,14 +33,14 @@
 {% block main %}
 
 <div class="row">
-    <div class="col-12 col-xl-9">
+    <div class="col-12 col-lg-9">
         {% if workshop.image %}
             <img src="/{{ workshop.image }}" class="img-fluid" alt="{{ workshop.name }}">
         {% else%}
             <h2>{{ workshop.name }}</h2>
         {% endif %}
 
-        <div class="row mt-4 d-xl-none sidebar justify-content-center">
+        <div class="row mt-4 d-lg-none sidebar justify-content-center">
             <div class="col-6 col-md-4">
                 {% include 'workshop/fragments/frontmatter/favorite-button.html' %}
             </div>
@@ -183,13 +183,13 @@
 
     </div>
 
-    <div class="d-none d-xl-block col-xl-3 sidebar">
+    <div class="d-none d-lg-block col-lg-3 sidebar">
         {% include 'workshop/fragments/frontmatter/favorite-button.html' %}
         {% include 'workshop/fragments/frontmatter/dashboard.html' %}
         {% include 'workshop/fragments/frontmatter/get-started-button.html' %}
 
         {% if num_terms > 0 %}
-            <div class="d-none d-xl-block">
+            <div class="d-none d-lg-block">
                 <h3 class="py-4 border-bottom">Glossary</h4>
                 <p class="lead mt-2">These are the glossary terms that you will learn how to define in this workshop.</p>
                 {% for term in all_terms %}
