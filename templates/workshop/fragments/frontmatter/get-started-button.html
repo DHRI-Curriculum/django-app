@@ -1,3 +1,7 @@
 <div class="{{ margin|default:"my-4" }} py-4 d-flex justify-content-center">
-    <a href="{% url 'workshop:frontmatter' workshop.slug %}lessons/" class="btn btn-success btn-lg">Get started</a>
+    {% if has_progress %}
+        <a href="{% url 'workshop:frontmatter' workshop.slug %}lessons/?page={{ has_progress }}" class="btn btn-info btn-lg">Resume</a>
+    {% else %}
+        <a href="{% url 'workshop:frontmatter' workshop.slug %}lessons/" class="btn btn-success btn-lg">Get started</a>
+    {% endif %}
 </div>
