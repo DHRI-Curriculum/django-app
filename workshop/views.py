@@ -27,7 +27,7 @@ class FrontmatterView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         self.request.session.set_expiry(0)  # expires at browser close
-        context['has_visited'] = self.has_visited()  # TODO: make sure it works
+        context['has_visited'] = self.has_visited()  # TODO #273: View count is not working
         context['user_favorited'] = self.has_favorited()
         context['num_terms'], context['all_terms'] = self.get_all_terms()
         context['frontmatter'] = self.get_object().frontmatter
