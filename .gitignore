@@ -149,3 +149,6 @@ _extra
 
 # Apple
 .DS_Store
+
+# Local copy
+adminsortable
