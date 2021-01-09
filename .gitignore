@@ -146,3 +146,6 @@ sql.cnf
 test.py
 secrets.py
 _extra
+
+# Apple
+.DS_Store
