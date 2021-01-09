@@ -17,7 +17,11 @@ Make sure that all the necessary files are present:
 
 Without those files in the repo (and branch) that you want to use, you will not be able to work with the repository. Also, each of those files have required sections that need to be present inside them. Here is a template for each file:
 
-### `frontmatter.md`
+## Step 3: Ensure `frontmatter.md` is correctly formatted
+
+In `frontmatter.md` you want to add the following sections as separate headings using a double hash before them (`##`): Abstract, Learning Objectives, Estimated Time, Prerequisites, Contexts, Resources, Acknowledgments. The "Contexts" section should have subheadings for "Pre-reading Suggestions", "Projects That Use These Skills", and "Ethical Considerations".
+
+An example of the entire file (easy to copy and paste into `frontmatter.md`) is available here:
 
 ```md
 # Frontmatter
@@ -32,7 +36,7 @@ Abstract
 - Learning objective 2
 - Learning objective 3
 
-## Estimated time
+## Estimated Time
 
 10 hours.
 
@@ -42,11 +46,11 @@ Abstract
 
 ## Contexts
 
-### Pre-reading suggestions
+### Pre-reading Suggestions
 
 - Book about R with [link](http://www.google.com)
 
-### Projects that use these skills
+### Projects That Use These Skills
 
 - A project with [link](http://www.google.com)
 
