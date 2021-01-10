@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% load markdownify static snippet %}
 
+{% block extra_head_material %}
+  <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+{% endblock %}
+
 {% block before_container %}
   <section class="jumbotron px-4 py-5" style="border-radius: unset; background-image: url({% static 'website/images/bg-pattern.png' %});">
     <div class="container-xxl">
