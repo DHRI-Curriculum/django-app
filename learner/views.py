@@ -120,8 +120,8 @@ def activate(request, uidb64='', token=''):
 
 @csrf_protect
 def favorite(request):
-    if not request.user.is_authenticated: # TODO: Does not seem to work
-        return HttpResponseForbidden()
+    if not request.user.is_authenticated:
+        return JsonResponse({'error': 'user is not authenticated'})
 
     workshop = request.headers.get('workshop')
     obj = get_object_or_404(Workshop, slug=workshop)
