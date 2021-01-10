@@ -5,6 +5,15 @@
   <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
 {% endblock %}
 
+{% block javascript %}
+  imagesLoaded( document.querySelector('.grid'), function( instance ) {
+    console.log('all images are loaded -- setting up masonry');
+    new Masonry( '.grid', {
+      percentPosition: true
+    });
+  });
+{% endblock %}
+
 {% block before_container %}
   <section class="jumbotron px-4 py-5" style="border-radius: unset; background-image: url({% static 'website/images/bg-pattern.png' %});">
     <div class="container-xxl">
@@ -25,7 +34,7 @@
   {% snippet "introduction-website" %}
   {% snippet "introduction-curriculum" %}
   <h2>All workshops</h2>
-  <div class="row" data-masonry='{"percentPosition": true }'>
+  <div class="row grid">
       {% for workshop in object_list %}
         <div class="col-xl-6 px-3 py-3">
           <div class="card h-100">
