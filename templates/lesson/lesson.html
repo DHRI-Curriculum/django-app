@@ -60,9 +60,8 @@
 
       // get data from form
       var question_id = e.target.dataset.question_id;
-      console.log(question_id);
-      console.log(answers)
-
+      //console.log(question_id);
+      //console.log(answers)
 
       fetch('/workshops/{{ workshop.slug }}/lessons/check-answer/', {
           method: "POST",
@@ -93,10 +92,10 @@
               enable_all_elements(e.target.elements);
             }
           } else {
-            console.log("Error:", data.error);
+            console.error(data.error);
           }
       }).catch(function(ex) {
-          console.log("Error:", ex);
+          console.error(ex);
       });
 
     }
