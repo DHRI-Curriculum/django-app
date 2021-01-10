@@ -8,7 +8,8 @@
 {% block javascript %}
   imagesLoaded( document.querySelector('.grid'), function( instance ) {
     console.log('all images are loaded -- setting up masonry');
-    new Masonry( '.grid', {
+    console.log(instance);
+    let m = new Masonry( '.grid', {
       percentPosition: true
     });
   });
