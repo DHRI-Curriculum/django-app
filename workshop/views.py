@@ -70,8 +70,9 @@ class FrontmatterView(DetailView):
 
     def has_visited(self):
         if not self.request.session.get('has_visited', False):
-            self.get_object().views += 1
-            self.get_object().save()
+            obj = self.get_object()
+            obj.views += 1
+            obj.save()
             self.request.session['has_visited'] = True
             return True
         return True
