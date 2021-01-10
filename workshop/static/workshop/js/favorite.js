@@ -32,12 +32,13 @@ favorite = function(evt) {
                 setTimeout(() => { evt.target.style.backgroundColor = ''; }, 3000);
                 elem.dataset.favorite = true;
             })
-        } else if (data.error != undefined) {
+        } else if (data.error === 'user is not authenticated') {
             document.querySelector('#no-login').classList.remove('alert-warning');
             document.querySelector('#no-login').classList.add('alert-danger');
-            document.querySelector('#no-login').innerHTML = `Note that you must be logged in to favorite workshops. Click to <a href="${window.LOGIN_URL}">login</a> or <a href="${window.REGISTER_URL}">create an account</a>.`
+            document.querySelector('#no-login').innerHTML = `Note that you must be logged in to favorite workshops. Click to <a href="${window.LOGIN_URL}">login</a> or <a href="${window.REGISTER_URL}">create an account</a>.`;
         } else {
-            console.error('Cannot interpret response')
+            console.error('Cannot interpret response data');
+            console.error(data);
         }
     }).catch(function(ex) {
         console.error(ex);
