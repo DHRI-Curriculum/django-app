@@ -32,11 +32,13 @@ favorite = function(evt) {
                 setTimeout(() => { evt.target.style.backgroundColor = ''; }, 3000);
                 elem.dataset.favorite = true;
             })
+        } else if (data.error != undefined) {
+            console.log(data);
         } else {
-            console.log("Error: Cannot interpret response.");
+            console.error('Cannot interpret response')
         }
     }).catch(function(ex) {
-        console.log("Error:", ex);
+        console.error(ex);
     });
 };
 
