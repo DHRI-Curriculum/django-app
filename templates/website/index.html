@@ -6,13 +6,15 @@
 {% endblock %}
 
 {% block javascript %}
-  imagesLoaded( document.querySelector('.grid'), function( instance ) {
-    console.log('all images are loaded -- setting up masonry');
-    console.log(instance);
-    let m = new Masonry( '.grid', {
-      percentPosition: true
+  <script>
+    imagesLoaded( document.querySelector('.grid'), function( instance ) {
+      console.log('all images are loaded -- setting up masonry');
+      console.log(instance);
+      let m = new Masonry( '.grid', {
+        percentPosition: true
+      });
     });
-  });
+  </script>
 {% endblock %}
 
 {% block before_container %}
