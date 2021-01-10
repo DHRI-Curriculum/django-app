@@ -18,8 +18,8 @@
 
 {% block before_content %}
     {% if not request.user.is_authenticated %}
-        <div class="w-100 py-5" id="no-login">
-            <div class="alert alert-info">Note that you are not logged in. In order to save progress and interact with the workshops, you need to <a href="{% url 'login' %}">login</a> or <a href="{% url 'register' %}">create an account</a>.</div>
+        <div class="w-100 py-5">
+            <div class="alert alert-info" id="no-login">Note that you are not logged in. In order to save progress and interact with the workshops, you need to <a href="{% url 'login' %}">login</a> or <a href="{% url 'register' %}">create an account</a>.</div>
         </div>
     {% endif %}
 {% endblock %}
