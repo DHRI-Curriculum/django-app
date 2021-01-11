@@ -115,7 +115,7 @@ IMAGE_CACHE = {
 ##### Dev features ##############################
 
 # If VERBOSE is set to True, every output message will display the source module (good for troubleshooting)
-VERBOSE = False
+VERBOSE = True
 
 
 NORMALIZING_SECTIONS = {
