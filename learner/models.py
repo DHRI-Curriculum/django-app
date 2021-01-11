@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from backend.mixins import CurlyQuotesMixin
+from workshop.models import Workshop
 
 
 class Profile(CurlyQuotesMixin, models.Model):
@@ -45,6 +46,6 @@ class ProfileLink(models.Model):
 
 class Progress(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    workshop = models.ForeignKey('workshop.Workshop', on_delete=models.CASCADE)
+    workshop = models.ForeignKey(Workshop, on_delete=models.CASCADE)
     page = models.IntegerField(default=0)
     modified = models.DateField(auto_now=True)
