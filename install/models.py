@@ -9,28 +9,21 @@ from backend.mixins import CurlyQuotesMixin
 def dhri_slugify(string: str) -> str: # TODO: Move to backend.dhri.text
     import re
     from django.utils.text import slugify
-
-    print('CLEANUP:', string)
-
     # first replace any non-OK characters [/] with space
-    string = re.sub(r'[\/\-\–\—\_]', '', string)
-    print('-->', string)
-
-    # then replace space with -
-    string = re.sub(r'\s', '-', string)
-    print('-->', string)
+    string = re.sub(r'[\/\-\–\—\_]', ' ', string)
 
     # then replace too many spaces with one space
     string = re.sub(r'\s+', ' ', string)
-    print('-->', string)
+
+    # then replace space with -
+    string = re.sub(r'\s', '-', string)
+
 
     # then replace any characters that are not in ALLOWED charset with nothing
     string = re.sub(r'[^a-zA-Z\-\s]', '', string)
-    print('-->', string)
 
     # finally, use Django's slugify
     string = slugify(string)
-    print('-->', string)
 
     return string
 
