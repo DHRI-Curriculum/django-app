@@ -22,6 +22,11 @@ GLOSSARY_REPO = ('glossary', 'v2.0')
 INSTALL_REPO = ('install', 'v2.0')
 INSIGHT_REPO = ('insights', 'v2.0')
 
+# A list of URLs that will not be downloaded by the webcache
+DO_NOT_DOWNLOAD = [
+    'https://media.githubusercontent.com/media/metmuseum/openaccess/master/MetObjects.csv'
+]
+
 AUTO_GROUPS = {
     'Team': {
         models.Profile: ['add', 'change', 'delete', 'view'],
@@ -115,7 +120,7 @@ IMAGE_CACHE = {
 ##### Dev features ##############################
 
 # If VERBOSE is set to True, every output message will display the source module (good for troubleshooting)
-VERBOSE = False
+VERBOSE = True
 
 
 NORMALIZING_SECTIONS = {

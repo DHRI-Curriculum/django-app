@@ -1,14 +1,36 @@
 from django.db import models
 from django.utils.text import slugify
 from library.models import Reading, Project, Resource, Tutorial
-from learner.models import Profile
 from django.contrib.auth.models import User
 from backend.mixins import CurlyQuotesMixin
+#from backend.dhri.text import dhri_slugify
+
+
+def dhri_slugify(string: str) -> str: # TODO: Move to backend.dhri.text
+    import re
+    from django.utils.text import slugify
+    # first replace any non-OK characters [/] with space
+    string = re.sub(r'[\/\-\–\—\_]', ' ', string)
+
+    # then replace too many spaces with one space
+    string = re.sub(r'\s+', ' ', string)
+
+    # then replace space with -
+    string = re.sub(r'\s', '-', string)
+
+
+    # then replace any characters that are not in ALLOWED charset with nothing
+    string = re.sub(r'[^a-zA-Z\-\s]', '', string)
+
+    # finally, use Django's slugify
+    string = slugify(string)
+
+    return string
 
 
 class Workshop(models.Model):
     name = models.CharField(max_length=200)
-    slug = models.CharField(max_length=200, blank=True)
+    slug = models.CharField(max_length=200, blank=True, unique=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     parent_backend = models.CharField(max_length=100, blank=True, null=True)
@@ -19,8 +41,7 @@ class Workshop(models.Model):
         upload_to='workshop_headers/', default='workshop_headers/default.jpg')
 
     def save(self, *args, **kwargs):
-        name = self.name.replace('-', ' ').replace('/', ' ')
-        self.slug = slugify(name)
+        self.slug = dhri_slugify(self.name)
         super(Workshop, self).save()
 
     def __str__(self):
@@ -43,6 +64,8 @@ class Workshop(models.Model):
 
 
 class Contributor(models.Model):
+    from learner.models import Profile
+
     first_name = models.TextField(max_length=100)
     last_name = models.TextField(max_length=100)
     # This one is really only used when Contributor's profile is set to null

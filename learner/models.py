@@ -4,13 +4,15 @@ from backend.mixins import CurlyQuotesMixin
 
 
 class Profile(CurlyQuotesMixin, models.Model):
+    from workshop.models import Workshop
+    
     curly_fields = ['bio']
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(default='default.png',
                               upload_to='profile_pictures')
     email_confirmed = models.BooleanField(default=False)
-    favorites = models.ManyToManyField('workshop.Workshop', blank=True)
+    favorites = models.ManyToManyField(Workshop, blank=True)
     instructor_requested = models.BooleanField(default=False)
     bio = models.TextField(null=True, blank=True)
     pronouns = models.TextField(null=True, blank=True)
@@ -44,7 +46,9 @@ class ProfileLink(models.Model):
 
 
 class Progress(models.Model):
+    from workshop.models import Workshop
+
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    workshop = models.ForeignKey('workshop.Workshop', on_delete=models.CASCADE)
+    workshop = models.ForeignKey(Workshop, on_delete=models.CASCADE)
     page = models.IntegerField(default=0)
     modified = models.DateField(auto_now=True)
