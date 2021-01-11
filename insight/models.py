@@ -31,7 +31,7 @@ class Insight(CurlyQuotesMixin, models.Model):
     curly_fields = ['text']
 
     title = models.CharField(max_length=80, unique=True)
-    slug = models.CharField(max_length=200, blank=True)
+    slug = models.CharField(max_length=200, blank=True, unique=True)
     software = models.ManyToManyField(Software)
     text = models.TextField(blank=True, null=True)
     # TODO: Add image field

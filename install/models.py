@@ -59,7 +59,7 @@ class InstructionManager(models.Manager):
 class Instruction(CurlyQuotesMixin, models.Model):
     curly_fields = ['what', 'why']
 
-    slug = models.CharField(max_length=200, blank=True)
+    slug = models.CharField(max_length=200, blank=True, unique=True)
     software = models.ForeignKey(
         Software, on_delete=models.CASCADE, related_name='instructions')
     what = models.TextField(blank=True)

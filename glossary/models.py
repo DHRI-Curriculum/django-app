@@ -30,7 +30,7 @@ class Term(CurlyQuotesMixin, models.Model):
     curly_fields = ['explication']
 
     term = models.TextField()
-    slug = models.CharField(max_length=200, blank=True)
+    slug = models.CharField(max_length=200, blank=True, unique=True)
     explication = models.TextField()
     readings = models.ManyToManyField('library.Reading')
     tutorials = models.ManyToManyField('library.Tutorial')

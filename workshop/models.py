@@ -31,7 +31,7 @@ def dhri_slugify(string: str) -> str: # TODO: Move to backend.dhri.text
 
 class Workshop(models.Model):
     name = models.CharField(max_length=200)
-    slug = models.CharField(max_length=200, blank=True)
+    slug = models.CharField(max_length=200, blank=True, unique=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
     parent_backend = models.CharField(max_length=100, blank=True, null=True)
