@@ -102,8 +102,11 @@ div .codehilite pre {
     background-color: rgba(17, 45, 45, 0.529);
 }
 
+body.zen > .zen-hideaway {
+    display: none;
+}
+
 #zen {
-    padding: 0.25rem 0.5rem;
     font-size: 0.8203125rem;
     line-height: 1.5;
     cursor: pointer;
@@ -114,6 +117,19 @@ div .codehilite pre {
     -ms-user-select: none; /* Internet Explorer/Edge */
     user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
+}
+
+#zen::before {
+    content: url("data:image/svg+xml; utf8, <svg width='2em' height='2em' viewBox='0 0 16 16' class='pr-1 zen-bi bi bi-toggle-off' fill='currentColor' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' d='M11 4a4 4 0 0 1 0 8H8a4.992 4.992 0 0 0 2-4 4.992 4.992 0 0 0-2-4h3zm-6 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8zM0 8a5 5 0 0 0 5 5h6a5 5 0 0 0 0-10H5a5 5 0 0 0-5 5z'/></svg>");
+    display: block;
+    width: 32px;
+    height: 32px;
+    position: absolute;
+    margin: 0px -37px;
+}
+
+body.zen #zen::before {
+    content: url("data:image/svg+xml; utf8, <svg width='2em' height='2em' viewBox='0 0 16 16' class='pr-1 zen-bi bi bi-toggle-on' fill='currentColor' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' d='M5 3a5 5 0 0 0 0 10h6a5 5 0 0 0 0-10H5zm6 9a4 4 0 1 0 0-8 4 4 0 0 0 0 8z'/></svg>") !important;
 }
 
 .zen-bi {

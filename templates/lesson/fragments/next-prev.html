@@ -2,7 +2,7 @@
   <div class="col-12 text-right">
     <nav aria-label="Lesson navigation">
       <ul class="pagination pagination-sm justify-content-end">
-        <span class="mr-3">{% include 'lesson/fragments/zen-settings.html' %}</span>
+        <span><a id="zen" data-toggle="off" class="mr-4">Zen mode</a></span>
         <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
           <a class="zen-add page-link {% if not page_obj.has_previous %}disabled{% endif %}" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}" tabindex="-1" aria-disabled="true" data-toggle="off">Previous</a>
         </li>
