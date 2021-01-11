@@ -161,3 +161,9 @@ if (top_menu_collapse() != null) {
 
     // document.getElementById('secondaryMenu').style.cursor = 'pointer';
 }
+
+// Make .dropdown-submenu non-clickable
+[...document.querySelectorAll('.dropdown-submenu')].forEach(elem => {
+    elem.addEventListener("click", (event) => { event.stopPropagation(); return undefined; });
+    console.log('click inactivated:' + elem);
+})

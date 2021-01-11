@@ -4,8 +4,8 @@ from glossary.models import Term
 from django.utils.safestring import mark_safe
 from .glossary_navigation import get_letter_nav
 
-register = template.Library()
 
+register = template.Library()
 
 
 @register.simple_tag(takes_context=True)
