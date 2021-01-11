@@ -23,10 +23,10 @@ const zen_switch = function(e) {
 
     if (inZen) {
         // zen mode is on, we want to turn it off
-        zenButton.innerHTML = zen_off; // TODO: This should also be a CSS selector...
+        //zenButton.innerHTML = zen_off; // TODO: This should also be a CSS selector...
         body.classList.remove('zen')
     } else {
-        zenButton.innerHTML = zen_on; // TODO: This should also be a CSS selector...
+        //zenButton.innerHTML = zen_on; // TODO: This should also be a CSS selector...
         body.classList.add('zen')
     }
     /*
@@ -72,10 +72,10 @@ try {
 const zen_button = document.getElementById('zen')
 
 if (zen_cookie == "off" || zen_cookie == "auto-off") {
-    zen_button.innerHTML = zen_off;
+    // zen_button.innerHTML = zen_off;
     body.classList.remove('zen')
 } else if (zen_cookie == "on") {
-    zen_button.innerHTML = zen_on;
+    // zen_button.innerHTML = zen_on;
     body.classList.add('zen')
 }
 
