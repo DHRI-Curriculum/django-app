@@ -102,6 +102,10 @@ div .codehilite pre {
     background-color: rgba(17, 45, 45, 0.529);
 }
 
+body.zen > .zen-hideaway {
+    display: none;
+}
+
 #zen {
     padding: 0.25rem 0.5rem;
     font-size: 0.8203125rem;

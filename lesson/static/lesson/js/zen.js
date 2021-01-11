@@ -1,6 +1,7 @@
 const zen_off = '<svg width="2em" height="2em" viewBox="0 0 16 16" class="pr-1 zen-bi bi bi-toggle-off" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M11 4a4 4 0 0 1 0 8H8a4.992 4.992 0 0 0 2-4 4.992 4.992 0 0 0-2-4h3zm-6 8a4 4 0 1 1 0-8 4 4 0 0 1 0 8zM0 8a5 5 0 0 0 5 5h6a5 5 0 0 0 0-10H5a5 5 0 0 0-5 5z"/></svg> Zen mode'
 const zen_on = '<svg width="2em" height="2em" viewBox="0 0 16 16" class="pr-1 zen-bi bi bi-toggle-on" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5 3a5 5 0 0 0 0 10h6a5 5 0 0 0 0-10H5zm6 9a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg> Zen mode'
 var nav_elements = document.getElementsByClassName('zen-add');
+let body = document.querySelector('body');
 
 const hide_class = function(classname) {
     var elements = document.getElementsByClassName(classname);
@@ -17,6 +18,18 @@ const show_class = function(classname){
 }
 
 const zen_switch = function(e) {
+    let inZen = [...body.classList].includes('zen');
+    let zenButton = document.querySelector('#zen');
+
+    if (inZen) {
+        // zen mode is on, we want to turn it off
+        zenButton.innerHTML = zen_off; // TODO: This should also be a CSS selector...
+        body.classList.remove('zen')
+    } else {
+        zenButton.innerHTML = zen_on; // TODO: This should also be a CSS selector...
+        body.classList.add('zen')
+    }
+    /*
     if (e.target.id != "zen") {
         button = e.target.parentElement;
     } else {
@@ -41,7 +54,7 @@ const zen_switch = function(e) {
     } else {
         console.log('Error:', e)
     }
-
+    */
     e.stopPropagation();
 }
 
@@ -59,13 +72,11 @@ try {
 const zen_button = document.getElementById('zen')
 
 if (zen_cookie == "off" || zen_cookie == "auto-off") {
-    show_class('zen-hideaway');
     zen_button.innerHTML = zen_off;
-    zen_button.dataset.toggle = 'off';
+    body.classList.remove('zen')
 } else if (zen_cookie == "on") {
-    hide_class('zen-hideaway');
     zen_button.innerHTML = zen_on;
-    zen_button.dataset.toggle = 'on';
+    body.classList.add('zen')
 }
 
 document.getElementById('zen')
