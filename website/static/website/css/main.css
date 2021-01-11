@@ -125,7 +125,8 @@ body.zen > .zen-hideaway {
     display: block;
     width: 32px;
     height: 32px;
-    /* margin: 10px 5px 0 10px; */
+    position: absolute;
+    margin: 0px -37px;
 }
 
 body.zen #zen::before {
