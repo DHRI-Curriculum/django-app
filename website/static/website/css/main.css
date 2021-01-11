@@ -463,12 +463,14 @@ div.dropdown-submenu {
 }
 
 .card-img-overlay > h5,
-.card-img-overlay > .btn-group {
+.card-img-overlay > .btn-group,
+.card-img-overlay > .w-75 {
     visibility: hidden;
 }
 
 .card-img-overlay:hover h5,
-.card-img-overlay:hover .btn-group {
+.card-img-overlay:hover .btn-group,
+.card-img-overlay:hover .w-75 {
     visibility: visible;
 }
 .nav-scroller {
