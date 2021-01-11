@@ -36,12 +36,12 @@ def create_terms(glossary_repo=GLOSSARY_REPO):
         log.created(created, 'Term', t.term, t.id)
 
         for d in loader.terms[term].readings:
-            obj, created = Reading.objects.get_or_create(title = d['linked_text'], url = d['url'], defaults={'annotation': d['annotation']'})
+            obj, created = Reading.objects.get_or_create(title = d['linked_text'], url = d['url'], defaults={'annotation': d['annotation']})
             log.created(created, 'Reading', obj.title, obj.id)
             t.readings.add(obj)
 
         for d in loader.terms[term].tutorials:
-            obj, created = Tutorial.objects.get_or_create(label = d['linked_text'], url = d['url'], defaults={'annotation': d['annotation']'})
+            obj, created = Tutorial.objects.get_or_create(label = d['linked_text'], url = d['url'], defaults={'annotation': d['annotation']})
             log.created(created, 'Tutorial', obj.label, obj.id)
             t.tutorials.add(obj)
 
