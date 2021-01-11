@@ -322,10 +322,12 @@ div#admin {
         margin-left: 30px !important;
     */
 }
-
+.dropdown-item {
+    font-size: 1rem !important;
+}
 .dropdown-submenu {
     position: relative;
-    font-size: 1rem;
+    font-size: 1rem !important;
 }
 .dropdown-submenu a::after {
     transform: rotate(-90deg);
