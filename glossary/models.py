@@ -35,7 +35,7 @@ class Term(CurlyQuotesMixin, models.Model):
     tutorials = models.ManyToManyField('library.Tutorial')
 
     def save(self, *args, **kwargs):
-        self.term = dhri_slugify(self.term)
+        self.slug = dhri_slugify(self.term)
         super(Term, self).save()
 
     def __str__(self):

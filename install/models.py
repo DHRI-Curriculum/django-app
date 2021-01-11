@@ -70,7 +70,7 @@ class Instruction(CurlyQuotesMixin, models.Model):
     def save(self, *args, **kwargs):
         slug = self.software.software.replace('-', ' ').replace(
             '/', ' ') + '-' + self.software.operating_system.replace('-', ' ').replace('/', ' ')
-        slug = dhri_slugify(slug)
+        self.slug = dhri_slugify(slug)
         super(Instruction, self).save()
 
     def __str__(self):

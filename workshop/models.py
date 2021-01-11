@@ -41,7 +41,7 @@ class Workshop(models.Model):
         upload_to='workshop_headers/', default='workshop_headers/default.jpg')
 
     def save(self, *args, **kwargs):
-        self.name = dhri_slugify(self.name)
+        self.slug = dhri_slugify(self.name)
         super(Workshop, self).save()
 
     def __str__(self):
