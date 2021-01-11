@@ -1,12 +1,12 @@
-<div class="dropdown-submenu">
-    <a class="dropdown-item dropdown-toggle" data-toggle="dropdown" href="#">
+<li><div class="dropdown-submenu">
+    <a class="dropdown-item text-white dropdown-toggle" data-toggle="dropdown" href="#">
         {{ os }}
     </a>
     <div class="dropdown-menu dropdown-menu-special shadow-sm">
         {% for instruction in instructions %}
-            <a class="dropdown-item" href="{% url 'install:installation' slug=instruction.slug %}">
+            <a class="dropdown-item text-white" href="{% url 'install:installation' slug=instruction.slug %}">
                 {{ instruction.software.software }}
             </a>
         {% endfor %}
     </div>
-</div>
+</div></li>
