@@ -12,6 +12,11 @@ from requests.exceptions import ProxyError
 from pathlib import Path
 from bs4 import BeautifulSoup
 
+DO_NOT_DOWNLOAD = [
+    'https://media.githubusercontent.com/media/metmuseum/openaccess/master/MetObjects.csv'
+]
+
+
 log = Logger(name='webcache')
 
 class WebCache():
@@ -96,6 +101,10 @@ class WebCache():
                     self.url = f'http://{self.url}'
                 else:
                     return ''
+            if self.url in DO_NOT_DOWNLOAD:
+                log.warning(f'{self.url} was detected, a file listed not for download.')
+                return ''
+            
             try:
                 r = requests.get(self.url, timeout=10)
                 soup = BeautifulSoup(r.text, 'lxml')
