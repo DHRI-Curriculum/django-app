@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.text import slugify
 from install.models import Software
 from backend.mixins import CurlyQuotesMixin
+from backend.dhri.text import dhri_slugify
 
 
 class Insight(CurlyQuotesMixin, models.Model):
@@ -14,8 +15,7 @@ class Insight(CurlyQuotesMixin, models.Model):
     # TODO: Add image field
 
     def save(self, *args, **kwargs):
-        _ = self.title.replace('-', ' ').replace('/', ' ')
-        self.slug = slugify(_)
+        self.title = dhri_slugify(self.title)
         super(Insight, self).save()
 
     def __str__(self):

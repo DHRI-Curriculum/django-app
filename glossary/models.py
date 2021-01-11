@@ -1,7 +1,7 @@
 from django.db import models
-from django.utils.text import slugify
 from django.urls import reverse
 from backend.mixins import CurlyQuotesMixin
+from backend.dhri.text import dhri_slugify
 
 
 class Term(CurlyQuotesMixin, models.Model):
@@ -14,8 +14,7 @@ class Term(CurlyQuotesMixin, models.Model):
     tutorials = models.ManyToManyField('library.Tutorial')
 
     def save(self, *args, **kwargs):
-        term = self.term.replace('-', ' ').replace('/', ' ')
-        self.slug = slugify(term)
+        self.term = dhri_slugify(self.term)
         super(Term, self).save()
 
     def __str__(self):

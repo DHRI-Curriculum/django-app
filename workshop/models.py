@@ -4,6 +4,7 @@ from library.models import Reading, Project, Resource, Tutorial
 from learner.models import Profile
 from django.contrib.auth.models import User
 from backend.mixins import CurlyQuotesMixin
+from backend.dhri.text import dhri_slugify
 
 
 class Workshop(models.Model):
@@ -19,8 +20,7 @@ class Workshop(models.Model):
         upload_to='workshop_headers/', default='workshop_headers/default.jpg')
 
     def save(self, *args, **kwargs):
-        name = self.name.replace('-', ' ').replace('/', ' ')
-        self.slug = slugify(name)
+        self.name = dhri_slugify(self.name)
         super(Workshop, self).save()
 
     def __str__(self):
