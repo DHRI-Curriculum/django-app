@@ -11,7 +11,7 @@ VERSION = '0.7'
 
 AUTO_REPOS = [
     ('command-line', 'v2.0'),
-    # ('data-literacies', 'v2.0'),
+    ('data-literacies', 'v2.0'),
     ('text-analysis', 'v2.0'),
     ('python', 'v2.0'),
     ('html-css', 'v2.0'),
