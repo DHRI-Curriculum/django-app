@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
 from library.models import Reading, Project, Resource, Tutorial
-from learner.models import Profile
 from django.contrib.auth.models import User
 from backend.mixins import CurlyQuotesMixin
 #from backend.dhri.text import dhri_slugify
@@ -65,6 +64,8 @@ class Workshop(models.Model):
 
 
 class Contributor(models.Model):
+    from learner.models import Profile
+
     first_name = models.TextField(max_length=100)
     last_name = models.TextField(max_length=100)
     # This one is really only used when Contributor's profile is set to null
