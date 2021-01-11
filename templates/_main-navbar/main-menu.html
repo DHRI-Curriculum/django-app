@@ -2,7 +2,8 @@
 
 <nav class="navbar navbar-expand-sm navbar-light bg-primary zen-hideaway flex-sm-column{% if not is_home %} collapse{% endif %}"{% if not is_home %} id="topNavbarToggleExternal"{% endif %}>
     <!-- menu medium and up -->
-    <div class="container-xxl d-none d-md-flex justify-content-between">
+    <div class="container-xxl d-none d-lg-flex justify-content-between">
+        
         <a class="navbar-brand d-inline-flex flex-row align-items-center" href="{% url 'website:index' %}">
             <img src="{% static 'website/images/logo.png' %}" width="50" height="50" alt="Logotype for Digital Humanities Research Institute">
             <div class="d-inline-flex flex-column">
@@ -25,7 +26,7 @@
     </div>
 
     <!-- small menu -->
-    <div class="container-xxl d-flex d-md-none align-items-start">
+    <div class="container-xxl d-flex d-lg-none align-items-start">
         <a class="navbar-brand" href="{% url 'website:index' %}">
             <img src="{% static 'website/images/logo.png' %}" width="150" height="150" alt="Logotype for Digital Humanities Research Institute">
         </a>
@@ -37,7 +38,7 @@
             </ul>
         </div>
     </div>
-    <div class="container-xxl d-flex flex-row d-md-none mt-4 border-top pt-2 border-dark">
+    <div class="container-xxl d-flex flex-row d-lg-none mt-4 border-top pt-2 border-dark">
         <ul class="navbar-nav flex-row">
             <li><a class="d-inline-flex align-items-center p-2 text-light text-decoration-none workshop-button collapsed" style="cursor:pointer;" data-toggle="collapse" data-target="#allWorkshops" aria-controls="allWorkshops" aria-expanded="false" aria-label="Toggle all workshop navigation">Workshops</a></li>
             <li><a class="d-inline-flex align-items-center p-2 text-light text-decoration-none workshop-button collapsed" style="cursor:pointer;" data-toggle="collapse" data-target="#allInstallations" aria-controls="allInstallations" aria-expanded="false" aria-label="Toggle all installation navigation">Installations</a></li>
