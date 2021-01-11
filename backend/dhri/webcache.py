@@ -3,7 +3,7 @@ from urllib import parse as urlparser
 from backend.dhri.log import Logger
 
 from backend.dhri_settings import FORCE_DOWNLOAD
-from backend.dhri_settings import CACHE_DIRS, TEST_AGES
+from backend.dhri_settings import CACHE_DIRS, TEST_AGES, DO_NOT_DOWNLOAD
 
 import requests
 import json
@@ -11,10 +11,6 @@ import datetime
 from requests.exceptions import ProxyError
 from pathlib import Path
 from bs4 import BeautifulSoup
-
-DO_NOT_DOWNLOAD = [
-    'https://media.githubusercontent.com/media/metmuseum/openaccess/master/MetObjects.csv'
-]
 
 
 log = Logger(name='webcache')
