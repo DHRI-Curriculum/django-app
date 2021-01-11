@@ -107,7 +107,7 @@ body.zen > .zen-hideaway {
 }
 
 #zen {
-    padding: 0.25rem 0.5rem;
+    /* padding: 0.25rem 0.5rem; */
     font-size: 0.8203125rem;
     line-height: 1.5;
     cursor: pointer;
