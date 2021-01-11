@@ -44,20 +44,4 @@ def auto_replace(string: str) -> str:
     return string
 
 
-def dhri_slugify(string: str) -> str:
-    # first replace any non-OK characters [/] with space
-    string = re.sub(r'[\/\-\–\—\_]', '', string)
-
-    # then replace space with -
-    string = re.sub(r'\s', '-', string)
-
-    # then replace too many spaces with one space
-    string = re.sub(r'\s+', ' ', string)
-
-    # then replace any characters that are not in ALLOWED charset with nothing
-    string = re.sub(r'[^a-zA-Z\-\s]', '', string)
-
-    # finally, use Django's slugify
-    string = slugify(string)
-
-    return string
+# TODO: Insert dhri_slugify here
