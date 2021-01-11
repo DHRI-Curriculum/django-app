@@ -968,7 +968,7 @@ class GlossaryParser():
 
     def __init__(self, data:str):
         self.data = data
-        self.term = list(split_into_sections(data, level_granularity=1).keys())[0]
+        self.term = list(split_into_sections(data, level_granularity=1).keys())[0].strip()
         for header, md in split_into_sections(data, level_granularity=2).items():
             if header == self.term:
                 self.explication = md
