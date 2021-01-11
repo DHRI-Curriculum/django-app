@@ -770,6 +770,9 @@ class LessonParser():
                             if s:
                                 for software in s:
                                     for i in software.instructions.all():
+                                        if not i.slug:
+                                            print(i, 'has no slug!!!')
+                                            continue
                                         url = reverse('install:installation', args=[i.slug])
                                         if not link_url: link_url = url
                                 link['href'] = link_url
@@ -965,7 +968,7 @@ class GlossaryParser():
 
     def __init__(self, data:str):
         self.data = data
-        self.term = list(split_into_sections(data, level_granularity=1).keys())[0]
+        self.term = list(split_into_sections(data, level_granularity=1).keys())[0].strip()
         for header, md in split_into_sections(data, level_granularity=2).items():
             if header == self.term:
                 self.explication = md

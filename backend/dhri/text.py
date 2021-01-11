@@ -1,21 +1,25 @@
 # General text tools
 import re
+from django.utils.text import slugify
 from backend.dhri.regex import URL, NUMBERS, MARKDOWN_HREF, COMPLEX_SEARCH_FOR_URLS
 from backend.dhri_settings import REPLACEMENTS
 
-def get_urls(markdown:str) -> list:
+
+def get_urls(markdown: str) -> list:
     """ Returns a list of URLs in a given string """
-    g = re.findall(COMPLEX_SEARCH_FOR_URLS, markdown) # used to be MARKDOWN_HREF (but that's included in COMPLEX_SEARCH_FOR_URLS now)
+    g = re.findall(COMPLEX_SEARCH_FOR_URLS,
+                   markdown)  # used to be MARKDOWN_HREF (but that's included in COMPLEX_SEARCH_FOR_URLS now)
     return(list(set([x[0] for x in g if x[0]])))
 
 
-def get_markdown_hrefs(markdown:str) -> list:
+def get_markdown_hrefs(markdown: str) -> list:
     """ Returns a list of URLs in a given string """
-    g = re.findall(MARKDOWN_HREF, markdown) # used to be  (but that's included in COMPLEX_SEARCH_FOR_URLS now)
-    return(list(set([x for x in g if x]))) # returns unique
+    g = re.findall(
+        MARKDOWN_HREF, markdown)  # used to be  (but that's included in COMPLEX_SEARCH_FOR_URLS now)
+    return(list(set([x for x in g if x])))  # returns unique
 
 
-def get_number(markdown:str) -> int:
+def get_number(markdown: str) -> int:
     """ Finds the first number that occurs in a markdown string and
     returns it as integer (removes any decimals for doubles) """
     g = re.search(NUMBERS, markdown)
@@ -27,7 +31,7 @@ def get_number(markdown:str) -> int:
     return 0
 
 
-def auto_replace(string:str) -> str:
+def auto_replace(string: str) -> str:
     '''
     try:
         if not isinstance(REPLACEMENTS, dict):
@@ -38,3 +42,6 @@ def auto_replace(string:str) -> str:
     for k, v in REPLACEMENTS.items():
         string = string.replace(k, v)
     return string
+
+
+# TODO: Insert dhri_slugify here

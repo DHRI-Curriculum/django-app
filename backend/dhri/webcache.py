@@ -3,7 +3,7 @@ from urllib import parse as urlparser
 from backend.dhri.log import Logger
 
 from backend.dhri_settings import FORCE_DOWNLOAD
-from backend.dhri_settings import CACHE_DIRS, TEST_AGES
+from backend.dhri_settings import CACHE_DIRS, TEST_AGES, DO_NOT_DOWNLOAD
 
 import requests
 import json
@@ -11,6 +11,7 @@ import datetime
 from requests.exceptions import ProxyError
 from pathlib import Path
 from bs4 import BeautifulSoup
+
 
 log = Logger(name='webcache')
 
@@ -96,6 +97,10 @@ class WebCache():
                     self.url = f'http://{self.url}'
                 else:
                     return ''
+            if self.url in DO_NOT_DOWNLOAD:
+                log.warning(f'{self.url} was detected, a file listed not for download.')
+                return ''
+            
             try:
                 r = requests.get(self.url, timeout=10)
                 soup = BeautifulSoup(r.text, 'lxml')

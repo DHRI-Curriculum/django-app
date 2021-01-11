@@ -3,6 +3,29 @@ from django.db.models.signals import post_delete, pre_save
 from django.db import models
 from django.utils.text import slugify
 from backend.mixins import CurlyQuotesMixin
+#from backend.dhri.text import dhri_slugify
+
+
+def dhri_slugify(string: str) -> str: # TODO: Move to backend.dhri.text
+    import re
+    from django.utils.text import slugify
+    # first replace any non-OK characters [/] with space
+    string = re.sub(r'[\/\-\–\—\_]', ' ', string)
+
+    # then replace too many spaces with one space
+    string = re.sub(r'\s+', ' ', string)
+
+    # then replace space with -
+    string = re.sub(r'\s', '-', string)
+
+
+    # then replace any characters that are not in ALLOWED charset with nothing
+    string = re.sub(r'[^a-zA-Z\-\s]', '', string)
+
+    # finally, use Django's slugify
+    string = slugify(string)
+
+    return string
 
 
 class Software(models.Model):
@@ -36,7 +59,7 @@ class InstructionManager(models.Manager):
 class Instruction(CurlyQuotesMixin, models.Model):
     curly_fields = ['what', 'why']
 
-    slug = models.CharField(max_length=200, blank=True)
+    slug = models.CharField(max_length=200, blank=True, unique=True)
     software = models.ForeignKey(
         Software, on_delete=models.CASCADE, related_name='instructions')
     what = models.TextField(blank=True)
@@ -46,9 +69,7 @@ class Instruction(CurlyQuotesMixin, models.Model):
     objects = InstructionManager()
 
     def save(self, *args, **kwargs):
-        slug = self.software.software.replace('-', ' ').replace(
-            '/', ' ') + '-' + self.software.operating_system.replace('-', ' ').replace('/', ' ')
-        self.slug = slugify(slug)
+        self.slug = dhri_slugify(f'{self.software.software}-{self.software.operating_system}')
         super(Instruction, self).save()
 
     def __str__(self):

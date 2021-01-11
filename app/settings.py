@@ -92,18 +92,21 @@ WSGI_APPLICATION = 'app.wsgi.application'
 
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        # 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        'ENGINE': 'django.db.backends.mysql',
-        'OPTIONS': {
-            # '/etc/mysql/my.cnf',
-            'read_default_file': os.path.join(BASE_DIR, 'sql.cnf'),
-        },
-        'TEST': {
-            'NAME': 'dhinstit_curriculum_test',
-        },
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+
+''' # MYSQL settings...
+'ENGINE': 'django.db.backends.mysql',
+'OPTIONS': {
+    'read_default_file': os.path.join(BASE_DIR, 'sql.cnf'),
+},
+'TEST': {
+    'NAME': 'dhinstit_curriculum_test',
+},
+'''
 
 
 # Password validation
