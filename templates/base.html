@@ -55,7 +55,7 @@
 
         {% block before_container %}{% endblock %}
         <section id="content">
-            <div class="container-xxl{% if not is_home %} px-3 py-3 px-md-5 py-md-5{% endif %}">
+            <div class="container-xxl px-3 py-3 px-md-5 py-md-5">{% if not is_home %}{% endif %}
                 {% block header %}{% endblock %}
                 {% include "website/fragments/messages.html" %}
                 {% block before_content %}{% endblock %}
