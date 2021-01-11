@@ -9,20 +9,28 @@ from backend.mixins import CurlyQuotesMixin
 def dhri_slugify(string: str) -> str: # TODO: Move to backend.dhri.text
     import re
     from django.utils.text import slugify
+
+    print('CLEANUP:', string)
+
     # first replace any non-OK characters [/] with space
     string = re.sub(r'[\/\-\–\—\_]', '', string)
+    print('-->', string)
 
     # then replace space with -
     string = re.sub(r'\s', '-', string)
+    print('-->', string)
 
     # then replace too many spaces with one space
     string = re.sub(r'\s+', ' ', string)
+    print('-->', string)
 
     # then replace any characters that are not in ALLOWED charset with nothing
     string = re.sub(r'[^a-zA-Z\-\s]', '', string)
+    print('-->', string)
 
     # finally, use Django's slugify
     string = slugify(string)
+    print('-->', string)
 
     return string
 
@@ -68,9 +76,7 @@ class Instruction(CurlyQuotesMixin, models.Model):
     objects = InstructionManager()
 
     def save(self, *args, **kwargs):
-        slug = self.software.software.replace('-', ' ').replace(
-            '/', ' ') + '-' + self.software.operating_system.replace('-', ' ').replace('/', ' ')
-        self.slug = dhri_slugify(slug)
+        self.slug = dhri_slugify(f'{self.software.software}-{self.software.operating_system}')
         super(Instruction, self).save()
 
     def __str__(self):
