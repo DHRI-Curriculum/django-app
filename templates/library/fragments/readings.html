@@ -2,10 +2,14 @@
 
 {% for reading in readings %}
     <div class="p-2 my-3 rounded-lg linked-comment">
-        <a class="text-decoration-none" target="_blank" href="{{ reading.url }}">
-            {{ reading.title | as_string | markdown | safe | striptags }}
-            {% include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" %}
-        </a>
+        {% if reading.url %}
+            <a class="text-decoration-none" target="_blank" href="{{ reading.url }}">
+                {% if reading.title %}{{ reading.title | as_string | markdown | safe | striptags }}{% else %}Untitled{% endif %}
+                {% include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" %}
+            </a>
+        {% else %}
+            Untitled
+        {% endif %}
         <div class="small">
             {% if reading.annotation %}
                 <strong>Annotation:</strong> {{ reading.annotation | stringformat:"s" | markdown | safe | striptags }}

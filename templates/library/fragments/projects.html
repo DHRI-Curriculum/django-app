@@ -2,10 +2,14 @@
 
 {% for project in projects %}
     <div class="p-2 my-3 rounded-lg linked-comment">
-        <a class="text-decoration-none" target="_blank" href="{{ project.url }}">
-            {{ project.title | as_string | markdown | safe | striptags }}
-            {% include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" %}
-        </a>
+        {% if project.url %}
+            <a class="text-decoration-none" target="_blank" href="{{ project.url }}">
+                {% if project.title %}{{ project.title | as_string | markdown | safe | striptags }}{% else %}Untitled{% endif %}
+                {% include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" %}
+            </a>
+        {% else %}
+            Untitled
+        {% endif %}
         <div class="small">
             {% if project.annotation %}
                 <strong>Annotation:</strong> {{ project.annotation | stringformat:"s" | markdown | safe | striptags }}
