@@ -74,6 +74,9 @@ AUTO_PAGES = [
 # Where user info is stored:
 USER_SETUP = os.path.join(settings.BASE_DIR, '_preload/user_setup.yml')
 
+# Where snippet info is stored:
+SNIPPET_SETUP = os.path.join(settings.BASE_DIR, '_preload/snippets.yml')
+
 BACKEND_AUTO = 'Github'
 REPO_AUTO = ''
 BRANCH_AUTO = 'v2.0'
@@ -343,6 +346,26 @@ except yaml.scanner.ScannerError as e:
     # TODO: Figure out import of log and change `print` to `log.error` here
     print(f'Cannot parse file {USER_SETUP}: {e}')
     print('This means that the script will skip the user setup. Run `manage.py createsuperuser` to be able to access the backend.')
+    # exit()
+
+AUTO_SNIPPETS = dict()
+try:
+    with open(SNIPPET_SETUP, 'r') as f:
+        AUTO_SNIPPETS = yaml.safe_load(f)
+except FileNotFoundError:
+    # TODO: Figure out import of log and change `print` to `log.error` here
+    print(f'Cannot open {SNIPPET_SETUP} to read the automatic snippet information. Make sure your `dhri_settings.py` file contains the correct filename.')
+    print('This means that the script will skip the snippet setup.')
+    # exit()
+except yaml.parser.ParserError as e:
+    # TODO: Figure out import of log and change `print` to `log.error` here
+    print(f'Cannot parse file {SNIPPET_SETUP}: {e}')
+    print('This means that the script will skip the snippet setup.')
+    # exit()
+except yaml.scanner.ScannerError as e:
+    # TODO: Figure out import of log and change `print` to `log.error` here
+    print(f'Cannot parse file {SNIPPET_SETUP}: {e}')
+    print('This means that the script will skip the snippet setup.')
     # exit()
 
 REQUIRED_IN_USERS = ['first_name', 'last_name', 'username', 'password']
