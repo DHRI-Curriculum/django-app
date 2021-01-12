@@ -119,7 +119,7 @@
             </div>
           {% for c in current_authors %}
                 <div class="col-sm-9">
-                    <h4 class="account-heading">{{ c.contributor }}</h4>
+                    <h4 class="account-heading">{% if c.contributor.profile %}<a href="{% url 'learner:profile' username=c.contributor.profile.user.username %}">{% endif %}{{ c.contributor }}{% if c.contributor.profile %}</a>{% endif %}</h4>
                     <p class="text-secondary">{{ c.contributor.profile.user.email }}</p>
                     {% if c.contributor.profile.bio %}<p>{{ c.contributor.profile.bio | safe }}</p>{% endif %}
                     {% if c.contributor.profile.links.count %}
