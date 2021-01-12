@@ -12,7 +12,7 @@
   <div id="hero">
     {% include 'workshop/fragments/praxis/hero.html' %}
     <div class="lead mt-4">
-      {{ praxis.intro | markdown | safe }}
+      {{ praxis.intro | as_string | markdown | safe }}
     </div>
   </div><!-- /hero -->
 </div>
