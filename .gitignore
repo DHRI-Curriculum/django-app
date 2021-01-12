@@ -152,5 +152,5 @@ _extra
 
 # Local copy
 adminsortable
-media/profile_pictures/*
-media/installations_screenshots/*
+media/profile_pictures/*.png
+media/installations_screenshots/*.png
