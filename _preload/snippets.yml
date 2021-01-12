@@ -1,10 +1,12 @@
-introduction-website: ''
-introduction-curriculum: ''
+introduction-website: "<p class=\"lead\">On this website, you can freely access and learn from the workshops that the participants in the Digital Humanities Research Institute partake in.</p>"
+introduction-curriculum: "<p class=\"lead\">Through seminar-style discussions with leading scholars in digital humanities, hands-on workshops on core technical competencies, and project development labs, participants in the Digital Humanities Research Institute become familiar with working from the command line, collaborating with git, programming with Python, querying structured data, creating maps, and analyzing texts computationally.</p>Our curriculum focuses on technical skills and concepts upon which additional technologies and tools rely. Approximately one-third of all sessions at the Institute could be described as foundational: they introduce the command line, version control & data collaboration, data & databases, and Python using flexible, open source technologies that are accessible to the widest possible audience. Our emphasis on fundamental skills demonstrates our commitment to cultivating resilience that empower humanities researchers to become self-teachers and mentors in their own right. While intensive lessons prioritize instrumental outcomes, such as whether students can write for a loop or build a map, our focus is on a longer arc of professional development. While immediate results help pique interest and help scholars see the potential for digital research methods in their own work, confidence in core computational skills and concepts help to develop resilience that lasts beyond the lifespan of a single project or tool. Better prepared to approach technology (and technological rhetoric) with a critical eye, scholars comfortable with core computational literacy and a common technical vocabulary are more likely to participate in local communities of practice.</p>"
 
-introduction-context: ''
-introduction-ethical-considerations: ''
+introduction-context: "<p>This is the orientation text that goes under the Contexts section frontmatter pages for the workshops, which should give a brief orientation to what the context is doing on the site, and why it is good to engage with the ethical considerations, the readings, and the projects that are listed below.</p>"
 
-introduction-readings: ''
-introduction-projects: ''
-introduction-resources: ''
-introduction-tutorials: ''
+introduction-ethical-considerations: "<p>This should be a very short—two or three sentences—about why we think it is important to include ethical considerations when learning foundational aspects of our workshops.</p>"
+
+introduction-projects: "<p>This should be 2–3 sentences about what the projects listed on the workshop frontmatter pages are about, and why it is good to engage with them before starting the workshop: they provide a framework, reference, and inspiration, for instance.</p>"
+introduction-readings: "<p>This should be 2–3 sentences about what the readings listed on the workshop frontmatter pages are about, and why it is good to engage with them before starting the workshop: they provide a theoretical framing for the workshops, and often some more humanistic context for the scholars who are interested in the technological side.</p>"
+introduction-tutorials: "<p>This should be 2–3 sentences about why it is good to engage with tutorials beyond those that we offer here on the site: they go deeper, more in specific directions, or engage with different tools that nonetheless help scholars navigate the technological landscape.</p>"
+
+introduction-resources: "<p>Note: obsolete... This should be 2–3 sentences about what the \"resources\" are on the website. We can hold off on this for now, since I am going to re-draft the look/name of the \"Library\" page into a \"Resource\" page so this will likely not be here soon.</p>"
