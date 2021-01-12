@@ -82,7 +82,7 @@
                     {% for reading in frontmatter.readings.all %}
                         <div class="p-2 my-3 rounded-lg linked-comment">
                             <a class="text-decoration-none" target="_blank" href="{{ reading.url }}">
-                                {{ reading.title | as_string | markdown | safe | striptags }}{% include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" %}
+                                {% if reading.title %}{{ reading.title | as_string | markdown | safe | striptags }}{% include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" %}{% else %}Untitled{% endif %}
                             </a>
                             {% if reading.annotation %}<div class="small"><strong>Annotation:</strong> {{ reading.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
                         </div>
@@ -98,8 +98,10 @@
                         <div class="p-2 my-3 rounded-lg linked-comment">
                             {% if project.url != None %}
                                 <a class="text-decoration-none" target="_blank" href="{{ project.url }}">
-                                    {{ project.title | as_string | markdown | safe | striptags }}{% include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" %}
+                                  {% if project.title %}{{ project.title | as_string | markdown | safe | striptags }}{% include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" %}{% else %}Untitled{% endif %}
                                 </a>
+                            {% else %}
+                                Untitled
                             {% endif %}
                             {% if project.annotation %}
                                 <div class="small"><strong>Annotation:</strong> {{ project.annotation | as_string | markdown | safe | striptags }}</div>
@@ -138,7 +140,7 @@
           <div class="row">
             {% for blurb in blurbs %}
               <div class="col-12">
-                <h4>Meet your instructor{% if blurb.user.first_name and blurb.user.last_name %}: {{ blurb.user.first_name }} {{ blurb.user.last_name }}{% endif %}</h4>
+                <h4>{% if blurb.user.first_name and blurb.user.last_name %}{{ blurb.user.first_name }} {{ blurb.user.last_name }}'s{% endif %} Reflections on {{ workshop.name }}</h4>
                 <p class="lead">{{ blurb.text | safe }}</p>
               </div>
             {% endfor %}
