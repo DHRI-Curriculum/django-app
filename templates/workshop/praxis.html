@@ -61,7 +61,11 @@
     <div class="lead mt-4">
       {% for tutorial in praxis.tutorials.all %}
         <div class="p-2 my-3 rounded-lg linked-comment">
-          {% if tutorial.title %}<p class="font-weight-bold"><a href="{{ tutorial.url }}">{{ tutorial.title | as_string | markdown | safe | striptags }}</a></p>{% endif %}
+          {% if tutorial.url %}
+            <p class="font-weight-bold"><a href="{{ tutorial.url }}">{% if tutorial.title %}{{ tutorial.title | as_string | markdown | safe | striptags }}{% else %}Untitled{% endif %}</a></p>
+          {% else %}
+            <p class="font-weight-bold">Untitled</p>
+          {% endif %}
           {% if tutorial.annotation %}
             <p class="small">{{ tutorial.annotation | stringformat:"s" | markdown | safe }}</p>
           {% endif %}
@@ -78,7 +82,11 @@
     <div class="lead mt-4">
       {% for reading in praxis.further_readings.all %}
         <div class="p-2 my-3 rounded-lg linked-comment">
-          {% if reading.title %}<p class="font-weight-bold"><a href="{{ reading.url }}">{{ reading.title | as_string | markdown | safe | striptags }}</a></p>{% endif %}
+          {% if reading.url %}
+            <p class="font-weight-bold"><a href="{{ reading.url }}">{% if reading.title %}{{ reading.title | as_string | markdown | safe | striptags }}{% else %}Untitled{% endif %}</a></p>
+          {% else %}
+            <p class="font-weight-bold">Untitled</p>
+          {% endif %}
           {% if reading.annotation %}
             <p class="small">{{ reading.annotation | stringformat:"s" | markdown | safe }}</p>
           {% endif %}
@@ -95,10 +103,14 @@
     <div class="lead mt-4">
       {% for project in praxis.more_projects.all %}
         <div class="p-2 my-3 rounded-lg linked-comment">
-          <p class="font-weight-bold"><a href="{{ project.url }}">{{ project.title | as_string | markdown | safe | striptags }}</a></p>
-          {% if project.annotation %}
-            <p class="small">{{ project.annotation | stringformat:"s" | markdown | safe }}</p>
-          {% endif %}
+          {% if project.url %}
+              <p class="font-weight-bold"><a href="{{ project.url }}">{% if project.title %}{{ project.title | as_string | markdown | safe | striptags }}{% else %}Untitled{% endif %}</a></p>
+            {% else %}
+              <p class="font-weight-bold">Untitled</p>
+            {% endif %}
+            {% if project.annotation %}
+              <p class="small">{{ project.annotation | stringformat:"s" | markdown | safe }}</p>
+            {% endif %}
         </div>
       {% endfor %}
     </div>
@@ -112,7 +124,11 @@
     <div class="lead mt-4">
       {% for resource in praxis.more_resources.all %}
         <div class="p-2 my-3 rounded-lg linked-comment">
-          <p class="font-weight-bold"><a href="{{ resource.url }}">{{ resource.title | as_string | markdown | safe | striptags }}</a></p>
+          {% if resource.url %}
+            <p class="font-weight-bold"><a href="{{ resource.url }}">{% if resource.title %}{{ resource.title | as_string | markdown | safe | striptags }}{% else %}Untitled{% endif %}</a></p>
+          {% else %}
+            <p class="font-weight-bold">Untitled</p>
+          {% endif %}
           {% if resource.annotation %}
             <p class="small">{{ resource.annotation | stringformat:"s" | markdown | safe }}</p>
           {% endif %}
