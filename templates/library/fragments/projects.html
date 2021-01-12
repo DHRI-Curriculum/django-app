@@ -3,7 +3,7 @@
 {% for project in projects %}
     <div class="p-2 my-3 rounded-lg linked-comment">
         <a class="text-decoration-none" target="_blank" href="{{ project.url }}">
-            {{ project.title }}
+            {{ project.title | as_string | markdown | safe | striptags }}
             {% include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" %}
         </a>
         <div class="small">

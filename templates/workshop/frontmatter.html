@@ -82,7 +82,7 @@
                     {% for reading in frontmatter.readings.all %}
                         <div class="p-2 my-3 rounded-lg linked-comment">
                             <a class="text-decoration-none" target="_blank" href="{{ reading.url }}">
-                                {{ reading.title }}{% include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" %}
+                                {{ reading.title | as_string | markdown | safe | striptags }}{% include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" %}
                             </a>
                             {% if reading.annotation %}<div class="small"><strong>Annotation:</strong> {{ reading.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
                         </div>
@@ -98,7 +98,7 @@
                         <div class="p-2 my-3 rounded-lg linked-comment">
                             {% if project.url != None %}
                                 <a class="text-decoration-none" target="_blank" href="{{ project.url }}">
-                                    {{ project.title }}{% include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" %}
+                                    {{ project.title | as_string | markdown | safe | striptags }}{% include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" %}
                                 </a>
                             {% endif %}
                             {% if project.annotation %}
