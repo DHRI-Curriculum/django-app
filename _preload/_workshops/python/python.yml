@@ -1,0 +1,2035 @@
+frontmatter:
+  abstract: Python is a general-purpose programming language suitable for a wide variety
+    of tasks in the digital humanities. Learning Python fundamentals is a gateway
+    to analyzing data, creating visualizations, composing interactive websites, scraping
+    the internet, and engaging in the distant reading of texts. This workshop first
+    introduces participants to core programming concepts such as data types, variables,
+    and functions. Participants will then learn about basic control flow by writing
+    small programs with loops and conditional statements. They will also learn to
+    problem solve, and practice searching for answers and debugging scripts. The workshop
+    wraps up by exposing participants to intermediate tools for further exploration.
+  contributors:
+  - collaboration:
+      current: true
+      role: Au
+      workshop: python
+    first_name: Filipa
+    last_name: Calado
+    url: https://github.com/gofilipa
+  - collaboration:
+      current: false
+      role: Au
+      workshop: python
+    first_name: Patrick
+    last_name: Smyth
+    url: https://github.com/smythp
+  - collaboration:
+      current: false
+      role: Au
+      workshop: python
+    first_name: Rafael
+    last_name: Davis Portela
+    url: https://github.com/rafadavis
+  - collaboration:
+      current: false
+      role: Re
+      workshop: python
+    first_name: Param
+    last_name: Ajmera
+    url: https://github.com/paramajmera
+  - collaboration:
+      current: false
+      role: Re
+      workshop: python
+    first_name: Rafael
+    last_name: Davis Portela
+    url: https://github.com/rafadavis
+  - collaboration:
+      current: true
+      role: Ed
+      workshop: python
+    first_name: Lisa
+    last_name: Rhody
+    url: https://github.com/lmrhody
+  - collaboration:
+      current: true
+      role: Ed
+      workshop: python
+    first_name: Kalle
+    last_name: Westerling
+    url: https://github.com/kallewesterling
+  estimated_time: '3'
+  ethical_considerations:
+  - <p>Python works by reducing data to portable units and presenting them in a way
+    that prioritizes readability. These units are known as "data types" and include
+    strings (words/letters), integers (numbers), booleans (true or false statements),
+    and lists (groups of strings). The python grammar, which dictates how python statements
+    ought to be ordered, values simplicity, efficiency, and concision. You can read
+    more about python values at <a href="https://www.python.org/dev/peps/pep-0020/"
+    rel="nofollow">the Zen of Python</a>.</p>
+  - <p>As we learn about the python data types and grammar, keep in mind that working
+    within any digital format requires making seemingly neutral choices that carry
+    ethical consequences. When using python, be aware of the ways the ways that data
+    is transformed into computable form. What choices are you making about your data?
+    What is being included, and what is left out? What are reductions and assumptions
+    necessary to encode your data? If you are more interested in thinking further
+    about data types and our choices in relation to data, you should have a look at
+    our <a href="https://www.github.com/DHRI-Curriculum/data-literacies">Data Literacies
+    workshop</a>.</p>
+  learning_objectives:
+  - <p>Understand what Python is and, in general terms, what it can do.</p>
+  - <p>Run Python programs, both by interacting directly with the interpreter and
+    by preparing and running scripts.</p>
+  - "<p>Distinguish among five core data types\u2014integers, floats, strings, booleans,\
+    \ and lists.</p>"
+  - <p>Become familiar with core programming concepts, including variables, loops,
+    and conditionals.</p>
+  - <p>Engage with error output and use the internet and documentation to independently
+    research language features.</p>
+  - <p>Learn how to find and import code from external sources to solve more complex
+    problems.</p>
+  projects:
+  - annotation: Built by former Digital Fellow Patrick Smyth, [The NEH Impact Index](http://www.nehimpact.org/about)
+      makes visible the distribution of funds by National Endowment for the Humanities
+      across the United States. The website uses python to map projects, communities,
+      and cultural institutions who have received NEH support. You can check out [the
+      code on Github](https://github.com/smythp/NEH-impact).
+    title: The NEH Impact Index
+    url: http://www.nehimpact.org/about
+  - annotation: '[Mapping Arts NYC](http://gcdiprojects.org/MappingArtsNYC/), created
+      in 2019 by the Graduate Center''s Data for Public Good fellows, "is a project
+      that explores the geography and representation of arts and culture in New York
+      City over time." It includes a number of Python scripts written to clean and
+      make sense of [all the data](https://github.com/Data-For-Public-Good).'
+    title: Mapping Arts NYC
+    url: http://gcdiprojects.org/MappingArtsNYC
+  - annotation: Python programmers build and maintain various "libraries," or collections
+      of python code, that can be re-purposed toward custom projects. You might check
+      out the [Scrapy](https://scrapy.org/) library for web scraping, the [NumPy](https://numpy.org/)
+      library for numerical computing, or the [pandas](https://pandas.pydata.org/)
+      library for data analysis and manipulation. Check out the individual websites
+      to help you think about the data that you want to work with.
+    title: Scrapy
+    url: https://scrapy.org
+  readings:
+  - annotation: Want to learn programming, but not convinced that the Python language
+      is the right language? Check out "[Five Reasons Why Learning Python Is The Best
+      Decision](https://medium.com/datadriveninvestor/5-reasons-why-i-learned-python-and-why-you-should-learn-it-as-well-917f781aea05),"
+      *Medium*.
+    title: Five Reasons Why Learning Python Is The Best Decision
+    url: https://medium.com/datadriveninvestor/5-reasons-why-i-learned-python-and-why-you-should-learn-it-as-well-917f781aea05
+  - annotation: 'Some concrete ideas for how to use Python: "[What Can I Do With Python?](https://realpython.com/what-can-i-do-with-python/)"
+      *Real Python*.'
+    title: What Can I Do With Python?
+    url: https://realpython.com/what-can-i-do-with-python
+  workshop: python
+lessons:
+- challenge: "<ol>\n<li>\n<p>For a few minutes, practice moving in and out of Python's\
+    \ interactive mode (aka the REPL). You can get out of Python by hitting <kbd>control</kbd>\
+    \ + <kbd>d</kbd> (or <kbd>control</kbd> + <kbd>z</kbd> or <kbd>control</kbd> +\
+    \ <kbd>z</kbd> + <kbd>enter</kbd> if you're on a computer running Windows) or\
+    \ by typing <code>exit()</code>. You can get back in the REPL by typing <code>python</code>\
+    \ at the <code>$</code> prompt. Remember that you're in the REPL when you see\
+    \ <code>&gt;&gt;&gt;</code>, and you're in bash or your terminal when you see\
+    \ the <code>$</code>.</p>\n</li>\n<li>\n<p>One \"operator\" (math symbol) we didn't\
+    \ learn is the exponent\u2014you know, \"x raised to the power of...\" If you\
+    \ were Guido van Rossum, the creator of Python, how would you define this operator?</p>\n\
+    </li>\n</ol>"
+  keywords:
+  - REPL
+  order: 1
+  questions:
+  - answers:
+      correct:
+      - The REPL has a prompt that begins with <code>&gt;&gt;&gt;</code>.
+      - The REPL can be used to evaluate mathematical expressions like <code>2 + 2</code>.
+      incorrect:
+      - The REPL has a prompt that begins with <code>$</code>.
+      - The REPL and the terminal are the same thing.
+    question: What are the characteristics of the REPL? Select all that apply.
+  solution: '<ol start="2">
+
+    <li>The exponent operator is two asterisks (<code>**</code>). For example, the
+    number <code>3</code> to the power of <code>2</code> would be expressed as <code>3**2</code>.</li>
+
+    </ol>'
+  text: "<p>Let's begin by starting an \"interactive session\" session with Python.\
+    \ This means we will be using Python in the terminal, which is a special space\
+    \ that allows us to run little bits of Python, experimenting and exploring what\
+    \ it can do, without having to save it. Think of this interactive space as a playground.\
+    \ Later on, we will be working with Python in a more robust way, doing what we\
+    \ call saving and executing Python scripts.</p>\n<p>For now, though, let's start\
+    \ an interactive session with Python, which is accessed through the terminal.</p>\n\
+    <p>Open your terminal and type:</p>\n<div class=\"highlight highlight-text-shell-session\"\
+    ><pre>$ <span class=\"pl-s1\">python</span></pre></div>\n<p>at the prompt. You\
+    \ should see something like this</p>\n<div class=\"highlight highlight-text-python-console\"\
+    ><pre>Python 3.7.6 (default, Jan\_\_8 2020, 13:42:34)\n[Clang 4.0.1 (tags/RELEASE_401/final)]\
+    \ :: Anaconda, Inc. on darwin\nType \"help\", \"copyright\", \"credits\" or \"\
+    license\" for more information.\n&gt;&gt;&gt;</pre></div>\n<p>Unlike the normal\
+    \ <code>$</code> terminal prompt, the Python prompt looks like this:</p>\n<div\
+    \ class=\"highlight highlight-text-python-console\"><pre>&gt;&gt;&gt;</pre></div>\n\
+    <p>These greater-than symbols <code>&gt;</code> are how you know that you have\
+    \ entered an interactive session with Python. Now you are interacting directly\
+    \ with Python, rather than in the regular terminal. Keep an eye on these greater-than\
+    \ symbols, as a common early source of confusion is entering terminal commands\
+    \ into the Python prompt or entering Python commands into the terminal.</p>\n\
+    <h2>\n<a aria-hidden=\"true\" class=\"anchor\" href=\"#a-little-math\" id=\"user-content-a-little-math\"\
+    ><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>A Little\
+    \ Math</h2>\n<p>Let's try a little math at the Python prompt. In the example below,\
+    \ type the text that appears after the Python prompt (the <code>&gt;&gt;&gt;</code>).\
+    \ The line below is the output that is returned. This will be a standard convention\
+    \ when giving examples using the Python prompt.</p>\n<div class=\"highlight highlight-text-python-console\"\
+    ><pre>&gt;&gt;&gt; <span class=\"pl-c1\">2</span> <span class=\"pl-k\">+</span>\
+    \ <span class=\"pl-c1\">3</span>\n5\n&gt;&gt;&gt; <span class=\"pl-c1\">14</span>\
+    \ <span class=\"pl-k\">-</span> <span class=\"pl-c1\">10</span>\n4\n&gt;&gt;&gt;\
+    \ <span class=\"pl-c1\">10</span> <span class=\"pl-k\">*</span> <span class=\"\
+    pl-c1\">10</span>\n100\n&gt;&gt;&gt; <span class=\"pl-c1\">6</span> <span class=\"\
+    pl-k\">/</span> <span class=\"pl-c1\">3</span>\n2\n&gt;&gt;&gt; <span class=\"\
+    pl-c1\">21</span> <span class=\"pl-k\">%</span> <span class=\"pl-c1\">4</span>\n\
+    1</pre></div>\n<p>The first four operations above are addition, subtraction, multiplication,\
+    \ and division, respectively. The last operation is modulo, or mod, which returns\
+    \ the remainder after division.</p>\n<p>Note the way you interact with Python\
+    \ at the prompt. After entering an expression such as <code>2 + 3</code>, Python\
+    \ \"evaluates\" it to a simpler form, <code>5</code>, and then prints out the\
+    \ answer for you. <strong>This process is called the Read Eval Print Loop, or\
+    \ REPL</strong>. Reading takes commands from you, the input is evaluated or run,\
+    \ the result is printed out, and the prompt is shown again to wait for more input.\
+    \ The normal terminal (the one with the <code>$</code>) is another example of\
+    \ a REPL.</p>\n<p>The REPL is useful for quick tests and, later, can be used for\
+    \ exploring and debugging your programs interactively. You might consider it a\
+    \ kind of playground for testing and experimenting with python expressions.</p>"
+  title: Interacting with Python
+  workshop: python
+- challenge: <p>Open your web browser, and google the phrase "python function." Skim
+    through the first few results. What words do you recognize, and which ones look
+    unfamiliar? What do you think the unfamiliar ones mean? Try to rephrase some of
+    this new language, and guess what they mean in your own words.</p>
+  keywords:
+  - Function
+  - Boolean
+  - Float
+  - Integer
+  - String
+  - List
+  - Type()
+  order: 2
+  questions:
+  - answers:
+      correct:
+      - Booleans represent only <code>True</code> or <code>False</code> values.
+      - Strings can contain numbers within quotations, like <code>"1"</code>.
+      - Lists can contain strings, like <code>["banana, 'coffee', 'eggs']</code>.
+      incorrect:
+      - Integers can be expressed with numbers like <code>1</code> or letters <code>one</code>.
+    question: Select all the following that accurately describe the data type categories.
+  solution: <p>When you google "python function," you may see some phrases that look
+    unfamiliar, like "return value" or "pass parameters." These are advanced terms
+    for inputting and outputting data from a function. It's important to become familiar
+    with the Python's terminology about functions, as it will be helpful later on
+    when you start working with these components.</p>
+  text: '<p>Types are classifications that let the computer know how a programmer
+    intends to use a piece of data. You can just think of them as, well, types of
+    data.</p>
+
+    <p>We''ve already seen one type in the last section: the integer. In this section,
+    we''ll learn four more: the floating point number, the string, the boolean, and
+    the list.</p>
+
+    <p>Enter these lines as you see them below:</p>
+
+    <div class="highlight highlight-text-python-console"><pre>&gt;&gt;&gt; <span class="pl-c1">type</span>(<span
+    class="pl-c1">1</span>)
+
+    &lt;class ''int''&gt;
+
+    &gt;&gt;&gt; <span class="pl-c1">type</span>(<span class="pl-c1">1.0</span>)
+
+    &lt;class ''float''&gt;
+
+    &gt;&gt;&gt; <span class="pl-c1">type</span>(<span class="pl-s"><span class="pl-pds">"</span>Hello
+    there!<span class="pl-pds">"</span></span>)
+
+    &lt;class ''str''&gt;
+
+    &gt;&gt;&gt; <span class="pl-c1">type</span>(<span class="pl-c1">True</span>)
+
+    &lt;class ''bool''&gt;
+
+    &gt;&gt;&gt; <span class="pl-c1">type</span>([<span class="pl-c1">1</span>, <span
+    class="pl-c1">2</span>, <span class="pl-c1">3</span>])
+
+    &lt;class ''list''&gt;</pre></div>
+
+    <p>Each of the responses show how the different types of data registers as different
+    "types" for Python:</p>
+
+    <p><strong>Integers</strong> (like <code>1</code> above) are whole numbers.</p>
+
+    <p><strong>Floats</strong> (like <code>1.0</code> above) are numbers with decimals,
+    and are treated a little differently than integers.</p>
+
+    <p><strong>Strings</strong> (like <code>"Hello there!"</code> above) are arbitrary
+    sets of characters, such as letters and numbers. You can think of them as a way
+    to store text.</p>
+
+    <p><strong>Booleans</strong>: (like <code>True</code> above) is a fancy term for
+    values representing "true" and "false," or "truthiness" and "falsiness." In Python
+    they are always capitalized: <code>True</code> and <code>False</code>.</p>
+
+    <p><strong>Lists</strong>: (like <code>[1, 2, 3]</code> above) are ordered collections
+    of values. You can put any of the other types in a list: <code>["hello", "goodbye",
+    "see ya later"]</code> is also a valid list.</p>
+
+    <p>Don''t worry about trying to actively remember these types. We''ll be working
+    with each in turn in the following sections.</p>
+
+    <h2>
+
+    <a aria-hidden="true" class="anchor" href="#whats-the-deal-with-type" id="user-content-whats-the-deal-with-type"><span
+    aria-hidden="true" class="octicon octicon-link"></span></a>What''s the deal with
+    type()?</h2>
+
+    <p><code>type()</code> is a function. You can think of functions in Python in
+    a few different ways:</p>
+
+    <ol>
+
+    <li>A way of doing something in Python.</li>
+
+    <li>A way of saving some code for reuse.</li>
+
+    <li>A way of taking an input, transforming that input, and returning an output.
+    The input goes in the parentheses <code>()</code>.</li>
+
+    </ol>
+
+    <p>These are all valid ways of thinking about functions. We''ll be learning more
+    about functions in later sections.</p>'
+  title: Types
+  workshop: python
+- challenge: '<p>So I just told you that variables shouldn''t start with a number
+    or an underscore. What does that even mean? Will your computer explode if you
+    write <code>1_book = "Gender Trouble"</code>?</p>
+
+    <p>Only one way to find out. Try giving weird names to variables and see if you
+    can learn a bit about the rules.</p>'
+  keywords:
+  - Variables
+  order: 3
+  questions:
+  - answers:
+      correct:
+      - <code>one = 1</code>
+      - <code>first_book = "Orlando"</code>
+      incorrect:
+      - <code>1 = one</code>
+      - <code>$$$ = "dollar_signs"</code>
+    question: Select all the variable expressions that are allowed in Python.
+  solution: '<p>There are a few rules regarding the way that you write the variable
+    statement. This is because Python reads everything left to right, and needs things
+    to be in a certain order.</p>
+
+    <p>First, you cannot use any numbers or special characters to start a variable
+    name. So <code>1_book</code>, <code>1book</code>, or any variable that contains
+    special characters <code>@</code>, <code>#</code>, <code>$</code>, <code>$</code>,
+    etc, wouldn''t be acceptable in Python. You must start the variable with a letter
+    and avoid using special characters.</p>
+
+    <p>You can incorporate numbers after you''ve started with a letter. So <code>book_1</code>
+    or <code>b1</code> is acceptable, though you cannot use special characters at
+    any point in the variable name.</p>
+
+    <p>Second, you might also notice that variable syntax requires you to write the
+    variable name first, followed by an equal sign <code>=</code>, and then the value,
+    or data. You cannot start the variable statement with the data value, because
+    python always recognizes the first thing written as the thing to be assigned.
+    The thing that comes after the <code>=</code> is the data that becomes attached
+    to the preceding variable.</p>'
+  text: '<p>A variable is <strong>a symbol that refers to an object</strong>, such
+    as a string, integer, or list. If you''re not already at the Python prompt, open
+    your terminal and type <code>python</code> at the <code>$</code>. You''re in the
+    right place when you see <code>&gt;&gt;&gt;</code>.</p>
+
+    <p>Try these commands in order:</p>
+
+    <div class="highlight highlight-text-python-console"><pre>&gt;&gt;&gt; x <span
+    class="pl-k">=</span> <span class="pl-c1">5</span>
+
+    &gt;&gt;&gt; x
+
+    5
+
+    &gt;&gt;&gt; x <span class="pl-k">+</span> <span class="pl-c1">10</span>
+
+    15
+
+    &gt;&gt;&gt; y <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>hello<span
+    class="pl-pds">"</span></span>
+
+    &gt;&gt;&gt; y
+
+    ''hello''
+
+    &gt;&gt;&gt; y <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span>
+    and goodbye<span class="pl-pds">"</span></span>
+
+    ''hello and goodbye''</pre></div>
+
+    <p>As you can see from the examples above, the <code>=</code> sign lets you assign
+    symbols like <code>x</code> and <code>y</code> to data.</p>
+
+    <p>Variables can be longer words as well, and they can be set to lists:</p>
+
+    <div class="highlight highlight-text-python-console"><pre>&gt;&gt;&gt; books <span
+    class="pl-k">=</span> [<span class="pl-s"><span class="pl-pds">''</span>Gender
+    Trouble<span class="pl-pds">''</span></span>, <span class="pl-s"><span class="pl-pds">''</span>Cruising
+    Utopia<span class="pl-pds">''</span></span>,<span class="pl-s"><span class="pl-pds">''</span>Living
+    a</span>
+
+    &gt;Feminist Life'']
+
+    &gt;&gt;&gt; books
+
+    [''Gender Trouble'', ''Cruising Utopia'', ''Living a Feminist Life'']
+
+    &gt;&gt;&gt; <span class="pl-c1">type</span>(books)
+
+    &lt;class ''list''&gt;</pre></div>
+
+    <p>Variables can have letters, numbers, and underscores, <strong>but should start
+    with a letter</strong>.</p>
+
+    <p>If you are curious about learning more about naming conventions for variables,
+    you can check out the PEP8 style guide''s section on <a href="https://www.python.org/dev/peps/pep-0008/#naming-conventions"
+    rel="nofollow" target="_blank">Naming Conventions</a>. PEP8 is the widely accepted
+    guide for Python programmers everywhere.</p>'
+  title: Variables
+  workshop: python
+- challenge: "<ol>\n<li>\n<p>Rewrite your program so that you assign the message to\
+    \ a variable, then print the variable. This will make your program two lines instead\
+    \ of one. There's a fancy programmer word for rewriting your code without changing\
+    \ it's behavior\u2014\"refactoring.\"</p>\n</li>\n<li>\n<p>(optional) Are you\
+    \ already getting sick of typing <code>python hello.py</code> again and again?\
+    \ Try typing <code>!!</code> in the command line (the <code>$</code>). This will\
+    \ run your last line of code again. Additionally, you can press the <kbd>up arrow</kbd>\
+    \ at the terminal prompt, and keep pressing it to scroll through the most recent\
+    \ commands.</p>\n</li>\n<li>\n<p>(even more optional) If you're on Windows and\
+    \ have a minute, try pressing the <kbd>windows</kbd> button on your keyboard and\
+    \ searching for a program called <code>IDLE</code> that comes with Python. It's\
+    \ a special editor (or IDE) that lets you run Python code from inside it. You\
+    \ might like it more than Git Bash.</p>\n</li>\n</ol>"
+  keywords:
+  - REPL
+  - Scripts
+  - print()
+  order: 4
+  questions:
+  - answers:
+      correct:
+      - You can run scripts from the <strong>terminal</strong> that were written on
+        the text editor.
+      incorrect:
+      - The <strong>REPL</strong> allows you to save scripts for later use.
+      - The <strong>text editor</strong> allows you to test code on the fly.
+    question: What are the differences between the terminal, REPL, and text editor?
+      Select the correct statement from the below options.
+  solution: '<ol>
+
+    <li>
+
+    <p>You should type the following into <code>hello.py</code>:</p>
+
+    <div class="highlight highlight-source-python"><pre><span class="pl-s1">greeting</span>
+    <span class="pl-c1">=</span> <span class="pl-s">"Hello World!"</span>
+
+    <span class="pl-en">print</span>(<span class="pl-s1">greeting</span>)</pre></div>
+
+    <p>Then, making sure you''re in the right directory, run <code>python hello.py</code>
+    in the terminal <code>$</code>. You should see the following output:</p>
+
+    <div class="highlight highlight-text-shell-session"><pre>$ <span class="pl-s1">python
+    hello.py</span>
+
+    <span class="pl-c1">Hello world!</span></pre></div>
+
+    </li>
+
+    </ol>'
+  text: "<p>So far, you've interacted with Python one line at a time in the REPL.\
+    \ This is what we call the Interactive Mode, which is like a playground for experimenting\
+    \ and exploring different Python expressions, like <code>2 + 2</code> or <code>type(\"\
+    some stuff\")</code>. The code that we write in the REPL is not saved after you\
+    \ exit, which means that this space is for running Python expressions and <em>not</em>\
+    \ for writing longer programs.</p>\n<p>For the rest of this session, we're going\
+    \ to expand beyond the REPL to write and execute longer programs. To do this,\
+    \ we will begin to work with a text editor, where we write out Python scripts,\
+    \ and run those scripts from the terminal.</p>\n<p>This is a big move, so let's\
+    \ take it slow. To reiterate, the major change is that we will be working across\
+    \ two spaces, the terminal and the text editor, rather than just the terminal\
+    \ alone. We will be writing our scripts into the text editor, and using the terminal\
+    \ to run those scripts.</p>\n<h2>\n<a aria-hidden=\"true\" class=\"anchor\" href=\"\
+    #your-first-script\" id=\"user-content-your-first-script\"><span aria-hidden=\"\
+    true\" class=\"octicon octicon-link\"></span></a>Your First Script</h2>\n<p>First,\
+    \ let's begin with the text editor. Open your text editor of choice (such as Visual\
+    \ Studio Code) and create a new file with this line:</p>\n<div class=\"highlight\
+    \ highlight-source-python\"><pre><span class=\"pl-en\">print</span>(<span class=\"\
+    pl-s\">\"Hello world!\"</span>)</pre></div>\n<p>Save it with the name <code>hello.py</code>\
+    \ to a known location, such as your desktop. Open your terminal and move to the\
+    \ desktop directory:</p>\n<div class=\"highlight highlight-text-shell-session\"\
+    ><pre>$ <span class=\"pl-s1\"><span class=\"pl-c1\">cd</span> Desktop</span></pre></div>\n\
+    <p>Once you're in the folder with your <code>hello.py</code> file, move to the\
+    \ terminal. Do <em>not</em> enter the Python Interactive Mode (the REPL), which\
+    \ is unecessary to run python scripts. Instead, lookout for the <code>$</code>\
+    \ symbol that lets you know you're in the terminal. (If you find yourself in the\
+    \ Interactive mode (<code>&gt;&gt;&gt;</code>), then try exiting it with <kbd>control</kbd>\
+    \ + <kbd>d</kbd>. You should see the <code>$</code> symbol, letting you know you're\
+    \ back in the terminal. If you still do not see the <code>$</code> symbol, type\
+    \ <code>exit()</code> followed by <kbd>enter</kbd> after the Python prompt, <code>&gt;&gt;&gt;</code>.)</p>\n\
+    <p>Now that you're in the terminal, type the following, and press enter:</p>\n\
+    <div class=\"highlight highlight-text-shell-session\"><pre>$ <span class=\"pl-s1\"\
+    >python hello.py</span>\n<span class=\"pl-c1\">Hello world!</span></pre></div>\n\
+    <p>You should see the text <code>Hello world!</code> appear as output in the terminal\
+    \ window.</p>\n<p>Congratulations! You've written your first script. That's a\
+    \ big deal!</p>\n<p>There are a couple of important things to note here:</p>\n\
+    <ul>\n<li>First, it bears repeating that you are moving between two different\
+    \ spaces, the text editor and the terminal. You wrote your Python script in the\
+    \ text editor, and used the terminal to run the script.</li>\n<li>Second, within\
+    \ in the text editor, you included the <code>print()</code> function because,\
+    \ unlike in the REPL, things aren't automatically printed out when writing scripts.\
+    \ When you're in the text editor, you always need to include the <code>print()</code>\
+    \ function so that your output will appear in the terminal.</li>\n</ul>\n<h2>\n\
+    <a aria-hidden=\"true\" class=\"anchor\" href=\"#a-note-on-text\" id=\"user-content-a-note-on-text\"\
+    ><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>A Note on\
+    \ Text</h2>\n<p>Fundamentally, Python programs are just text files. You can write\
+    \ them in any text editor, like Visual Studio Code or Notepad on Windows. When\
+    \ you pass the text file to Python, it runs the code in the file one line at a\
+    \ time. There's nothing special about <code>.py</code> files\u2014they're just\
+    \ regular text files. This makes them work well with command line tools like Git.\
+    \ The tools you can learn through the DHRI Curriculum\u2014the command line, Git,\
+    \ markdown, grep\u2014are all designed to work well together, and the medium through\
+    \ which they all work is plain text.</p>"
+  title: Running Scripts
+  workshop: python
+- challenge: <p>Try to create as many errors as you can in the next few minutes. After
+    getting your first two syntax errors, try instead to get traceback errors. Some
+    areas to try include mathematical impossibilities and using math operations on
+    types that do not support them.</p>
+  keywords:
+  - Syntax Errors
+  - Traceback Errors
+  order: 5
+  questions:
+  - answers:
+      correct:
+      - If it's a <em>syntax error</em>, look for the caret as a starting point.
+      - If it's a <em>traceback error</em>, make sure all your variables are defined.
+      - Copy the error message into a Google search.
+      incorrect:
+      - Run spell check on your code.
+    question: 'If you get an error, what can you do to debug it? Select all that apply:'
+  solution: '<p>Some examples of <strong>syntax errors</strong> include...</p>
+
+    <ul>
+
+    <li>
+
+    <p>Starting the variable name with a special character.</p>
+
+    <div class="highlight highlight-text-python-console"><pre>&gt;&gt;&gt; <span class="pl-k">%</span>greeting
+    <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Hello
+    World<span class="pl-pds">"</span></span>
+
+    &nbsp;&nbsp;File "&lt;stdin&gt;", line 1
+
+    &nbsp;&nbsp;&nbsp;&nbsp;%greeting = "Hello World"
+
+    &nbsp;&nbsp;&nbsp;&nbsp;^
+
+    SyntaxError: invalid syntax</pre></div>
+
+    </li>
+
+    <li>
+
+    <p>Starting a variable by writing the data values before the variable.</p>
+
+    <div class="highlight highlight-text-python-console"><pre>&gt;&gt;&gt; <span class="pl-s"><span
+    class="pl-pds">"</span>hey there!<span class="pl-pds">"</span></span> <span class="pl-k">=</span>
+    greeting
+
+    &nbsp;&nbsp;File "&lt;stdin&gt;", line 1
+
+    SyntaxError: can''t assign to literal</pre></div>
+
+    </li>
+
+    <li>
+
+    <p>Including spaces in a variable.</p>
+
+    <div class="highlight highlight-text-python-console"><pre>&gt;&gt;&gt; pleasant
+    greeting <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>Hello!<span
+    class="pl-pds">"</span></span>
+
+    &nbsp;&nbsp;File "&lt;stdin&gt;", line 1
+
+    &nbsp;&nbsp;&nbsp;&nbsp;pleasant greeting = "Hello!"
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;^
+
+    SyntaxError: invalid syntax</pre></div>
+
+    </li>
+
+    </ul>
+
+    <p>Some examples of <strong>traceback errors</strong> include...</p>
+
+    <ul>
+
+    <li>
+
+    <p>Concatenating data types, like strings and integers.</p>
+
+    <div class="highlight highlight-text-python-console"><pre>&gt;&gt;&gt; greeting
+    <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">"</span>hello<span
+    class="pl-pds">"</span></span> <span class="pl-k">+</span> <span class="pl-c1">1</span>
+
+    Traceback (most recent call last):
+
+    &nbsp;&nbsp;File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+
+    TypeError: can only concatenate str (not "int") to str</pre></div>
+
+    </li>
+
+    <li>
+
+    <p>Using Booleans (<code>True</code> or <code>False</code>) without capitalizing
+    them.</p>
+
+    <div class="highlight highlight-text-python-console"><pre>&gt;&gt;&gt; greeting
+    <span class="pl-k">=</span> false
+
+    Traceback (most recent call last):
+
+    &nbsp;&nbsp;File "&lt;stdin&gt;", line 1, in &lt;module&gt;
+
+    NameError: name ''false'' is not defined
+
+    &gt;&gt;&gt; greeting <span class="pl-k">=</span> <span class="pl-c1">False</span>
+
+    &gt;&gt;&gt; greeting
+
+    False</pre></div>
+
+    </li>
+
+    </ul>'
+  text: "<p>Our usual response when seeing an error on a computer screen is a stress\
+    \ response. Our heart rate elevates and, if we cannot do what we were asking the\
+    \ computer to do, our frustration mounts. This is because many errors when interacting\
+    \ with programs are not useful or informative, and because we often have no capability\
+    \ to fix the program in front of us.</p>\n<p>In Python, errors are our friends.\
+    \ This might be hard to accept initially, but the errors you see when running\
+    \ Python scripts generally do a good job of pointing you to what's going wrong\
+    \ in your program. When you see an error in Python, therefore, try not to fall\
+    \ into the stress response you may be used to when interacting with your computer\
+    \ normally.</p>\n<h2>\n<a aria-hidden=\"true\" class=\"anchor\" href=\"#two-kinds-of-errors\"\
+    \ id=\"user-content-two-kinds-of-errors\"><span aria-hidden=\"true\" class=\"\
+    octicon octicon-link\"></span></a>Two Kinds of Errors</h2>\n<p>In Python, there\
+    \ are two kinds of errors you will encounter frequently. One appears before the\
+    \ program runs, and the other appears during the execution of a program.</p>\n\
+    <p><strong>Syntax errors</strong>: When you ask Python to run a program or execute\
+    \ a line in the REPL, it will first check to see if the program is valid Python\
+    \ code\u2014that is, that it follows the grammatical or syntactical rules of Python.\
+    \ If it doesn't, before the program even runs, you'll see a syntax error printed\
+    \ out to the screen.</p>\n<p>In this below example, the syntax error is a common\
+    \ one\u2014mismatched single and double quotes, which is not allowed in Python.\
+    \ You can replicate the below error by opening the REPL (type <code>python</code>\
+    \ in the command line) and entering the line after the <code>&gt;&gt;&gt;</code>\
+    \ prompt.</p>\n<div class=\"highlight highlight-text-python-console\"><pre>&gt;&gt;&gt;\
+    \ <span class=\"pl-c1\">print</span>(<span class=\"pl-s\"><span class=\"pl-pds\"\
+    >'</span>This string has mismatched quotes. But Python will help us figure out\
+    \ this bug.\")</span>\n\_\_File \"&lt;stdin&gt;\", line 1\n\_\_\_\_print('This\
+    \ string has mismatched quotes. But Python will help us figure out this bug.\"\
+    )\n\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\
+    \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\
+    \_\_\_\_\_\_\_\_\_\_\_\_\_ ^\nSyntaxError: EOL while scanning string literal</pre></div>\n\
+    <p>Note the caret (<code>^</code>) underneath the mismatched quote, helpfully\
+    \ pointing out where the error lies. Similarly, if this error happened when running\
+    \ a script, Python would tell us the filename and the line number for the line\
+    \ on which the error occurs.</p>\n<p><strong>Traceback errors</strong>: These\
+    \ errors occur during the execution of a Python program when the program finds\
+    \ itself in an untenable state and must stop. Traceback errors are often logical\
+    \ inconsistencies in a program that is valid Python code. A common traceback error\
+    \ is referring to a variable that hasn't been defined, as below.</p>\n<div class=\"\
+    highlight highlight-text-python-console\"><pre>&gt;&gt;&gt; <span class=\"pl-c1\"\
+    >print</span>(not_a_variable)\nTraceback (most recent call last):\n\_\_File \"\
+    &lt;stdin&gt;\", line 1, in &lt;module&gt;\nNameError: name 'not_a_variable' is\
+    \ not defined</pre></div>\n<p>Traceback errors try to tell you a little about\
+    \ what happened in the program that caused the problem, including the category\
+    \ of error, such as <code>NameError</code> or <code>TypeError</code>.</p>\n<h2>\n\
+    <a aria-hidden=\"true\" class=\"anchor\" href=\"#debugging\" id=\"user-content-debugging\"\
+    ><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>Debugging</h2>\n\
+    <p>Debugging is a fancy word for fixing problems with a program. Here are some\
+    \ common strategies for debugging a program when first learning Python:</p>\n\
+    <ul>\n<li>If the error is a syntax error:\n<ul>\n<li>Look at where the caret is\
+    \ pointing.</li>\n<li>Pay attention to grammatical features such as quotes, parentheses,\
+    \ and indentation.</li>\n<li>Consider reading the program, or the offending line,\
+    \ backward. It's surprising, but this often helps to detect the issue.</li>\n\
+    </ul>\n</li>\n<li>If the error is a traceback error:\n<ul>\n<li>First look at\
+    \ the line where the error occured, then consider the general category of error.\
+    \ What could have gone wrong?</li>\n<li>If the error is a name error (NameError),\
+    \ check your spelling.</li>\n<li>Try copying the last line of the error and pasting\
+    \ it into Google. You'll often find a quick solution this way.</li>\n</ul>\n</li>\n\
+    <li>If you changed the program and expect a different output, but are getting\
+    \ old output, you may not have saved the file. Go back and make sure the file\
+    \ has been correctly saved.</li>\n</ul>"
+  title: Errors in Python
+  workshop: python
+- challenge: <p>Create a new list of books in the REPL, with at least 5 books in your
+    list. Make sure the total number of books in the list is an <strong>odd</strong>
+    number. How do you get python to print out the book in the middle of the list?
+    What about the three books in the middle? Remember that the first value in a slice
+    is <em>inclusive</em>, and the final value is <em>exclusive</em>.</p>
+  keywords:
+  - list
+  - list indexing
+  - len()
+  order: 6
+  questions:
+  - answers:
+      correct:
+      - <code>print(len(books[-1]))</code>
+      incorrect:
+      - <code>len(books)</code>
+      - <code>print(books[-1])</code>
+      - <code>print(len[-1])</code>
+    question: 'How would you get Python to print the length of the last book in the
+      list? Hint: this number reflects the length of the <em>string</em> which is
+      the last item in the list. Choose the correct expression from the options below.'
+  solution: '<div class="highlight highlight-text-python-console"><pre>&gt;&gt;&gt;
+    books <span class="pl-k">=</span> [<span class="pl-s"><span class="pl-pds">''</span>Gender
+    Trouble<span class="pl-pds">''</span></span>, <span class="pl-s"><span class="pl-pds">''</span>Cruising
+    Utopia<span class="pl-pds">''</span></span>, <span class="pl-s"><span class="pl-pds">''</span>Living
+    a Feminist Life<span class="pl-pds">''</span></span>, <span class="pl-s"><span
+    class="pl-pds">''</span>Radiant Textuality<span class="pl-pds">''</span></span>,
+    <span class="pl-s"><span class="pl-pds">''</span>The Undercommons<span class="pl-pds">''</span></span>]
+
+    &gt;&gt;&gt; books[<span class="pl-c1">2</span>] <span class="pl-c"><span class="pl-c">#</span>
+    [''Living a Feminist Life'']</span>
+
+    &gt;&gt;&gt; books[<span class="pl-c1">1</span>:<span class="pl-c1">4</span>]
+    <span class="pl-c"><span class="pl-c">#</span> [''Cruising Utopia'', ''Living
+    a Feminist Life'', ''Radiant Textuality'']</span></pre></div>'
+  text: '<p>Remember lists? They look like this:</p>
+
+    <div class="highlight highlight-source-python"><pre><span class="pl-s1">books</span>
+    <span class="pl-c1">=</span> [<span class="pl-s">''Gender Trouble''</span>, <span
+    class="pl-s">''Cruising Utopia''</span>, <span class="pl-s">''Living a Feminist
+    Life''</span>]</pre></div>
+
+    <p>For now, let''s just create a list and print it out. In a text editor, our
+    script will look like this:</p>
+
+    <div class="highlight highlight-source-python"><pre><span class="pl-s1">books</span>
+    <span class="pl-c1">=</span> [<span class="pl-s">''Gender Trouble''</span>, <span
+    class="pl-s">''Cruising Utopia''</span>, <span class="pl-s">''Living a Feminist
+    Life''</span>]
+
+    <span class="pl-en">print</span>(<span class="pl-s1">books</span>)</pre></div>
+
+    <p>Save this to a new file called <code>loop.py</code> and run it with <code>python
+    loop.py</code>. You should see the list printed out in the terminal.</p>
+
+    <p>So far, we''ve only learned one function: <code>type()</code>. Let''s try out
+    another, called <code>len()</code>, which returns the number of items in a list
+    or the number of characters in a string. Type out the following lines in your
+    loop.py file:</p>
+
+    <div class="highlight highlight-source-python"><pre><span class="pl-s1">books</span>
+    <span class="pl-c1">=</span> [<span class="pl-s">''Gender Trouble''</span>, <span
+    class="pl-s">''Cruising Utopia''</span>, <span class="pl-s">''Living a Feminist
+    Life''</span>]
+
+    <span class="pl-c"># print(books)</span>
+
+    <span class="pl-s1">list_length</span> <span class="pl-c1">=</span> <span class="pl-en">len</span>(<span
+    class="pl-s1">book</span>)
+
+    <span class="pl-en">print</span>(<span class="pl-s1">list_length</span>)</pre></div>
+
+    <p>Let''s take apart this unfamiliar line of code: <code>list_length = len(book)</code></p>
+
+    <ul>
+
+    <li>First, look to the end of this statement. <code>list_length = len(book)</code>
+    takes the <code>book </code> variable as an argument for the <code>len()</code>
+    function. That''s why <code>book</code> is within the parenthesis. This format
+    basically means that it will run the <code>len()</code> function on the items
+    in <code>book</code>.</li>
+
+    <li>Then, it sets the result of that process to a new variable, called <code>list_length</code>.</li>
+
+    </ul>
+
+    <p>This might appear a bit complex at first, but if you read the line slowly you
+    should be able to connect the dots.</p>
+
+    <p>Notice that when you run the code above, you don''t see the <code>books</code>
+    list printed out. That''s because that line has become a comment. If you put a
+    <code>#</code> (hash or pound) at the beginning of a line, that line will be ignored.</p>
+
+    <h2>
+
+    <a aria-hidden="true" class="anchor" href="#list-indexing" id="user-content-list-indexing"><span
+    aria-hidden="true" class="octicon octicon-link"></span></a>List Indexing</h2>
+
+    <p>A useful property of a list is the list index. This allows you to pick out
+    an item from within the list by a number starting from zero:</p>
+
+    <div class="highlight highlight-source-python"><pre><span class="pl-en">print</span>(<span
+    class="pl-s1">books</span>[<span class="pl-c1">0</span>]) <span class="pl-c">#
+    Gender Trouble</span>
+
+    <span class="pl-en">print</span>(<span class="pl-s1">books</span>[<span class="pl-c1">1</span>])
+    <span class="pl-c"># Cruising Utopia</span></pre></div>
+
+    <p>Note that the first item in the list is <code>item[0]</code>. The second item
+    is <code>item[1]</code>. That''s because counting in Python, and in almost all
+    programming languages, starts from <code>0</code>.</p>
+
+    <p>Additionally, you can print out the last item in a list using negative numbers,
+    where <code>-1</code> denotes the last item in the list:</p>
+
+    <div class="highlight highlight-source-python"><pre><span class="pl-en">print</span>(<span
+    class="pl-s1">books</span>[<span class="pl-c1">-</span><span class="pl-c1">1</span>])
+    <span class="pl-c"># Living a Feminist Life</span></pre></div>
+
+    <h2>
+
+    <a aria-hidden="true" class="anchor" href="#slicing-lists" id="user-content-slicing-lists"><span
+    aria-hidden="true" class="octicon octicon-link"></span></a>Slicing Lists</h2>
+
+    <p>There are many things you can do with list indexing, like slicing. Slicing
+    consists of taking a section of a list, using the list index to pick out a range
+    of list items. For example, you could take out the first <em>two</em> items of
+    a list with a slice that begins with <code>0</code> and ends with <code>2</code>.</p>
+
+    <p>The slice syntax consists of square brackets, start point and end point, and
+    a colon to indicate the gap in between. This should print out the first two items
+    of your list.</p>
+
+    <div class="highlight highlight-source-python"><pre><span class="pl-en">print</span>(<span
+    class="pl-s1">books</span>[<span class="pl-c1">0</span>:<span class="pl-c1">2</span>])</pre></div>
+
+    <p>Note a couple of things. First, the start point is <em>inclusive</em>, meaning
+    that Python will include the <code>[0]</code> item in your range, and the end
+    point is <em>exclusive</em>, so Python won''t print the <code>[2]</code> item.
+    Instead, it will print everything up until that <code>[2]</code> item.</p>
+
+    <p>For ultimate brevity, you can also write this expression as:</p>
+
+    <div class="highlight highlight-source-python"><pre><span class="pl-en">print</span>(<span
+    class="pl-s1">books</span>[:<span class="pl-c1">2</span>])</pre></div>
+
+    <p>The empty value before the colon allows Python to assume the range starts at
+    the first list item, at <code>[0]</code>. You can also end the slice with <code>:</code>,
+    if you want the list range to include all subsequent items until the end of the
+    list. The example below will print everything from the second item to the end
+    of the list.</p>
+
+    <div class="highlight highlight-source-python"><pre><span class="pl-en">print</span>(<span
+    class="pl-s1">books</span>[<span class="pl-c1">1</span>:])</pre></div>
+
+    <p>With a list that contains three items total, list slicing might not seem very
+    impressive right now. However, this will become a powerful tool once we get to
+    more sophisticated text analysis and start to encounter lists that contain hundreds
+    (or thousands!) of items.</p>'
+  title: Lists
+  workshop: python
+- challenge: "<ol>\n<li>\n<p>Here's a list of numbers:</p>\n<div class=\"highlight\
+    \ highlight-source-python\"><pre><span class=\"pl-s1\">prime_numbers</span> <span\
+    \ class=\"pl-c1\">=</span> [<span class=\"pl-c1\">2</span>, <span class=\"pl-c1\"\
+    >3</span>, <span class=\"pl-c1\">5</span>, <span class=\"pl-c1\">7</span>, <span\
+    \ class=\"pl-c1\">11</span>]</pre></div>\n<p>Write some code to print out the\
+    \ square of each of these numbers. Remember that the square of a number is that\
+    \ number times itself. The solution is below, but you're not allowed to look at\
+    \ it until you've tried to solve it yourself for 3.5 minutes. (Seriously! That's\
+    \ 210 seconds.)</p>\n</li>\n<li>\n<p>First, ignore this challenge because it's\
+    \ too hard. Next, look up a new concept\u2014\"f-string\" (a formatting technique\
+    \ for strings)\u2014on Google and use it to write a loop that gives the following\
+    \ output:</p>\n<pre><code>The square of 2 is 4.\nThe square of 3 is 9.\nThe square\
+    \ of 5 is 25.\nThe square of 7 is 49.\nThe square of 11 is 121.\n</code></pre>\n\
+    <p>Note: the \"f-string\" is a new string formatting method for Python 3. You\
+    \ can <a href=\"https://realpython.com/python-f-strings/#f-strings-a-new-and-improved-way-to-format-strings-in-python\"\
+    \ rel=\"nofollow\">read more about this new string formatting method</a>.</p>\n\
+    </li>\n</ol>"
+  keywords:
+  - for-loop
+  - f-string
+  order: 7
+  questions:
+  - answers:
+      correct:
+      - for each item in a list, multiply it against itself.
+      - print the contents of a list.
+      incorrect:
+      - add a new item to a list.
+      - loop through characters in a string.
+    question: What are different ways for describing what a "for loop" can do?
+  solution: '<ol>
+
+    <li>
+
+    <p>To get the square of the elements in the list <code>prime_numbers</code>, you
+    can:</p>
+
+    <div class="highlight highlight-source-python"><pre><span class="pl-s1">prime_numbers</span>
+    <span class="pl-c1">=</span> [<span class="pl-c1">2</span>, <span class="pl-c1">3</span>,
+    <span class="pl-c1">5</span>, <span class="pl-c1">7</span>, <span class="pl-c1">11</span>]
+
+    <span class="pl-k">for</span> <span class="pl-s1">num</span> <span class="pl-c1">in</span>
+    <span class="pl-s1">prime_numbers</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span class="pl-s1">num</span>
+    <span class="pl-c1">*</span> <span class="pl-s1">num</span>)</pre></div>
+
+    </li>
+
+    <li>
+
+    <p>Using "f-strings" to output the list of results in the challenge would look
+    something like this:</p>
+
+    <div class="highlight highlight-source-python"><pre><span class="pl-s1">prime_numbers</span><span
+    class="pl-c1">=</span> [<span class="pl-c1">2</span>,<span class="pl-c1">3</span>,<span
+    class="pl-c1">5</span>,<span class="pl-c1">7</span>,<span class="pl-c1">11</span>]
+
+    <span class="pl-k">for</span> <span class="pl-s1">num</span> <span class="pl-c1">in</span>
+    <span class="pl-s1">prime_numbers</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span class="pl-s">f"The
+    square of <span class="pl-s1"><span class="pl-kos">{</span><span class="pl-s1">num</span><span
+    class="pl-kos">}</span></span> is <span class="pl-s1"><span class="pl-kos">{</span><span
+    class="pl-s1">num</span> <span class="pl-c1">*</span> <span class="pl-s1">num</span><span
+    class="pl-kos">}</span></span>"</span>)</pre></div>
+
+    </li>
+
+    </ol>'
+  text: "<p>What if we want to print out each item in the list separately? For that,\
+    \ we'll need something called a loop:</p>\n<div class=\"highlight highlight-source-python\"\
+    ><pre><span class=\"pl-s1\">books</span> <span class=\"pl-c1\">=</span> [<span\
+    \ class=\"pl-s\">'Gender Trouble'</span>, <span class=\"pl-s\">'Cruising Utopia'</span>,\
+    \ <span class=\"pl-s\">'Living a Feminist Life'</span>]\n<span class=\"pl-c\"\
+    ># print(books)</span>\n<span class=\"pl-k\">for</span> <span class=\"pl-s1\"\
+    >book</span> <span class=\"pl-c1\">in</span> <span class=\"pl-s1\">books</span>:\n\
+    \_\_\_\_<span class=\"pl-en\">print</span>(<span class=\"pl-s\">\"My favorite\
+    \ book is \"</span> <span class=\"pl-c1\">+</span> <span class=\"pl-s1\">book</span>)</pre></div>\n\
+    <p>What's happening here? This kind of loop is called a \"for loop\", and tells\
+    \ Python: \"for each item in the list, do something.\" Let's break it down:</p>\n\
+    <div class=\"highlight highlight-source-python\"><pre><span class=\"pl-k\">for</span>\
+    \ <span class=\"pl-c1\">&lt;</span><span class=\"pl-s1\">variable</span> <span\
+    \ class=\"pl-s1\">name</span><span class=\"pl-c1\">&gt;</span> <span class=\"\
+    pl-c1\">in</span> <span class=\"pl-c1\">&lt;</span><span class=\"pl-s1\">list</span>\
+    \ <span class=\"pl-s1\">name</span><span class=\"pl-c1\">&gt;</span>:\n\_\_\_\_\
+    <span class=\"pl-c1\">&lt;</span><span class=\"pl-s1\">do</span> <span class=\"\
+    pl-s1\">something</span><span class=\"pl-c1\">&gt;</span></pre></div>\n<p>Indented\
+    \ code like this is known as a \"code block.\" Python will run the <code>&lt;do\
+    \ something&gt;</code> code in the code block once for each item in the list.\
+    \ You can also refer to <code>&lt;variable name&gt;</code> in the <code>&lt;do\
+    \ something&gt;</code> block.</p>\n<p>You can also loop through items within a\
+    \ string. For example, type the following into your <code>loop.py</code> file:</p>\n\
+    <div class=\"highlight highlight-source-python\"><pre><span class=\"pl-k\">for</span>\
+    \ <span class=\"pl-s1\">letter</span> <span class=\"pl-c1\">in</span> <span class=\"\
+    pl-s\">\"hello\"</span>:\n\_\_\_\_<span class=\"pl-en\">print</span>(<span class=\"\
+    pl-s1\">letter</span>)</pre></div>\n<p>The result should print out each letter\
+    \ of the string <code>hello</code>, one by one.</p>\n<h2>\n<a aria-hidden=\"true\"\
+    \ class=\"anchor\" href=\"#a-note-on-variable-names\" id=\"user-content-a-note-on-variable-names\"\
+    ><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>A Note on\
+    \ Variable Names</h2>\n<p>In this section, we've discussed books in the context\
+    \ of a list. Why do we use the variable name <code>books</code> in this section\
+    \ for our list of book names? Why not just use the variable name <code>x</code>,\
+    \ or perhaps <code>f</code>?</p>\n<p>While the computer might not care if our\
+    \ list of books is called <code>x</code>, giving variables meaningful names makes\
+    \ a program considerably easier to read than it would be otherwise. Consider this\
+    \ for loop:</p>\n<div class=\"highlight highlight-source-python\"><pre><span class=\"\
+    pl-s1\">y</span> <span class=\"pl-c1\">=</span> [<span class=\"pl-s\">'Gender\
+    \ Trouble'</span>, <span class=\"pl-s\">'Cruising Utopia'</span>, <span class=\"\
+    pl-s\">'Living a Feminist Life'</span>]\n<span class=\"pl-k\">for</span> <span\
+    \ class=\"pl-s1\">x</span> <span class=\"pl-c1\">in</span> <span class=\"pl-s1\"\
+    >y</span>:\n\_\_\_\_<span class=\"pl-en\">print</span>(<span class=\"pl-s1\">x</span>)</pre></div>\n\
+    <p>Which is easier to read, this for loop or the one used in the example?</p>\n\
+    <p>When variable names accurately reflect what they represent, and are therefore\
+    \ meaningful, we call them \"semantic.\" Always try to create semantic variable\
+    \ names whenever possible.</p>"
+  title: Loops
+  workshop: python
+- challenge: <p>Add two more <code>elif</code> statements to this program to make
+    it better able to handle different potential fields of study. Change the field
+    of study a couple of times, making sure to save after each change, to test out
+    your code.</p>
+  keywords:
+  - if-Statement
+  order: 8
+  questions:
+  - answers:
+      correct:
+      - The double equals checks to see if one value is equivalent to the other, as
+        in <code>2 == 2</code>.
+      - The single equals assigns the value on the right to the variable on the left,
+        as in <code>x = 2</code>.
+      incorrect:
+      - The double equals assigns the value on the right to the variable on the left,
+        as in <code>x == 2</code>.
+      - The single equals checks to see if one value is equivalent to the other, as
+        in <code>2 = 2</code>.
+    question: What is the difference between the double equals (<code>==</code>) and
+      single equals (<code>=</code>)?
+  solution: '<div class="highlight highlight-source-python"><pre><span class="pl-s1">field</span>
+    <span class="pl-c1">=</span> <span class="pl-s">"Media Studies"</span>
+
+    <span class="pl-k">if</span> <span class="pl-s1">field</span> <span class="pl-c1">==</span>
+    <span class="pl-s">"Media Studies"</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span class="pl-s">"Grammophone,
+    Film, Typewriter"</span>)
+
+    <span class="pl-k">elif</span> <span class="pl-s1">field</span> <span class="pl-c1">==</span>
+    <span class="pl-s">"Critical University Studies"</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span class="pl-s">"The
+    Undercommons"</span>)
+
+    <span class="pl-k">elif</span> <span class="pl-s1">field</span> <span class="pl-c1">==</span>
+    <span class="pl-s">"Textual Scholarship"</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span class="pl-s">"Radiant
+    Textuality"</span>)
+
+    <span class="pl-k">elif</span> <span class="pl-s1">field</span> <span class="pl-c1">==</span>
+    <span class="pl-s">"Critical Race Studies"</span>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-k">print</span>(<span class="pl-s">"The
+    New Jim Code"</span>)
+
+    <span class="pl-k">elif</span> <span class="pl-s1">field</span> <span class="pl-c1">==</span>
+    <span class="pl-s">"DH Methodologies"</span>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-k">print</span>(<span class="pl-s">"Algorithmic
+    Criticism"</span>)
+
+    <span class="pl-k">else</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span class="pl-s">"I
+    don''t know what field you''re talking about! I''m just a little program..."</span>)</pre></div>'
+  text: "<p>Conditionals allow programs to change their behavior based on whether\
+    \ some statement is true or false. Let's try this out by writing a script that\
+    \ will give different outputs (consisting of book titles) based on the specified\
+    \ field of study:</p>\n<div class=\"highlight highlight-source-python\"><pre><span\
+    \ class=\"pl-s1\">field</span> <span class=\"pl-c1\">=</span> <span class=\"pl-s\"\
+    >\"Media Studies\"</span>\n<span class=\"pl-k\">if</span> <span class=\"pl-s1\"\
+    >field</span> <span class=\"pl-c1\">==</span> <span class=\"pl-s\">\"Media Studies\"\
+    </span>:\n\_\_\_\_<span class=\"pl-en\">print</span>(<span class=\"pl-s\">\"Grammophone,\
+    \ Film, Typewriter\"</span>)\n<span class=\"pl-k\">else</span>:\n\_\_\_\_<span\
+    \ class=\"pl-en\">print</span>(<span class=\"pl-s\">\"I don't know what field\
+    \ you're talking about! I'm just a little program...\"</span>)</pre></div>\n<p>In\
+    \ our first line, we set a variable <code>field</code> to the string <code>\"\
+    Media Studies\"</code>, representing our chosen field of study. The <code>if</code>\
+    \ statement checks whether the field is set to the string \"Media Studies\". If\
+    \ it is, the code in the block beneath is executed, so the string <code>\"Grammophone,\
+    \ Film, Typewriter\"</code> will be printed.</p>\n<p>It's important to note at\
+    \ this point the use of the double equals sign <code>==</code> in <code>if</code>\
+    \ statements. The double equals is an <em>equality</em> operator, and it checks\
+    \ to see if the two values on either side are equivalent. Contrast this with the\
+    \ single equals that you've already seen, <code>=</code>, which is an <em>assignment</em>\
+    \ operator, that assigns a value to a variable. In the line <code>field = \"Media\
+    \ Studies\"</code>, you are using the assignment operator <code>=</code> to set\
+    \ the variable's value to \"Media Studies\", (a string) while in the <code>if</code>\
+    \ statement, you're using the equality operator <code>==</code> to check if the\
+    \ field is equivalent to \"Media Studies\".</p>\n<p>You'll also notice the inclusion\
+    \ of a new line, the <code>else</code> statement. The <code>else</code> statement\
+    \ handles any inputs that aren't \"Media Studies\", and the program merely prints\
+    \ out that it doesn't know what you should bring.</p>\n<p>Try this script out\
+    \ both with the variable set to \"Media studies\" and the variable set to some\
+    \ other value, representing another field of study.</p>\n<p>What if we want our\
+    \ program to handle more fields of study, giving different messages for each one?\
+    \ Other cases after the first <code>if</code> statement are handled with <code>elif</code>,\
+    \ which is a shortened version of <code>else if</code>:</p>\n<div class=\"highlight\
+    \ highlight-source-python\"><pre><span class=\"pl-s1\">field</span> <span class=\"\
+    pl-c1\">=</span> <span class=\"pl-s\">\"Media Studies\"</span>\n<span class=\"\
+    pl-k\">if</span> <span class=\"pl-s1\">field</span> <span class=\"pl-c1\">==</span>\
+    \ <span class=\"pl-s\">\"Media Studies\"</span>:\n\_\_\_\_<span class=\"pl-en\"\
+    >print</span>(<span class=\"pl-s\">\"Grammophone, Film, Typewriter\"</span>)\n\
+    <span class=\"pl-k\">elif</span> <span class=\"pl-s1\">field</span> <span class=\"\
+    pl-c1\">==</span> <span class=\"pl-s\">\"Critical University Studies\"</span>:\n\
+    \_\_\_\_<span class=\"pl-en\">print</span>(<span class=\"pl-s\">\"The Undercommons\"\
+    </span>)\n<span class=\"pl-k\">elif</span> <span class=\"pl-s1\">field</span>\
+    \ <span class=\"pl-c1\">==</span> <span class=\"pl-s\">\"Textual Scholarship\"\
+    </span>:\n\_\_\_\_<span class=\"pl-en\">print</span>(<span class=\"pl-s\">\"Radiant\
+    \ Textuality\"</span>)\n<span class=\"pl-k\">else</span>:\n\_\_\_\_<span class=\"\
+    pl-en\">print</span>(<span class=\"pl-s\">\"I don't know what field you're talking\
+    \ about! I'm just a little program...\"</span>)</pre></div>\n<p>You can add as\
+    \ many <code>elif</code> statements as you need, meaning that conditionals in\
+    \ Python have one <code>if</code> statement, any number of <code>elif</code> statements,\
+    \ and one <code>else</code> statement that catches any input not covered by <code>if</code>\
+    \ or <code>elif</code>. Over the next sections, we'll work on improving this little\
+    \ application, making it able to handle user input directly.</p>"
+  title: Conditionals
+  workshop: python
+- challenge: '<p>Remember this loop?</p>
+
+    <div class="highlight highlight-source-python"><pre><span class="pl-s1">field</span>
+    <span class="pl-c1">=</span> <span class="pl-s">"Media Studies"</span>
+
+    <span class="pl-k">if</span> <span class="pl-s1">field</span> <span class="pl-c1">==</span>
+    <span class="pl-s">"Media Studies"</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span class="pl-s">"Grammophone,
+    Film, Typewriter"</span>)
+
+    <span class="pl-k">elif</span> <span class="pl-s1">field</span> <span class="pl-c1">==</span>
+    <span class="pl-s">"Critical University Studies"</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span class="pl-s">"The
+    Undercommons"</span>)
+
+    <span class="pl-k">elif</span> <span class="pl-s1">field</span> <span class="pl-c1">==</span>
+    <span class="pl-s">"Textual Scholarship"</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span class="pl-s">"Radiant
+    Textuality"</span>)
+
+    <span class="pl-k">else</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span class="pl-s">"I
+    don''t know what field you''re talking about! I''m just a little program..."</span>)</pre></div>
+
+    <p>Now, that we understand a bit about how <code>input()</code> works, let''s
+    use it to improve our book application. We are going to use <code>input()</code>
+    to ask for the field before displaying the output. To do this, add one more line
+    of code that sets the <code>field</code> variable to an <code>input()</code>.
+    Make sure you include a little prompt that asks the user what book they want to
+    select or read that day.</p>'
+  keywords:
+  - input()
+  order: 9
+  questions:
+  - answers:
+      correct:
+      - <code>length_of_response = len(input())</code>
+      incorrect:
+      - <code>input() = len()</code>
+      - <code>response = len().input()</code>
+      - <code>len(input()) = length_of_response</code>
+    question: If we wanted to calculate the length of an input using <code>len()</code>,
+      how would we write that expression?
+  solution: '<div class="highlight highlight-source-python"><pre><span class="pl-s1">field</span>
+    <span class="pl-c1">=</span> <span class="pl-en">input</span>(<span class="pl-s">"Which
+    field of study do you want to read about today? "</span>)
+
+    <span class="pl-k">if</span> <span class="pl-s1">field</span> <span class="pl-c1">==</span>
+    <span class="pl-s">"Media Studies"</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span class="pl-s">"Grammophone,
+    Film, Typewriter"</span>)
+
+    <span class="pl-k">elif</span> <span class="pl-s1">field</span> <span class="pl-c1">==</span>
+    <span class="pl-s">"Critical University Studies"</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span class="pl-s">"The
+    Undercommons"</span>)
+
+    <span class="pl-k">elif</span> <span class="pl-s1">field</span> <span class="pl-c1">==</span>
+    <span class="pl-s">"Textual Scholarship"</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span class="pl-s">"Radiant
+    Textuality"</span>)
+
+    <span class="pl-k">else</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span class="pl-s">"I
+    don''t know what field you''re talking about! I''m just a little program..."</span>)</pre></div>'
+  text: '<p><strong>Note:</strong> If you''re using Python 2.7, replace all <code>input()</code>
+    functions in the code below with <code>raw_input()</code>. You can check your
+    version by running <code>python --version</code> in the command line.</p>
+
+    <p>Python allows you to take input directly from the user using the <code>input()</code>
+    function.</p>
+
+    <p>Let''s try it out by setting the function to a variable, which we will call
+    <code>greeting</code>. Open the Python REPL and type:</p>
+
+    <div class="highlight highlight-text-python-console"><pre>&gt;&gt;&gt; greeting
+    <span class="pl-k">=</span> <span class="pl-c1">input</span>()</pre></div>
+
+    <p>When you press <kbd>enter</kbd>, you should see a blank line. Type in your
+    favorite greeting. I''m going to type <code>hey you!</code>. Then, press <kbd>enter</kbd>.</p>
+
+    <div class="highlight highlight-text-python-console"><pre>&gt;&gt;&gt; greeting
+    <span class="pl-k">=</span> <span class="pl-c1">input</span>()
+
+    hey you!</pre></div>
+
+    <p>Python has saved your input text to the variable <code>greeting</code>. When
+    you type in <code>greeting</code> one more time, it will print out that input
+    text. Pretty nifty, right?</p>
+
+    <div class="highlight highlight-text-python-console"><pre>&gt;&gt;&gt; greeting
+    <span class="pl-k">=</span> <span class="pl-c1">input</span>()
+
+    hey you!
+
+    &gt;&gt;&gt; greeting
+
+    ''hey you!''</pre></div>
+
+    <p>You can play around with <code>input()</code> by adding some prompt text within
+    the parenthesis. Whatever you put inside the parenthesis, enclosed by quotes,
+    will prompt the user to type in their text, which is then assigned to the variable
+    set to <code>input()</code>. Sounds complicated, so give it some practice:</p>
+
+    <div class="highlight highlight-text-python-console"><pre>&gt;&gt;&gt; feelings
+    <span class="pl-k">=</span> <span class="pl-c1">input</span>(<span class="pl-s"><span
+    class="pl-pds">''</span>How are you feeling today? <span class="pl-pds">''</span></span>)
+
+    How are you feeling today?</pre></div>
+
+    <p>Note that there''s a little space after the question mark and before the closing
+    quotation mark, which is to improve readability.</p>
+
+    <p>We can answer with <code>like a rollercoaster of emotions</code>. Then, when
+    we type in our variable <code>feelings</code> and press enter, we''ll get our
+    input printed back at us.</p>
+
+    <div class="highlight highlight-text-python-console"><pre>&gt;&gt;&gt; feelings
+    <span class="pl-k">=</span> <span class="pl-c1">input</span>(<span class="pl-s"><span
+    class="pl-pds">''</span>How are you feeling today? <span class="pl-pds">''</span></span>)
+
+    How are you feeling today? like a rollercoaster of emotions
+
+    &gt;&gt;&gt; feelings
+
+    ''like a rollercoaster of emotions''</pre></div>'
+  title: Input
+  workshop: python
+- challenge: '<p>Remember the <code>input()</code> function from the last lesson?
+    This challenge uses that function in combination with what you know about list
+    methods to create a little library app. You will play around with the input button,
+    asking the user what kinds of things they want to do with their library, and writing
+    some code that does those things and prints out the results.</p>
+
+    <p>First, create a new file called <code>library.py</code>. Save it to your current
+    working folder.</p>
+
+    <p>Second, create a list of <code>library</code> books, with at least three books
+    (you can use the same ones as before).</p>
+
+    <div class="highlight highlight-source-python"><pre><span class="pl-s1">library</span>
+    <span class="pl-c1">=</span> [<span class="pl-s">"Orlando"</span>, <span class="pl-s">"Confessions
+    of the Fox"</span>, <span class="pl-s">"These Waves of Girls"</span>]</pre></div>
+
+    <p>Then, add an input statement that will save the user''s response to a variable,
+    like <code>response</code>.</p>
+
+    <div class="highlight highlight-source-python"><pre><span class="pl-s1">response</span>
+    <span class="pl-c1">=</span> <span class="pl-en">input</span>(<span class="pl-s">"What
+    do you want to do with your books today? "</span>)</pre></div>
+
+    <p>Now, create a conditional statement that matches the user''s response to series
+    of options for doing things to the <code>library</code> list. You can include
+    <code>sort()</code>, <code>append()</code>, and <code>pop()</code>. I''ll do the
+    first one, <code>sort()</code>, for you:</p>
+
+    <div class="highlight highlight-source-python"><pre><span class="pl-s1">library</span>
+    <span class="pl-c1">=</span> [<span class="pl-s">"Orlando"</span>, <span class="pl-s">"Confessions
+    of the Fox"</span>, <span class="pl-s">"These Waves of Girls"</span>]
+
+    <span class="pl-s1">response</span> <span class="pl-c1">=</span> <span class="pl-en">input</span>(<span
+    class="pl-s">"What do you want to do with your books today? "</span>)
+
+    <span class="pl-k">if</span> <span class="pl-s1">response</span> <span class="pl-c1">==</span>
+    <span class="pl-s">"sort"</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-s1">library</span>.<span class="pl-en">sort</span>()
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span class="pl-s1">library</span>)
+
+    <span class="pl-k">else</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span class="pl-s">"I
+    don''t know what you want me to do!"</span>)</pre></div>
+
+    <p>See how the order of statements build on each other toward the final product?
+    First, we create a library of books. Then, we set the user''s response about what
+    to do with those books. Then, we create a conditional statement that matches the
+    response to specific tasks. The first condition checks to see if the user wants
+    to "sort" the books, then sorts them, then prints the final result.</p>
+
+    <p>After adding a few more conditions, test out your code! You should have a little
+    library app that sorts, adds, and removes books from your list.</p>'
+  keywords:
+  - append
+  - sort()
+  - pop()
+  order: 10
+  questions:
+  - answers:
+      correct:
+      - methods are like functions which are attached to objects.
+      - <code>append()</code> always takes an argument.
+      incorrect:
+      - <code>sort()</code>, <code>append()</code>, and <code>pop()</code> are functions.
+      - <code>pop()</code> can be applied to a string.
+    question: Select the following statements that truly describe <code>sort()</code>,
+      <code>append()</code>, and <code>pop()</code>.
+  - answers:
+      correct: []
+      incorrect: []
+    question: 'Advanced question: If you <code>sort()</code> the library in between
+      adding and popping a book, you''ll end up with a different list than if you
+      didn''t run sort() in between <code>append()</code> and <code>pop()</code>.
+      Can you guess why?'
+  solution: '<div class="highlight highlight-source-python"><pre><span class="pl-s1">library</span>
+    <span class="pl-c1">=</span> [<span class="pl-s">"Orlando"</span>, <span class="pl-s">"Confessions
+    of the Fox"</span>, <span class="pl-s">"These Waves of Girls"</span>]
+
+    <span class="pl-s1">response</span> <span class="pl-c1">=</span> <span class="pl-en">input</span>(<span
+    class="pl-s">"What do you want to do with your books today? "</span>)
+
+    <span class="pl-k">if</span> <span class="pl-s1">response</span> <span class="pl-c1">==</span>
+    <span class="pl-s">"sort"</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-s1">library</span>.<span class="pl-en">sort</span>()
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span class="pl-s1">library</span>)
+
+    <span class="pl-k">elif</span> <span class="pl-s1">response</span> <span class="pl-c1">==</span>
+    <span class="pl-s">"add"</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-s1">library</span>.<span class="pl-en">append</span>(<span
+    class="pl-s">"La Frontera"</span>)
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span class="pl-s1">library</span>)
+
+    <span class="pl-k">elif</span> <span class="pl-s1">response</span> <span class="pl-c1">==</span>
+    <span class="pl-s">"remove"</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-s1">library</span>.<span class="pl-en">pop</span>()
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span class="pl-s1">library</span>)
+
+    <span class="pl-k">else</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span class="pl-s">"I
+    don''t know what you want me to do!"</span>)</pre></div>'
+  text: '<p>Okay. Let''s make our little book application a little more robust. We
+    are going to create a list of books (remember lists?) that we can then manipulate
+    in all sorts of ways.</p>
+
+    <p>First, go back to your terminal and enter the REPL, or Python''s interactive
+    mode. When you see the <code>&gt;&gt;&gt;</code>, create a list with at least
+    three books that are important to your research right now. Shorten the titles
+    to one or two words if need be. Let''s call this list our <code>library</code>.
+    Remember the proper syntax for creating a list includes square brackets with commas
+    separating the list items. Because the items are strings, they should also be
+    inside quotes.</p>
+
+    <div class="highlight highlight-text-python-console"><pre>library = ["Orlando",
+    "Confessions of the Fox", "These Waves of Girls"]</pre></div>
+
+    <p>Next, let''s sort our <code>library</code> in alphabetical order. There''s
+    a handy method called <code>sort()</code> for doing just this kind of thing. What''s
+    a <em>method</em>, you might ask? Well, <em>methods</em> are very similar to <em>functions</em>,
+    and you''ll remember that functions are ways of doing things, like <code>print()</code>
+    and <code>type()</code>. Methods are also ways of doing things, but these things
+    are attached to what we call <em>objects</em> in Python. Objects are part of object-oriented-programming,
+    and that''s definitely not necessary to learn right now. Suffice it to say that
+    methods are just like functions, that is, they are ways of doing things to your
+    data.</p>
+
+    <p>To sort the list, use the <code>sort()</code> method on your list. It should
+    look like this:</p>
+
+    <div class="highlight highlight-text-python-console"><pre>library = ["Orlando",
+    "Confessions of the Fox", "These Waves of Girls"]
+
+    library.sort()
+
+    print(library)</pre></div>
+
+    <p>What happened here? Let''s take it line by line. First, we created a list <code>library</code>
+    with three items attached to it. Then, we applied the <code>sort()</code> method
+    to the library list. Finally, we printed the <code>library</code>, which is now
+    sorted in alphabetical order.</p>
+
+    <p>You''ll see that we have a couple of new things happening with symbols.</p>
+
+    <ul>
+
+    <li>First, the period <code>.</code> which is an <em>operator</em> in Python.
+    The period operator is another part of object-oriented-programming, and it basically
+    means that we are applying a task to whatever precedes the period. In this case,
+    we are applying the <code>sort()</code> method to our <code>library</code> list.
+    It''s kind of like attaching a function to our <code>library</code>.</li>
+
+    <li>Second, we have the parenthesis <code>()</code> after <code>sort</code>. When
+    you get more comfortable with programming, you''ll often use the parentheses to
+    include what we call <em>arguments</em> that allows us to do more complex things
+    to data. Let''s see how an argument works with the <code>append()</code> method.</li>
+
+    </ul>
+
+    <p>What if we want to add items to the list? We can use the <code>append()</code>
+    method for that. Try:</p>
+
+    <div class="highlight highlight-text-python-console"><pre>library = ["Orlando",
+    "Confessions of the Fox", "These Waves of Girls"]
+
+    library.append("La Frontera")
+
+    print(library)</pre></div>
+
+    <p>Here, we added <code>"La Frontera"</code> as an argument to the <code>append()</code>
+    method by putting the string between the parenthesis. It basically means that
+    we will be appending this specific title to the library list.</p>
+
+    <p>When you print <code>library</code>, you should see your new book appear at
+    the end of the list. Pretty cool, right? Go ahead and add a couple more books
+    to your list.</p>
+
+    <p>What if you wanted to take out some of the books? We can use <code>pop()</code>
+    to remove the last item, or "pop" it off, from our list.</p>
+
+    <div class="highlight highlight-text-python-console"><pre>library = ["Orlando",
+    "Confessions of the Fox", "These Waves of Girls", "La Frontera", "Dawn"]
+
+    library.pop()
+
+    print(library)</pre></div>
+
+    <p>The last item that you added to your list should be missing from the <code>library</code>
+    when you print the list.</p>'
+  title: Doing Things to Lists
+  workshop: python
+- challenge: '<ol>
+
+    <li>
+
+    <p>We are going to use <code>while</code> loops to get Python to repeat loops
+    over and over again. This involves adding a <code>while</code> statement to your
+    library app. The code should look like this, and it goes right after the <code>library</code>
+    list and before your <code>input</code> statement.</p>
+
+    <div class="highlight highlight-source-python"><pre><span class="pl-k">while</span>
+    <span class="pl-c1">True</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;...</pre></div>
+
+    <p>Make sure that everything under <code>while True:</code> is indented (this
+    creates a "code block," or a group of lines that will be executed together).</p>
+
+    <p>To stop the loop, you can press <kbd>control</kbd> + <kbd>c</kbd> in the terminal.
+    This stops the program from being run, what we call "interrupting" the program.
+    You can also add a <code>break</code> statement somewhere in your code which will
+    automatically exit the program. For example:</p>
+
+    <div class="highlight highlight-source-python"><pre>&nbsp;&nbsp;&nbsp;&nbsp;<span
+    class="pl-k">if</span> <span class="pl-s1">response</span> <span class="pl-c1">==</span>
+    <span class="pl-s">"sort"</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-s1">library</span>.<span
+    class="pl-en">sort</span>()
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span
+    class="pl-s1">library</span>)
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-k">break</span>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;...
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-s1">else</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span
+    class="pl-s">"I don''t know what you want me to do!"</span>)</pre></div>
+
+    <p>Once you get the loop to work, you can add more <code>elif</code> statements
+    to add more books to the list. Then, run the program, adding books, sorting them
+    and removing them. Read more about <code>while</code> loops <a href="https://www.w3schools.com/python/python_while_loops.asp"
+    rel="nofollow">here</a>.</p>
+
+    </li>
+
+    <li>
+
+    <p>(optional) OK, I told you not to look at the Python documentation. But doesn''t
+    that make you really want to go look at the Python documentation? How bad could
+    this "documentation" really be? What terrible secrets might it hold?</p>
+
+    <p>Fine. Have a look at the <a href="https://docs.python.org/3/library/functions.html"
+    rel="nofollow">Python documentation on built-in functions</a>. Don''t say I didn''t
+    warn you.</p>
+
+    </li>
+
+    </ol>'
+  keywords:
+  - lower()
+  - Method
+  order: 11
+  questions:
+  - answers:
+      correct:
+      - <code>'hello'.upper()</code>
+      incorrect:
+      - <code>upper('hello')</code>
+      - <code>upper().'hello'</code>
+      - <code>'hello'(upper)</code>
+    question: 'If we wanted to make a string like <code>''hello''</code> uppercase,
+      we would use the method <code>upper()</code>, in the following way:'
+  solution: '<ol>
+
+    <li>
+
+    <p>Here''s how you would include a <code>while</code> statement in our library
+    application:</p>
+
+    <div class="highlight highlight-source-python"><pre><span class="pl-s1">library</span>
+    <span class="pl-c1">=</span> [<span class="pl-s">"Orlando"</span>, <span class="pl-s">"Confessions
+    of the Fox"</span>, <span class="pl-s">"These Waves of Girls"</span>]
+
+    <span class="pl-k">while</span> <span class="pl-c1">True</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-s1">response</span> <span class="pl-c1">=</span>
+    <span class="pl-en">input</span>(<span class="pl-s">"What do you want to do with
+    your books today? "</span>)
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-s1">response</span> <span class="pl-c1">=</span>
+    <span class="pl-s1">response</span>.<span class="pl-en">lower</span>()
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-k">if</span> <span class="pl-s1">response</span>
+    <span class="pl-c1">==</span> <span class="pl-s">"sort"</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-s1">library</span>.<span
+    class="pl-en">sort</span>()
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span
+    class="pl-s1">library</span>)
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-k">elif</span> <span class="pl-s1">response</span>
+    <span class="pl-c1">==</span> <span class="pl-s">"add"</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-s1">library</span>.<span
+    class="pl-en">append</span>(<span class="pl-s">"La Frontera"</span>)
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span
+    class="pl-s1">library</span>)
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-k">elif</span> <span class="pl-s1">response</span>
+    <span class="pl-c1">==</span> <span class="pl-s">"add again"</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-s1">library</span>.<span
+    class="pl-en">append</span>(<span class="pl-s">"In the Dreamhouse"</span>)
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span
+    class="pl-s1">library</span>)
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-k">elif</span> <span class="pl-s1">response</span>
+    <span class="pl-c1">==</span> <span class="pl-s">"more books"</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-s1">library</span>.<span
+    class="pl-en">append</span>(<span class="pl-s">"Giovanni''s Room"</span>)
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span
+    class="pl-s1">library</span>)
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-k">elif</span> <span class="pl-s1">response</span>
+    <span class="pl-c1">==</span> <span class="pl-s">"moar"</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-s1">library</span>.<span
+    class="pl-en">append</span>(<span class="pl-s">"Nightwood"</span>)
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span
+    class="pl-s1">library</span>)
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-k">break</span>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-k">elif</span> <span class="pl-s1">response</span>
+    <span class="pl-c1">==</span> <span class="pl-s">"remove"</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-s1">library</span>.<span
+    class="pl-en">pop</span>()
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span
+    class="pl-s1">library</span>)
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-k">else</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span
+    class="pl-s">"I don''t know what you want me to do!"</span>)</pre></div>
+
+    </li>
+
+    </ol>'
+  text: "<p>Our library app is working pretty well, but you may have noticed that\
+    \ it's case sensitive:</p>\n<pre><code>What do you want to do with your books\
+    \ today?\nSort\nI don't know what you want me to do!\n</code></pre>\n<p>How could\
+    \ we fix our program to handle cases like this? We could add a bunch of new <code>elif</code>\
+    \ statements, like this:</p>\n<div class=\"highlight highlight-source-python\"\
+    ><pre>...\n<span class=\"pl-s1\">elif</span> <span class=\"pl-s1\">response</span>\
+    \ <span class=\"pl-c1\">==</span> <span class=\"pl-s\">\"Sort\"</span>:\n\_\_\_\
+    \_<span class=\"pl-s1\">library</span>.<span class=\"pl-en\">sort</span>()\n\_\
+    \_\_\_<span class=\"pl-en\">print</span>(<span class=\"pl-s1\">library</span>)\n\
+    <span class=\"pl-s1\">elif</span> <span class=\"pl-s1\">response</span> <span\
+    \ class=\"pl-c1\">==</span> <span class=\"pl-s\">\"SORT\"</span>:\n\_\_\_\_<span\
+    \ class=\"pl-s1\">library</span>.<span class=\"pl-en\">sort</span>()\n\_\_\_\_\
+    <span class=\"pl-en\">print</span>(<span class=\"pl-s1\">library</span>)\n...</pre></div>\n\
+    <p>This is a lot of work, and it's a pretty ugly solution. If we wanted to add\
+    \ more cases to our program, we would have to write them in twice every time,\
+    \ and it still wouldn't fix inputs like <code>SorT</code>. The best way to improve\
+    \ our program would be to convert the input to lower case before we send it to\
+    \ our <code>if/else</code> block.</p>\n<h2>\n<a aria-hidden=\"true\" class=\"\
+    anchor\" href=\"#googling-for-answers\" id=\"user-content-googling-for-answers\"\
+    ><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>Googling\
+    \ for Answers</h2>\n<p>Even if you're a super rad Python programmer, you're not\
+    \ going to remember every function name or how to do things you might not have\
+    \ touched in awhile. One thing programmers get very good at is googling for answers.\
+    \ In fact, this is arguably the most important skill in modern-day programming.\
+    \ So let's use Google to find out how to convert strings to lower case.</p>\n\
+    <p>Let's try the search term <a href=\"http://lmgtfy.com/?q=make+string+lowercase+Python\"\
+    \ rel=\"nofollow\" target=\"_blank\">make string lowercase</a>:</p>\n<p><a href=\"\
+    /static/website/images/lessons/python/google_search.png\" rel=\"noopener noreferrer\"\
+    \ target=\"_blank\"><img alt=\"make string lower case Python Google search\" class=\"\
+    img-fluid d-block my-4\" src=\"/static/website/images/lessons/python/google_search.png\"\
+    \ style=\"max-width:100%;\"/></a></p>\n<p>While Google searches change over time,\
+    \ some of your results likely come from a site called Stack Overflow. This is\
+    \ a questions and answers site for programmers that usually has strong answers\
+    \ to questions about Python.</p>\n<p><a href=\"/static/website/images/lessons/python/google_result.png\"\
+    \ rel=\"noopener noreferrer\" target=\"_blank\"><img alt=\"Google search results\
+    \ with stack overflow answer on top\" class=\"img-fluid d-block my-4\" src=\"\
+    /static/website/images/lessons/python/google_result.png\" style=\"max-width:100%;\"\
+    /></a></p>\n<p>On <a href=\"https://stackoverflow.com/questions/6797984/how-do-i-lowercase-a-string-in-python\"\
+    \ rel=\"nofollow\" target=\"_blank\">this <em>Stack Overflow</em> page</a>, take\
+    \ a quick look at the question to make sure it's relevant to your problem. Then\
+    \ scroll down to the answers to find what we're looking for. You may also notice\
+    \ snarky debates\u2014another \"feature\" of <em>Stack Overflow</em>.</p>\n<h2>\n\
+    <a aria-hidden=\"true\" class=\"anchor\" href=\"#implementing-our-answer\" id=\"\
+    user-content-implementing-our-answer\"><span aria-hidden=\"true\" class=\"octicon\
+    \ octicon-link\"></span></a>Implementing Our Answer</h2>\n<p>According to this\
+    \ answer, we can make a string lowercase by adding <code>.lower()</code> to the\
+    \ end of it, like this:</p>\n<div class=\"highlight highlight-text-python-console\"\
+    ><pre>&gt;&gt;&gt; <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>SORT<span\
+    \ class=\"pl-pds\">\"</span></span>.lower()\n'sort'</pre></div>\n<p>OK, that seems\
+    \ to work. Let's incorporate this transformation into our library app:</p>\n<div\
+    \ class=\"highlight highlight-source-python\"><pre><span class=\"pl-s1\">library</span>\
+    \ <span class=\"pl-c1\">=</span> [<span class=\"pl-s\">\"Orlando\"</span>, <span\
+    \ class=\"pl-s\">\"Confessions of the Fox\"</span>, <span class=\"pl-s\">\"These\
+    \ Waves of Girls\"</span>]\n<span class=\"pl-s1\">response</span> <span class=\"\
+    pl-c1\">=</span> <span class=\"pl-en\">input</span>(<span class=\"pl-s\">\"What\
+    \ do you want to do with your books today? \"</span>)\n<span class=\"pl-s1\">response</span>\
+    \ <span class=\"pl-c1\">=</span> <span class=\"pl-s1\">response</span>.<span class=\"\
+    pl-en\">lower</span>()\n<span class=\"pl-k\">if</span> <span class=\"pl-s1\">response</span>\
+    \ <span class=\"pl-c1\">==</span> <span class=\"pl-s\">\"sort\"</span>:\n\_\_\_\
+    \_<span class=\"pl-s1\">library</span>.<span class=\"pl-en\">sort</span>()\n\_\
+    \_\_\_<span class=\"pl-en\">print</span>(<span class=\"pl-s1\">library</span>)\n\
+    <span class=\"pl-k\">elif</span> <span class=\"pl-s1\">response</span> <span class=\"\
+    pl-c1\">==</span> <span class=\"pl-s\">\"add\"</span>:\n\_\_\_\_<span class=\"\
+    pl-s1\">library</span>.<span class=\"pl-en\">append</span>(<span class=\"pl-s\"\
+    >\"La Frontera\"</span>)\n\_\_\_\_<span class=\"pl-en\">print</span>(<span class=\"\
+    pl-s1\">library</span>)\n<span class=\"pl-k\">elif</span> <span class=\"pl-s1\"\
+    >response</span> <span class=\"pl-c1\">==</span> <span class=\"pl-s\">\"remove\"\
+    </span>:\n\_\_\_\_<span class=\"pl-s1\">library</span>.<span class=\"pl-en\">pop</span>()\n\
+    \_\_\_\_<span class=\"pl-en\">print</span>(<span class=\"pl-s1\">library</span>)\n\
+    <span class=\"pl-k\">else</span>:\n\_\_\_\_<span class=\"pl-en\">print</span>(<span\
+    \ class=\"pl-s\">\"I don't know what you want me to do!\"</span>)</pre></div>\n\
+    <p>This new script should handle any combination of upper or lowercase characters.\
+    \ The new second line sets the response variable to a new value, <code>response.lower()</code>,\
+    \ which is a lowercase version of the original input.</p>\n<p>There's no shame\
+    \ in googling for answers! Error messages are especially useful to google when\
+    \ you run into them. Keep an eye out for <em>Stack Overflow</em> answers, as they\
+    \ tend to have useful examples. The <a href=\"https://docs.python.org/3/\" rel=\"\
+    nofollow\" target=\"_blank\">official Python documentation</a> will also frequently\
+    \ come up, but I would recommend avoiding it as a resource until you have more\
+    \ programming experience. It's a great resource, but the way information is presented\
+    \ can be confusing until you get the hang of reading documentation.</p>"
+  title: Finding Answers with Google
+  workshop: python
+- challenge: '<ol>
+
+    <li>
+
+    <p>As with our library app, this positive saying generator could be improved by
+    making it so the program doesn''t have to run again every time to get new output.
+    Add a while loop for the final version. Remember to include a <code>break</code>
+    statement or use <kbd>control</kbd> + <kbd>c</kbd> to get out of the loop! Read
+    more <a href="https://www.w3schools.com/python/python_while_loops.asp" rel="nofollow">about
+    while loops here</a>.</p>
+
+    </li>
+
+    <li>
+
+    <p>The real point of this section is to learn <code>import</code>, which is where
+    Python really starts to get interesting. Python comes with many libraries (importable
+    collections of code), written by others that can be pulled into your program,
+    allowing you to use that functionality. In this challenge, do a little research
+    on Python libraries that might solve a problem for you or address a domain that
+    you''re interested in.</p>
+
+    </li>
+
+    </ol>
+
+    <p>Think of something you''re interested in doing (statistics, text analysis,
+    web scraping, quantitative analysis, processing Excel/PDF/image files) and search
+    google "&lt;<em>thing you are interested in</em>&gt; python library". You''re
+    almost certain to find some useful results. For example, if you wanted to find
+    Python libraries for dealing with cleaning up HTML files, you might search one
+    of these:</p>
+
+    <blockquote>
+
+    <p>working with html python library</p>
+
+    </blockquote>
+
+    <blockquote>
+
+    <p>html parser python library</p>
+
+    </blockquote>
+
+    <p>In your research, you may also want to look at the libraries that come with
+    Python. You can find a list of libraries in these libraries <a href="https://docs.python.org/3/py-modindex.html"
+    rel="nofollow">here</a>.</p>'
+  keywords:
+  - Modules
+  - Random
+  - while loops
+  order: 12
+  questions:
+  - answers:
+      correct:
+      - A module is a file of code.
+      - Applications can incorporate many different modules.
+      - A module needs to be imported with an <code>import</code> statement.
+      incorrect:
+      - A module needs to be downloaded and installed.
+    question: 'What is a module? Select all that apply:'
+  solution: '<ol>
+
+    <li>
+
+    <p>Here''s how you could add a <code>while</code> loop to our positive saying
+    generator:</p>
+
+    <div class="highlight highlight-source-python"><pre><span class="pl-k">import</span>
+    <span class="pl-s1">random</span>
+
+    <span class="pl-k">while</span> <span class="pl-c1">True</span>:
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-s1">motivational_phrases</span> <span
+    class="pl-c1">=</span> [
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-s">"Importing
+    modules is easy!"</span>,
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-s">"Programming!
+    Yay!"</span>,
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-s">"You write
+    lists like a pro!"</span>,
+
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;]
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-c"># Because this is input, the user will
+    need to hit enter to see a new phrase</span>
+
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">input</span>(<span class="pl-s1">random</span>.<span
+    class="pl-en">choice</span>(<span class="pl-s1">motivational_phrases</span>))</pre></div>
+
+    </li>
+
+    </ol>'
+  text: "<p>Early on, we learned a bit about lists, which look like this:</p>\n<div\
+    \ class=\"highlight highlight-source-python\"><pre>[<span class=\"pl-s\">\"Gender\
+    \ Trouble\"</span>, <span class=\"pl-s\">\"Cruising Utopia\"</span>, <span class=\"\
+    pl-s\">\"Living a Feminist Life\"</span>]</pre></div>\n<p>We're going to create\
+    \ a small application that will print a random motivational saying every time\
+    \ a user presses <kbd>enter</kbd>. Our first step will be to create a list of\
+    \ positive sayings:</p>\n<div class=\"highlight highlight-source-python\"><pre><span\
+    \ class=\"pl-s1\">motivational_phrases</span> <span class=\"pl-c1\">=</span> [\n\
+    \_\_\_\_\_\_\_\_<span class=\"pl-s\">\"Importing modules is easy!\"</span>,\n\_\
+    \_\_\_\_\_\_\_<span class=\"pl-s\">\"Programming! Yay!\"</span>,\n\_\_\_\_\_\_\
+    \_\_<span class=\"pl-s\">\"You write lists like a pro!\"</span>,\n\_\_\_\_]</pre></div>\n\
+    <p>You're still using the same list format. Remember lists open with a square\
+    \ bracket <code>[</code>, have items seperated with commas, and end with a square\
+    \ bracket <code>]</code>, like this:</p>\n<div class=\"highlight highlight-source-python\"\
+    ><pre>[<span class=\"pl-c1\">1</span>, <span class=\"pl-c1\">2</span>, <span class=\"\
+    pl-c1\">3</span>, <span class=\"pl-c1\">4</span>, <span class=\"pl-c1\">5</span>]</pre></div>\n\
+    <p>However, our positivity list above spreads the list out over multiple lines\
+    \ for greater readability, which is allowed in Python. Remember that you can change\
+    \ the strings in the list to whatever phrases you choose.</p>\n<h2>\n<a aria-hidden=\"\
+    true\" class=\"anchor\" href=\"#importing-a-module\" id=\"user-content-importing-a-module\"\
+    ><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>Importing\
+    \ a module</h2>\n<p>Now that we have our sayings, let's use it in conjunction\
+    \ with some functionality from a module that's built into Python: the <code>random</code>\
+    \ module.</p>\n<div class=\"highlight highlight-source-python\"><pre><span class=\"\
+    pl-k\">import</span> <span class=\"pl-s1\">random</span>\n<span class=\"pl-s1\"\
+    >motivational_phrases</span> <span class=\"pl-c1\">=</span> [\n\_\_\_\_\_\_\_\_\
+    <span class=\"pl-s\">\"Importing modules is easy!\"</span>,\n\_\_\_\_\_\_\_\_\
+    <span class=\"pl-s\">\"Programming! Yay!\"</span>,\n\_\_\_\_\_\_\_\_<span class=\"\
+    pl-s\">\"You write lists like a pro!\"</span>,\n\_\_\_\_]\n<span class=\"pl-en\"\
+    >print</span>(<span class=\"pl-s1\">random</span>.<span class=\"pl-en\">choice</span>(<span\
+    \ class=\"pl-s1\">motivational_phrases</span>))</pre></div>\n<p>The <code>random.choice</code>\
+    \ function chooses a random item from a list and returns it. The <code>.</code>\
+    \ syntax indicates that the function is coming from the <code>random</code> library.</p>"
+  title: A Little Motivation
+  workshop: python
+- challenge: "<p><em>Advanced Final Challenge</em>:</p>\n<p>Let's try out a library\
+    \ for web scraping, called <code>requests</code>. It allows you to send queries\
+    \ over web browsers (which we call HTTP requests) in order to grab data from websites.\
+    \ It is a foundational module for web scraping tasks. While <code>requests</code>\
+    \ is relatively easy to grasp at first, it has a bit of a learning curve. With\
+    \ some practice, though, it can yield sophisticated web scraping results.</p>\n\
+    <p>For this challenge, let's get some hands-on practice using <code>requests</code>,\
+    \ to scrape the surface of what it can do. Feel free to attempt as much of this\
+    \ challenge as you are comfortable with.</p>\n<p>First, import requests into your\
+    \ REPL:</p>\n<div class=\"highlight highlight-text-python-console\"><pre>&gt;&gt;&gt;\
+    \ <span class=\"pl-k\">import</span> requests</pre></div>\n<p>Then, let's set\
+    \ up a request <em>object</em>. Basically, we will declare a variable <code>r</code>\
+    \ to represent the content from a website that we want to scrape. After the equal\
+    \ sign <code>=</code>, we call the <code>requests</code> module, and within that\
+    \ module, a method called <code>get</code>, which includes the parameter of the\
+    \ website URL, enclosed in single quotes. Like so:</p>\n<div class=\"highlight\
+    \ highlight-text-python-console\"><pre>&gt;&gt;&gt; <span class=\"pl-k\">import</span>\
+    \ requests\n&gt;&gt;&gt; r <span class=\"pl-k\">=</span> requests.get(<span class=\"\
+    pl-s\"><span class=\"pl-pds\">'</span>https://www.nytimes.com<span class=\"pl-pds\"\
+    >'</span></span>)</pre></div>\n<p>Now, let's examine that request object. Use\
+    \ the <code>dir</code> function to see what methods and attributes are available\
+    \ to <code>r</code>. Focus on the items within single quotes, rather than the\
+    \ underscores. Look up any of the items that seem interesting but unclear to you.\
+    \ Try to find out what at least one of these methods does, such as <code>encoding</code>.\
+    \ Can you try out some of these methods in the REPL? This would involve adding\
+    \ the dot operator <code>.</code> to your variable <code>r</code>, followed by\
+    \ the method.</p>\n<p>Even if you don't understand the results\u2014that's okay!\
+    \ This is an advanced challenge, meant to expose you to the beginning of your\
+    \ exploration with this module. This is only the first step to running more robust\
+    \ web scraping experiments.</p>"
+  keywords:
+  - Modules
+  - requests
+  - Objects
+  - dir()
+  order: 13
+  questions:
+  - answers:
+      correct:
+      - to examine a function like <code>print()</code>.
+      - to see what can be done with an object, like a string or a list.
+      - to see what can be done with a variable that's been assigned to a value.
+      incorrect:
+      - to examine a particular method, like <code>sort()</code>.
+    question: 'Why would someone use <code>dir()</code>? Select all that apply:'
+  solution: '<p>First, checking out what methods are available to the <code>r</code>
+    object:</p>
+
+    <div class="highlight highlight-text-python-console"><pre>&gt;&gt;&gt; <span class="pl-c1">dir</span>(r)
+
+    [''__attrs__'', ''__bool__'', ''__class__'', ''__delattr__'', ''__dict__'', ''__dir__'',
+    ''__doc__'', ''__enter__'', ''__eq__'', ''__exit__'', ''__format__'', ''__ge__'',
+    ''__getattribute__'', ''__getstate__'', ''__gt__'', ''__hash__'', ''__init__'',
+    ''__init_subclass__'', ''__iter__'', ''__le__'', ''__lt__'', ''__module__'', ''__ne__'',
+    ''__new__'', ''__nonzero__'', ''__reduce__'', ''__reduce_ex__'', ''__repr__'',
+    ''__setattr__'', ''__setstate__'', ''__sizeof__'', ''__str__'', ''__subclasshook__'',
+    ''__weakref__'', ''_content'', ''_content_consumed'', ''_next'', ''apparent_encoding'',
+    ''close'', ''connection'', ''content'', ''cookies'', ''elapsed'', ''encoding'',
+    ''headers'', ''history'', ''is_permanent_redirect'', ''is_redirect'', ''iter_content'',
+    ''iter_lines'', ''json'', ''links'', ''next'', ''ok'', ''raise_for_status'', ''raw'',
+    ''reason'', ''request'', ''status_code'', ''text'', ''url'']</pre></div>
+
+    <p>Then, trying out some of the methods:</p>
+
+    <div class="highlight highlight-text-python-console"><pre>&gt;&gt;&gt; r.status_code
+
+    200
+
+    &gt;&gt;&gt; r.encoding
+
+    ''utf-8''
+
+    &gt;&gt;&gt; r.cookies
+
+    &lt;RequestsCookieJar[Cookie(version=0, name=''nyt-a'', value=''04u7q0SFZ2OpnpLqevHY65'',
+    port=None, port_specified=False, domain=''.nytimes.com'', domain_specified=True,
+    domain_initial_dot=True, path=''/'', path_specified=True, secure=True, expires=1627494229,
+    discard=False, comment=None, comment_url=None, rest={''SameSite'': ''none''},
+    rfc2109=False), Cookie(version=0, name=''nyt-gdpr'', value=''1'', port=None, port_specified=False,
+    domain=''.nytimes.com'', domain_specified=True, domain_initial_dot=True, path=''/'',
+    path_specified=True, secure=False, expires=1595979829, discard=False, comment=None,
+    comment_url=None, rest={}, rfc2109=False), Cookie(version=0, name=''nyt-geo'',
+    value=''PT'', port=None, port_specified=False, domain=''.nytimes.com'', domain_specified=True,
+    domain_initial_dot=True, path=''/'', path_specified=True, secure=False, expires=1595979829,
+    discard=False, comment=None, comment_url=None, rest={}, rfc2109=False), Cookie(version=0,
+    name=''nyt-purr'', value=''cfhspnahhu'', port=None, port_specified=False, domain=''.nytimes.com'',
+    domain_specified=True, domain_initial_dot=True, path=''/'', path_specified=True,
+    secure=True, expires=1627494229, discard=False, comment=None, comment_url=None,
+    rest={''SameSite: Lax'': None}, rfc2109=False)]&gt;
+
+    </pre></div>
+
+    <p>What do these methods do? For the <code>r.status_code</code>, the <code>200</code>
+    return value means that the request was successful, because 200 is the HTTP code
+    for a successful request. This is opposed to 400 codes, like 404 error, which
+    indicates a failure to reach the website.</p>
+
+    <p>The most useful method, however, is likely <code>text</code>:</p>
+
+    <div class="highlight highlight-text-python-console"><pre>&gt;&gt;&gt; r.text
+
+    ...</pre></div>
+
+    <p><code>text</code> allows you to access the text content of the site you have
+    requested, which is extremely useful when you want to scrape websites for information,
+    for instance.</p>
+
+    <p>This is just the tip of the iceberg for using <code>requests</code>. In order
+    to get more information, you''ll have to read up on the module. Here is <a href="https://scotch.io/tutorials/getting-started-with-python-requests-get-requests"
+    rel="nofollow">an excellent tutorial</a> to get started.</p>'
+  text: "<p>Objects in Python (and other programming languages) are basically containers\
+    \ that can hold data and/or functions inside them. When a function is inside an\
+    \ object, we usually call the function a \"method.\" When data is inside an object,\
+    \ we usually call it an \"attribute.\" The terminology isn't that important, though.\
+    \ What we do need to know is that you can access these \"methods\" and \"attributes\"\
+    \ with a <code>.</code> (a dot or period).</p>\n<p>When we added <code>sort()</code>,\
+    \ <code>append()</code>, <code>pop()</code>, and <code>lower()</code> to our library\
+    \ app, we briefly saw how some methods contained inside certain objects in Python,\
+    \ like Lists (for sort, append, and pop), and String objects, like lower.</p>\n\
+    <div class=\"highlight highlight-text-python-console\"><pre>&gt;&gt;&gt; loud_greeting\
+    \ <span class=\"pl-k\">=</span> <span class=\"pl-s\"><span class=\"pl-pds\">\"\
+    </span>HELLO!<span class=\"pl-pds\">\"</span></span>\n&gt;&gt;&gt; loud_greeting.lower()\n\
+    'hello!'</pre></div>\n<p>Many, or most, objects in Python have methods that allow\
+    \ you to use them in different ways. As you move into using more advanced Python,\
+    \ you'll find that understanding what methods are available becomes more important.</p>\n\
+    <h2>\n<a aria-hidden=\"true\" class=\"anchor\" href=\"#examining-objects\" id=\"\
+    user-content-examining-objects\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"\
+    ></span></a>Examining Objects</h2>\n<p>When you encounter an object, how can you\
+    \ learn its methods and atributes so you can use them? There are two main ways.\
+    \ The first, and likely the most practical, is to read the documentation of the\
+    \ library you're using.</p>\n<p>However, you can also use the <code>dir()</code>\
+    \ function, which will tell you which methods and attributes are available in\
+    \ an object.</p>\n<p>Let's use the REPL for a moment\u2014open it by typing <code>python</code>\
+    \ at the command line.</p>\n<div class=\"highlight highlight-text-python-console\"\
+    ><pre>&gt;&gt;&gt; s <span class=\"pl-k\">=</span> <span class=\"pl-s\"><span\
+    \ class=\"pl-pds\">'</span>Hello, world!<span class=\"pl-pds\">'</span></span>\n\
+    &gt;&gt;&gt; <span class=\"pl-c1\">dir</span>(s)\n['__add__', '__class__', '__contains__',\
+    \ '__delattr__', '__dir__', '__doc__',\n...\n'startswith', 'strip', 'swapcase',\
+    \ 'title', 'translate', 'upper', 'zfill']</pre></div>\n<p>The above output shows\
+    \ some of the methods and attributes for Python strings that can be accessed using\
+    \ the dot (<code>.</code>) syntax. Also, be aware that Python doesn't print all\
+    \ the possible methods and attributes, just what it considers to be most important.\
+    \ Also, when using <code>dir()</code>, you'll mostly want to ignore the methods\
+    \ and attributes that have underscores around them. They mainly have to do with\
+    \ the internals of the Python language. For now, ignore the information within\
+    \ underscores (like <code>__add__</code>) and focus on the stuff surrouned by\
+    \ single quotes (like <code>startswith</code>).</p>\n<p>You can also use <code>dir()</code>\
+    \ to see what functions are available from Python libraries that you import. Try\
+    \ importing the <code>random</code> library again and see what you get when you\
+    \ enter <code>dir(random)</code>.</p>\n<div class=\"highlight highlight-text-python-console\"\
+    ><pre>&gt;&gt;&gt; <span class=\"pl-k\">import</span> random\n&gt;&gt;&gt; <span\
+    \ class=\"pl-c1\">dir</span>(random)\n['BPF', 'LOG4', 'NV_MAGICCONST', 'RECIP_BPF',\
+    \ 'Random', 'SG_MAGICCONST', 'SystemRandom', 'TWOPI', '_BuiltinMethodType', '_MethodType',\
+    \ '_Sequence', '_Set', '__all__', '__builtins__', '__cached__', '__doc__', '__file__',\
+    \ '__loader__', '__name__', '__package__', '__spec__', '_acos', '_bisect', '_ceil',\
+    \ '_cos', '_e', '_exp', '_inst', '_itertools', '_log', '_os', '_pi', '_random',\
+    \ '_sha512', '_sin', '_sqrt', '_test', '_test_generator', '_urandom', '_warn',\
+    \ 'betavariate', 'choice', 'choices', 'expovariate', 'gammavariate', 'gauss',\
+    \ 'getrandbits', 'getstate', 'lognormvariate', 'normalvariate', 'paretovariate',\
+    \ 'randint', 'random', 'randrange', 'sample', 'seed', 'setstate', 'shuffle', 'triangular',\
+    \ 'uniform', 'vonmisesvariate', 'weibullvariate']</pre></div>\n<p>Try entering\
+    \ other objects based on Python types we've already learned to the <code>dir()</code>\
+    \ function. For example, you might try <code>dir([1, 2, 3])</code> to see what\
+    \ methods are available when using lists.</p>"
+  title: Objects in Python
+  workshop: python
+praxis:
+  discussion_questions:
+  - label: What kind of data types are available? What is the difference between a
+      string and a list? Why do these differences matter?
+    order: 1
+    workshop: python
+  - label: 'Describe the process of using both a text editor and a terminal to write
+      and execute Python scripts. '
+    order: 2
+    workshop: python
+  - label: How do you write a program that can "make decisions" based on certain conditions?
+      What are the parts that you would need?
+    order: 3
+    workshop: python
+  - label: 'In what ways does the internet (using google) help someone to use and
+      learn Python? '
+    order: 4
+    workshop: python
+  - label: What are "libraries" or "modules", where do they come from, and what are
+      they used for?
+    order: 5
+    workshop: python
+  further_readings:
+  - annotation: Hannah Aizenman, a former Digital Fellow, wrote up a great blog post
+      introducing python "libraries," or collections of python code, for various project
+      types, from creating a website, to getting, exploring, and visualizing data,
+      and working with images, video, spreadsheets, among other ideas. Check out her
+      suggestions in [How Do I Solve [insert problem here] With Python?](https://digitalfellows.commons.gc.cuny.edu/2018/02/13/python_libraries/)
+    title: How Do I Solve [insert problem here] With Python?
+    url: https://digitalfellows.commons.gc.cuny.edu/2018/02/13/python_libraries
+  intro: 'Congratulations on completing the Intro to Python workshop! So far, you''ve
+    learned quite a bit about variables, functions, loops, modules, and other foundational
+    concepts to further your Python journey. For next steps, consider our
+
+    suggested introductoin to [Python libraries](https://digitalfellows.commons.gc.cuny.edu/2018/02/13/python_libraries/),
+    or trying some of the tutorials or projects listed below. Maybe you want to learn
+    how to
+
+    clean text with [Regex](https://automatetheboringstuff.com/2e/chapter7/), or want
+    to dig into web scraping with the Python library [`requests`](https://requests.readthedocs.io/en/master/)
+    . Or, if you are interested in strengthening your foundational skills, read one
+    of the most suggested (and free!) beginner Python book,  [How to Think Like a
+    Computer Scientist - Python Edition](https://runestone.academy/runestone/books/published/thinkcspy/index.html).
+    See a full list of our suggestions below.'
+  next_steps: []
+  tutorials:
+  - annotation: 'If you feel like you''re ready for more tutorials, you should check
+      out [Google''s Python Class](https://developers.google.com/edu/python), a solid
+      introduction that also begins to explore intermediate concepts and modules. '
+    label: Google's Python Class
+    url: https://developers.google.com/edu/python
+  - annotation: To begin using Python for manipulating and analyzing text based data,
+      check out [Python Programming for the Humanities](https://www.karsdorp.io/python-course/),
+      and jump straight into chapter 2.
+    label: Python Programming for the Humanities
+    url: https://www.karsdorp.io/python-course
+  - annotation: For those interested in more general computer science concepts, [How
+      to Think Like a Computer Scientist - Python Edition](https://runestone.academy/runestone/books/published/thinkcspy/index.html)
+      offers a good introduction to python.
+    label: How to Think Like a Computer Scientist - Python Edition
+    url: https://runestone.academy/runestone/books/published/thinkcspy/index.html
+  - annotation: "If you learn best by watching videos, Paul Vierthaler\u2019s recorded\
+      \ and uploaded his DH class, [Hacking the Humanities](https://www.youtube.com/playlist?list=PL6kqrM2i6BPIpEF5yHPNkYhjHm-FYWh17),\
+      \ to Youtube. Includes a general introduction to coding principles, introduction\
+      \ to python, with emphasis on text analysis, data manipulation, and web scraping."
+    label: Hacking the Humanities
+    url: https://www.youtube.com/playlist?list=PL6kqrM2i6BPIpEF5yHPNkYhjHm-FYWh17
+  - annotation: If you learn best by copying and practicing, [Learn Python the Hard
+      Way](https://learnpythonthehardway.org/book/), by Zed A. Shaw, is an excellent
+      a hands-on resource. Although the online and print book versions cost money,
+      you can test out a sample for free.
+    label: Learn Python the Hard Way
+    url: https://learnpythonthehardway.org/book
+  workshop: python
+workshop:
+  parent_backend: Github
+  parent_branch: v2.0
+  parent_repo: DHRI-Curriculum/python
+  title: python

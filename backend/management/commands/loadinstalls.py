@@ -15,17 +15,6 @@ from backend.models import Software, Instruction, Step, Screenshot
 log = Logger(name='loadinstalls')
 
 
-def _get_order(step):
-    g = re.search(r"Step ([0-9]+): ", step)
-    if g:
-        order = g.groups()[0]
-        step = re.sub(r'Step ([0-9]+): ', '', step)
-    else:
-        order = 0
-        log.warning('Found an installation step that does not show the order clearly (see documentation). Cannot determine order: ' + str(step))
-    return(order, step)
-
-
 def wipe_installations():
     log.log("Deep wipe of Installations activated.", force=True) #  The script will proceed in VERBOSE mode automatically?
 

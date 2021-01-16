@@ -863,7 +863,7 @@ class LessonParser():
                 tr['height'] = 'auto'
 
             # 4. Replace transpositions
-            string_soup = str(soup)
+            string_soup = "".join([str(x) for x in soup.body.children])
             for transposition in LESSON_TRANSPOSITIONS:
                 if (string_soup.find(transposition + '<br>'),
                     string_soup.find(transposition + '<br/>'),

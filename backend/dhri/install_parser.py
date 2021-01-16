@@ -198,8 +198,8 @@ class InstallParser():
                     # manual fixes
                     soup = str(soup).replace('\n</', '</').replace('---', '<hr />')
                     self._instructions[os][section]['html'] = str(soup).replace('<html><body>', '').replace('</body></html>', '')
-                else:
-                    self.log.warning('Expected instructions to be a markdown string but received an object of type `dict`. Continuing assuming that `dict` object contains valid instructions.')
+            else:
+                self.log.warning('Expected instructions to be a markdown string but received an object of type `dict`. Continuing assuming that `dict` object contains valid instructions.')
         self.instructions['windows'] = self._instructions['windows']
         self.windows = self.instructions['windows']
 

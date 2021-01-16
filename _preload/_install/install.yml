@@ -1,0 +1,563 @@
+- instruction:
+    image: static/website/images/software_headers/firefox@3x.png
+    steps:
+    - header: Go to the Firefox download webpage
+      order: '1'
+      screenshots:
+      - !!python/tuple
+        - firefox_mac_01.png
+        - .loader-cache/images/install/firefox_mac_01.png
+        - /media/installation_screenshots/install/firefox_mac_01.png
+      text: <p>Visit the <a href="https://www.mozilla.org/en-US/firefox/new/?utm_medium=referral&amp;utm_source=support.mozilla.org"
+        rel="nofollow">Firefox download page</a> in your pre-installed browser, such
+        as Safari.</p>
+    - header: Download Firefox Installer
+      order: '2'
+      screenshots:
+      - !!python/tuple
+        - firefox_mac_02.png
+        - .loader-cache/images/install/firefox_mac_02.png
+        - /media/installation_screenshots/install/firefox_mac_02.png
+      text: <p>Click on the <code>Download Firefox</code> button.</p>
+    - header: Move Firefox to the Applications folder
+      order: '3'
+      screenshots:
+      - !!python/tuple
+        - firefox_mac_03.png
+        - .loader-cache/images/install/firefox_mac_03.png
+        - /media/installation_screenshots/install/firefox_mac_03.png
+      text: <p>Once the download has finished, the file should open by itself and
+        pop open a Finder window containing the Firefox application. Drag the Firefox
+        icon on top of the Applications folder in order to copy it there. This action
+        will begin the installation, which should only take a few seconds to complete.</p>
+    - header: Eject the Firefox installation file
+      order: '4'
+      screenshots:
+      - !!python/tuple
+        - firefox_mac_04.png
+        - .loader-cache/images/install/firefox_mac_04.png
+        - /media/installation_screenshots/install/firefox_mac_04.png
+      text: <p>After dragging the Firefox app to the Applications folder, go back
+        to the desktop screen, move the mouse cursor over the Firefox icon, and click
+        it while holding down the <code>control</code> key on your keyboard. Then
+        select the <code>Eject Firefox</code> option.</p>
+    - header: Open Firefox
+      order: '5'
+      screenshots:
+      - !!python/tuple
+        - firefox_mac_05.png
+        - .loader-cache/images/install/firefox_mac_05.png
+        - /media/installation_screenshots/install/firefox_mac_05.png
+      text: <p>You can now start Firefox by double-clicking on it in the Applications
+        folder. The first time you open Firefox, you should receive a dialogue box
+        that asks you if you are sure you would like to open Firefox. Here you should
+        click <code>Open</code>.</p>
+    - header: Finished!
+      order: '6'
+      screenshots:
+      - !!python/tuple
+        - firefox_mac_06.png
+        - .loader-cache/images/install/firefox_mac_06.png
+        - /media/installation_screenshots/install/firefox_mac_06.png
+      text: <p>Firefox will now open. Congratulations, you have completed installing
+        Firefox!</p>
+    what: <p><a href="https://www.mozilla.org/en-US/exp/firefox/" rel="nofollow">Firefox</a>
+      is a free to download web browser built by the <a href="https://foundation.mozilla.org/en/about/"
+      rel="nofollow">Mozilla Foundation</a>, a non profit organization. Firefox allows
+      users to access websites on the internet.</p>
+    why: <p>For the Digital Humanities Research Institute, we use Firefox because
+      it works on Windows and Mac operating systems, it is frequently updated, and
+      it values user privacy.</p>
+  operating_system: macOS
+  software: Firefox
+- instruction:
+    image: static/website/images/software_headers/git@3x.png
+    steps:
+    - header: Open a terminal
+      order: '1'
+      screenshots:
+      - !!python/tuple
+        - terminal.png
+        - .loader-cache/images/install/terminal.png
+        - /media/installation_screenshots/install/terminal.png
+      text: "<p>The terminal, also known as command line or bash, is a text interface\
+        \ for interacting with - or talking to - your computer.\nThis is different\
+        \ from how we usually interact with our computers. Usually, we use softwares\
+        \ that come with a graphical user interface - GUI, pronounced <em>gooey</em>\
+        \ - and we point and click on buttons, or drag and drop things. We might also\
+        \ type, like in Microsoft Word. However, in Word, you're not really talking\
+        \ to your computer until you click \"Save\" and name the file. It's at this\
+        \ point that you're telling your computer to perform a task in relation to\
+        \ the document or file you are creating or working on.\nWith Git, we talk\
+        \ to the computer through the terminal, so let's go ahead and open that now.\n\
+        To open the terminal, open spotlight search (default way to do this is by\
+        \ hitting command and the space bar) and type in \u201Cterminal\u201D. Select\
+        \ the application called terminal and press the return key. This should open\
+        \ up an app with a black background. When you see your username followed by\
+        \ a dollar sign, you\u2019re ready to start using command line.</p>"
+    - header: Type the following command into the terminal
+      order: '1'
+      screenshots:
+      - !!python/tuple
+        - commandlinetools.png
+        - .loader-cache/images/install/commandlinetools.png
+        - /media/installation_screenshots/install/commandlinetools.png
+      text: '<p>Using the terminal, we will use a set of specific phrases - or commands
+        - that tell the computer what we want it to do.
+
+        First, we want to tell the computer to install the Command Line Tool Package.
+        This give Mac users many commonly used tools, utilities, and compilers, including
+        make, GCC, clang, perl, svn, size, strip, strings, libtool, cpp, what--and
+        Git.
+
+        Install this package by typing the following command into your terminal and
+        clicking enter.</p>
+
+        <div class="highlight highlight-source-shell"><pre>$ xcode-select --install</pre></div>
+
+        <p></p>'
+    - header: Test the Install
+      order: '2'
+      screenshots: []
+      text: "<p>Now, let's make sure Git has been installed successfully.</p>\n<ul>\n\
+        <li>Type the following command into the terminal:</li></ul>\n<div class=\"\
+        highlight highlight-source-shell\"><pre>$ git</pre></div>\n<p>The terminal\
+        \ should print something like (note that this is truncated):</p>\n<div class=\"\
+        highlight highlight-source-shell\"><pre>usage: git [--version] [--help] [-C\
+        \ <span class=\"pl-k\">&lt;</span>path<span class=\"pl-k\">&gt;</span>] [-c\
+        \ name<span class=\"pl-k\">=</span>value]\n\_\_\_\_\_\_\_\_\_\_ [--exec-path[<span\
+        \ class=\"pl-k\">=&lt;</span>path<span class=\"pl-k\">&gt;</span>]] [--html-path]\
+        \ [--man-path] [--info-path]\n\_\_\_\_\_\_\_\_\_\_ [-p <span class=\"pl-k\"\
+        >|</span> --paginate <span class=\"pl-k\">|</span> --no-pager] [--no-replace-objects]\
+        \ [--bare]\n\_\_\_\_\_\_\_\_\_\_ [--git-dir<span class=\"pl-k\">=&lt;</span>path<span\
+        \ class=\"pl-k\">&gt;</span>] [--work-tree<span class=\"pl-k\">=&lt;</span>path<span\
+        \ class=\"pl-k\">&gt;</span>] [--namespace<span class=\"pl-k\">=&lt;</span>name<span\
+        \ class=\"pl-k\">&gt;</span>]\n\_\_\_\_\_\_\_\_\_\_ <span class=\"pl-k\">&lt;</span>command<span\
+        \ class=\"pl-k\">&gt;</span> [<span class=\"pl-k\">&lt;</span>args<span class=\"\
+        pl-k\">&gt;</span>]</pre></div>\n<p><a href=\"images/osxterminalgit.png\"\
+        >shows terminal on mac osx</a></p>"
+    what: '<p>Git is a version control software used to manage and track changes made
+      to files and project folders over time. We will be installing it on our local
+      machine and live on the hard drive on your laptop.
+
+      Note that Git is a separate software than GitHub. Alternatively, GitHub is a
+      web-based software that lives on the Internet. You can create an account at
+      (github.com)[<a href="https://github.com">https://github.com</a>].
+
+      These instructions are for Git, not GitHub.</p>'
+    why: <p>For the Digital Humanities Research Institute, we use Git because it is
+      an open-source tool that was built to support individual version control needs
+      as well as collaborations across time and space. In our curriculum, it is one
+      of the foundational tools we teach because through understanding how Git works,
+      we learn a lot more about how computers and different softwares work.</p>
+  operating_system: macOS
+  software: Git (and Git Bash)
+- instruction:
+    image: static/website/images/software_headers/nltk@3x.png
+    steps:
+    - header: Checking if NLTK is already installed
+      order: '1'
+      screenshots:
+      - !!python/tuple
+        - nltk_mac_1.png
+        - .loader-cache/images/install/nltk_mac_1.png
+        - /media/installation_screenshots/install/nltk_mac_1.png
+      - !!python/tuple
+        - nltk_mac_2.png
+        - .loader-cache/images/install/nltk_mac_2.png
+        - /media/installation_screenshots/install/nltk_mac_2.png
+      text: "<p>Open an OSX terminal and type <code>python</code> to launch a Python\
+        \ interpreter. You should get something like this:\n\nLoad NLTK by typing\
+        \ the following in your environment and <em>pressing</em> 'enter':\n\nIf this\
+        \ step fails, you will get an error, and you should\_\_follow the next step,\
+        \ Install NLTK. If it is already installed, nothing will happen and you'll\
+        \ see the three <code>&gt;&gt;&gt;</code> in the window. In that case, skip\
+        \ to Step 3, <a href=\"#step-3:-install-nltk-data-with-the-gui-(mac)\">Install\
+        \ NLTK Data</a>.</p>"
+    - header: Install NLTK (MAC)
+      order: '2'
+      screenshots:
+      - !!python/tuple
+        - nltk_mac_3.png
+        - .loader-cache/images/install/nltk_mac_3.png
+        - /media/installation_screenshots/install/nltk_mac_3.png
+      text: "<p>Exit the Python interpreter (<code>control-d</code> or <code>quit()</code>.\
+        \ Once you're back in your terminal, type:</p>\n<div class=\"highlight highlight-text-shell-session\"\
+        ><pre>$ <span class=\"pl-s1\">conda install nltk -y</span></pre></div>\n<p>When\
+        \ you press enter, the terminal should look something like the following:\n\
+        \nWhen it's finished, go back into the Python interpreter to import NLTK,\
+        \ typing <code>import NLTK</code> after the <code>&gt;&gt;&gt;</code>. If\
+        \ it downloaded correctly, nothing will happen and you'll see the three <code>&gt;&gt;&gt;</code>\
+        \ in the window.\_\_In that case, continue to step 3.</p>"
+    - header: Install NLTK Data with the GUI (MAC)
+      order: '3'
+      screenshots:
+      - !!python/tuple
+        - nltk_mac_4.png
+        - .loader-cache/images/install/nltk_mac_4.png
+        - /media/installation_screenshots/install/nltk_mac_4.png
+      - !!python/tuple
+        - nltk_downloader.png
+        - .loader-cache/images/install/nltk_downloader.png
+        - /media/installation_screenshots/install/nltk_downloader.png
+      text: '<p>You then need to install the data that NLTK relies on to function.
+        This may take several minutes (depending on your internet connection). Some
+        packages may fail installation due to being outdated - this is alright, and
+        will not be a problem for our lessons. If you get an error about a package
+        failing, just shut down the install and skip to <a href="#step-4:-install-nltk-data-with-the-command-line-(mac)">installing
+        NLTK with the command line</a>.
+
+        In your Python environment run the following command <em>after</em> import
+        nltk:</p>
+
+        <div class="highlight highlight-text-python-console"><pre>&gt;&gt;&gt; nltk.download()</pre></div>
+
+        <p>For example, the interpreter above would now look like:
+
+
+        The Python environment that the GUI was launched from should now have a message
+        that looks something like this:</p>
+
+        <div class="highlight highlight-text-python-console"><pre>showing info https://raw.githubusercontent.com/nltk/nltk_data/gh-pages/index.xml</pre></div>
+
+        <p>Now, look for the NLTK download GUI - this will appear automatically but
+        may appear hidden behind your browser window or behind where you are working
+        in Python.
+
+
+        Click on the first tab (collections), and on the first record on that tab:
+        all. Then, click the "download" button on the left hand side of that window.
+
+        This may take several minutes (depending on your internet connection). <em>Press</em>
+        the refresh button if the install is stalling and ignore errors.
+
+        If something goes wrong, proceed to <a href="#step-4:-install-nltk-data-with-the-command-line">installing
+        NLTK with the command line</a>. If nothing happens, then skip to the <a href="#step-5:-test-installation-(mac)">install
+        test</a>.</p>'
+    - header: Install NLTK Data with the Command Line (MAC)
+      order: '4'
+      screenshots:
+      - !!python/tuple
+        - nltk_mac_5.png
+        - .loader-cache/images/install/nltk_mac_5.png
+        - /media/installation_screenshots/install/nltk_mac_5.png
+      - !!python/tuple
+        - nltk_mac_6.png
+        - .loader-cache/images/install/nltk_mac_6.png
+        - /media/installation_screenshots/install/nltk_mac_6.png
+      - !!python/tuple
+        - nltk_mac_7.png
+        - .loader-cache/images/install/nltk_mac_7.png
+        - /media/installation_screenshots/install/nltk_mac_7.png
+      text: '<p>NLTK also provides a text based download tool, which you can download
+        with the Command Line.
+
+        In your interactive Python environment, type the following commands after
+        importing nltk</p>
+
+        <div class="highlight highlight-text-python-console"><pre>nltk.download(''all'',
+        halt_on_error=False)</pre></div>
+
+        <p>The interpreter above should now look something like:
+
+
+        If the command is successful, the terminal will print out something like:
+
+
+        It will take a few minutes to download. At the end, your terminal should look
+        like this, bringing you back to the python interpreter prompt:</p>'
+    - header: Test Installation (MAC)
+      order: '5'
+      screenshots:
+      - !!python/tuple
+        - nltk_mac_8.png
+        - .loader-cache/images/install/nltk_mac_8.png
+        - /media/installation_screenshots/install/nltk_mac_8.png
+      - !!python/tuple
+        - nltk_mac_9.png
+        - .loader-cache/images/install/nltk_mac_9.png
+        - /media/installation_screenshots/install/nltk_mac_9.png
+      text: '<p>When the installation is complete, close the NLTK Downloader and check
+        your installation. You need to be in a Python environment such as an interpreter
+        or Jupyter notebook.
+
+        <strong>Brown</strong>
+
+        In your Python environment, run the following code:</p>
+
+        <div class="highlight highlight-text-python-console"><pre>from nltk.corpus
+        import brown</pre></div>
+
+        <p>If your code runs and nothing happens (no error message and nothing printed
+        to the screen), congratulations!
+
+        *<strong>Book</strong>
+
+        Check that the books corpus installed properly by typing:</p>
+
+        <div class="highlight highlight-text-python-console"><pre>from nltk.book import
+        *</pre></div>
+
+        <p>If installed successfully, you should see the following:
+
+
+        <strong>Penn Parts of speech</strong>
+
+        Check that the parts of speech tagger is installed correctly by typing the
+        following:</p>
+
+        <div class="highlight highlight-text-python-console"><pre>nltk.help.upenn_tagset(''NN'')</pre></div>
+
+        <h2>
+
+        If installed successfully, you should see the following:
+
+        </h2>'
+    what: '<p><a href="http://www.nltk.org/" rel="nofollow">NLTK</a> stands for Natural
+      Language Tool Kit, and it is an open source Python library for analyzing language
+      data. It is used for Python programs that work with text in statistical natural
+      language processing (NLP). In plain terms, NLTK allows users to work with collections
+      of text to clean, categorize, and analyze that text. As such, it is an excellent
+      tool for text analysis.
+
+      ATTENTION: NLTK comes installed with the <a href="conda.md">conda</a> package
+      managment system and may already be installed in your environment.</p>'
+    why: <p>For the Digital Humanities Research Institute, we use NLTK because it
+      is a rich library of natural language processing tools and datasets. It works
+      very well with Python, allowing users to write powerful natural language processing
+      programs with relatively short sections of code.</p>
+  operating_system: macOS
+  software: Natural Language Toolkit
+- instruction:
+    image: static/website/images/software_headers/python@3x.png
+    steps:
+    - header: Download Python 3.+
+      order: '1'
+      screenshots:
+      - !!python/tuple
+        - conda_installer_mac.png
+        - .loader-cache/images/install/conda_installer_mac.png
+        - /media/installation_screenshots/install/conda_installer_mac.png
+      - !!python/tuple
+        - anaconda01.png
+        - .loader-cache/images/install/anaconda01.png
+        - /media/installation_screenshots/install/anaconda01.png
+      text: '<p>Visit the <a href="https://www.anaconda.com/products/individual" rel="nofollow">Anaconda
+        website</a> on your internet browser, such as Firefox or Chrome, and scroll
+        to the bottom of the page. Here, click on the <strong>64-Bit Graphical Installer</strong>
+        under the MacOS Python 3.+ version menu. Our screenshot below shows python
+        3.8, but any latest <strong>python 3.+</strong> version will work with our
+        instructions and the institute.
+
+
+        You can ignore this. Just close this screen.
+
+
+        You can either let your browser open with the Installer, or save it and open
+        it yourself.</p>'
+    - header: Run Anaconda Installer
+      order: '2'
+      screenshots:
+      - !!python/tuple
+        - anaconda02-5.png
+        - .loader-cache/images/install/anaconda02-5.png
+        - /media/installation_screenshots/install/anaconda02-5.png
+      - !!python/tuple
+        - anaconda03.png
+        - .loader-cache/images/install/anaconda03.png
+        - /media/installation_screenshots/install/anaconda03.png
+      - !!python/tuple
+        - anaconda04.png
+        - .loader-cache/images/install/anaconda04.png
+        - /media/installation_screenshots/install/anaconda04.png
+      - !!python/tuple
+        - anaconda05.png
+        - .loader-cache/images/install/anaconda05.png
+        - /media/installation_screenshots/install/anaconda05.png
+      - !!python/tuple
+        - anaconda06.png
+        - .loader-cache/images/install/anaconda06.png
+        - /media/installation_screenshots/install/anaconda06.png
+      - !!python/tuple
+        - anaconda08.png
+        - .loader-cache/images/install/anaconda08.png
+        - /media/installation_screenshots/install/anaconda08.png
+      - !!python/tuple
+        - anaconda09.png
+        - .loader-cache/images/install/anaconda09.png
+        - /media/installation_screenshots/install/anaconda09.png
+      - !!python/tuple
+        - anaconda10.png
+        - .loader-cache/images/install/anaconda10.png
+        - /media/installation_screenshots/install/anaconda10.png
+      text: '<p>After the download has completed, if it doesn''t open automatically,
+        double-click on the installer file you just saved on your computer. Click
+        <code>Continue</code>:
+
+
+        You should then see the initial install screen. Click <code>Continue</code>:</p>
+
+        <p>
+
+        Click <code>Continue</code> again:
+
+
+        Accept the license by clicking <code>I Agree</code>:</p>
+
+        <p>
+
+        Click <code>Install</code>. Only change the install location if you know what
+        you are doing:
+
+
+        Click <code>Install Microsoft VSCode</code>. If it is already installed, click
+        <code>Continue</code>:
+
+
+        This is the final installation window. Just click <code>Close</code>:
+
+
+        You can move the installer to the Trash to save space on your hard drive by
+        clicking <code>Move to Trash</code>:</p>'
+    - header: Run conda from your terminal
+      order: '3'
+      screenshots: []
+      text: '<p><strong>NOTE: this step only applies to MacOS Catalina. For all previous
+        version of MacOS, skip to Step 4</strong>
+
+        This step ensures that you will be able to run anaconda directly from your
+        terminal.
+
+        Open your macOS terminal. You can find your terminal by clicking the "magnifying
+        glass" icon (also known as <code>Spotlight</code>) on the upper-right hand
+        corner of your menubar or press <kbd>command</kbd> + <kbd>space</kbd>, type
+        <code>Terminal</code> and press <kbd>enter</kbd>. In your terminal, you will
+        run a few lines of code to make sure that the terminal knows how to start
+        Anaconda. Type in the following lines of code, after the <code>$</code>, pressing
+        <kbd>enter</kbd> after each line:</p>
+
+        <div class="highlight highlight-text-shell-session"><pre><span class="pl-c1">cd
+        ~</span>
+
+        <span class="pl-c1">bash</span>
+
+        <span class="pl-c1">source .bash_profile</span>
+
+        <span class="pl-c1">conda init zsh</span></pre></div>
+
+        <p>If this step is successful, when you close and re-open terminal, your command
+        prompt <code>$</code> should have (base) in front of it.</p>'
+    - header: Check if Anaconda and Python are successfully installed
+      order: '4'
+      screenshots: []
+      text: "<p>Open the macOS terminal. You can find your terminal by clicking the\
+        \ \"magnifying glass\" icon (also known as Spotlight) on the upper-right hand\
+        \ corner of your menubar or press <kbd>command</kbd> + <kbd>space</kbd>, type\
+        \ <code>Terminal</code> and press <kbd>enter</kbd>. In your terminal, type\
+        \ <code>python</code> and press <kbd>enter</kbd>. The terminal should print\
+        \ something like:</p>\n<div class=\"highlight highlight-text-shell-session\"\
+        ><pre><span class=\"pl-c1\">~$ python</span>\n<span class=\"pl-c1\">Python\
+        \ 3.7.7 (default, May\_\_6 2020, 04:59:01) </span>\n<span class=\"pl-c1\"\
+        >[Clang 4.0.1 (tags/RELEASE_401/final)] :: Anaconda, Inc. on darwin</span>\n\
+        <span class=\"pl-c1\">Type \"help\", \"copyright\", \"credits\" or \"license\"\
+        \ for more information.</span>\n<span class=\"pl-c1\">&gt;&gt;&gt; </span></pre></div>\n\
+        <p>Type <code>exit()</code> to leave Python.</p>"
+    - header: Ensure Anaconda Is Up-to-Date
+      order: '5'
+      screenshots: []
+      text: <p>Now that Anaconda is installed, you need to ensure that Anaconda is
+        updated to the newest version for this workshop. Go to our Insight section
+        for <a href="https://github.com/DHRI-Curriculum/insights/blob/v2.0/pages/anaconda.md">Keeping
+        your Anaconda installation up to date</a> to learn more about how to keep
+        your Anaconda installation up-to-date.</p>
+    what: <p><a href="https://www.anaconda.com/download/" rel="nofollow">Anaconda</a>
+      is a distribution of Python. It provides a Python programming environment, the
+      Jupyter notebook environment, and the conda package management system.</p>
+    why: <p>For the Digital Humanities Research Institute, we are choosing to use
+      and download Anaconda as it allow us to get all the required software for this
+      institute (python, conda, and the Jupyter notebook environment) in a single
+      download. Anaconda also includes many useful packages for machine learning,
+      and data analysis that will be helpful should you choose to go further in your
+      Python journey!.</p>
+  operating_system: macOS
+  software: Python (and Anaconda)
+- instruction:
+    image: static/website/images/software_headers/visual-studio-code@3x.png
+    steps:
+    - header: Download Visual Studio Code Installer
+      order: '1'
+      screenshots:
+      - !!python/tuple
+        - vscode_mac_1.png
+        - .loader-cache/images/install/vscode_mac_1.png
+        - /media/installation_screenshots/install/vscode_mac_1.png
+      text: <p>Visit the <a href="https://code.visualstudio.com/" rel="nofollow">Visual
+        Studio Code website</a> on your internet browser, such as Firefox or Safari,
+        and click <code>Download for Mac</code>. Then click <code>Save File</code>
+        in the dialogue box that asks if you would like to save the file</p>
+    - header: Run Visual Studio Code Installer
+      order: '2'
+      screenshots:
+      - !!python/tuple
+        - vscode_mac_2.png
+        - .loader-cache/images/install/vscode_mac_2.png
+        - /media/installation_screenshots/install/vscode_mac_2.png
+      text: <p>After the download has completed, double click on the file called <code>VSCode-darwin-stable.zip</code>
+        in your Downloads folder.</p>
+    - header: Move Visual Studio Code to Applications Folder
+      order: '3'
+      screenshots:
+      - !!python/tuple
+        - vscode_mac_3.png
+        - .loader-cache/images/install/vscode_mac_3.png
+        - /media/installation_screenshots/install/vscode_mac_3.png
+      text: <p>Drag the Visual Studio Code application (it will have a blue logo next
+        to it) from your Downloads folder to Applications folder.</p>
+    - header: Start Visual Studio Code application
+      order: '4'
+      screenshots:
+      - !!python/tuple
+        - vscode_mac_4.png
+        - .loader-cache/images/install/vscode_mac_4.png
+        - /media/installation_screenshots/install/vscode_mac_4.png
+      text: <p>Double click the Visual Studio Code application in your Applications
+        folder. The first time you open Visual Studio Code, you should receive a dialogue
+        box that asks you if you are sure you would like to open it. Here you should
+        click <code>Open</code>.</p>
+    - header: Configure Visual Studio Code I
+      order: '5'
+      screenshots:
+      - !!python/tuple
+        - vscode_mac_5.png
+        - .loader-cache/images/install/vscode_mac_5.png
+        - /media/installation_screenshots/install/vscode_mac_5.png
+      text: <p>Navigate to the <code>View</code> option in the topmost menu and click
+        <code>Command Palette</code>. This will make a text bar appear.</p>
+    - header: Configure Visual Studio Code II
+      order: '6'
+      screenshots:
+      - !!python/tuple
+        - vscode_mac_6.png
+        - .loader-cache/images/install/vscode_mac_6.png
+        - /media/installation_screenshots/install/vscode_mac_6.png
+      text: '<p>Type "shell" into the text bar that appears. Then choose <code>Shell
+        Command: Install code command in PATH</code>. Click <code>OK</code> on the
+        dialogue box that appears saying "Code will now prompt with ''osascript''
+        for Administrator privileges to install the shell command." You may also be
+        asked to provide the password to your computer at this stage.</p>'
+    - header: Complete
+      order: '7'
+      screenshots:
+      - !!python/tuple
+        - vscode_mac_7.png
+        - .loader-cache/images/install/vscode_mac_7.png
+        - /media/installation_screenshots/install/vscode_mac_7.png
+      text: <p>Congratulations, Visual Studio Code is now installed in your computer!</p>
+    what: <p>Visual Studio Code is a text editor that allows us to write code in a
+      variety of computational languages such as python, HTML, javascript, among others.</p>
+    why: <p>For the Digital Humanities Research Institute, we use Visual Studio Code
+      because it supports <a href="https://en.wikipedia.org/wiki/Syntax_highlighting"
+      rel="nofollow">syntax highlighting</a>, it is free and built on open source,
+      and it is consistent across Mac, Windows, and Linux systems.</p>
+  operating_system: macOS
+  software: Microsoft Visual Studio Code
