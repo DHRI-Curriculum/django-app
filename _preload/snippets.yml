@@ -16,3 +16,5 @@ introduction-readings: "<p>The readings listed below are meant to place the skil
 introduction-tutorials: "<p>These workshops provide a foundational comprehension of digital skills and tools often used in digital humanities and humanistic social science research. While a foundation is important, there is usually more to learn if you want to get started on your own. Now that you have an awareness of the basics, here are some other tutorials to try to extend your learning.</p>"
 
 introduction-resources: "<p>After they complete a workshop, participants often ask: what next? Here are some additional resources that can help you think about the projects that could be developed, the resources that you might need, the ways this skill could be used in the classroom, or debates in the field of digital humanities that provide context to what you've just learned.</p>"
+
+introduction-library: "<p class=\"lead\">Introductory text to the library. Should live in the new pedagagogy part of the website settings.</p>"
