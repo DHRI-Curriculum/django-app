@@ -160,7 +160,6 @@ frontmatter:
       Humanists use GitHub.'
     title: _How Digital Humanists Use GitHub_
     url: https://digitalscholarship.wordpress.com/2016/07/20/presentation-on-how-digital-humanists-use-github
-  workshop: git
 lessons:
 - challenge: ''
   keywords:
@@ -628,20 +627,18 @@ lessons:
     \ the internal data structure required for version control.</p>\n<p>First, use\
     \ <code>cd</code>, navigate to the <code>git-practice</code> folder (inside <code>projects</code>).\
     \ From your home directory, you can do all of them in one command by typing the\
-    \ following into your terminal:</p>\n<div class=\"highlight highlight-text-shell-session\"\
-    ><pre>$ <span class=\"pl-s1\"><span class=\"pl-c1\">cd</span> Desktop/projects/git-practice</span></pre></div>\n\
-    <p>Next we're going to <em>initialize</em> our repository using the <code>git\
-    \ init</code> command, which should generate the following output:</p>\n<div class=\"\
-    highlight highlight-text-shell-session\"><pre>$ <span class=\"pl-s1\">git init</span>\n\
-    <span class=\"pl-c1\">Initialized empty Git repository in /home/&lt;your-username&gt;/projects/git/.git/</span></pre></div>\n\
-    <p>Now Git is tracking our directory. However, it has not done any versioning\
-    \ yet. This is because 1) we haven't told Git to take a snapshot yet, and 2) there\
-    \ are no files in the folder to take a snapshot of. For now, Git knows this folder\
-    \ exists and is prepared to take a snapshot of the files when you tell it to.</p>\n\
-    <p>Before version control is useful, we'll have to create a text file for Git\
-    \ to track. For this session, the file we will track will be a course syllabus\u2014\
-    we'll create that next.</p>\n<h3>\n<a aria-hidden=\"true\" class=\"anchor\" href=\"\
-    #creating-a-syllabus-in-markdown\" id=\"user-content-creating-a-syllabus-in-markdown\"\
+    \ following into your terminal:</p>\n<pre lang=\"console\"><code>$ cd Desktop/projects/git-practice\n\
+    </code></pre>\n<p>Next we're going to <em>initialize</em> our repository using\
+    \ the <code>git init</code> command, which should generate the following output:</p>\n\
+    <pre lang=\"console\"><code>$ git init\nInitialized empty Git repository in /home/&lt;your-username&gt;/projects/git/.git/\n\
+    </code></pre>\n<p>Now Git is tracking our directory. However, it has not done\
+    \ any versioning yet. This is because 1) we haven't told Git to take a snapshot\
+    \ yet, and 2) there are no files in the folder to take a snapshot of. For now,\
+    \ Git knows this folder exists and is prepared to take a snapshot of the files\
+    \ when you tell it to.</p>\n<p>Before version control is useful, we'll have to\
+    \ create a text file for Git to track. For this session, the file we will track\
+    \ will be a course syllabus\u2014we'll create that next.</p>\n<h3>\n<a aria-hidden=\"\
+    true\" class=\"anchor\" href=\"#creating-a-syllabus-in-markdown\" id=\"user-content-creating-a-syllabus-in-markdown\"\
     ><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>Creating\
     \ a Syllabus in Markdown</h3>\n<p>To create a plain text file, we're going to\
     \ switch to our text editor, Visual Studio Code, to create and edit a file named\
@@ -650,17 +647,16 @@ lessons:
     >the installation instructions here</a>.</p>\n<p>In terminal, check to make sure\
     \ you are in your <code>git-practice</code> folder. (<em>Hint</em>: use <code>pwd</code>\
     \ to see what directory you are currently in.)</p>\n<p>Next, open the <code>syllabus.md</code>\
-    \ file in Visual Studio Code using:</p>\n<div class=\"highlight highlight-text-shell-session\"\
-    ><pre>$ <span class=\"pl-s1\">code syllabus.md</span></pre></div>\n<p>You should\
-    \ see a window appear that looks similar to this:</p>\n<p><a href=\"/static/website/images/lessons/git/vscode1.png\"\
-    \ rel=\"noopener noreferrer\" target=\"_blank\"><img alt=\"Image of what Visual\
-    \ Studio Code looks like when opening the syllabus.md file\" class=\"img-fluid\
-    \ d-block my-4\" src=\"/static/website/images/lessons/git/vscode1.png\" style=\"\
-    max-width:100%;\"/></a></p>\n<p>If Visual Studio Code does not open when you use\
-    \ the <code>code</code> command in your terminal, open it using the Start Menu\
-    \ on Windows or Spotlight Search on macOS as you would any other software. Then\
-    \ click <code>File &gt; Open File</code> and use the dialog to navigate to the\
-    \ <code>/Users/&lt;your-name&gt;/Desktop/projects/git</code> folder and create\
+    \ file in Visual Studio Code using:</p>\n<pre lang=\"console\"><code>$ code syllabus.md\n\
+    </code></pre>\n<p>You should see a window appear that looks similar to this:</p>\n\
+    <p><a href=\"/static/website/images/lessons/git/vscode1.png\" rel=\"noopener noreferrer\"\
+    \ target=\"_blank\"><img alt=\"Image of what Visual Studio Code looks like when\
+    \ opening the syllabus.md file\" class=\"img-fluid d-block my-4\" src=\"/static/website/images/lessons/git/vscode1.png\"\
+    \ style=\"max-width:100%;\"/></a></p>\n<p>If Visual Studio Code does not open\
+    \ when you use the <code>code</code> command in your terminal, open it using the\
+    \ Start Menu on Windows or Spotlight Search on macOS as you would any other software.\
+    \ Then click <code>File &gt; Open File</code> and use the dialog to navigate to\
+    \ the <code>/Users/&lt;your-name&gt;/Desktop/projects/git</code> folder and create\
     \ a <code>syllabus.md</code> file there.</p>\n<p>We'll be typing our markdown\
     \ into this file in the Visual Studio Code window. At any time, you can save your\
     \ file by hitting <kbd>control</kbd> + <kbd>s</kbd> on Windows or <kbd>\u2318\

@@ -7,9 +7,10 @@ class Command(BaseCommand):
     help = 'Shortcut to run through all the build commands in the correct order'
 
     def handle(self, *args, **options):
-        call_command('buildrepo', '--reset') #TODO: Make this force its way through (overriding existing folders.)
-        call_command('buildblurbs')
-        call_command('buildglossary')
         call_command('buildgroups')
         call_command('buildusers')
+        call_command('buildglossary')
+        call_command('buildinstalls')
         call_command('buildinsights')
+        call_command('buildrepo', '--reset') #TODO: Make this force its way through (overriding existing folders.)
+        call_command('buildblurbs')

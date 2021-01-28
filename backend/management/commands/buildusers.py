@@ -4,14 +4,27 @@ from backend.dhri.log import Logger
 from .imports import *
 from backend import dhri_settings
 from backend.dhri.loader import GlossaryLoader
+
+from shutil import copyfile
+from PIL import Image
+
 import yaml
 import pathlib
-import shutil
 
 log = Logger(name='build-users')
 SAVE_DIR = f'{settings.BASE_DIR}/_preload/_meta/users'
 SAVE_DIR_IMG = f'{settings.BASE_DIR}/_preload/_meta/users/images'
 DATA_FILE = 'users.yml'
+
+MAX_SIZE = 400
+
+def crop_center(pil_img, crop_width, crop_height):
+    # https://note.nkmk.me/en/python-pillow-square-circle-thumbnail/
+    img_width, img_height = pil_img.size
+    return pil_img.crop(((img_width - crop_width) // 2,
+                         (img_height - crop_height) // 2,
+                         (img_width + crop_width) // 2,
+                         (img_height + crop_height) // 2))
 
 
 class Command(BaseCommand):
@@ -20,6 +33,9 @@ class Command(BaseCommand):
 
     help = 'Build YAML files from user information (provided through dhri_settings.AUTO_USER)'
 
+    def add_arguments(self, parser):
+        parser.add_argument('--nocrop', action='store_true')
+    
     def handle(self, *args, **options):
         users = list()
 
@@ -56,9 +72,20 @@ class Command(BaseCommand):
                     user['staff'] = True
 
                 if u.get('img'):
-                    filename = u['img'].split('/')[-1]
-                    user['profile']['image'] = f'{SAVE_DIR_IMG}/{filename}'
-                    shutil.copy(u['img'], user['profile']['image'])
+                    if options.get('nocrop'):
+                        filename = u['img'].split('/')[-1]
+                        user['profile']['image'] = f'{SAVE_DIR_IMG}/{filename}'
+                        copyfile(u['img'], user['profile']['image'])
+                    else:
+                        filename = u['img'].split('/')[-1].split('.')[0]
+                        user['profile']['image'] = f'{SAVE_DIR_IMG}/{filename}.jpg'
+                        with open(u['img'], 'rb') as f:
+                            cropped_img = Image.open(f)
+                            w, h = cropped_img.size
+                            if w != h:
+                                cropped_img = crop_center(cropped_img, min(cropped_img.size), min(cropped_img.size)) # crop to square from center!
+                            cropped_img = cropped_img.resize((MAX_SIZE, MAX_SIZE), Image.LANCZOS)
+                            cropped_img.save(user['profile']['image'], 'jpeg', quality=50)
 
                 for link in u.get('links', []):
                     user['profile']['links'].append({

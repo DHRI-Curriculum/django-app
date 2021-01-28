@@ -102,7 +102,6 @@ frontmatter:
       any research project.'
     title: Ten Simple Rules for Responsible Big Data Research
     url: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5373508
-  workshop: data-literacies
 lessons:
 - challenge: '<p>These are some (most!) of the shapes your research data might transform
     into.</p>

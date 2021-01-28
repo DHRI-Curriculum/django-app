@@ -4,6 +4,8 @@ from django.conf import settings
 from backend.dhri.log import Logger
 from backend.dhri.install_parser import InstallLoader
 
+from shutil import copyfile
+
 import re
 import pathlib
 import yaml
@@ -64,7 +66,8 @@ class Command(BaseCommand):
                         }
 
                         for screenshot in d.get('screenshots'):
-                            step['screenshots'].append(screenshot)
+                            copyfile(screenshot[1], f'{SAVE_DIR}/images/{screenshot[0]}')
+                            step['screenshots'].append(f'{SAVE_DIR}/images/{screenshot[0]}')
 
                         install['instruction']['steps'].append(step)
             installs.append(install)

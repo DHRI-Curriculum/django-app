@@ -122,7 +122,6 @@ frontmatter:
       *Real Python*.'
     title: What Can I Do With Python?
     url: https://realpython.com/what-can-i-do-with-python
-  workshop: python
 lessons:
 - challenge: "<ol>\n<li>\n<p>For a few minutes, practice moving in and out of Python's\
     \ interactive mode (aka the REPL). You can get out of Python by hitting <kbd>control</kbd>\
@@ -1013,7 +1012,7 @@ lessons:
     <span class="pl-s">"Critical Race Studies"</span>
 
     &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-k">print</span>(<span class="pl-s">"The
-    New Jim Code"</span>)
+    New Jim Crow"</span>)
 
     <span class="pl-k">elif</span> <span class="pl-s1">field</span> <span class="pl-c1">==</span>
     <span class="pl-s">"DH Methodologies"</span>
