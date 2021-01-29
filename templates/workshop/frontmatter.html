@@ -67,8 +67,8 @@
         <div class="row">
             {% if frontmatter.ethical_considerations.count %}
                 <div class="col-12 col-xl-4 mt-4 mt-md-2 overflow-hidden">
-                    <h4 class="py-4 border-bottom">Ethical considerations</h4>
-                    {% snippet "introduction-ethical-considerations" %}
+                    <h4 class="py-2 border-bottom">Ethical considerations</h4>
+                    <div class="small mb-3 pb-1 border-bottom">{% snippet "introduction-ethical-considerations" %}</div>
                     {% for label in frontmatter.ethical_considerations.all %}
                         {{ label | as_string | markdown | safe }}
                     {% endfor %}
@@ -77,8 +77,8 @@
 
             {% if frontmatter.readings.count %}
                 <div class="col-12 col-xl-4 mt-4 mt-md-2 overflow-hidden">
-                    <h4 class="py-4 border-bottom">Readings before you get started</h4>
-                    {% snippet "introduction-readings" %}
+                    <h4 class="py-2 border-bottom">Readings before you get started</h4>
+                    <div class="small mb-3 pb-1 border-bottom">{% snippet "introduction-readings" %}</div>
                     {% for reading in frontmatter.readings.all %}
                         <div class="p-2 my-3 rounded-lg linked-comment">
                             <a class="text-decoration-none" target="_blank" href="{{ reading.url }}">
@@ -92,8 +92,8 @@
 
             {% if frontmatter.projects.count %}
                 <div class="col-12 col-xl-4 mt-4 mt-md-2 overflow-hidden">
-                    <h4 class="py-4 border-bottom">Projects related to {{ workshop.name }}</h4>
-                    {% snippet "introduction-projects" %}
+                    <h4 class="py-2 border-bottom">Projects related to {{ workshop.name }}</h4>
+                    <div class="small mb-3 pb-1 border-bottom">{% snippet "introduction-projects" %}</div>
                     {% for project in frontmatter.projects.all %}
                         <div class="p-2 my-3 rounded-lg linked-comment">
                             {% if project.url != None %}
