@@ -9,7 +9,7 @@ class Profile(CurlyQuotesMixin, models.Model):
     curly_fields = ['bio']
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(default='default.png',
+    image = models.ImageField(default='default.jpg',
                               upload_to='profile_pictures')
     email_confirmed = models.BooleanField(default=False)
     favorites = models.ManyToManyField(Workshop, blank=True)
