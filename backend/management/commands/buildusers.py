@@ -50,6 +50,9 @@ class Command(BaseCommand):
                 is_staff = cat == 'STAFF'
                 is_super = cat == 'SUPER'
 
+                if is_super:
+                    is_staff = True
+
                 user = {
                     'username': u.get('username'),
                     'password': u.get('password', ''),

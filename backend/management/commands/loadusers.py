@@ -27,7 +27,8 @@ def create_users(AUTO_USERS=AUTO_USERS):
                     password=u.get('password'),
                     first_name=u.get('first_name'),
                     last_name=u.get('last_name'),
-                    email=u.get('email')
+                    email=u.get('email'),
+                    is_staff = True
                 )
                 log.log(f'Added superuser `{user}`.')
             else:
