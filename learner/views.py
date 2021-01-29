@@ -66,11 +66,13 @@ class Register(View):
     form = LearnerRegisterForm()
 
     def get(self, request):
+        return HttpResponseForbidden("This function is currently unavailable")
         if request.user.is_authenticated:
             return redirect('website:index')
         return render(request, 'learner/register.html', {'form': self.form})
 
     def post(self, request):
+        return HttpResponseForbidden("This function is currently unavailable")
         self.form = LearnerRegisterForm(request.POST)
 
         if self.form.is_valid():
@@ -99,6 +101,7 @@ class Register(View):
 
 
 def activate(request, uidb64='', token=''):
+    return HttpResponseForbidden("This function is currently unavailable")
     from django.utils.http import urlsafe_base64_decode
     from django.contrib.auth import login
     from django.utils.encoding import force_text
