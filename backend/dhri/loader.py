@@ -373,7 +373,7 @@ class Loader():
         self.ethical_considerations = self.frontmatter.get('ethical_considerations')
 
         # Mapping praxis sections
-        self.praxis_intro = self.praxis.get('intro')
+        self.praxis_intro = PARSER.convert(self.praxis.get('intro'))
         self.discussion_questions = self.praxis.get('discussion_questions')
         self.next_steps = self.praxis.get('next_steps')
         self.tutorials = self.praxis.get('tutorials')

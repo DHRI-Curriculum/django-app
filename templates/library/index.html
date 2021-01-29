@@ -5,7 +5,7 @@
 {% block hero %}
     <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
     <h1 class="display-4">Library</h1>
-    <p class="lead">Introductory text to the library. Should live in the new pedagagogy part of the website settings.</p>
+    {% snippet 'introduction-library' %}
     </div>
 {% endblock %}
 
@@ -18,7 +18,6 @@
         <div class="col-12 col-sm-6 mt-4 mt-md-2 overflow-hidden">
             <h4>All Projects</h4>
             <hr />
-            {% snippet 'introduction-projects' %}
             <div id="project-list">
                 {% include 'library/fragments/projects.html' %}
             </div>
@@ -31,7 +30,6 @@
         <div class="col-12 col-sm-6 mt-4 mt-md-2 overflow-hidden">
             <h4>All Readings</h4>
             <hr />
-            {% snippet 'introduction-readings' %}
             <div id="reading-list">
                 {% include 'library/fragments/readings.html' %}
             </div>
@@ -44,7 +42,6 @@
         <div class="col-12 col-sm-6 mt-4 mt-md-2 overflow-hidden">
             <h4>All Resources</h4>
             <hr />
-            {% snippet 'introduction-resources' %}
             <div id="resource-list">
                 {% include 'library/fragments/resources.html' %}
             </div>
@@ -57,7 +54,6 @@
         <div class="col-12 col-sm-6 mt-4 mt-md-2 overflow-hidden">
             <h4>All Tutorials</h4>
             <hr />
-            {% snippet 'introduction-tutorials' %}
             <div id="tutorial-list">
                 {% include 'library/fragments/tutorials.html' %}
             </div>
