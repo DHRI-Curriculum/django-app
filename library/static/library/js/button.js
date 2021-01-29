@@ -24,7 +24,7 @@ load_more = function(e) {
 
         document.getElementById(div).innerHTML += data.html;
     }).catch(function(ex) {
-        console.log("Error:", ex);
+        console.error("Error:", ex);
     });
 };
 

@@ -23,7 +23,7 @@ approve = function(e) {
         tr.style.display = 'none';
         //console.log(data);
     }).catch(function(ex) {
-        console.log("Error:", ex);
+        console.error("Error:", ex);
     });
 };
 
