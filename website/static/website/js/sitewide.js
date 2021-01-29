@@ -24,8 +24,8 @@ try {
         });
     }
 } catch (error) {
-    console.log("cannot set up workshops element");
-    console.log(error);
+    console.error("cannot set up workshops element");
+    console.error(error);
 }
 
 try {
@@ -36,8 +36,8 @@ try {
         });
     }
 } catch (error) {
-    console.log("cannot set up installations element");
-    console.log(error);
+    console.error("cannot set up installations element");
+    console.error(error);
 }
 
 try {
@@ -48,12 +48,12 @@ try {
         });
     }
 } catch (error) {
-    console.log("cannot set up insights element");
-    console.log(error);
+    console.error("cannot set up insights element");
+    console.error(error);
 }
 
 all_workshops_collapse()._element.addEventListener("show.bs.collapse", () => {
-    console.log("all workshops shown!");
+    //console.log("all workshops shown!");
     if (all_installations_collapse() != null) {
         all_installations_collapse().hide();
     }
@@ -64,7 +64,7 @@ all_workshops_collapse()._element.addEventListener("show.bs.collapse", () => {
 all_installations_collapse()._element.addEventListener(
     "show.bs.collapse",
     () => {
-        console.log("all installations shown!");
+        //console.log("all installations shown!");
         if (all_workshops_collapse() != null) {
             all_workshops_collapse().hide();
         }
@@ -74,7 +74,7 @@ all_installations_collapse()._element.addEventListener(
     }
 );
 all_insights_collapse()._element.addEventListener("show.bs.collapse", () => {
-    console.log("all insights shown!");
+    //console.log("all insights shown!");
     if (all_workshops_collapse() != null) {
         all_workshops_collapse().hide();
     }
@@ -90,11 +90,11 @@ try {
             toggle: false,
         });
     } else if (top_menu_collapse() == null && top_menu == null) {
-        console.log("no interactivity with top menu on this page.");
+        //console.log("no interactivity with top menu on this page.");
     }
 } catch (error) {
-    console.log("cannot set up navbar element");
-    console.log(error);
+    console.error("cannot set up navbar element");
+    console.error(error);
 }
 
 if (top_menu_collapse() != null) {
@@ -127,28 +127,26 @@ if (top_menu_collapse() != null) {
         .addEventListener("click", (evt) => {
             if (evt.delegateTarget == undefined) {
                 if (evt.target.tagName == "A") {
-                    console.log("clicked an actual link..");
+                    //console.log("clicked an actual link..");
                 } else {
                     top_menu_collapse().toggle();
                     evt.stopPropagation();
                 }
             } else {
-                console.log("clicked an actual thing...!");
+                //console.log("clicked an actual thing...!");
             }
         });
 
     document.getElementById("secondaryMenu").style.cursor = "pointer";
 } else {
-    console.log(
-        "normal navbar interactivity not initiated because it is not collapsible."
-    );
+    // console.log("normal navbar interactivity not initiated because it is not collapsible.");
 
     document
         .getElementById("secondaryMenu")
         .addEventListener("click", (evt) => {
             if (evt.delegateTarget == undefined) {
                 if (evt.target.tagName == "A") {
-                    console.log("clicked an actual link..");
+                    //console.log("clicked an actual link..");
                 } else {
                     window.scrollTo({
                         top: 0,
@@ -165,5 +163,5 @@ if (top_menu_collapse() != null) {
 // Make .dropdown-submenu non-clickable
 [...document.querySelectorAll('.dropdown-submenu')].forEach(elem => {
     elem.addEventListener("click", (event) => { event.stopPropagation(); return undefined; });
-    console.log('click inactivated:' + elem);
+    //console.log('click inactivated:' + elem);
 })

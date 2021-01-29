@@ -18,7 +18,7 @@ request_instructor = function(e) {
         link.classList.add('disabled');
         //console.log(data);
     }).catch(function(ex) {
-        console.log("Error:", ex);
+        console.error("Error:", ex);
     });
 };
 

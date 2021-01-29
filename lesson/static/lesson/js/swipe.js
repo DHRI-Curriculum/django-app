@@ -9,11 +9,11 @@ const flash_text = function() {
 }
  
 const go_next = function() {
-    if (next != 0) { location.assign("?page=" + next); } else { flash_text(); console.log('no next page'); }
+    if (next != 0) { location.assign("?page=" + next); } else { flash_text(); console.error('no next page'); }
 }
 
 const go_prev = function() {
-    if (prev != 0) { location.assign("?page=" + prev); } else { flash_text(); console.log('no prev page'); }
+    if (prev != 0) { location.assign("?page=" + prev); } else { flash_text(); console.error('no prev page'); }
 }
 
 /*
