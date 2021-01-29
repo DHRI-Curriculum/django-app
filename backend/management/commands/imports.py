@@ -1,3 +1,6 @@
+# Import 
+from django.contrib.auth.models import Group, Permission
+
 # Import all models
 from backend.models import *
 
@@ -17,7 +20,7 @@ from .wipe import wipe
 from .loadglossary import create_terms
 from .loadinstalls import create_installations
 #from .loadpages import create_pages
-from .loadgroups import create_groups, Group
+from .loadgroups import create_groups
 from .loadusers import create_users, User
 from .loadblurbs import create_blurbs
 from .loadinsights import create_insights

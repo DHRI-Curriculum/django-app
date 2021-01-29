@@ -70,7 +70,7 @@ class Command(BaseCommand):
                             step['screenshots'].append(f'{SAVE_DIR}/images/{screenshot[0]}')
 
                         install['instruction']['steps'].append(step)
-            installs.append(install)
+                installs.append(install)
 
         # Save all data
         with open(f'{SAVE_DIR}/{DATA_FILE}', 'w+') as file:

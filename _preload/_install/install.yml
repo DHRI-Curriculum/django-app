@@ -4,6 +4,57 @@
     - header: Go to the Firefox download webpage
       order: '1'
       screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/firefox01.png
+      text: <p>Visit the <a href="https://www.mozilla.org/en-US/firefox/windows/?utm_medium=referral&amp;utm_source=support.mozilla.org"
+        rel="nofollow">Firefox download page</a> in your pre-installed browser, such
+        Internet Explorer or Edge.</p>
+    - header: Download Firefox Installer
+      order: '2'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/firefox02.PNG
+      text: <p>Click the <code>Download Now</code> button. This will prompt a notification
+        bar at the top or bottom of your screen with an option to open, run, or save
+        the Firefox Installer file.</p>
+    - header: Run Firefox Installer
+      order: '3'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/firefox03.png
+      text: <p>Click on the <code>Run</code> or <code>Open</code> option in the notification
+        bar to start the process.</p>
+    - header: _User Account Control_ Settings
+      order: '4'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/firefox04.PNG
+      text: <p>A <em>User Account Control</em> dialogue may open that asks you to
+        allow the Firefox Installer to make changes to your device. Click <code>Yes</code>
+        to start the installation.</p>
+    - header: Firefox Installation
+      order: '5'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/firefox05.PNG
+      text: <p>Wait for Firefox to finish installing.</p>
+    - header: Completing Firefox Installation
+      order: '6'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/firefox06.PNG
+      text: '<p>When the installation is complete, Firefox will open.
+
+        Congratulations, you have successfully installed Firefox!</p>'
+    what: <p><a href="https://www.mozilla.org/en-US/exp/firefox/" rel="nofollow">Firefox</a>
+      is a free to download web browser built by the <a href="https://foundation.mozilla.org/en/about/"
+      rel="nofollow">Mozilla Foundation</a>, a non profit organization. Firefox allows
+      users to access websites on the internet.</p>
+    why: <p>For the Digital Humanities Research Institute, we use Firefox because
+      it works on Windows and Mac operating systems, it is frequently updated, and
+      it values user privacy.</p>
+  operating_system: Windows
+  software: Firefox
+- instruction:
+    image: static/website/images/software_headers/firefox@3x.png
+    steps:
+    - header: Go to the Firefox download webpage
+      order: '1'
+      screenshots:
       - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/firefox_mac_01.png
       text: <p>Visit the <a href="https://www.mozilla.org/en-US/firefox/new/?utm_medium=referral&amp;utm_source=support.mozilla.org"
         rel="nofollow">Firefox download page</a> in your pre-installed browser, such
@@ -52,6 +103,131 @@
       it values user privacy.</p>
   operating_system: macOS
   software: Firefox
+- instruction:
+    image: static/website/images/software_headers/git@3x.png
+    steps:
+    - header: Download Git for Windows
+      order: '1'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/windowsdlgit.png
+      text: '<p>First, go to this website: <a href="https://git-scm.com/download/win"
+        rel="nofollow">https://git-scm.com/download/win</a>
+
+        From the option, select "Click here to download manually" and save the file.</p>'
+    - header: '*Click* on the git installer:'
+      order: '2'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/git00.png
+      text: <p></p>
+    - header: 'Accept the license and *click* `Next`:'
+      order: '3'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/git01.png
+      text: <p></p>
+    - header: 'Select the installation folder:'
+      order: '4'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/git02.png
+      text: <p>The default folder should be fine. <em>Click</em> <code>Next</code>.</p>
+    - header: 'Select the components to be installed:'
+      order: '5'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/git03.png
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/git04.png
+      text: '<p>Again, the default is fine here.</p>
+
+        <ul>
+
+        <li>Windows Only: select start menu folder (default is fine):
+
+        </li></ul>'
+    - header: Choose the default editor used by Git.
+      order: '6'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/git06.png
+      text: '<p>Select <code>Visual Studio Code</code> as the default editor. (Note
+        that you must install <code>Visual Studio Code</code> first before you can
+        move forward past this step of the Git install.)
+
+        <em>Click</em> <code>Next</code> when you''re ready.</p>'
+    - header: Choose the "Use Git from the Windows Command Prompt" radio button.
+      order: '7'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/git07.png
+      text: <p><em>Click</em> <code>Next</code> when you're ready.</p>
+    - header: Choose the HTTPS transport backend (the default is fine).
+      order: '8'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/git08.png
+      text: <p><em>Click</em> <code>Next</code> when you're ready.</p>
+    - header: Configure the line ending conversions.
+      order: '9'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/git09.png
+      text: <p>Again, the default is fine. <em>Click</em> <code>Next</code> when you're
+        ready.</p>
+    - header: Configure the terminal emulator.
+      order: '10'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/git10.png
+      text: '<p>On the ''configuring the terminal emulator to use with Git Bash''
+        window, choose the "Use Windows default console window" option.
+
+
+        Note: Do not choose "Use MinTTY (the default terminal of MSYS2)" as that MinTTY
+        wil break Python.</p>'
+    - header: Configure the extra options.
+      order: '11'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/git11.png
+      text: <p>Again, the defaults are fine. <em>Click</em> <code>Next</code> when
+        you are ready.</p>
+    - header: Git should now be installing.
+      order: '12'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/git12.png
+      text: <p></p>
+    - header: Finish the installation.
+      order: '13'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/git13.png
+      text: <p><em>Click</em> through the rest of the install, leaving the defaults,
+        and then <em>click</em> <code>Finish</code> on the last window.</p>
+    - header: Test the install.
+      order: '14'
+      screenshots: []
+      text: "<p>Now, let's make sure Git has been installed successfully.</p>\n<ul>\n\
+        <li>Open Your terminal</li>\n<li>Type the following into the terminal:</li></ul>\n\
+        <div class=\"highlight highlight-source-shell\"><pre>$ git</pre></div>\n<p>The\
+        \ terminal should print something like (note that this is truncated):</p>\n\
+        <div class=\"highlight highlight-source-shell\"><pre>usage: git [--version]\
+        \ [--help] [-C <span class=\"pl-k\">&lt;</span>path<span class=\"pl-k\">&gt;</span>]\
+        \ [-c name<span class=\"pl-k\">=</span>value]\n\_\_\_\_\_\_\_\_\_\_ [--exec-path[<span\
+        \ class=\"pl-k\">=&lt;</span>path<span class=\"pl-k\">&gt;</span>]] [--html-path]\
+        \ [--man-path] [--info-path]\n\_\_\_\_\_\_\_\_\_\_ [-p <span class=\"pl-k\"\
+        >|</span> --paginate <span class=\"pl-k\">|</span> --no-pager] [--no-replace-objects]\
+        \ [--bare]\n\_\_\_\_\_\_\_\_\_\_ [--git-dir<span class=\"pl-k\">=&lt;</span>path<span\
+        \ class=\"pl-k\">&gt;</span>] [--work-tree<span class=\"pl-k\">=&lt;</span>path<span\
+        \ class=\"pl-k\">&gt;</span>] [--namespace<span class=\"pl-k\">=&lt;</span>name<span\
+        \ class=\"pl-k\">&gt;</span>]\n\_\_\_\_\_\_\_\_\_\_ <span class=\"pl-k\">&lt;</span>command<span\
+        \ class=\"pl-k\">&gt;</span> [<span class=\"pl-k\">&lt;</span>args<span class=\"\
+        pl-k\">&gt;</span>]</pre></div>"
+    what: '<p>Git is a version control software used to manage and track changes made
+      to files and project folders over time. We will be installing it on our local
+      machine and live on the hard drive on your laptop.
+
+      Note that Git is a separate software than GitHub. Alternatively, GitHub is a
+      web-based software that lives on the Internet. You can create an account at
+      (github.com)[<a href="https://github.com">https://github.com</a>].
+
+      These instructions are for Git, not GitHub.</p>'
+    why: <p>For the Digital Humanities Research Institute, we use Git because it is
+      an open-source tool that was built to support individual version control needs
+      as well as collaborations across time and space. In our curriculum, it is one
+      of the foundational tools we teach because through understanding how Git works,
+      we learn a lot more about how computers and different softwares work.</p>
+  operating_system: Windows
+  software: Git (and Git Bash)
 - instruction:
     image: static/website/images/software_headers/git@3x.png
     steps:
@@ -128,6 +304,126 @@
       we learn a lot more about how computers and different softwares work.</p>
   operating_system: macOS
   software: Git (and Git Bash)
+- instruction:
+    image: static/website/images/software_headers/nltk@3x.png
+    steps:
+    - header: Checking if NLTK is already installed
+      order: '1'
+      screenshots: []
+      text: "<p>Open a Windows terminal (your <code>command line</code>) and type\
+        \ <code>python</code> to launch a Python interpreter. You should get something\
+        \ like this:</p>\n<div class=\"highlight highlight-text-python-console\"><pre>$\
+        \ python\nPython 3.6.5 |Anaconda, Inc.| (default, Apr 26 2018, 08:42:37) \n\
+        [GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)] on darwin\nType\
+        \ \"help\", \"copyright\", \"credits\" or \"license\" for more information.\n\
+        &gt;&gt;&gt; </pre></div>\n<p>Load NLTK by typing the following in your environment\
+        \ and <em>pressing</em> 'enter':</p>\n<div class=\"highlight highlight-text-python-console\"\
+        ><pre>Python 3.6.5 |Anaconda, Inc.| (default, Apr 26 2018, 08:42:37) \n[GCC\
+        \ 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)] on darwin\nType \"\
+        help\", \"copyright\", \"credits\" or \"license\" for more information.\n\
+        &gt;&gt;&gt; <span class=\"pl-k\">import</span> nltk</pre></div>\n<p>If this\
+        \ step fails, you will get an error, and you should follow the next step,\
+        \ Install NLTK. If it is already installed, nothing will happen and you'll\
+        \ see the three <code>&gt;&gt;&gt;</code> in the window. In that case, skip\
+        \ to Step 3, <a href=\"#step-3:-install-nltk-data-with-the-gui-(windows)\"\
+        >Install NLTK Data</a>.</p>"
+    - header: Install NLTK (Windows)
+      order: '2'
+      screenshots: []
+      text: "<p>Exit the Python interpreter (<code>control-d</code> or <code>quit()</code>.\
+        \ Once you're back in your terminal, type:</p>\n<div class=\"highlight highlight-text-shell-session\"\
+        ><pre>$ <span class=\"pl-s1\">conda install nltk -y</span></pre></div>\n<p>The\
+        \ terminal should print something like the following:</p>\n<div class=\"highlight\
+        \ highlight-text-python-console\"><pre>Collecting package metadata (current_repodata.json):\
+        \ done\nSolving environment: done\n## Package Plan ##\n\_\_environment location:\
+        \ /Users/filipacalado/opt/anaconda3\n\_\_added / updated specs:\n\_\_\_\_\
+        - nltk</pre></div>\n<p>When it's finished, go back into the Python interpreter\
+        \ to import NLTK, typing <code>import NLTK</code> after the <code>&gt;&gt;&gt;</code>.\
+        \ If it downloaded correctly, nothing will happen and you'll see the three\
+        \ <code>&gt;&gt;&gt;</code> in the window.\_\_In that case, continue to step\
+        \ 3.</p>"
+    - header: Install NLTK Data with the GUI (Windows)
+      order: '3'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/nltk_downloader.png
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/nltk_mac_8.png
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/nltk_mac_9.png
+      text: "<p>You then need to install the data that NLTK relies on to function.\
+        \ This may take several minutes (depending on your internet connection). Some\
+        \ packages may fail installation due to being outdated - this is alright,\
+        \ and will not be a problem for our lessons. If you get an error about a package\
+        \ failing, just shut down the install and skip to <a href=\"#step-4:-install-nltk-data-with-the-command-line-(windows)\"\
+        >installing NLTK with the command line</a>.\nIn your Python environment run\
+        \ the following command <em>after</em> import nltk:</p>\n<div class=\"highlight\
+        \ highlight-text-python-console\"><pre>&gt;&gt;&gt; nltk.download()</pre></div>\n\
+        <p>For example, the interpreter above would now look like:</p>\n<div class=\"\
+        highlight highlight-text-python-console\"><pre>Python 3.6.5 |Anaconda, Inc.|\
+        \ (default, Apr 26 2018, 08:42:37) \n[GCC 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)]\
+        \ on darwin\nType \"help\", \"copyright\", \"credits\" or \"license\" for\
+        \ more information.\n&gt;&gt;&gt; <span class=\"pl-k\">import</span> nltk\n\
+        &gt;&gt;&gt; nltk.download()\nThe Python environment that the GUI was launched\
+        \ from should now have a message that looks something like this:\n```pycon\n\
+        showing info https://raw.githubusercontent.com/nltk/nltk_data/gh-pages/index.xml</pre></div>\n\
+        <p>Now, look for the NLTK download GUI - this will appear automatically but\
+        \ may appear hidden behind your browser window or behind where you are working\
+        \ in Python.\n\nClick on the first tab (collections), and on the first record\
+        \ on that tab: all. Then, click the \"download\" button on the left hand side\
+        \ of that window.\nThis may take several minutes (depending on your internet\
+        \ connection). <em>Press</em> the refresh button if the install is stalling\
+        \ and ignore errors.\nIf something goes wrong, proceed to <a href=\"#step-4:-install-nltk-data-with-the-command-line-(windows)\"\
+        >installing NLTK with the command line</a>. If nothing happens, then skip\
+        \ to the <a href=\"#step-5:-test-installation-(windows)\">install test</a>.</p>\n\
+        <h3>\nStep 4: Install NLTK Data with the Command Line (Windows)</h3>\n<p>NLTK\
+        \ also provides a text based download tool, which you can download with the\
+        \ Command Line.\nIn your interactive Python environment, type the following\
+        \ commands after importing nltk</p>\n<div class=\"highlight highlight-text-python-console\"\
+        ><pre>nltk.download('all', halt_on_error=False)</pre></div>\n<p>The interpreter\
+        \ above should now look something like:</p>\n<div class=\"highlight highlight-text-python-console\"\
+        ><pre>Python 3.6.5 |Anaconda, Inc.| (default, Apr 26 2018, 08:42:37) \n[GCC\
+        \ 4.2.1 Compatible Clang 4.0.1 (tags/RELEASE_401/final)] on darwin\nType \"\
+        help\", \"copyright\", \"credits\" or \"license\" for more information.\n\
+        &gt;&gt;&gt; <span class=\"pl-k\">import</span> nltk\n&gt;&gt;&gt; nltk.download(<span\
+        \ class=\"pl-s\"><span class=\"pl-pds\">'</span>all<span class=\"pl-pds\"\
+        >'</span></span>, <span class=\"pl-v\">halt_on_error</span><span class=\"\
+        pl-k\">=</span><span class=\"pl-c1\">False</span>)</pre></div>\n<p>If the\
+        \ command is successful, the terminal will print out something like:</p>\n\
+        <div class=\"highlight highlight-text-python-console\"><pre>[nltk_data] Downloading\
+        \ collection 'all'\n[nltk_data]\_\_\_\_| \n[nltk_data]\_\_\_\_| Downloading\
+        \ package abc to\n[nltk_data]\_\_\_\_|\_\_\_\_ /usr/local/share/nltk_data...\n\
+        [nltk_data]\_\_\_\_|\_\_ Package abc is already up-to-date!\n\_\_\_\_\_\_\_\
+        \_\_\_\_\_\_\_\_\_...omitted...\n[nltk_data]\_\_\_\_| Downloading package\
+        \ mwa_ppdb to\n[nltk_data]\_\_\_\_|\_\_\_\_ /usr/local/share/nltk_data...\n\
+        [nltk_data]\_\_\_\_|\_\_ Package mwa_ppdb is already up-to-date!\n[nltk_data]\_\
+        \_\_\_| \n[nltk_data]\_\_Downloaded collection 'all' with errors\nOut[2]:\
+        \ True</pre></div>\n<h3>\nStep 5: Test Installation (Windows)</h3>\n<p>When\
+        \ the installation is complete, close the NLTK Downloader and check your installation.\
+        \ You need to be in a Python environment such as an interpreter or Jupyter\
+        \ notebook.\n<strong>Brown</strong>\nIn your Python environment, run the following\
+        \ code:</p>\n<div class=\"highlight highlight-text-python-console\"><pre>from\
+        \ nltk.corpus import brown</pre></div>\n<p>If your code runs and nothing happens\
+        \ (no error message and nothing printed to the screen), congratulations!\n\
+        *<strong>Book</strong>\nCheck that the books corpus installed properly by\
+        \ typing:</p>\n<div class=\"highlight highlight-text-python-console\"><pre>from\
+        \ nltk.book import *</pre></div>\n<p>If installed successfully, you should\
+        \ see the following:\n\n<strong>Penn Parts of speech</strong>\nCheck that\
+        \ the parts of speech tagger is installed correctly by typing the following:</p>\n\
+        <div class=\"highlight highlight-text-python-console\"><pre>nltk.help.upenn_tagset('NN')</pre></div>\n\
+        <p>If installed successfully, you should see the following:</p>"
+    what: '<p><a href="http://www.nltk.org/" rel="nofollow">NLTK</a> stands for Natural
+      Language Tool Kit, and it is an open source Python library for analyzing language
+      data. It is used for Python programs that work with text in statistical natural
+      language processing (NLP). In plain terms, NLTK allows users to work with collections
+      of text to clean, categorize, and analyze that text. As such, it is an excellent
+      tool for text analysis.
+
+      ATTENTION: NLTK comes installed with the <a href="conda.md">conda</a> package
+      managment system and may already be installed in your environment.</p>'
+    why: <p>For the Digital Humanities Research Institute, we use NLTK because it
+      is a rich library of natural language processing tools and datasets. It works
+      very well with Python, allowing users to write powerful natural language processing
+      programs with relatively short sections of code.</p>
+  operating_system: Windows
+  software: Natural Language Toolkit
 - instruction:
     image: static/website/images/software_headers/nltk@3x.png
     steps:
@@ -277,6 +573,109 @@
 - instruction:
     image: static/website/images/software_headers/python@3x.png
     steps:
+    - header: 'Download Python 3.+:'
+      order: '1'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/conda_installer_windows.png
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/anaconda01w.png
+      text: '<p>We <strong>strongly</strong> recommend that you follow the screens
+        below step by step. Paying particular attention to Step 3 in the installation
+        process.
+
+        Visit the <a href="https://www.anaconda.com/products/individual" rel="nofollow">Anaconda
+        website</a> on your internet browser, such as Firefox or Chrome, and scroll
+        to the bottom of the page. Here, click on the <strong>64-Bit Graphical Installer</strong>
+        under the Windows Python 3.+ menu. Our screenshot below shows python 3.8,
+        but any latest <strong>python 3.+</strong> version will work with our instructions
+        and the institute.
+
+
+        You can ignore this. Just close this screen and wait for your donwload to
+        finish.</p>'
+    - header: Run Anaconda Installer
+      order: '2'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/anaconda02w.png
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/anaconda03w.png
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/anaconda04w.png
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/anaconda05w.png
+      text: '<p>After the download has completed, if it doesn''t open automatically,
+        double-click on the installer file you just saved on your computer. Click
+        <code>Continue</code>:</p>
+
+        <p>
+
+        Accept the license by clicking <code>I Agree</code>:</p>
+
+        <p>
+
+        Install Anaconda only for yourself by choosing the just for me radio button.
+        Click <code>Next</code>:
+
+
+        Choose the location to install anaconda (the default is fine). Click <code>Next</code>:</p>'
+    - header: 'Run Anaconda Installer Part 2: BE CAREFUL WITH THIS OPTION!'
+      order: '3'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/anaconda06w.png
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/anaconda07w.png
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/anaconda08w.png
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/anaconda09w.png
+      text: '<p>This step is so that you will be able to run anaconda directly from
+        your terminal.
+
+        On the Advanced Installation Options page, select <strong>BOTH boxes</strong>:
+        "Add Anaconda to my PATH environment variable" and "Register Anaconda as my
+        default Python". Then click <code>Next</code>:
+
+
+        The installation may take a while, so go grab a snack or check your email:
+
+        When installation is completed, the window will list the location of the Anaconda
+        installer. Click <code>Next</code>:
+
+
+        Click <code>Install Microsoft VSCode</code>. If it is already installed, click
+        <code>Skip</code>:
+
+
+        This is the final window. You can uncheck all the boxes and click <code>Finish</code>:</p>'
+    - header: Check if Anaconda and Python are successfully installed
+      order: '4'
+      screenshots: []
+      text: "<p>Open a Windows terminal. You can open the terminal by pressing <kbd>windows</kbd>\
+        \ + <kbd>R</kbd> to open the <code>Run</code> box. Type <code>cmd</code> and\
+        \ then click <code>OK</code> to open the Command Prompt. Once it is open,\
+        \ type <code>python</code> and press <kbd>enter</kbd> on your keyboard. The\
+        \ terminal should print something like:</p>\n<div class=\"highlight highlight-text-shell-session\"\
+        ><pre><span class=\"pl-c1\">~$ python</span>\n<span class=\"pl-c1\">Python\
+        \ 3.7.7 (default, May\_\_6 2020, 04:59:01) </span>\n<span class=\"pl-c1\"\
+        >[Clang 4.0.1 (tags/RELEASE_401/final)] :: Anaconda, Inc. on darwin</span>\n\
+        <span class=\"pl-c1\">Type \"help\", \"copyright\", \"credits\" or \"license\"\
+        \ for more information.</span>\n<span class=\"pl-c1\">&gt;&gt;&gt; </span></pre></div>\n\
+        <p>Type <code>exit()</code> to leave Python.</p>"
+    - header: Ensure Anaconda Is Up-to-Date
+      order: '5'
+      screenshots: []
+      text: <p>Now that Anaconda is installed, you need to ensure that Anaconda is
+        updated to the newest version for this workshop. Go to our Insight section
+        for <a href="https://github.com/DHRI-Curriculum/insights/blob/v2.0/pages/anaconda.md">Keeping
+        your Anaconda installation up to date</a> to learn more about how to keep
+        your Anaconda installation up-to-date.</p>
+    what: <p><a href="https://www.anaconda.com/download/" rel="nofollow">Anaconda</a>
+      is a distribution of Python. It provides a Python programming environment, the
+      Jupyter notebook environment, and the conda package management system.</p>
+    why: <p>For the Digital Humanities Research Institute, we are choosing to use
+      and download Anaconda as it allow us to get all the required software for this
+      institute (python, conda, and the Jupyter notebook environment) in a single
+      download. Anaconda also includes many useful packages for machine learning,
+      and data analysis that will be helpful should you choose to go further in your
+      Python journey!.</p>
+  operating_system: Windows
+  software: Python (and Anaconda)
+- instruction:
+    image: static/website/images/software_headers/python@3x.png
+    steps:
     - header: Download Python 3.+
       order: '1'
       screenshots:
@@ -397,6 +796,87 @@
       Python journey!.</p>
   operating_system: macOS
   software: Python (and Anaconda)
+- instruction:
+    image: static/website/images/software_headers/visual-studio-code@3x.png
+    steps:
+    - header: Download Visual Studio Code Installer
+      order: '1'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/vscode1.png
+      text: <p>Visit the <a href="https://code.visualstudio.com/" rel="nofollow">Visual
+        Studio Code website</a> on your internet browser, such as Firefox, Edge, or
+        Internet Explorer, and click <code>Download for Windows</code>. Then click
+        <code>Save File</code> in the dialogue box that asks if you would like to
+        save the file</p>
+    - header: Run Visual Code Installer
+      order: '2'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/vscode2.png
+      text: <p>Double click on the Visual Studio Code installer in your downloads
+        folder</p>
+    - header: Walking Through Visual Studio Code Installer I
+      order: '3'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/vscode3.png
+      text: <p>Click <code>Next</code> when the Visual Code setup window opens.</p>
+    - header: Walking Through Visual Studio Code Installer II
+      order: '4'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/vscode4.png
+      text: <p>Accept the license agreement by selecting the first radio button. Then
+        click <code>Next</code>.</p>
+    - header: Walking Through Visual Studio Code Installer III
+      order: '5'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/vscode5.png
+      text: <p>Choose the folder on the computer that Visual Studio Code should be
+        installed in (the default is usually fine). Then click <code>Next</code>.</p>
+    - header: Walking Through Visual Studio Code Installer IV
+      order: '6'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/vscode6.png
+      text: <p>Choose the folder in the start menu that Visual Studio Code should
+        be installed in. Check the other boxes at your own discretion. Then click
+        <code>Next</code>.</p>
+    - header: Walking Through Visual Studio Code Installer V
+      order: '7'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/vscode7.png
+      text: <p>Please check the box that says <code>Add to PATH</code>. Then click
+        <code>Next</code>.</p>
+    - header: Walking Through Visual Studio Code Installer VI
+      order: '8'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/vscode8.png
+      text: <p>You should see a window listing the configurations you chose in the
+        previous steps. If they are incorrect, click <code>Back</code> and redo the
+        previous steps. If they are correct, click <code>Install</code>.</p>
+    - header: Walking Through Visual Studio Code Installer VII
+      order: '9'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/vscode9.png
+      text: <p>Sit back and relax because the install will take a while. You should
+        see a window with a progress bar similar to this.</p>
+    - header: Walking Through Visual Studio Code Installer VIII
+      order: '10'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/vscode10.png
+      text: <p>Check the <code>Launch Visual Studio Code</code> checkbox and then
+        click <code>Next</code>.</p>
+    - header: Complete
+      order: '11'
+      screenshots:
+      - /Users/kallewesterling/Repositories/django-app/_preload/_install/images/vscode11.png
+      text: <p>Congratulations Visual Studio Code is now installed! You should see
+        something similar to this window when you launch Visual Studio Code.</p>
+    what: <p>Visual Studio Code is a text editor that allows us to write code in a
+      variety of computational languages such as python, HTML, javascript, among others.</p>
+    why: <p>For the Digital Humanities Research Institute, we use Visual Studio Code
+      because it supports <a href="https://en.wikipedia.org/wiki/Syntax_highlighting"
+      rel="nofollow">syntax highlighting</a>, it is free and built on open source,
+      and it is consistent across Mac, Windows, and Linux systems.</p>
+  operating_system: Windows
+  software: Microsoft Visual Studio Code
 - instruction:
     image: static/website/images/software_headers/visual-studio-code@3x.png
     steps:
