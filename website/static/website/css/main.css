@@ -543,9 +543,9 @@ div.dropdown-submenu {
 
 .alpha-notice {
     font-size: 1rem !important;
-    background-color: #35587c !important;
-    color: #ecf0f1 !important;
     height: 35px !important;
+    background-color: #dc3545 !important;
+    color: #581118 !important;
 }
 
 @media (max-width: 576px) {
