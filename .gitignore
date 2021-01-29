@@ -146,13 +146,16 @@ sql.cnf
 test.py
 secrets.py
 _extra
-_preload/_*
+_preload/_workshops
+_preload/_meta
+_preload/_install
+_preload/_insights
 
 # Apple
 .DS_Store
 
 # Local copy
 adminsortable
-media/
+media
 !media/profile_pictures/default.png
 !media/profile_pictures/default.jpg
