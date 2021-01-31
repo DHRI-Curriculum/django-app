@@ -6,12 +6,12 @@ from backend import dhri_settings
 import yaml
 import pathlib
 
-log = Logger(name='build-repo')
+log = Logger(name='build-workshop')
 
 
-def check_for_cancel(SAVE_DIR, repo):
+def check_for_cancel(SAVE_DIR, workshop):
     if pathlib.Path(SAVE_DIR).exists():
-        _ = input(f'{repo} already exists. Replace? [n/Y]')
+        _ = input(f'{workshop} already exists. Replace? [n/Y]')
         if _ == '' or _.lower() == 'y':
             pass
         else:
@@ -22,29 +22,29 @@ class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
-    help = 'Build YAML files from GitHub repository (provided through --repo parameter)'
+    help = 'Build YAML files from workshops in the GitHub repository (provided through --workshop parameter)'
 
     def add_arguments(self, parser):
         parser.add_argument('--reset', action='store_true')
         parser.add_argument('--force', action='store_true')
         parser.add_argument('--save_all', action='store_true')
         group = parser.add_mutually_exclusive_group(required=False)
-        group.add_argument('--repo', nargs='+', type=str)
+        group.add_argument('--name', nargs='+', type=str)
         group.add_argument('--all', action='store_true')
 
     def handle(self, *args, **options):
         if options.get('all') or options.get('reset'):
-            options['repo'] = [x[0] for x in dhri_settings.AUTO_REPOS]
+            options['name'] = [x[0] for x in dhri_settings.AUTO_REPOS]
 
-        if not options.get('repo'):
+        if not options.get('name'):
             exit(
-                'No repo provided. Use any of the following settings:\n    --repo [repository name]\n    --all')
+                'No workshop names provided. Use any of the following settings:\n    --name [repository name]\n    --all')
 
-        for repo in options.get('repo'):
-            SAVE_DIR = f'{settings.BASE_DIR}/_preload/_workshops/{repo}'
-            DATA_FILE = f'{repo}.yml'
+        for workshop in options.get('name'):
+            SAVE_DIR = f'{settings.BASE_DIR}/_preload/_workshops/{workshop}'
+            DATA_FILE = f'{workshop}.yml'
             if not options.get('force') and not options.get('reset'):
-                check_for_cancel(SAVE_DIR, repo)
+                check_for_cancel(SAVE_DIR, workshop)
 
             if not pathlib.Path(SAVE_DIR).exists():
                 pathlib.Path(SAVE_DIR).mkdir(parents=True)
@@ -56,15 +56,17 @@ class Command(BaseCommand):
                 'praxis': {},
                 'lessons': []
             }
-            title = repo
-            url = f'https://github.com/DHRI-Curriculum/{repo}'
+            slug = workshop
+            name = workshop.replace('-', ' ').title() # TODO: fetch this from the raw data instead
+            url = f'https://github.com/DHRI-Curriculum/{workshop}'
             branch = 'v2.0'
             # TODO: force_download doesn't seem to work here.
             l = Loader(url, branch, force_download=options.get('force'))
 
             # 1. Extract workshop data
             workshop = {
-                'title': title,
+                'slug': slug,
+                'name': l.title,
                 'parent_backend': l.parent_backend,
                 'parent_repo': l.parent_repo,
                 'parent_branch': l.parent_branch
@@ -79,18 +81,14 @@ class Command(BaseCommand):
             data['frontmatter'] = {
                 'abstract': l.abstract,
                 'estimated_time': l.frontmatter['estimated_time'],
-                'ethical_considerations': [],
-                'learning_objectives': [],
+                'ethical_considerations': l.ethical_considerations,
+                'learning_objectives': l.learning_objectives,
                 'projects': [],
                 'readings': [],
-                'contributors': []
+                'contributors': [],
+                'prerequisites': [],
+                'resources': []
             }
-
-            data['frontmatter']['ethical_considerations'] = [
-                x.strip() for x in l.ethical_considerations]
-
-            data['frontmatter']['learning_objectives'] = [x.strip()
-                                                          for x in l.learning_objectives]
 
             for annotation in l.projects:
                 p_title, url = process_links(annotation, 'project')
@@ -107,7 +105,31 @@ class Command(BaseCommand):
                     'title': r_title,
                     'url': url
                 })
+            
+            for prereq in l.prerequisites:
+                p_title, url = process_links(prereq, 'prerequisite')
 
+                required, recommended = False, False
+                if '(required)' in prereq:
+                    required = True
+                if '(recommended)' in prereq:
+                    recommended = True
+
+                if 'github.com/DHRI-Curriculum/install/' in url:
+                    data['frontmatter']['prerequisites'].append({'type': 'install', 'potential_software': p_title, 'potential_slug_fragment': url.split('/')[-1].replace('.md', ''), 'full_text': prereq, 'required': required, 'recommended': recommended})
+                elif 'github.com/DHRI-Curriculum/' in url and not '/blob/' in url:
+                    data['frontmatter']['prerequisites'].append({'type': 'workshop', 'potential_name': p_title, 'full_text': prereq, 'required': required, 'recommended': recommended})
+                else:
+                    data['frontmatter']['prerequisites'].append({'type': 'external link', 'url': url, 'full_text': prereq, 'required': required, 'recommended': recommended})
+
+            for resourcedata in l.resources:
+                r_title, url = process_links(resourcedata, 'resource')
+                print(r_title, url)
+                if 'https://raw.githubusercontent.com/DHRI-Curriculum/' in url or ('github.com/DHRI-Curriculum/' and '/raw/' in url):
+                    data['frontmatter']['resources'].append({'type': 'internal_download', 'url': url, 'title': r_title, 'full_text': resourcedata})
+                else:
+                    data['frontmatter']['resources'].append({'type': 'external_link', 'url': url, 'title': r_title, 'full_text': resourcedata})
+                
             for contributor in l.contributors:
                 role = ''
                 is_current = False
@@ -132,7 +154,7 @@ class Command(BaseCommand):
                     'last_name': contributor.get('last_name'),
                     'url': contributor.get('url'),
                     'collaboration': {
-                        'workshop': title,
+                        'workshop': slug,
                         'role': role,
                         'current': is_current
                     }
@@ -147,10 +169,12 @@ class Command(BaseCommand):
             # 3. Extract praxis
 
             data['praxis'] = {
-                'workshop': title,
+                'workshop': slug,
                 'intro': l.praxis_intro,
                 'tutorials': [],
                 'further_readings': [],
+                'further_projects': [],
+                'more_resources': [],
                 'discussion_questions': [],
                 'next_steps': []
             }
@@ -170,17 +194,25 @@ class Command(BaseCommand):
                     'title': r_title,
                     'url': url
                 })
+            
+            for annotation in l.further_projects:
+                p_title, url = process_links(annotation, 'reading')
+                data['praxis']['further_projects'].append({
+                    'annotation': annotation,
+                    'title': p_title,
+                    'url': url
+                })
 
             for order, label in enumerate(l.discussion_questions, start=1):
                 data['praxis']['discussion_questions'].append({
-                    'workshop': title,
+                    'workshop': slug,
                     'label': label,
                     'order': order
                 })
 
             for order, label in enumerate(l.next_steps, start=1):
                 data['praxis']['next_steps'].append({
-                    'workshop': title,
+                    'workshop': slug,
                     'label': label,
                     'order': order
                 })
@@ -194,7 +226,7 @@ class Command(BaseCommand):
 
             for order, lesson_data in enumerate(l.as_html.lessons, start=1):
                 lesson = {
-                    'workshop': title,
+                    'workshop': slug,
                     'title': lesson_data.get('title', ''),
                     'text': '\n'.join([x for x in lesson_data.get('text', '').strip().splitlines() if x]),
                     'order': order,

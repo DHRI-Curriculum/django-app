@@ -312,6 +312,8 @@ class Loader():
         self.frontmatter['projects'] = [str(_) for _ in as_list(self.frontmatter.get('projects'))]
         self.frontmatter['learning_objectives'] = [PARSER.convert(_) for _ in as_list(self.frontmatter.get('learning_objectives'))] # make into HTML
         self.frontmatter['ethical_considerations'] = [PARSER.convert(_) for _ in as_list(self.frontmatter.get('ethical_considerations'))]
+        self.frontmatter['prerequisites'] = [_ for _ in as_list(self.frontmatter.get('prerequisites'))]
+        self.frontmatter['resources'] = [_ for _ in as_list(self.frontmatter.get('resources'))]
 
         # fix praxis data sections
         self.praxis['discussion_questions'] = [str(_) for _ in as_list(self.praxis.get('discussion_questions'))]
@@ -319,10 +321,12 @@ class Loader():
         self.praxis['tutorials'] = [str(_) for _ in as_list(self.praxis.get('tutorials'))]
         self.praxis['further_readings'] = [str(_) for _ in as_list(self.praxis.get('further_readings'))]
         self.praxis['further_projects'] = [str(_) for _ in as_list(self.praxis.get('further_projects'))]
+        self.praxis['more_resources'] = [str(_) for _ in as_list(self.praxis.get('more_resources'))]
 
         self.as_html = HTMLParser(self)
 
         self.content = {
+            'title': [x for x in split_into_sections(self.content.get('frontmatter'), level_granularity=1)][0],
             'frontmatter': self.frontmatter,
             'praxis': self.praxis,
             'assessment': self.assessment,
@@ -362,6 +366,7 @@ class Loader():
             image['class'] = image.get('class', []) + ['img-fluid', 'd-block', 'my-4']
 
         self.image_url = local_url[1:]
+        self.title = self.content.get('title')
 
         # Mapping frontmatter sections
         self.abstract = self.frontmatter.get('abstract')
@@ -371,9 +376,11 @@ class Loader():
         self.projects = self.frontmatter.get('projects')
         self.learning_objectives = self.frontmatter.get('learning_objectives')
         self.ethical_considerations = self.frontmatter.get('ethical_considerations')
+        self.prerequisites = self.frontmatter.get('prerequisites')
+        self.resources = self.frontmatter.get('resources')
 
         # Mapping praxis sections
-        self.praxis_intro = PARSER.convert(self.praxis.get('intro'))
+        self.praxis_intro = PARSER.convert(self.praxis.get('intro')).strip()
         self.discussion_questions = self.praxis.get('discussion_questions')
         self.next_steps = self.praxis.get('next_steps')
         self.tutorials = self.praxis.get('tutorials')

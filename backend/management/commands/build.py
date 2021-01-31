@@ -12,5 +12,5 @@ class Command(BaseCommand):
         call_command('buildglossary')
         call_command('buildinstalls')
         call_command('buildinsights')
-        call_command('buildrepo', '--reset') #TODO: Make this force its way through (overriding existing folders.)
+        call_command('buildworkshop', '--reset') #TODO: Make this force its way through (overriding existing folders.)
         call_command('buildblurbs')

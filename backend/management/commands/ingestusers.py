@@ -52,16 +52,6 @@ class Command(BaseCommand):
             if not userdata.get('username'):
                 log.error(f'Username is required. Check the datafile ({FULL_PATH}) to make sure that all the users in the file are assigned a username.')
 
-            # print(userdata.get('username'))
-            #print(x.get('first_name'))
-            #print(x.get('last_name'))
-            #rint(x.get('email'))
-            #print(x.get('password'))
-            #print(x.get('staff'))
-            #print(x.get('superuser'))
-            #print(x.get('groups', []))
-            #print(x.get('profile', {'bio': None, 'image': '', 'links': [], 'pronouns': None}))
-
             user, created = User.objects.get_or_create(username=userdata.get('username'))
 
             if not created and not options.get('forceupdate'):
