@@ -92,6 +92,8 @@ frontmatter:
   - full_text: '[Introduction to the Command Line](https://www.github.com/DHRI-Curriculum/command-line)
       (required)'
     potential_name: Introduction to the Command Line
+    recommended: false
+    required: true
     type: workshop
   - full_text: '[Installing Anaconda](https://github.com/DHRI-Curriculum/install/blob/v2.0/guides/python.md)
       (recommended) You can use any installation of Python (but make sure it is of
@@ -99,6 +101,8 @@ frontmatter:
       for all the workshops that are part of the DHRI curriculum.'
     potential_slug_fragment: python
     potential_software: Installing Anaconda
+    recommended: true
+    required: false
     type: install
   projects:
   - annotation: Built by former Digital Fellow Patrick Smyth, [The NEH Impact Index](http://www.nehimpact.org/about)
@@ -134,6 +138,11 @@ frontmatter:
       *Real Python*.'
     title: What Can I Do With Python?
     url: https://realpython.com/what-can-i-do-with-python
+  resources:
+  - full_text: '[Python cheat sheet](https://github.com/DHRI-Curriculum/python/raw/v2.0/files/python_cheat.pdf)'
+    title: Python cheat sheet
+    type: internal_download
+    url: https://github.com/DHRI-Curriculum/python/raw/v2.0/files/python_cheat.pdf
 lessons:
 - challenge: "<ol>\n<li>\n<p>For a few minutes, practice moving in and out of Python's\
     \ interactive mode (aka the REPL). You can get out of Python by hitting <kbd>control</kbd>\
@@ -2035,6 +2044,7 @@ praxis:
     Python book,&nbsp;&nbsp;<a href="https://runestone.academy/runestone/books/published/thinkcspy/index.html"
     rel="nofollow">How to Think Like a Computer Scientist - Python Edition</a>. See
     a full list of our suggestions below.</p>'
+  more_resources: []
   next_steps: []
   tutorials:
   - annotation: 'If you feel like you''re ready for more tutorials, you should check

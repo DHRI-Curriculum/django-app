@@ -112,12 +112,16 @@ frontmatter:
       file directories. Completing the Command Line workshop will make you more comfortable
       with working with HTML/CSS.'
     potential_name: Introduction to Command Line
+    recommended: false
+    required: true
     type: workshop
   - full_text: '[Visual Studio Code](https://github.com/DHRI-Curriculum/install/blob/v2.0/guides/visual-studio-code.md)
       (recommended) You can use any plain text editor but for our purposes, Visual
       Studio Code ("VS Code") will be used.'
     potential_slug_fragment: visual-studio-code
     potential_software: Visual Studio Code
+    recommended: true
+    required: false
     type: install
   projects:
   - annotation: '[Digital Humanities Research Institute](https://www.dhinstitutes.org/):
@@ -158,6 +162,24 @@ frontmatter:
     title: 'Digital History: A Guide To Gathering, Preserving, and Presenting the
       Past on the Web'
     url: http://chnm.gmu.edu/digitalhistory
+  resources:
+  - full_text: '[HTML Cheat Sheet](http://www.simplehtmlguide.com/cheatsheet.php):
+      A cheat sheet with some common HTML commands.'
+    title: HTML Cheat Sheet
+    type: external_link
+    url: http://www.simplehtmlguide.com/cheatsheet.php
+  - full_text: '[CSS Cheat Sheet](https://courses.cs.washington.edu/courses/cse154/15sp/cheat-sheets/css-cheat-sheet.pdf):
+      A cheat sheet with some common CSS commands.'
+    title: CSS Cheat Sheet
+    type: external_link
+    url: https://courses.cs.washington.edu/courses/cse154/15sp/cheat-sheets/css-cheat-sheet.pdf
+  - full_text: '[Web Development with Accessibility in Mind](https://www.w3.org/standards/webdesign/accessibility):
+      This guide was created by the W3C, which is the international community that
+      develops Web standards. This guide provides information on ways of making websites
+      more accessible to those with disabilities.'
+    title: Web Development with Accessibility in Mind
+    type: external_link
+    url: https://www.w3.org/standards/webdesign/accessibility
 lessons:
 - challenge: ''
   keywords:
@@ -1590,6 +1612,7 @@ praxis:
     robust documentation and an active user community, both of which can help solve
     issues in website development. The suggested readings and tutorials provided below
     link to more information on selecting and using a CMS.</p>'
+  more_resources: []
   next_steps: []
   tutorials:
   - annotation: '[W3School HTML Tutorial](https://www.w3schools.com/html/default.asp)

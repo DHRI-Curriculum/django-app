@@ -145,6 +145,7 @@ lessons:
     <li>Where do you usually get your data from?</li>
 
     </ol>'
+  challenge_title: Forms of Data
   keywords: []
   order: 1
   questions:
@@ -171,6 +172,7 @@ lessons:
     media outlets directly such as Twitter.</li>
 
     </ol>'
+  solution_title: ''
   text: "<p>In this workshop we will be discussing the basics of research data in\
     \ terms of material, transformation, and presentation. We will also be discussing\
     \ the ethical issues that arise in data collection, cleaning, and representation.\
@@ -232,11 +234,13 @@ lessons:
   title: Data is Foundational
   workshop: data-literacies
 - challenge: ''
+  challenge_title: ''
   keywords:
   - Data
   order: 2
   questions: []
   solution: ''
+  solution_title: ''
   text: '<p>We begin without data. Then it is observed, or made, or imagined, or generated.
     After that, it goes through further transformations. Stages of data typically
     consist of a) collection of "raw" data, b) processing and/or transforming data,
@@ -360,6 +364,7 @@ lessons:
     dataset</a>. In this case, would you consider this file to be a "raw" dataset?</li>
 
     </ol>'
+  challenge_title: Raw Data and Labor
   keywords:
   - Data
   - '"Raw" Data'
@@ -400,6 +405,7 @@ lessons:
     variables/entries to work towards my question.</li>
 
     </ol>'
+  solution_title: ''
   text: '<p>"Raw" data is yet to be processed, meaning it has yet to be manipulated
     by a human or computer. Received or collected data could be in any number of formats,
     locations, etc.. It could be in any of the forms listed in the previous section.</p>
@@ -465,6 +471,7 @@ lessons:
     format would you choose to save it in? Why would you choose to do so?</li>
 
     </ol>'
+  challenge_title: Processed/Transformed
   keywords:
   - CSV (file format)
   - XML (file format)
@@ -509,6 +516,7 @@ lessons:
     readability or bolding column headings.</li>
 
     </ol>'
+  solution_title: ''
   text: "<p>Processing data puts it into a state more readily available for analysis\
     \ and makes the data legible. For instance, it could be rendered as <strong>structured\
     \ data</strong>. This can also take many forms, e.g., a table. Here are a few\
@@ -700,6 +708,7 @@ lessons:
     Can you demonstrate how you would do so?</li>
 
     </ol>'
+  challenge_title: Tidy Data
   keywords:
   - Tidy Data
   order: 5
@@ -734,6 +743,7 @@ lessons:
 
     <p><a href="/images/moSmallComp.png" target="_blank" rel="noopener noreferrer"><img
     src="/images/moSmallComp.png" alt="Comparison of moSmall after tidy format" style="max-width:100%;"></a></p>'
+  solution_title: ''
   text: "<p>There are different guidelines to the processing of data, one of which\
     \ is the <strong><a href=\"https://www.jstatsoft.org/article/view/v059i10\" rel=\"\
     nofollow\" target=\"_blank\">Tidy Data</a></strong> format, which follows these\
@@ -824,6 +834,7 @@ lessons:
     </li>
 
     </ol>'
+  challenge_title: When Do We Stop Cleaning?
   keywords: []
   order: 6
   questions:
@@ -890,6 +901,7 @@ lessons:
     </li>
 
     </ol>'
+  solution_title: ''
   text: '<p>High quality data is measured in its <strong>validity</strong>, <strong>accuracy</strong>,
     <strong>completeness</strong>, <strong>consistency</strong>, and <strong>uniformity</strong>.</p>
 
@@ -989,6 +1001,7 @@ lessons:
     or just ran out of time and/or budget for our project?</li>
 
     </ol>'
+  challenge_title: Analysis
   keywords:
   - Descriptive Analysis
   - Inferential Analysis
@@ -1029,6 +1042,7 @@ lessons:
     this happening.</li>
 
     </ol>'
+  solution_title: ''
   text: '<p>Analysis can take many forms (just like the rest of this stuff!), but
     many techniques fall within a couple of categories:</p>
 
@@ -1130,6 +1144,7 @@ lessons:
     How might you explain what your visualization represents?</li>
 
     </ol>'
+  challenge_title: Visualizations
   keywords: []
   order: 8
   questions: []
@@ -1167,6 +1182,7 @@ lessons:
     </li>
 
     </ol>'
+  solution_title: ''
   text: "<p>Visualizing your data helps you tell a story and construct a narrative\
     \ that guides your audience in understanding your interpretation of a collected,\
     \ cleaned, and analyzed dataset. Depending on the type of analysis you ran, different\
@@ -1287,10 +1303,12 @@ lessons:
   title: 'More Stages of Data: Visualized'
   workshop: data-literacies
 - challenge: ''
+  challenge_title: ''
   keywords: []
   order: 9
   questions: []
   solution: ''
+  solution_title: ''
   text: "<p>Throughout the workshop we have been thinking together through some of\
     \ the potential ethical concerns that might crop up as we proceed with our own\
     \ projects. Just as we have discussed thus far, we hope that you see that data\
@@ -1334,10 +1352,12 @@ lessons:
   title: Data Literacy and Ethics
   workshop: data-literacies
 - challenge: ''
+  challenge_title: ''
   keywords: []
   order: 10
   questions: []
   solution: ''
+  solution_title: ''
   text: "<p>Data and ethics are contextually driven. As such, there isn\u2019t always\
     \ a risk-free approach. We often have to work through ethical dilemmas while thinking\
     \ through information that we may not have (what are the risks of doing/not doing\
@@ -1396,6 +1416,7 @@ praxis:
     readings that dives deeper into some of the topics that were covered in our lessons.
     If you would like, you can also consider exploring the <code>Projects or Challenges
     to Try</code> to see how you might apply what you've learnt.</p>
+  more_resources: []
   next_steps: []
   tutorials:
   - annotation: '[Computational social science with R](https://compsocialscience.github.io/summer-institute/curriculum)

@@ -94,6 +94,8 @@ frontmatter:
       Studio Code ("VS Code") will be used.'
     potential_slug_fragment: visual-studio-code
     potential_software: Visual Studio Code
+    recommended: true
+    required: false
     type: install
   - full_text: To know what operating system you're using. If you are on a Mac, you
       will be using the built-in Terminal. If you're using Windows, you will need
@@ -101,6 +103,8 @@ frontmatter:
       so that we can work in the cross-platform Unix command line for this session.
     potential_slug_fragment: git
     potential_software: Git Bash
+    recommended: false
+    required: false
     type: install
   projects:
   - annotation: Most Python- and R-based projects will require you to have some knowledge
@@ -136,6 +140,19 @@ frontmatter:
       the current technoscape.'
     title: Douglas Rushkoff's *Program or Be Programmed*
     url: https://rushkoff.com/books/program-or-be-programmed
+  resources:
+  - full_text: '[Glossary](https://github.com/DHRI-Curriculum/glossary/blob/master/sections/command-line.md)'
+    title: Glossary
+    type: external_link
+    url: https://github.com/DHRI-Curriculum/glossary/blob/master/sections/command-line.md
+  - full_text: '[Bite Size Command Line (by Julia Evans)](https://jvns.ca/blog/2018/08/05/new-zine--bite-size-command-line/)'
+    title: Bite Size Command Line (by Julia Evans)
+    type: external_link
+    url: https://jvns.ca/blog/2018/08/05/new-zine--bite-size-command-line
+  - full_text: '[Basic UNIX commands](http://mally.stanford.edu/~sr/computing/basic-unix.html)'
+    title: Basic UNIX commands
+    type: external_link
+    url: http://mally.stanford.edu/~sr/computing/basic-unix.html
 lessons:
 - challenge: ''
   keywords: []
@@ -1064,6 +1081,7 @@ praxis:
     and CSS</a>. Having a grasp of command line basics will not only make you more
     familiar with how your computer and basic programming work, but it will also give
     you access to tools and communities that will expand your research.</p>
+  more_resources: []
   next_steps: []
   tutorials:
   - annotation: '[*Data Science at the Command Line*](https://www.datascienceatthecommandline.com/)

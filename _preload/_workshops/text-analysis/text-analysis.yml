@@ -104,13 +104,19 @@ frontmatter:
   - full_text: '[Introduction to Python](https://github.com/DHRI-Curriculum/python)
       (required)'
     potential_name: Introduction to Python
+    recommended: false
+    required: true
     type: workshop
   - full_text: '[Introduction to the Command Line](https://github.com/DHRI-Curriculum/command-line)
       (recommended)'
     potential_name: Introduction to the Command Line
+    recommended: true
+    required: false
     type: workshop
   - full_text: '[Short introduction to Jupyter Notebooks](https://github.com/DHRI-Curriculum/insights/blob/v2.0/pages/jupyter-notebooks.md)
       (recommended)'
+    recommended: true
+    required: false
     type: external link
     url: https://github.com/DHRI-Curriculum/insights/blob/v2.0/pages/jupyter-notebooks.md
   projects:
@@ -130,6 +136,24 @@ frontmatter:
   - annotation: '[What is text analysis](https://www.scribbr.com/methodology/textual-analysis/)'
     title: What is text analysis
     url: https://www.scribbr.com/methodology/textual-analysis
+  resources:
+  - full_text: '[Installing Python (and Anaconda)](https://github.com/DHRI-Curriculum/install/blob/v2.0/guides/python.md)'
+    title: Installing Python (and Anaconda)
+    type: external_link
+    url: https://github.com/DHRI-Curriculum/install/blob/v2.0/guides/python.md
+  - full_text: '[Installing NLTK](https://github.com/DHRI-Curriculum/install/blob/v2.0/guides/nltk.md)'
+    title: Installing NLTK
+    type: external_link
+    url: https://github.com/DHRI-Curriculum/install/blob/v2.0/guides/nltk.md
+  - full_text: '[Jupyter Notebook shortcuts, tips and tricks](http://maxmelnick.com/2016/04/19/python-beginner-tips-and-tricks.html)'
+    title: Jupyter Notebook shortcuts, tips and tricks
+    type: external_link
+    url: http://maxmelnick.com/2016/04/19/python-beginner-tips-and-tricks.html
+  - full_text: '[Short introduction to Jupyter Notebooks](https://github.com/DHRI-Curriculum/insights/blob/v2.0/pages/jupyter-notebooks.md)
+      (recommended)'
+    title: Short introduction to Jupyter Notebooks
+    type: external_link
+    url: https://github.com/DHRI-Curriculum/insights/blob/v2.0/pages/jupyter-notebooks.md
 lessons:
 - challenge: ''
   keywords:
@@ -1404,6 +1428,7 @@ praxis:
     It will help you solidify some of the knowledge and make some things more clear.
 
     Have a happy journey!</p>'
+  more_resources: []
   next_steps: []
   tutorials:
   - annotation: '[Sentiment Analysis for Exploratory Data Analysis](https://programminghistorian.org/en/lessons/sentiment-analysis)'
