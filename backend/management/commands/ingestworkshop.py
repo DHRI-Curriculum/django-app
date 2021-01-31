@@ -257,11 +257,11 @@ class Command(BaseCommand):
                         answer.save()
 
                 for keyword in lessoninfo.get('keywords'):
-                    finder = Term.objects.filter(term=keyword)
+                    finder = Term.objects.filter(term__iexact=keyword)
                     if finder.count() == 1:
                         lesson.terms.add(finder[0])
                         lesson.save()
                     elif finder.count() == 0:
-                        log.warning(f'The keyword `{keyword}` used in workshop {workshop.title}\'s lesson {lesson.title} cannot be found in the glossary. Are you sure it is in the glossary and synchronized with the database? Make sure the data file for glossary is available ({GLOSSARY_FILE}) and that the term is defined in the file. Then run python manage.py ingestglossary.')
+                        log.warning(f'The keyword `{keyword}` used in workshop {workshop.name}\'s lesson {lesson.title} cannot be found in the glossary. Are you sure it is in the glossary and synchronized with the database? Make sure the data file for glossary is available ({GLOSSARY_FILE}) and that the term is defined in the file. Then run python manage.py ingestglossary.')
                     else:
                         log.error(f'Multiple definitions of `{keyword}` exists in the database. Try resetting the glossary and rerun python manage.py ingestglossary before you run the ingestworkshop command again.')
