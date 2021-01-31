@@ -72,6 +72,22 @@ frontmatter:
   - <p>Become familiar with the specific requirements of "high quality data"</p>
   - <p>Learn about ethical issues around working with different types of data and
     analysis</p>
+  prerequisites:
+  - full_text: '[Introduction to the Command Line](https://www.github.com/DHRI-Curriculum/command-line)
+      (required)'
+    potential_name: Introduction to the Command Line
+    recommended: false
+    required: true
+    type: workshop
+  - full_text: '[Download the workshop dataset](https://raw.githubusercontent.com/DHRI-Curriculum/data-literacies/v2.0/files/moSmall.csv)
+      (required) The dataset, `moSmall.csv`, will be used throughout the challenges
+      in the workshop. To save the file to your local computer, right click on the
+      link and choose `Save Link As...`. Original dataset taken from [The Metropolitan
+      Museum of Art''s Creative Commons Zero](https://github.com/metmuseum/openaccess).'
+    recommended: false
+    required: true
+    type: external link
+    url: https://raw.githubusercontent.com/DHRI-Curriculum/data-literacies/v2.0/files/moSmall.csv
   projects:
   - annotation: The [Data for Public Good](https://dataforgood.commons.gc.cuny.edu/)
       is a semester-long collaborative project led by CUNY graduate students. Each
@@ -102,6 +118,19 @@ frontmatter:
       any research project.'
     title: Ten Simple Rules for Responsible Big Data Research
     url: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5373508
+  resources:
+  - full_text: '[National Science Foundataion''s open datasets](https://catalog.data.gov/organization/nsf-gov)'
+    title: National Science Foundataion's open datasets
+    type: external_link
+    url: https://catalog.data.gov/organization/nsf-gov
+  - full_text: '[Resources to Find the Data You Need (2016)](https://flowingdata.com/2016/11/10/find-the-data-you-need-2016-edition/)'
+    title: Resources to Find the Data You Need (2016)
+    type: external_link
+    url: https://flowingdata.com/2016/11/10/find-the-data-you-need-2016-edition
+  - full_text: '[Awesome Public Datasets](https://github.com/awesomedata/awesome-public-datasets)'
+    title: Awesome Public Datasets
+    type: external_link
+    url: https://github.com/awesomedata/awesome-public-datasets
 lessons:
 - challenge: '<p>These are some (most!) of the shapes your research data might transform
     into.</p>
@@ -1350,13 +1379,23 @@ praxis:
       that you might bring into your project?
     order: 3
     workshop: data-literacies
+  further_projects:
+  - annotation: "Consider a project where you are interested in the trend of Euro-American\
+      \ political views. You've decided to look at the [2018 European Social Survey](http://nesstar.ess.nsd.uib.no/webview/index.jsp?v=2&previousmode=table&regMod=corr&submode=variable&analysismode=table&study=http%3A%2F%2F129.177.90.83%3A80%2Fobj%2FfStudy%2FESS9e02.0&gs=undefined&variable=http%3A%2F%2F129.177.90.83%3A80%2Fobj%2FfVariable%2FESS9e02.0_V93&mode=documentation&top=yes)\
+      \ and the U.S.-based [2018 General Social Survey](https://gssdataexplorer.norc.org/variables/vfilter?utf8=%E2%9C%93&user_search_id=&state_id=&search_type=&keyword=politic&doslider=0&yrmin=1972&yrmax=2018&years=2018&subjects=&ssearch=&commit=SEARCH).\
+      \ How would you approach the data? \n    - If you're interested in reporting\
+      \ on the trend of global political views, what do you have to consider when\
+      \ you join these data sets? \n    - What assumptions do you have to make? How\
+      \ would you collapse responses?"
+    title: 2018 European Social Survey
+    url: http://nesstar.ess.nsd.uib.no/webview/index.jsp?v=2&previousmode=table&regMod=corr&submode=variable&analysismode=table&study=http%3A%2F%2F129.177.90.83%3A80%2Fobj%2FfStudy%2FESS9e02.0&gs=undefined&variable=http%3A%2F%2F129.177.90.83%3A80%2Fobj%2FfVariable%2FESS9e02.0_V93&mode=documentation&top=yes
   further_readings: []
-  intro: Now that you've gained an understanding of some of the considerations around
-    data and ethics, let's think a bit further about how you may apply some of what
-    we have discussed in your work.  Below you will find some additional readings
-    that dives deeper into some of the topics that were covered in our lessons. If
-    you would like, you can also consider exploring the `Projects or Challenges to
-    Try` to see how you might apply what you've learnt.
+  intro: <p>Now that you've gained an understanding of some of the considerations
+    around data and ethics, let's think a bit further about how you may apply some
+    of what we have discussed in your work.&nbsp;&nbsp;Below you will find some additional
+    readings that dives deeper into some of the topics that were covered in our lessons.
+    If you would like, you can also consider exploring the <code>Projects or Challenges
+    to Try</code> to see how you might apply what you've learnt.</p>
   next_steps: []
   tutorials:
   - annotation: '[Computational social science with R](https://compsocialscience.github.io/summer-institute/curriculum)
@@ -1383,7 +1422,8 @@ praxis:
     url: https://www.data-to-viz.com
   workshop: data-literacies
 workshop:
+  name: Data Literacies
   parent_backend: Github
   parent_branch: v2.0
   parent_repo: DHRI-Curriculum/data-literacies
-  title: data-literacies
+  slug: data-literacies

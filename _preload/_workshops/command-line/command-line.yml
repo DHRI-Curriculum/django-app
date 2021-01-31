@@ -88,6 +88,20 @@ frontmatter:
     <code>head</code> and <code>tail</code>, and the concatenate command <code>cat</code></p>
   - <p>Search text files using the <code>grep</code> command</p>
   - <p>Create and sort cheat sheets for the commands we learn</p>
+  prerequisites:
+  - full_text: '[Visual Studio Code](https://github.com/DHRI-Curriculum/install/blob/v2.0/guides/visual-studio-code.md)
+      (recommended) You can use any plain text editor but for our purposes, Visual
+      Studio Code ("VS Code") will be used.'
+    potential_slug_fragment: visual-studio-code
+    potential_software: Visual Studio Code
+    type: install
+  - full_text: To know what operating system you're using. If you are on a Mac, you
+      will be using the built-in Terminal. If you're using Windows, you will need
+      to follow the instructions to install [Git Bash](https://github.com/DHRI-Curriculum/install/blob/v2.0/guides/git.md),
+      so that we can work in the cross-platform Unix command line for this session.
+    potential_slug_fragment: git
+    potential_software: Git Bash
+    type: install
   projects:
   - annotation: Most Python- and R-based projects will require you to have some knowledge
       of the command line. At a very basic level, you will be invoking a Python script
@@ -996,6 +1010,34 @@ praxis:
   - label: What has learning to use the command line taught you about your machine?
     order: 2
     workshop: command-line
+  further_projects:
+  - annotation: Here are some [further command line challenges](sections/15-challenges.md)
+      devised by the GCDI team
+    title: further command line challenges
+    url: sections/15-challenges.md
+  - annotation: 'When working with digital tools, it''s usually a good idea to familiarize
+      with their documentation. Here''s the [Bash Reference Manual](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html),
+      where you can find Bash features for beginners and advanced users.  '
+    title: Bash Reference Manual
+    url: https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html
+  - annotation: '[Pandoc](https://programminghistorian.org/en/lessons/sustainable-authorship-in-plain-text-using-pandoc-and-markdown)
+      is an online software that allows users to convert file types through the commandline
+      (from markdown to PDF, for example). '
+    title: Pandoc
+    url: https://programminghistorian.org/en/lessons/sustainable-authorship-in-plain-text-using-pandoc-and-markdown
+  - annotation: '[youtube-dl](https://ytdl-org.github.io/youtube-dl/index.html) is
+      a command-line exercise to download videos from YouTube.com. It requires the
+      Python interpreter.'
+    title: youtube-dl
+    url: https://ytdl-org.github.io/youtube-dl/index.html
+  - annotation: Feeling super brave? You might want to give [MALLET (MAchine Learning
+      for LanguagE Toolkit)](http://mallet.cs.umass.edu/) a shot! MALLETT is a "a
+      Java-based package for statistical natural language processing, document classification,
+      clustering, topic modeling, information extraction, and other machine learning
+      applications to text." It includes tools for document classification, sequence
+      tagging, topic modeling, and numerical optimization.
+    title: MALLET (MAchine Learning for LanguagE Toolkit)
+    url: http://mallet.cs.umass.edu
   further_readings:
   - annotation: Are you wondering how (else) the command line can be deployed for
       your scholarship? [Dennis Tenen and Grant Wythoff's "Sustainable Authorship
@@ -1012,16 +1054,16 @@ praxis:
       in the Digital Humanities"](https://www.openbookpublishers.com/htmlreader/DHP/chap09.html)'
     title: '"Life on the Command Line"'
     url: https://files.zotero.net/eyJleHBpcmVzIjoxNTkyNjY1MDk3LCJoYXNoIjoiODFkNDJmZmU1ZjU3YzRmMDE2YTQ1ZmQwY2YzOTUwYmIiLCJjb250ZW50VHlwZSI6InRleHRcL2h0bWwiLCJjaGFyc2V0IjoidXRmLTgiLCJ6aXAiOjF9/07826342b83ea870f846cfa48f1b0eb8d3d51b78ceb1b05b1e014467d7241904/life-on-the-command-line.html
-  intro: You've made it through your introduction to the command line! By now, you
-    have experienced some of the power of communicating with your computer using text
-    commands. The basic steps you learned today will help as you'll further your digital
-    skills. For example, you might work with the command line interface to set up
-    your [version control with git](https://github.com/DHRI-Curriculum/git) or you'll
-    have your text editor open while [writing python scripts](https://github.com/DHRI-Curriculum/python)
-    or building basic websites with [HTML and CSS](https://github.com/DHRI-Curriculum/html-css).
-    Having a grasp of command line basics will not only make you more familiar with
-    how your computer and basic programming work, but it will also give you access
-    to tools and communities that will expand your research.
+  intro: <p>You've made it through your introduction to the command line! By now,
+    you have experienced some of the power of communicating with your computer using
+    text commands. The basic steps you learned today will help as you'll further your
+    digital skills. For example, you might work with the command line interface to
+    set up your <a href="https://github.com/DHRI-Curriculum/git">version control with
+    git</a> or you'll have your text editor open while <a href="https://github.com/DHRI-Curriculum/python">writing
+    python scripts</a> or building basic websites with <a href="https://github.com/DHRI-Curriculum/html-css">HTML
+    and CSS</a>. Having a grasp of command line basics will not only make you more
+    familiar with how your computer and basic programming work, but it will also give
+    you access to tools and communities that will expand your research.</p>
   next_steps: []
   tutorials:
   - annotation: '[*Data Science at the Command Line*](https://www.datascienceatthecommandline.com/)
@@ -1037,7 +1079,8 @@ praxis:
     url: http://mywiki.wooledge.org/BashGuide
   workshop: command-line
 workshop:
+  name: Introduction to the Command Line
   parent_backend: Github
   parent_branch: v2.0
   parent_repo: DHRI-Curriculum/command-line
-  title: command-line
+  slug: command-line

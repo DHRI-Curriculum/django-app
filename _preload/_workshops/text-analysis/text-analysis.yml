@@ -100,6 +100,19 @@ frontmatter:
   - <p>Transform any document that you have (or have access to) in a .txt format into
     a text that can be analyzed computationally</p>
   - <p>How to tokenize your data and put it in nltk compatible format.</p>
+  prerequisites:
+  - full_text: '[Introduction to Python](https://github.com/DHRI-Curriculum/python)
+      (required)'
+    potential_name: Introduction to Python
+    type: workshop
+  - full_text: '[Introduction to the Command Line](https://github.com/DHRI-Curriculum/command-line)
+      (recommended)'
+    potential_name: Introduction to the Command Line
+    type: workshop
+  - full_text: '[Short introduction to Jupyter Notebooks](https://github.com/DHRI-Curriculum/insights/blob/v2.0/pages/jupyter-notebooks.md)
+      (recommended)'
+    type: external link
+    url: https://github.com/DHRI-Curriculum/insights/blob/v2.0/pages/jupyter-notebooks.md
   projects:
   - annotation: '[Short list of academic Text & Data mining projects](https://libguides.bc.edu/textdatamining/projects)'
     title: Short list of academic Text & Data mining projects
@@ -1361,6 +1374,16 @@ praxis:
   - label: How can we use text analysis in teaching?
     order: 4
     workshop: text-analysis
+  further_projects:
+  - annotation: '[*Our Machine Learning workshop?*](https://github.com/DHRI-Curriculum/machine-learning)'
+    title: '*Our Machine Learning workshop?*'
+    url: https://github.com/DHRI-Curriculum/machine-learning
+  - annotation: '[Exercises to practice working with strings](https://www.w3resource.com/python-exercises/string/)'
+    title: Exercises to practice working with strings
+    url: https://www.w3resource.com/python-exercises/string
+  - annotation: '[Work on your Regular Expressions skills](https://regexone.com/)'
+    title: Work on your Regular Expressions skills
+    url: https://regexone.com
   further_readings:
   - annotation: '[A bit more advanced Jupyter Notebook tips and tricks](https://www.dataquest.io/blog/jupyter-notebook-tips-tricks-shortcuts/)'
     title: A bit more advanced Jupyter Notebook tips and tricks
@@ -1368,7 +1391,7 @@ praxis:
   - annotation: '[The NLTK documentation](https://www.nltk.org/)'
     title: The NLTK documentation
     url: https://www.nltk.org
-  intro: 'Congratulations! You are done with the Text Analysis workshop!
+  intro: '<p>Congratulations! You are done with the Text Analysis workshop!
 
     As you may expect, this course was only the beginning of your jorney. NLTK is
     a vast and ever expanding world. The possibilies are numerous, with exciting new
@@ -1380,7 +1403,7 @@ praxis:
     It is also useful to come back to this workshop with fresh eyes after a while.
     It will help you solidify some of the knowledge and make some things more clear.
 
-    Have a happy journey!'
+    Have a happy journey!</p>'
   next_steps: []
   tutorials:
   - annotation: '[Sentiment Analysis for Exploratory Data Analysis](https://programminghistorian.org/en/lessons/sentiment-analysis)'
@@ -1394,7 +1417,8 @@ praxis:
     url: https://programminghistorian.org/en/lessons/introduction-to-stylometry-with-python
   workshop: text-analysis
 workshop:
+  name: Text Analysis with Python and NLTK
   parent_backend: Github
   parent_branch: v2.0
   parent_repo: DHRI-Curriculum/text-analysis
-  title: text-analysis
+  slug: text-analysis

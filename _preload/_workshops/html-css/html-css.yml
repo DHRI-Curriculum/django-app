@@ -105,6 +105,20 @@ frontmatter:
   - <p>Familiarize yourself with the anatomy of a webpage and how the Internet works.</p>
   - <p>Understand the basics of the HTML and CSS markup languages.</p>
   - <p>Use HTML, CSS, and a text editor to build a small locally-hosted website.</p>
+  prerequisites:
+  - full_text: '[Introduction to Command Line](https://www.github.com/DHRI-Curriculum/command-line)
+      (required) This workshop makes reference to concepts from the Command Line workshop,
+      in particular, in creating new folders and files, as well as moving around in
+      file directories. Completing the Command Line workshop will make you more comfortable
+      with working with HTML/CSS.'
+    potential_name: Introduction to Command Line
+    type: workshop
+  - full_text: '[Visual Studio Code](https://github.com/DHRI-Curriculum/install/blob/v2.0/guides/visual-studio-code.md)
+      (recommended) You can use any plain text editor but for our purposes, Visual
+      Studio Code ("VS Code") will be used.'
+    potential_slug_fragment: visual-studio-code
+    potential_software: Visual Studio Code
+    type: install
   projects:
   - annotation: '[Digital Humanities Research Institute](https://www.dhinstitutes.org/):
       Our very own Digital Humanities Research Institute uses HTML, CSS, and other
@@ -1546,8 +1560,9 @@ praxis:
       and menus) stand out to you as being particularly important in making good websites?
     order: 2
     workshop: html-css
+  further_projects: []
   further_readings: []
-  intro: 'This workshop has provided an introduction to HTML and CSS. Through its
+  intro: '<p>This workshop has provided an introduction to HTML and CSS. Through its
     discussion of tags, elements, and attributes, we have tried to cover the basic
     ways in which web pages are initially constructed in plaintext and then rendered
     on browsers. As we concieve of digital humanities projects, however, our visions
@@ -1569,11 +1584,12 @@ praxis:
     contain a variety of features. CMS platforms often provide a variety of tools
     that users can simply click, drag, and input content to create websites. No coding
     required! Popular content management systems in the digital humanities include
-    [Omeka](https://www.omeka.net/), [Scalar](https://scalar.me/anvc/scalar/), [Libguides](https://www.springshare.com/libguides/),
-    and [Wordpress](https://wordpress.org/). These CMS have robust documentation and
-    an active user community, both of which can help solve issues in website development.
-    The suggested readings and tutorials provided below link to more information on
-    selecting and using a CMS.'
+    <a href="https://www.omeka.net/" rel="nofollow">Omeka</a>, <a href="https://scalar.me/anvc/scalar/"
+    rel="nofollow">Scalar</a>, <a href="https://www.springshare.com/libguides/" rel="nofollow">Libguides</a>,
+    and <a href="https://wordpress.org/" rel="nofollow">Wordpress</a>. These CMS have
+    robust documentation and an active user community, both of which can help solve
+    issues in website development. The suggested readings and tutorials provided below
+    link to more information on selecting and using a CMS.</p>'
   next_steps: []
   tutorials:
   - annotation: '[W3School HTML Tutorial](https://www.w3schools.com/html/default.asp)
@@ -1614,7 +1630,8 @@ praxis:
     url: https://pages.github.com
   workshop: html-css
 workshop:
+  name: Introduction to HTML and CSS
   parent_backend: Github
   parent_branch: v2.0
   parent_repo: DHRI-Curriculum/html-css
-  title: html-css
+  slug: html-css

@@ -88,6 +88,18 @@ frontmatter:
     research language features.</p>
   - <p>Learn how to find and import code from external sources to solve more complex
     problems.</p>
+  prerequisites:
+  - full_text: '[Introduction to the Command Line](https://www.github.com/DHRI-Curriculum/command-line)
+      (required)'
+    potential_name: Introduction to the Command Line
+    type: workshop
+  - full_text: '[Installing Anaconda](https://github.com/DHRI-Curriculum/install/blob/v2.0/guides/python.md)
+      (recommended) You can use any installation of Python (but make sure it is of
+      version 3) but for our purposes, Anaconda will provide everything necessary
+      for all the workshops that are part of the DHRI curriculum.'
+    potential_slug_fragment: python
+    potential_software: Installing Anaconda
+    type: install
   projects:
   - annotation: Built by former Digital Fellow Patrick Smyth, [The NEH Impact Index](http://www.nehimpact.org/about)
       makes visible the distribution of funds by National Endowment for the Humanities
@@ -1975,6 +1987,31 @@ praxis:
       they used for?
     order: 5
     workshop: python
+  further_projects:
+  - annotation: '[Automate the Boring Stuff](https://automatetheboringstuff.com/)
+      contains many little projects for strengthening beginner and intermediate python
+      skills. You might [play around with *regular expressions*](https://automatetheboringstuff.com/2e/chapter7/)
+      (or *regex*), which is a method for locating and manipulating certain patterns
+      of text (think of it like a high powered `ctrl-F`). Once you feel more comfortable
+      with regex, you might write a program that [organizes or renames the files on
+      your computer](https://automatetheboringstuff.com/2e/chapter10/). Just be sure
+      to practice with a sample folder & files before moving on to your own documents!'
+    title: Automate the Boring Stuff
+    url: https://automatetheboringstuff.com
+  - annotation: "Interested in web scraping (aka grabbing information from the web)?\n\
+      \  The python library\n  [`requests`](https://requests.readthedocs.io/en/master/)\
+      \ handles\n  requests over the internet. See this handy step-by-step [tutorial\
+      \ on\n  Real Python](https://realpython.com/python-requests/). "
+    title: '`requests`'
+    url: https://requests.readthedocs.io/en/master
+  - annotation: "*Advanced Challenge*: This is more complicated stuff, but if you're\n\
+      \  interested in working with CSV data and visualization techniques,\n  you\
+      \ might check out Python libraries for data analysis, like Bokeh\n  and Pandas.\
+      \ See Programming Historian's [Visualizing Data with Bokeh\n  and\n  Pandas](https://programminghistorian.org/en/lessons/visualizing-with-bokeh)\n\
+      \  for a tutorial. To learn more about Pandas from the ground up, check\n  out\n\
+      \  [Learn Data Science's useful introduction](https://www.learndatasci.com/tutorials/python-pandas-tutorial-complete-introduction-for-beginners/)."
+    title: Learn Data Science's useful introduction
+    url: https://www.learndatasci.com/tutorials/python-pandas-tutorial-complete-introduction-for-beginners
   further_readings:
   - annotation: Hannah Aizenman, a former Digital Fellow, wrote up a great blog post
       introducing python "libraries," or collections of python code, for various project
@@ -1983,20 +2020,21 @@ praxis:
       suggestions in [How Do I Solve [insert problem here] With Python?](https://digitalfellows.commons.gc.cuny.edu/2018/02/13/python_libraries/)
     title: How Do I Solve [insert problem here] With Python?
     url: https://digitalfellows.commons.gc.cuny.edu/2018/02/13/python_libraries
-  intro: 'Congratulations on completing the Intro to Python workshop! So far, you''ve
+  intro: '<p>Congratulations on completing the Intro to Python workshop! So far, you''ve
     learned quite a bit about variables, functions, loops, modules, and other foundational
     concepts to further your Python journey. For next steps, consider our
 
-    suggested introductoin to [Python libraries](https://digitalfellows.commons.gc.cuny.edu/2018/02/13/python_libraries/),
-    or trying some of the tutorials or projects listed below. Maybe you want to learn
-    how to
+    suggested introductoin to <a href="https://digitalfellows.commons.gc.cuny.edu/2018/02/13/python_libraries/"
+    rel="nofollow">Python libraries</a>, or trying some of the tutorials or projects
+    listed below. Maybe you want to learn how to
 
-    clean text with [Regex](https://automatetheboringstuff.com/2e/chapter7/), or want
-    to dig into web scraping with the Python library [`requests`](https://requests.readthedocs.io/en/master/)
-    . Or, if you are interested in strengthening your foundational skills, read one
-    of the most suggested (and free!) beginner Python book,  [How to Think Like a
-    Computer Scientist - Python Edition](https://runestone.academy/runestone/books/published/thinkcspy/index.html).
-    See a full list of our suggestions below.'
+    clean text with <a href="https://automatetheboringstuff.com/2e/chapter7/" rel="nofollow">Regex</a>,
+    or want to dig into web scraping with the Python library <a href="https://requests.readthedocs.io/en/master/"
+    rel="nofollow"><code>requests</code></a> . Or, if you are interested in strengthening
+    your foundational skills, read one of the most suggested (and free!) beginner
+    Python book,&nbsp;&nbsp;<a href="https://runestone.academy/runestone/books/published/thinkcspy/index.html"
+    rel="nofollow">How to Think Like a Computer Scientist - Python Edition</a>. See
+    a full list of our suggestions below.</p>'
   next_steps: []
   tutorials:
   - annotation: 'If you feel like you''re ready for more tutorials, you should check
@@ -2028,7 +2066,8 @@ praxis:
     url: https://learnpythonthehardway.org/book
   workshop: python
 workshop:
+  name: Introduction to Python
   parent_backend: Github
   parent_branch: v2.0
   parent_repo: DHRI-Curriculum/python
-  title: python
+  slug: python
