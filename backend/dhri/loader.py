@@ -68,7 +68,7 @@ def _is_expired(path, age_checker=TEST_AGES['ROOT'], force_download=FORCE_DOWNLO
         log.warning(f'Cache has expired for {path} - older than {age_checker}...')
         return True
 
-    log.log(f'Cache is OK for {path} - not older than {age_checker}....')
+    # log.log(f'Cache is OK for {path} - not older than {age_checker}....') #TODO: turn back
     return False
 
 
@@ -380,13 +380,13 @@ class Loader():
         self.resources = self.frontmatter.get('resources')
 
         # Mapping praxis sections
-        self.praxis_intro = PARSER.convert(self.praxis.get('intro')).strip()
+        self.praxis_intro = PARSER.convert(self.praxis.get('intro'))
         self.discussion_questions = self.praxis.get('discussion_questions')
         self.next_steps = self.praxis.get('next_steps')
         self.tutorials = self.praxis.get('tutorials')
         self.further_readings = self.praxis.get('further_readings')
         self.further_projects = self.praxis.get('further_projects')
-
+        self.more_resources = self.praxis.get('more_resources')
 
 class ContributorParser():
 
@@ -572,11 +572,15 @@ class LessonParser():
         for title, body in markdown_contents.items():
             droplines = []
 
-            challenge = ""
+            challenge, challenge_title = "", ""
             # 1. Test markdown for challenge
             if "## challenge" in body.lower() or "## activity" in body.lower():
                 for line_num, line in enumerate(body.splitlines()):
                     if line.lower().startswith("## challenge") or line.lower().startswith("## activity"):
+                        try:
+                            challenge_title = [x.strip() for x in line.split(':') if not x.startswith('#')][0]
+                        except IndexError:
+                            challenge_title = ''
                         droplines.append(line_num)
                         startline = line_num + 1
                         nextlines = (item for item in body.splitlines()[startline:])
@@ -593,11 +597,15 @@ class LessonParser():
                             except StopIteration:
                                 done = True
 
-            solution = ""
+            solution, solution_title = "", ""
             # 2. Test markdown for solution
             if "## solution" in body.lower():
                 for line_num, line in enumerate(body.splitlines()):
                     if line.lower().startswith("## solution"):
+                        try:
+                            solution_title = [x.strip() for x in line.split(':') if not x.startswith('#')][0]
+                        except IndexError:
+                            solution_title = ''
                         droplines.append(line_num)
                         startline = line_num + 1
                         nextlines = (item for item in body.splitlines()[startline:])
@@ -691,7 +699,9 @@ class LessonParser():
                     'title': title,
                     'text': cleaned_body,
                     'challenge': challenge,
+                    'challenge_title': challenge_title,
                     'solution': solution,
+                    'solution_title': solution_title,
                     'evaluation': evaluation,
                     'keywords': keywords,
                 }
@@ -889,7 +899,9 @@ class LessonParser():
                     'title': title,
                     'text': html_body,
                     'challenge': html_challenge,
+                    'challenge_title': challenge_title,
                     'solution': html_solution,
+                    'solution_title': solution_title,
                     'evaluation': evaluation,
                     'keywords': keywords,
                 }

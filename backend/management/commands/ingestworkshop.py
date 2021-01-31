@@ -1,4 +1,6 @@
-from library.models import Project, Reading, Tutorial
+from glossary.models import Term
+from lesson.models import Challenge, Evaluation, Solution
+from library.models import Project, Reading, Resource, Tutorial
 from workshop.models import Collaboration, Contributor, DiscussionQuestion, EthicalConsideration, LearningObjective, NextStep
 from django.core.management import BaseCommand
 from django.conf import settings
@@ -15,6 +17,7 @@ import os
 log = Logger(name=get_name(__file__))
 input = Input(name=get_name(__file__))
 WORKSHOPS_DIR = settings.BASE_DIR + '/_preload/_workshops'
+GLOSSARY_FILE = settings.BASE_DIR + '/_preload/_meta/glossary/glossary.yml'
 
 
 def get_all_existing_workshops(specific_names=None):
@@ -208,6 +211,57 @@ class Command(BaseCommand):
                 praxis.tutorials.add(tutorial)
                 praxis.save()
 
-            # TODO: add more_resources
+            for resourcedata in praxisdata.get('more_resources'):
+                resource, created = Resource.objects.get_or_create(title=resourcedata.get('title'), url=resourcedata.get('url'), annotation=resourcedata.get('annotation'))
+
+                praxis.more_resources.add(resource)
+                praxis.save()
+
+            # 4. ENTER LESSONS
             
-        # TODO: Lessons.........
+            for lessoninfo in lessondata:
+                lesson, created = Lesson.objects.get_or_create(workshop=workshop, title=lessoninfo.get('title'))
+
+                if not created and not options.get('forceupdate'):
+                    choice = input.ask(
+                        f'Lesson `{lesson.title}` already exists. Update with new content? [y/N]')
+                    if choice.lower() != 'y':
+                        continue
+                
+                Lesson.objects.filter(workshop=workshop, title=lessoninfo.get('title')).update(
+                    order = lessoninfo.get('order'),
+                    text = lessoninfo.get('text'),
+                )
+
+                lesson.refresh_from_db()
+
+                if not lessoninfo.get('challenge') and lessoninfo.get('solution'):
+                    log.error(f'The workshop {workshop}\'s lesson `{lesson.title}` has a solution but no challenge. Correct the files on GitHub and rerun the buildworkshop command and then re-attempt the ingestworkshop command. Alternatively, you can change the datafile content manually.')
+
+                if lessoninfo.get('challenge'):
+                    challenge, created = Challenge.objects.get_or_create(lesson=lesson, title=lessoninfo.get('challenge_title'), text=convert_html_quotes(lessoninfo.get('challenge')))
+
+                    if lessoninfo.get('solution'):
+                        solution, created = Solution.objects.get_or_create(challenge=challenge, title=lessoninfo.get('solution_title'), text=convert_html_quotes(lessoninfo.get('solution')))
+                
+                for questioninfo in lessoninfo.get('questions'):
+                    evaluation, created = Evaluation.objects.get_or_create(lesson=lesson)
+                    question, created = Question.objects.get_or_create(evaluation=evaluation, label=convert_html_quotes(questioninfo.get('question')))
+                    for answerinfo in questioninfo.get('answers', {}).get('correct'):
+                        answer, created = Answer.objects.get_or_create(question=question, label=convert_html_quotes(answerinfo), defaults={'is_correct': True})
+                        answer.is_correct = True
+                        answer.save()
+                    for answerinfo in questioninfo.get('answers', {}).get('incorrect'):
+                        answer, created = Answer.objects.get_or_create(question=question, label=convert_html_quotes(answerinfo), defaults={'is_correct': False})
+                        answer.is_correct = False
+                        answer.save()
+
+                for keyword in lessoninfo.get('keywords'):
+                    finder = Term.objects.filter(term=keyword)
+                    if finder.count() == 1:
+                        lesson.terms.add(finder[0])
+                        lesson.save()
+                    elif finder.count() == 0:
+                        log.warning(f'The keyword `{keyword}` used in workshop {workshop.title}\'s lesson {lesson.title} cannot be found in the glossary. Are you sure it is in the glossary and synchronized with the database? Make sure the data file for glossary is available ({GLOSSARY_FILE}) and that the term is defined in the file. Then run python manage.py ingestglossary.')
+                    else:
+                        log.error(f'Multiple definitions of `{keyword}` exists in the database. Try resetting the glossary and rerun python manage.py ingestglossary before you run the ingestworkshop command again.')

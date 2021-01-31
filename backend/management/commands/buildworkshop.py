@@ -202,6 +202,14 @@ class Command(BaseCommand):
                     'title': p_title,
                     'url': url
                 })
+            
+            for annotation in l.more_resources:
+                p_title, url = process_links(annotation, 'project')
+                data['praxis']['more_resources'].append({
+                    'annotation': annotation,
+                    'title': p_title,
+                    'url': url
+                })
 
             for order, label in enumerate(l.discussion_questions, start=1):
                 data['praxis']['discussion_questions'].append({
@@ -231,7 +239,9 @@ class Command(BaseCommand):
                     'text': '\n'.join([x for x in lesson_data.get('text', '').strip().splitlines() if x]),
                     'order': order,
                     'challenge': '',
+                    'challenge_title': lesson_data.get('challenge_title', ''),
                     'solution': '',
+                    'solution_title': lesson_data.get('solution_title', ''),
                     'questions': [],
                     'keywords': []
                 }
