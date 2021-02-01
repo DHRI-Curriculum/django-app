@@ -2,6 +2,7 @@ from install.models import Software, Instruction, Screenshot, Step
 from django.core.management import BaseCommand
 from django.conf import settings
 from backend.dhri.log import Logger, Input
+from backend.mixins import convert_html_quotes
 from ._shared import test_for_required_files, get_yaml, get_name
 from shutil import copyfile
 import os
@@ -77,6 +78,7 @@ class Command(BaseCommand):
                     f'Installation instructions for `{installdata.get("software")}` (with OS `{installdata.get("operating_system")}`) is missing an image. Add a filepath to an existing file in your datafile ({FULL_PATH}) to be able to run this command.')
 
             for stepdata in installdata.get('instruction', {}).get('steps', []):
+                # TODO: rewrite this below with convert_html_quotes...
                 step = Step.objects.filter(
                     instruction=instruction, order=stepdata.get('order'))
                 if step.count() == 1:
@@ -97,7 +99,7 @@ class Command(BaseCommand):
                     if screenshot.count() == 1:
                         screenshot = screenshot.last()
                     elif screenshot.count() == 0:
-                        print('does not exist')
+                        # print('does not exist')
                         screenshot = Screenshot.objects.create(
                             step=step, order=order)
                         if not screenshot_exists(get_screenshot_path(path, True)):

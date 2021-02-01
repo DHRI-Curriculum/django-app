@@ -2,6 +2,7 @@ from insight.models import Insight, OperatingSystemSpecificSection, Section
 from django.core.management import BaseCommand
 from django.conf import settings
 from backend.dhri.log import Logger, Input
+from backend.mixins import convert_html_quotes
 from ._shared import test_for_required_files, get_yaml, get_name, dhri_slugify
 
 
@@ -34,14 +35,17 @@ class Command(BaseCommand):
         data = get_yaml(f'{FULL_PATH}')
 
         for insightdata in data:
-            insight, created = Insight.objects.get_or_create(
-                slug=dhri_slugify(insightdata.get('title')))
+            insight, created = Insight.objects.get_or_create(title=insightdata.get('title'), defaults={
+                'text': convert_html_quotes(insightdata.get('text'))
+            })
 
             if not created and not options.get('forceupdate'):
                 choice = input.ask(
                     f'Insight `{insightdata.get("title")}` already exists. Update with new content? [y/N]')
                 if choice.lower() != 'y':
                     continue
+
+            Insight.objects.filter(title=insightdata.get('title')).update(text=convert_html_quotes(insightdata.get('text')))
 
             for sectiondata in insightdata.get('sections', []):
                 section, created = Section.objects.get_or_create(insight=insight, title=sectiondata.get(
