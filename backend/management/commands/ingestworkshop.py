@@ -98,7 +98,7 @@ class Command(BaseCommand):
             else:
                 workshop.image.name = get_default_workshop_image()
                 workshop.save_slug()
-                log.warning(f'Workshop {workshopdata.get("name")} does not have an image assigned to them. Add filepaths to an existing file in your datafile ({DATAFILE}) if you want to update the specific workshop.')
+                log.warning(f'Workshop {workshopdata.get("name")} does not have an image assigned to them. Add filepaths to an existing file in your datafile ({DATAFILE}) if you want to update the specific workshop.') # TODO: Move warning to build stage
 
 
             # 2. ENTER FRONTMATTER

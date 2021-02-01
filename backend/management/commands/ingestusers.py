@@ -99,6 +99,6 @@ class Command(BaseCommand):
             else:
                 profile.image.name = get_default_profile_picture()
                 profile.save()
-                log.warning(f'User {userdata.get("username")} does not have an image assigned to them. Add filepaths to an existing file in your datafile ({FULL_PATH}) if you want to update the specific user.')
+                log.warning(f'User {userdata.get("username")} does not have an image assigned to them. Add filepaths to an existing file in your datafile ({FULL_PATH}) if you want to update the specific user.') # TODO: Move warning to build stage
 
         log.log('Added/updated users: ' + ', '.join([x.get('username') for x in data]))

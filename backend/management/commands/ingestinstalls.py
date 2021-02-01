@@ -98,7 +98,7 @@ class Command(BaseCommand):
             else:
                 instruction.image.name = get_default_instruction_image()
                 instruction.save()
-                log.warning(f'Installation instruction for {installdata.get("software")} does not have an image assigned to them. Add filepaths to an existing file in your datafile ({FULL_PATH}) if you want to update the specific instruction image.')
+                log.warning(f'Installation instruction for {installdata.get("software")} does not have an image assigned to them. Add filepaths to an existing file in your datafile ({FULL_PATH}) if you want to update the specific instruction image.') # TODO: Move warning to build stage
 
             for stepdata in installdata.get('instruction', {}).get('steps', []):
                 # TODO: #365 rewrite this below with convert_html_quotes...

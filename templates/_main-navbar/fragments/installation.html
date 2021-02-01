@@ -4,7 +4,7 @@
                 {% if forloop.first %}
                     {% if instruction.image %}
                         <div class="card-img">
-                            <a href="{% url 'install:installation' slug=instruction.slug %}" class="stretched-link"><img src="/{{ instruction.image }}" class="card-img-top" alt="{{ instruction.software.software }}"></a>
+                            <a href="{% url 'install:installation' slug=instruction.slug %}" class="stretched-link"><img src="{{ MEDIA_URL }}{{ instruction.image }}" class="card-img-top" alt="{{ instruction.software.software }}"></a>
                         </div>
                     {% else %}
                     {% endif %}
