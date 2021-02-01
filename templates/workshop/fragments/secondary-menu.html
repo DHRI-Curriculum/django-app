@@ -12,7 +12,7 @@
         <div class="dropdown-menu dropdown-menu-special shadow" aria-labelledby="LessonDropdown" id="LessonDropdownMenu">
             <ul class="navbar-nav mr-auto">
                 {% for lesson in workshop.lessons.all %}
-                    <li><a class="dropdown-item text-white" href="{% url 'workshop:lesson' slug=workshop.slug %}?page={{ lesson.order }}">{{ lesson }}</a></li>
+                    <li><a class="dropdown-item text-white" href="{% url 'workshop:lesson' slug=workshop.slug %}?page={{ lesson.order }}">{{ lesson.order }}. {{ lesson }}</a></li>
                 {% endfor %}
             </ul>
         </div>
