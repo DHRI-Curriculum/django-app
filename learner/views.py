@@ -146,8 +146,8 @@ def favorite(request):
 
 @csrf_protect
 def instructor_request(request):
-    if not request.user.is_authenticated: # TODO: Does not seem to work
-        return HttpResponseForbidden()
+    if not request.user.is_authenticated:
+        return HttpResponseForbidden('You do not have access to this page. If you think you should have access to it, please contact the site administrator.')
 
     request.user.profile.instructor_requested = True
     request.user.profile.save()

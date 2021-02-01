@@ -1,7 +1,7 @@
 # General text tools
 import re
 from django.utils.text import slugify
-from backend.dhri.regex import URL, NUMBERS, MARKDOWN_HREF, COMPLEX_SEARCH_FOR_URLS
+from backend.dhri.regex import NUMBERS, MARKDOWN_HREF, COMPLEX_SEARCH_FOR_URLS
 from backend.dhri_settings import REPLACEMENTS
 
 
@@ -44,4 +44,4 @@ def auto_replace(string: str) -> str:
     return string
 
 
-# TODO: Insert dhri_slugify here
+# TODO: #363 Move to backend.dhri.text

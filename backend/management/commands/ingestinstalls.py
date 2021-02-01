@@ -101,7 +101,7 @@ class Command(BaseCommand):
                 log.warning(f'Installation instruction for {installdata.get("software")} does not have an image assigned to them. Add filepaths to an existing file in your datafile ({FULL_PATH}) if you want to update the specific instruction image.')
 
             for stepdata in installdata.get('instruction', {}).get('steps', []):
-                # TODO: rewrite this below with convert_html_quotes...
+                # TODO: #365 rewrite this below with convert_html_quotes...
                 step = Step.objects.filter(
                     instruction=instruction, order=stepdata.get('order'))
                 if step.count() == 1:

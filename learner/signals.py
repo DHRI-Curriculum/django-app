@@ -7,7 +7,6 @@ from learner.models import Profile
 def post_save_user_signal_handler(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
-        # instance.is_staff = True
         try:
             group = Group.objects.get(name='Learner')
             instance.groups.add(group)

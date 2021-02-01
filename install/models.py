@@ -6,7 +6,7 @@ from backend.mixins import CurlyQuotesMixin
 #from backend.dhri.text import dhri_slugify
 
 
-def dhri_slugify(string: str) -> str: # TODO: Move to backend.dhri.text
+def dhri_slugify(string: str) -> str: # TODO: #363 Move to backend.dhri.text
     import re
     from django.utils.text import slugify
     # first replace any non-OK characters [/] with space

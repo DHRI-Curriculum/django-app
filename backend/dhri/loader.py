@@ -236,7 +236,7 @@ class Loader():
         if not model in praxis_models: praxis_models[model] = []
         praxis_models[model].append(section)
 
-    # TODO: Include _assessment_sections test here?
+    # TODO: #364 Include _assessment_sections test here?
 
 
     def _test_for_required_sections(self):
@@ -1012,7 +1012,7 @@ class GlossaryParser():
             self.explication = PARSER.convert(self.explication)
 
         self._tutorials = list()
-        for i, tutorial in enumerate(self.tutorials):
+        for tutorial in self.tutorials:
             annotation = PARSER.convert(tutorial)
             linked_text, url = extract_links(tutorial)[0] # TODO: Only extracting one link here...
             self._tutorials.append({
@@ -1023,7 +1023,7 @@ class GlossaryParser():
         self.tutorials = self._tutorials
 
         self._readings = list()
-        for i, reading in enumerate(self.readings):
+        for reading in self.readings:
             annotation = PARSER.convert(reading)
             linked_text, url = extract_links(reading)[0] # TODO: Only extracting one link here...
             self._readings.append({

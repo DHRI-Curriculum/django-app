@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class Tutorial(models.Model): #TODO: Add CurlyQuotesMixin + curly field annotation (but it needs to be run through HTML parser first) — and then the ingestworkshop (and anything else referring to the save method on the model) needs updating
+class Tutorial(models.Model): #TODO: #337 Add CurlyQuotesMixin + curly field annotation (but it needs to be run through HTML parser first) — and then the ingestworkshop (and anything else referring to the save method on the model) needs updating
     label = models.TextField(max_length=1000, blank=True, null=True)
     url = models.TextField(max_length=500, blank=True, null=True)
     annotation = models.TextField(max_length=3000, blank=True, null=True)
@@ -11,7 +11,7 @@ class Tutorial(models.Model): #TODO: Add CurlyQuotesMixin + curly field annotati
         return f'{self.label}'
 
 
-class Project(models.Model): #TODO: Add CurlyQuotesMixin + curly field annotation (but it needs to be run through HTML parser first) — and then the ingestworkshop (and anything else referring to the save method on the model) needs updating
+class Project(models.Model): #TODO: #337 Add CurlyQuotesMixin + curly field annotation (but it needs to be run through HTML parser first) — and then the ingestworkshop (and anything else referring to the save method on the model) needs updating
     title = models.TextField(max_length=500, null=True)
     url = models.TextField(max_length=500, null=True, blank=True)
     annotation = models.TextField(max_length=3000, null=True, blank=True)
@@ -21,7 +21,7 @@ class Project(models.Model): #TODO: Add CurlyQuotesMixin + curly field annotatio
         return f'{self.title}'
 
 
-class Resource(models.Model): #TODO: Add CurlyQuotesMixin + curly field annotation (but it needs to be run through HTML parser first) — and then the ingestworkshop (and anything else referring to the save method on the model) needs updating
+class Resource(models.Model): #TODO: #337 Add CurlyQuotesMixin + curly field annotation (but it needs to be run through HTML parser first) — and then the ingestworkshop (and anything else referring to the save method on the model) needs updating
     title = models.TextField(max_length=500)
     url = models.TextField(max_length=500)
     annotation = models.TextField(max_length=3000, null=True, blank=True)
@@ -31,7 +31,7 @@ class Resource(models.Model): #TODO: Add CurlyQuotesMixin + curly field annotati
         return f'{self.title}'
 
 
-class Reading(models.Model): #TODO: Add CurlyQuotesMixin + curly field annotation (but it needs to be run through HTML parser first) — and then the ingestworkshop (and anything else referring to the save method on the model) needs updating
+class Reading(models.Model): #TODO: #337 Add CurlyQuotesMixin + curly field annotation (but it needs to be run through HTML parser first) — and then the ingestworkshop (and anything else referring to the save method on the model) needs updating
     title = models.TextField(max_length=500, null=True)
     url = models.TextField(max_length=500, null=True)
     annotation = models.TextField(max_length=3000, null=True, blank=True)

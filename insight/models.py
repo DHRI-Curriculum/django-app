@@ -5,7 +5,7 @@ from backend.mixins import CurlyQuotesMixin
 #from backend.dhri.text import dhri_slugify
 
 
-def dhri_slugify(string: str) -> str: # TODO: Move to backend.dhri.text
+def dhri_slugify(string: str) -> str: # TODO: #363 Move to backend.dhri.text
     import re
     from django.utils.text import slugify
     # first replace any non-OK characters [/] with space
@@ -34,7 +34,7 @@ class Insight(CurlyQuotesMixin, models.Model):
     slug = models.CharField(max_length=200, blank=True, unique=True)
     software = models.ManyToManyField(Software)
     text = models.TextField(blank=True, null=True)
-    # TODO: Add image field
+    # TODO: #368 Add image field
 
     def save(self, *args, **kwargs):
         self.slug = dhri_slugify(self.title)

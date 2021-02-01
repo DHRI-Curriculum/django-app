@@ -26,8 +26,8 @@ class FrontmatterView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        self.request.session.set_expiry(0)  # expires at browser close
-        context['has_visited'] = self.has_visited()  # TODO #273: View count is not working
+        self.request.session.set_expiry(0)
+        context['has_visited'] = self.has_visited()
         context['user_favorited'] = self.has_favorited()
         context['num_terms'], context['all_terms'] = self.get_all_terms()
         context['frontmatter'] = self.get_object().frontmatter
@@ -132,7 +132,6 @@ class LessonView(DetailView):
         self.percentage = round(
             self.page_number / self.paginator.num_pages * 100)
 
-        # TODO: Check if logged in, and if so, set the Progress for the Profile + Workshop to page_number
         if self.request.user.is_authenticated:
             if self.request.user.profile:
                 if Progress.objects.filter(profile=self.request.user.profile, workshop=workshop).exists():

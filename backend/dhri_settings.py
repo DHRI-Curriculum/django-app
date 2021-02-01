@@ -54,21 +54,6 @@ AUTO_GROUPS = {
 }
 
 
-AUTO_PAGES = [
-    {
-        'name': 'Workshops',
-        'slug': 'workshops',
-        'text': '<p class="lead">This is the workshop page.</p>',
-        'template': 'workshop/workshop-list.html',
-    },
-    {
-        'name': 'Library',
-        'slug': 'library',
-        'text': '<p class="lead">This is the library page.</p>',
-        'template': 'library/index.html',
-    },
-]
-
 ##### Standard settings ##############################
 
 # Where user info is stored:
@@ -93,9 +78,9 @@ REPLACEMENTS = {
 
 ##### Cache ##############################
 
+# .loader-cache/parser/ # TODO: #362 Fix documentation: it's good to keep all of the below in a unique directory on the hard drive and not inside the django-app repo...
 CACHE_DIRS = {
     'ROOT': '/tmp/.loader-cache/',
-    # .loader-cache/parser/ # TODO: For documentation - it's good to keep this in a unique directory on the hard drive...
     'PARSER': '/tmp/.gh-api-cache/',
     'WEB': '/tmp/.loader-cache/web/',
     'ZOTERO': '/tmp/.loader-cache/zotero/'

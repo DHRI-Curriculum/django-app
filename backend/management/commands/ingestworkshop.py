@@ -134,10 +134,10 @@ class Command(BaseCommand):
                 frontmatter.save()
 
             for prereqdata in frontmatterdata.get('prerequisites'):
-                pass # print(prereqdata) # TODO: need database models? or do they exist?
+                pass # print(prereqdata) # TODO: #366 the database model that exists only links frontmatter to workshops, but we need more flexibility here with text, and a _potential_ link to workshop instead.
             
             for resourcedata in frontmatterdata.get('resources', []):
-                pass # print(resourcedata) # TODO: need database models? or do they exist?
+                pass # print(resourcedata) # TODO: #367 The Frontmatter object needs a new many-to-many relationship to resources. Create it and include in the ingestion here.
 
             for contributordata in frontmatterdata.get('contributors'):
                 profile = Profile.objects.filter(user__first_name=contributordata.get('first_name'), user__last_name=contributordata.get('last_name'))

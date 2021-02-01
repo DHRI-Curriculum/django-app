@@ -2,16 +2,11 @@ from website.models import Snippet
 from django.core.management import BaseCommand
 from django.conf import settings
 from backend.dhri.log import Logger, Input
-from ._shared import test_for_required_files, get_yaml, get_name
+from backend.dhri_settings import AUTO_SNIPPETS
+from ._shared import get_name
 
 
-SAVE_DIR = f'{settings.BASE_DIR}/_preload'
-FULL_PATH = f'{SAVE_DIR}/snippets.yml' # TODO: change to SNIPPET_SETUP
-REQUIRED_PATHS = [
-    (SAVE_DIR, f'The required directory ({SAVE_DIR}) does not exist. This directory can be created manually if need be.'),
-    (FULL_PATH, f'The required data file ({FULL_PATH}) does not exist. This file needs to be created manually. See the instrcuctions for its structure.')
-]
-
+# TODO #362: Note that there is no buildsnippets since it comes in straight from a YAML file defined in dhri_settings
 
 class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
@@ -28,8 +23,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         log = Logger(name=get_name(__file__), force_verbose=options.get('verbose'), force_silent=options.get('silent'))
         input = Input(name=get_name(__file__))
-        test_for_required_files(REQUIRED_PATHS=REQUIRED_PATHS, log=log)
-        data = get_yaml(f'{FULL_PATH}')
+        data = AUTO_SNIPPETS
 
         for identifier, snippetdata in data.items():
             snippet, created = Snippet.objects.get_or_create(identifier=identifier)

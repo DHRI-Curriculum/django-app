@@ -1,5 +1,7 @@
 **Note that a lot of this has changed in recent updates, and the following information is severely outdated.**
 
+# TODO: #362 Fix documentation
+
 ---
 
 # Changing Settings
@@ -46,7 +48,7 @@ FORCE_DOWNLOAD = False
 
 ### DEBUG
 
-~~A boolean that, if set to `True`, will ensure the database is erased and reset for each run.~~ **This setting is not in use as of alpha-3.** #TODO: Ensure
+~~A boolean that, if set to `True`, will ensure the database is erased and reset for each run.~~ **This setting is not in use as of alpha-3.**
 
 ```py
 DEBUG = True
@@ -62,7 +64,7 @@ VERBOSE = False
 
 ### AUTO_RESET
 
-~~A boolean that, if set to `True`, will ensure all the DHRI curriculum database elements reset automatically before script runs (not recommended in production).~~ **This setting is not in use as of alpha-3.** #TODO: Ensure
+~~A boolean that, if set to `True`, will ensure all the DHRI curriculum database elements reset automatically before script runs (not recommended in production).~~ **This setting is not in use as of alpha-3.**
 
 ```py
 AUTO_RESET = True
@@ -86,32 +88,6 @@ A list of tuples containing the repository name in the first position and the br
 ]
 ```
 
-### AUTO_PAGES
-
-A list of dictionaries that define the details of pages to automatically create using `python manage.py loadpages` #TODO: Set this up. The `Workshops` and `Library` pages are necessary for the website's basic functionality.
-
-```py
-AUTO_PAGES = [
-    {
-        'name': 'Workshops',
-        'slug': 'workshops',
-        'text': '<p class="lead">This is the workshop page.</p>',
-        'template': 'workshop/workshop-list.html',
-    },
-    {
-        'name': 'About',
-        'slug': 'about',
-        'text': '<p class="lead">This is the about page.</p>',
-        'template': 'website/page.html',
-    },
-    {
-        'name': 'Library',
-        'slug': 'library',
-        'text': '<p class="lead">This is the library page.</p>',
-        'template': 'library/all-library-items.html',
-    },
-]
-```
 
 ### AUTO_GROUPS
 
@@ -245,7 +221,7 @@ AUTO_USERS = {
 
 ### BACKEND_AUTO, REPO_AUTO, BRANCH_AUTO
 
-**These settings are not in use as of alpha-3.** #TODO: Ensure
+**These settings are not in use as of alpha-3.**
 
 ```py
 BACKEND_AUTO = 'Github'
@@ -264,7 +240,7 @@ AUTO_TERMINAL_WIDTH = 70
 
 ### ZOTERO_API_KEY
 
-**These settings are not yet in use for alpha-3.** #TODO: Ensure
+**These settings are not yet in use for alpha-3.**
 
 ```py
 try:
@@ -317,7 +293,7 @@ NORMALIZING_SECTIONS = {
 
 ### REQUIRED_SECTIONS
 
-~~A dictionary of the required sections for each category in the DHRI Curriculum files~~ **This setting is not in use as of alpha-3.** #TODO: Ensure
+~~A dictionary of the required sections for each category in the DHRI Curriculum files~~ **This setting is not in use as of alpha-3.**
 
 ### LESSON_TRANSPOSITIONS
 

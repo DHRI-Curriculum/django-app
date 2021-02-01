@@ -41,7 +41,6 @@ class WebCache():
         if not path.parent.exists(): path.parent.mkdir(parents=True)
 
     def __init__(self, url:str, force_download=FORCE_DOWNLOAD):
-
         self.url = url
         self.valid_url = self._valid_url()
         self.data = dict()
@@ -87,7 +86,6 @@ class WebCache():
         return url
 
     def download(self):
-
         if self.url != None and str(self.url).lower().strip() == 'none' and str(self.url).lower().strip() == '':
             return('')
         else:
@@ -114,8 +112,9 @@ class WebCache():
             except ProxyError as e:
                 log.warning(f'Could not access {self.url} because of a proxy error: {e}')
                 return('')
-            except Exception as e: # TODO: Be more explicit here?
+            except Exception as e:
                 log.warning(f'Could not access {self.url} because of a fatal error: {e}')
+                return('')
 
     def load(self):
         return json.loads(self.path.read_text())
