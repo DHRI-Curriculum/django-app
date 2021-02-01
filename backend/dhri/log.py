@@ -3,7 +3,6 @@ from colorama import Fore, Back, Style
 
 import textwrap
 import re
-import os
 
 from backend.dhri_settings import VERBOSE, TERMINAL_WIDTH, saved_prefix
 

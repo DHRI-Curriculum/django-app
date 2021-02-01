@@ -1,11 +1,9 @@
+from website.models import Snippet
 from django.core.management import BaseCommand
 from django.conf import settings
 from backend.dhri.log import Logger, Input
-from .imports import Snippet
 from ._shared import test_for_required_files, get_yaml, get_name
 
-import yaml
-import pathlib
 
 log = Logger(name=get_name(__file__))
 input = Input(name=get_name(__file__))

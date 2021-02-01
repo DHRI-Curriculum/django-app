@@ -1,8 +1,9 @@
+from django.contrib.auth.models import User
+from learner.models import Profile
 from django.core.management import BaseCommand
 from django.core.files import File
 from django.conf import settings
 from backend.dhri.log import Logger, Input
-from .imports import User, Group, Profile
 from ._shared import test_for_required_files, get_yaml, get_name
 
 import yaml

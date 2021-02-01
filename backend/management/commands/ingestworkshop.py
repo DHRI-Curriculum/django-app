@@ -1,17 +1,14 @@
 from glossary.models import Term
-from lesson.models import Challenge, Evaluation, Solution
+from learner.models import Profile
+from lesson.models import Challenge, Evaluation, Solution, Lesson, Question, Answer
 from library.models import Project, Reading, Resource, Tutorial
-from workshop.models import Collaboration, Contributor, DiscussionQuestion, EthicalConsideration, LearningObjective, NextStep
+from workshop.models import Collaboration, Contributor, DiscussionQuestion, EthicalConsideration, LearningObjective, NextStep, Workshop, Frontmatter, Praxis
 from django.core.management import BaseCommand
 from django.conf import settings
-from django.db.utils import IntegrityError
 from backend.dhri.log import Logger, Input
 from backend.mixins import convert_html_quotes
-from .imports import Workshop, Frontmatter, Profile, Praxis, Lesson, Question, Answer
-from ._shared import test_for_required_files, get_yaml, get_name, dhri_slugify
+from ._shared import get_yaml, get_name
 
-import yaml
-import pathlib
 import os
 
 log = Logger(name=get_name(__file__))

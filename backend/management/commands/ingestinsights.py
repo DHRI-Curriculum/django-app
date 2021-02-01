@@ -1,14 +1,9 @@
+from insight.models import Insight, OperatingSystemSpecificSection, Section
 from django.core.management import BaseCommand
 from django.conf import settings
 from backend.dhri.log import Logger, Input
-from .imports import Insight, Section, OperatingSystemSpecificSection
 from ._shared import test_for_required_files, get_yaml, get_name, dhri_slugify
 
-from shutil import copyfile
-
-import yaml
-import pathlib
-import os
 
 log = Logger(name=get_name(__file__))
 input = Input(name=get_name(__file__))

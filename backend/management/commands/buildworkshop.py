@@ -1,8 +1,8 @@
 from django.core.management import BaseCommand
 from django.conf import settings
 from backend.dhri.log import Logger
-from .imports import *
 from backend import dhri_settings
+from backend.dhri.loader import Loader, process_links
 import yaml
 import pathlib
 

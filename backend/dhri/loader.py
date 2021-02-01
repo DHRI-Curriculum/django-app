@@ -82,7 +82,7 @@ def process_links(input, obj):
     if len(links) > 1:
         link_list = '\n    - ' + "\n    - ".join([x[1][:50] for x in links[1:]])
         log.warning(f'One project seems to contain more than one URL, but only one ({url[:50]}) is captured:')
-        print(link_list)
+        # print(link_list)
     if title == None or title == '':
         from backend.dhri.webcache import WebCache
         title = WebCache(url).title
