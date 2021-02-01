@@ -21,6 +21,14 @@ def quote_converter(string):
     return string
 
 
+def convert_html_quotes(html):
+    soup = BeautifulSoup(html, 'lxml')
+    for text_node in soup.find_all(string=True):
+        text_node.replaceWith(quote_converter(text_node))
+    html = "".join([str(x) for x in soup.body.children])
+    return html
+
+
 class CurlyQuotesMixin:
     curly_fields = []
 
@@ -30,10 +38,7 @@ class CurlyQuotesMixin:
             if html == None or html == '' or html == 'NULL':
                 continue
             # print(field, '-->', html)
-            soup = BeautifulSoup(html, 'lxml')
-            for text_node in soup.find_all(string=True):
-                text_node.replaceWith(quote_converter(text_node))
-            html = "".join([str(x) for x in soup.body.children])
+            html = convert_html_quotes(html)
             setattr(self, field, html)
 
         super().save(*args, **kwargs)

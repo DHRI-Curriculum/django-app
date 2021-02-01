@@ -1,11 +1,9 @@
 from django.core.management import BaseCommand
 from django.conf import settings
-
 from backend.dhri.log import Logger
 from backend.dhri.install_parser import InstallLoader
-
+from ._shared import get_name
 from shutil import copyfile
-
 import re
 import pathlib
 import yaml
@@ -23,7 +21,6 @@ def _get_order(step):
     return(order, step)
 
 
-log = Logger(name='build-installs')
 SAVE_DIR = f'{settings.BASE_DIR}/_preload/_install'
 DATA_FILE = 'install.yml'
 
@@ -34,11 +31,20 @@ class Command(BaseCommand):
 
     help = 'Build YAML files from install repository'
 
+    def add_arguments(self, parser):
+        parser.add_argument('--silent', action='store_true')
+        parser.add_argument('--verbose', action='store_true')
+        parser.add_argument('--force_download', action='store_true')
+
     def handle(self, *args, **options):
+        log = Logger(name=get_name(__file__), force_verbose=options.get('verbose'), force_silent=options.get('silent'))
+
+        log.log('Building installation instruction files...')
+
         if not pathlib.Path(SAVE_DIR).exists():
             pathlib.Path(SAVE_DIR).mkdir(parents=True)
 
-        loader = InstallLoader()
+        loader = InstallLoader(force_download=options.get('force_download'))
         installs = list()
 
         for software in loader.all_software:
@@ -75,3 +81,5 @@ class Command(BaseCommand):
         # Save all data
         with open(f'{SAVE_DIR}/{DATA_FILE}', 'w+') as file:
             file.write(yaml.dump(installs))
+
+        log.log(f'Saved installs datafile: {SAVE_DIR}/{DATA_FILE}.')

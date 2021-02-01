@@ -1,14 +1,10 @@
+from django.contrib.auth.models import Group, Permission
 from django.core.management import BaseCommand
 from django.conf import settings
 from backend.dhri.log import Logger, Input
-from .imports import Group, Permission
 from ._shared import test_for_required_files, get_yaml, get_name
 
-import yaml
-import pathlib
 
-log = Logger(name=get_name(__file__))
-input = Input(name=get_name(__file__))
 SAVE_DIR = f'{settings.BASE_DIR}/_preload/_meta/users'
 FULL_PATH = f'{SAVE_DIR}/groups.yml'
 REQUIRED_PATHS = [
@@ -26,8 +22,12 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('--forceupdate', action='store_true')
+        parser.add_argument('--silent', action='store_true')
+        parser.add_argument('--verbose', action='store_true')
 
     def handle(self, *args, **options):
+        log = Logger(name=get_name(__file__), force_verbose=options.get('verbose'), force_silent=options.get('silent'))
+        input = Input(name=get_name(__file__))
         test_for_required_files(REQUIRED_PATHS=REQUIRED_PATHS, log=log)
         data = get_yaml(f'{FULL_PATH}')
 

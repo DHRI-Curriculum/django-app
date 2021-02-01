@@ -115,7 +115,7 @@ class GitHubParser():
 
     def convert(self, string):
         c = GitHubParserCache(string=string)
-        return(c.data.get('markdown', ''))
+        return(c.data.get('markdown', '').strip())
 
 
 PARSER = GitHubParser()

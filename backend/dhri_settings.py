@@ -94,11 +94,11 @@ REPLACEMENTS = {
 ##### Cache ##############################
 
 CACHE_DIRS = {
-    'ROOT': '.loader-cache/',
+    'ROOT': '/tmp/.loader-cache/',
     # .loader-cache/parser/ # TODO: For documentation - it's good to keep this in a unique directory on the hard drive...
     'PARSER': '/tmp/.gh-api-cache/',
-    'WEB': '.loader-cache/web/',
-    'ZOTERO': '.loader-cache/zotero/'
+    'WEB': '/tmp/.loader-cache/web/',
+    'ZOTERO': '/tmp/.loader-cache/zotero/'
 }
 
 # The following are written as days
@@ -122,8 +122,9 @@ IMAGE_CACHE = {
 
 ##### Dev features ##############################
 
-# If VERBOSE is set to True, every output message will display the source module (good for troubleshooting)
+# If VERBOSE is set to True, every output message will display the source module/function (good for troubleshooting)
 VERBOSE = True
+CACHE_VERBOSE = False # Note: this outputs a message for each cache age check = generates a LOT of output
 
 
 NORMALIZING_SECTIONS = {
@@ -135,15 +136,17 @@ NORMALIZING_SECTIONS = {
         'ethical_considerations': ['Ethical consideration', 'Ethical considerations', 'Ethics'],
         'readings': ['Pre-reading suggestions', 'Prereading suggestions', 'Pre reading suggestions', 'Pre-readings', 'Pre readings', 'Prereadings', 'Pre-reading', 'Pre reading', 'Prereading'],
         'projects': ['Project', 'Projects', 'Projects that use these skills', 'Projects which use these skills'],
-        'resources': ['Resources (optional)', 'Resource (optional)', 'Resources optional', 'Resource optional'],
+        'resources': ['Resources (optional)', 'Resource (optional)', 'Resources optional', 'Resource optional', 'Resources', 'Resource'],
+        'prerequisites': ['Prerequisites', 'Pre-requisites', 'Prerequisite', 'Pre-requisite', 'Pre requisites', 'Pre requisite']
     },
     'theory-to-practice': {
         'intro': ['Theory to Practice'],
-        'discussion_questions': ['Discussion Questions'],
-        'tutorials': ['Other Tutorials'],
-        'further_projects': ['Projects or Challenges to Try'],
-        'further_readings': ['Suggested Further Readings'],
-        'next_steps': ['Next Steps']
+        'discussion_questions': ['Discussion Questions', 'Discussion Question'],
+        'tutorials': ['Other Tutorials', 'More Tutorials', 'Further Tutorials'],
+        'further_projects': ['Projects or Challenges to Try', 'Projects to Try', 'Challenges to Try'],
+        'further_readings': ['Suggested Further Readings', 'Further Readings', 'Suggested Further Reading', 'Further Reading'],
+        'next_steps': ['Next Steps', 'Next Step'],
+        'more_resources': ['More Resources', 'Additional Resources', 'Further Resources', 'More Resource', 'Additional Resource', 'Further Resource']
     },
     'assessment': {
         'qualitative_assessment': ['Qualitative Self-Assessment'],

@@ -23,7 +23,7 @@ from backend.dhri.webcache import WebCache
 
 from backend.dhri_settings import NORMALIZING_SECTIONS, FORCE_DOWNLOAD, BACKEND_AUTO, \
                                     REPO_AUTO, BRANCH_AUTO, TEST_AGES, CACHE_DIRS, \
-                                    STATIC_IMAGES, LESSON_TRANSPOSITIONS
+                                    STATIC_IMAGES, LESSON_TRANSPOSITIONS, VERBOSE, CACHE_VERBOSE
 
 from backend.dhri.new_functions import mini_parse_eval, mini_parse_keywords
 
@@ -68,7 +68,7 @@ def _is_expired(path, age_checker=TEST_AGES['ROOT'], force_download=FORCE_DOWNLO
         log.warning(f'Cache has expired for {path} - older than {age_checker}...')
         return True
 
-    log.log(f'Cache is OK for {path} - not older than {age_checker}....')
+    if CACHE_VERBOSE == True: log.log(f'Cache is OK for {path} - not older than {age_checker}....', force=True)
     return False
 
 
@@ -82,7 +82,7 @@ def process_links(input, obj):
     if len(links) > 1:
         link_list = '\n    - ' + "\n    - ".join([x[1][:50] for x in links[1:]])
         log.warning(f'One project seems to contain more than one URL, but only one ({url[:50]}) is captured:')
-        print(link_list)
+        # print(link_list)
     if title == None or title == '':
         from backend.dhri.webcache import WebCache
         title = WebCache(url).title
@@ -312,6 +312,8 @@ class Loader():
         self.frontmatter['projects'] = [str(_) for _ in as_list(self.frontmatter.get('projects'))]
         self.frontmatter['learning_objectives'] = [PARSER.convert(_) for _ in as_list(self.frontmatter.get('learning_objectives'))] # make into HTML
         self.frontmatter['ethical_considerations'] = [PARSER.convert(_) for _ in as_list(self.frontmatter.get('ethical_considerations'))]
+        self.frontmatter['prerequisites'] = [_ for _ in as_list(self.frontmatter.get('prerequisites'))]
+        self.frontmatter['resources'] = [_ for _ in as_list(self.frontmatter.get('resources'))]
 
         # fix praxis data sections
         self.praxis['discussion_questions'] = [str(_) for _ in as_list(self.praxis.get('discussion_questions'))]
@@ -319,10 +321,12 @@ class Loader():
         self.praxis['tutorials'] = [str(_) for _ in as_list(self.praxis.get('tutorials'))]
         self.praxis['further_readings'] = [str(_) for _ in as_list(self.praxis.get('further_readings'))]
         self.praxis['further_projects'] = [str(_) for _ in as_list(self.praxis.get('further_projects'))]
+        self.praxis['more_resources'] = [str(_) for _ in as_list(self.praxis.get('more_resources'))]
 
         self.as_html = HTMLParser(self)
 
         self.content = {
+            'title': [x for x in split_into_sections(self.content.get('frontmatter'), level_granularity=1)][0],
             'frontmatter': self.frontmatter,
             'praxis': self.praxis,
             'assessment': self.assessment,
@@ -362,6 +366,7 @@ class Loader():
             image['class'] = image.get('class', []) + ['img-fluid', 'd-block', 'my-4']
 
         self.image_url = local_url[1:]
+        self.title = self.content.get('title')
 
         # Mapping frontmatter sections
         self.abstract = self.frontmatter.get('abstract')
@@ -371,6 +376,8 @@ class Loader():
         self.projects = self.frontmatter.get('projects')
         self.learning_objectives = self.frontmatter.get('learning_objectives')
         self.ethical_considerations = self.frontmatter.get('ethical_considerations')
+        self.prerequisites = self.frontmatter.get('prerequisites')
+        self.resources = self.frontmatter.get('resources')
 
         # Mapping praxis sections
         self.praxis_intro = PARSER.convert(self.praxis.get('intro'))
@@ -379,7 +386,7 @@ class Loader():
         self.tutorials = self.praxis.get('tutorials')
         self.further_readings = self.praxis.get('further_readings')
         self.further_projects = self.praxis.get('further_projects')
-
+        self.more_resources = self.praxis.get('more_resources')
 
 class ContributorParser():
 
@@ -565,11 +572,15 @@ class LessonParser():
         for title, body in markdown_contents.items():
             droplines = []
 
-            challenge = ""
+            challenge, challenge_title = "", ""
             # 1. Test markdown for challenge
             if "## challenge" in body.lower() or "## activity" in body.lower():
                 for line_num, line in enumerate(body.splitlines()):
                     if line.lower().startswith("## challenge") or line.lower().startswith("## activity"):
+                        try:
+                            challenge_title = [x.strip() for x in line.split(':') if not x.startswith('#')][0]
+                        except IndexError:
+                            challenge_title = ''
                         droplines.append(line_num)
                         startline = line_num + 1
                         nextlines = (item for item in body.splitlines()[startline:])
@@ -586,11 +597,15 @@ class LessonParser():
                             except StopIteration:
                                 done = True
 
-            solution = ""
+            solution, solution_title = "", ""
             # 2. Test markdown for solution
             if "## solution" in body.lower():
                 for line_num, line in enumerate(body.splitlines()):
                     if line.lower().startswith("## solution"):
+                        try:
+                            solution_title = [x.strip() for x in line.split(':') if not x.startswith('#')][0]
+                        except IndexError:
+                            solution_title = ''
                         droplines.append(line_num)
                         startline = line_num + 1
                         nextlines = (item for item in body.splitlines()[startline:])
@@ -684,7 +699,9 @@ class LessonParser():
                     'title': title,
                     'text': cleaned_body,
                     'challenge': challenge,
+                    'challenge_title': challenge_title,
                     'solution': solution,
+                    'solution_title': solution_title,
                     'evaluation': evaluation,
                     'keywords': keywords,
                 }
@@ -882,7 +899,9 @@ class LessonParser():
                     'title': title,
                     'text': html_body,
                     'challenge': html_challenge,
+                    'challenge_title': challenge_title,
                     'solution': html_solution,
+                    'solution_title': solution_title,
                     'evaluation': evaluation,
                     'keywords': keywords,
                 }
@@ -904,11 +923,13 @@ class GlossaryCache():
         self.path = CACHE_DIRS['ROOT'] / (self.loader.repo_name + ".json")
         self.expired = _is_expired(self.path, age_checker=TEST_AGES["GLOSSARY"], force_download=force_download) == True
 
+        new_content = False
         if not self.path.exists():
             log.warning(f'{self.path} does not exist so downloading glossary cache...')
             self._setup_raw_content()
+            new_content = True
 
-        if force_download == True or self.expired == True:
+        if new_content == False and (force_download == True or self.expired == True):
             if force_download == True:
                 log.warning(f'Force download is set to True or cache file has expired so downloading glossary cache...')
             self._setup_raw_content()

@@ -44,6 +44,9 @@ class Workshop(models.Model):
         self.slug = dhri_slugify(self.name)
         super(Workshop, self).save()
 
+    def save_slug(self, *args, **kwargs):
+        super(Workshop, self).save()
+
     def __str__(self):
         return f'{self.name}'
 
@@ -166,6 +169,9 @@ class LearningObjective(CurlyQuotesMixin, models.Model):
     def __str__(self):
         return f'{self.label}'
 
+    class Meta:
+        unique_together = ('frontmatter', 'label')
+
 
 class EthicalConsideration(CurlyQuotesMixin, models.Model):
     curly_fields = ['label']
@@ -176,6 +182,9 @@ class EthicalConsideration(CurlyQuotesMixin, models.Model):
 
     def __str__(self):
         return f'{self.label}'
+
+    class Meta:
+        unique_together = ('frontmatter', 'label')
 
 
 class Praxis(CurlyQuotesMixin, models.Model):
@@ -205,6 +214,9 @@ class Blurb(CurlyQuotesMixin, models.Model):
     def __str__(self):
         return(f'Blurb for workshop {self.workshop.name} by {self.user}')
 
+    class Meta:
+        unique_together = ('workshop', 'text', 'user')
+
 
 class NextStep(CurlyQuotesMixin, models.Model):
     curly_fields = ['label']
@@ -216,6 +228,7 @@ class NextStep(CurlyQuotesMixin, models.Model):
 
     class Meta:
         ordering = ('order',)
+        unique_together = ('praxis', 'label')
 
 
 class DiscussionQuestion(CurlyQuotesMixin, models.Model):
@@ -228,3 +241,4 @@ class DiscussionQuestion(CurlyQuotesMixin, models.Model):
 
     class Meta:
         ordering = ('order',)
+        unique_together = ('praxis', 'label')
