@@ -117,6 +117,14 @@ frontmatter:
     recommended: true
     required: false
     type: install
+  - full_text: '[Create a GitHub account](https://github.com/join) (required) You
+      need to have a GitHub account for the purposes of this workshop. It is free
+      to sign up via this link. If you are an educator or a student, you might also
+      qualify for the GitHub Education Pack, which you can read more about here: https://education.github.com/pack'
+    recommended: false
+    required: true
+    type: external link
+    url: https://github.com/join
   projects:
   - annotation: '[GCDI''s Digital Research Institute](https://github.com/DHRI-Curriculum)
       has been improved and built out over time using GitHub to store and track multiple
@@ -176,10 +184,6 @@ frontmatter:
     title: _How Digital Humanists Use GitHub_
     url: https://digitalscholarship.wordpress.com/2016/07/20/presentation-on-how-digital-humanists-use-github
   resources:
-  - full_text: '[Create a GitHub account](https://github.com/join).'
-    title: Create a GitHub account
-    type: external_link
-    url: https://github.com/join
   - full_text: '[Git/GitHub Cheatsheet](https://github.com/DHRI-Curriculum/git/raw/v2.0/files/git-cheat-sheet.pdf)'
     title: Git/GitHub Cheatsheet
     type: internal_download

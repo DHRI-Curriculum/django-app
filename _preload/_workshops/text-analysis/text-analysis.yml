@@ -119,6 +119,22 @@ frontmatter:
     required: false
     type: external link
     url: https://github.com/DHRI-Curriculum/insights/blob/v2.0/pages/jupyter-notebooks.md
+  - full_text: '[Installing Python (and Anaconda)](https://github.com/DHRI-Curriculum/install/blob/v2.0/guides/python.md)
+      (required) This workshop uses Python and you will need to have a Python installation.
+      If you choose to install a different version of Python, make sure it is version
+      3 as other versions will not work with our workshop.'
+    potential_slug_fragment: python
+    potential_software: Installing Python (and Anaconda)
+    recommended: false
+    required: true
+    type: install
+  - full_text: '[Installing NLTK](https://github.com/DHRI-Curriculum/install/blob/v2.0/guides/nltk.md)
+      (required) You will need to install NLTK for the purposes of this workshop.'
+    potential_slug_fragment: nltk
+    potential_software: Installing NLTK
+    recommended: false
+    required: true
+    type: install
   projects:
   - annotation: '[Short list of academic Text & Data mining projects](https://libguides.bc.edu/textdatamining/projects)'
     title: Short list of academic Text & Data mining projects
@@ -137,23 +153,10 @@ frontmatter:
     title: What is text analysis
     url: https://www.scribbr.com/methodology/textual-analysis
   resources:
-  - full_text: '[Installing Python (and Anaconda)](https://github.com/DHRI-Curriculum/install/blob/v2.0/guides/python.md)'
-    title: Installing Python (and Anaconda)
-    type: external_link
-    url: https://github.com/DHRI-Curriculum/install/blob/v2.0/guides/python.md
-  - full_text: '[Installing NLTK](https://github.com/DHRI-Curriculum/install/blob/v2.0/guides/nltk.md)'
-    title: Installing NLTK
-    type: external_link
-    url: https://github.com/DHRI-Curriculum/install/blob/v2.0/guides/nltk.md
   - full_text: '[Jupyter Notebook shortcuts, tips and tricks](http://maxmelnick.com/2016/04/19/python-beginner-tips-and-tricks.html)'
     title: Jupyter Notebook shortcuts, tips and tricks
     type: external_link
     url: http://maxmelnick.com/2016/04/19/python-beginner-tips-and-tricks.html
-  - full_text: '[Short introduction to Jupyter Notebooks](https://github.com/DHRI-Curriculum/insights/blob/v2.0/pages/jupyter-notebooks.md)
-      (recommended)'
-    title: Short introduction to Jupyter Notebooks
-    type: external_link
-    url: https://github.com/DHRI-Curriculum/insights/blob/v2.0/pages/jupyter-notebooks.md
 lessons:
 - challenge: ''
   challenge_title: ''
