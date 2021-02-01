@@ -1123,6 +1123,7 @@ praxis:
     url: http://mywiki.wooledge.org/BashGuide
   workshop: command-line
 workshop:
+  image: /Users/kallewesterling/Repositories/django-app/website/static/website/images/workshop_headers/command-line/header@3x.png
   name: Introduction to the Command Line
   parent_backend: Github
   parent_branch: v2.0
