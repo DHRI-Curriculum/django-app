@@ -190,6 +190,7 @@ frontmatter:
     url: https://www.markdownguide.org/cheat-sheet
 lessons:
 - challenge: ''
+  challenge_title: ''
   keywords:
   - Git
   - GitHub
@@ -250,6 +251,7 @@ lessons:
       - refers to project folders as "repositories"
     question: 'Which best describes Markdown:'
   solution: ''
+  solution_title: ''
   text: "<p><strong>Git</strong> is software used for version control\u2014that is,\
     \ tracking the state of files and changes you make to them over time. Git can\
     \ be enabled in a folder, and then used to save the state of the contents in that\
@@ -311,6 +313,7 @@ lessons:
   title: What are Git, GitHub and Markdown?
   workshop: git
 - challenge: ''
+  challenge_title: ''
   keywords:
   - Version Control
   - Branch
@@ -328,6 +331,7 @@ lessons:
       incorrect: []
     question: What tasks could Git and/or GitHub offer support to?
   solution: ''
+  solution_title: ''
   text: "<p>A <a href=\"https://digitalscholarship.files.wordpress.com/2016/07/spirosmithdh2016githubpresentationfinal.pdf\"\
     \ rel=\"nofollow\" target=\"_blank\">study of how Digital Humanists use GitHub</a>,\
     \ conducted by Lisa Spiro and Sean Morey Smith, found that a wide range of users,\
@@ -445,6 +449,7 @@ lessons:
   title: What You Can Do with Git and GitHub
   workshop: git
 - challenge: ''
+  challenge_title: ''
   keywords: []
   order: 3
   questions:
@@ -499,6 +504,7 @@ lessons:
       - <code>mkdir</code>
     question: Which command do you use to check where you are?
   solution: ''
+  solution_title: ''
   text: "<p>During this workshop, you'll be communicating with GitHub from your local\
     \ computer via the command line (the Terminal or the Git Bash on Windows). This\
     \ section reviews some of the basic commands that will also be used in this workshop.</p>\n\
@@ -576,6 +582,7 @@ lessons:
   title: Review of the Command Line
   workshop: git
 - challenge: ''
+  challenge_title: ''
   keywords: []
   order: 4
   questions:
@@ -588,6 +595,7 @@ lessons:
       - You are creating a new version of a project folder on your local machine.
     question: What are you doing when you set up git?
   solution: ''
+  solution_title: ''
   text: '<p>Through this section, you''ll be checking your installation and configuring
     Git with your own name and information.</p>
 
@@ -644,10 +652,12 @@ lessons:
   title: Setting Up Git
   workshop: git
 - challenge: ''
+  challenge_title: ''
   keywords: []
   order: 5
   questions: []
   solution: ''
+  solution_title: ''
   text: "<p>The next step is to <em>initialize</em> the project folder that we want\
     \ Git to track. When we initialize a folder, we are telling Git to pay attention\
     \ to it. This only needs to happen once because what is actually happening through\
@@ -702,6 +712,7 @@ lessons:
     \ review some additional markdown elements on <a href=\"https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet\"\
     >this page</a> and add some extra features like images, blockquotes, or horizontal\
     \ rules.</p>"
+  challenge_title: ''
   keywords:
   - Markdown
   order: 6
@@ -718,6 +729,7 @@ lessons:
     question: 'Which best describes what you''re doing when you initialize your project
       folder:'
   solution: ''
+  solution_title: ''
   text: "<p>We'll be using <strong>markdown</strong> to write a syllabus, and then\
     \ using <strong>Git</strong> to track any changes we make to it. Markdown allows\
     \ us to format textual features like headings, emphasis, links, and lists in a\
@@ -779,6 +791,7 @@ lessons:
   title: Creating Syllabus Content Using Markdown
   workshop: git
 - challenge: ''
+  challenge_title: ''
   keywords:
   - Commit
   order: 7
@@ -830,6 +843,7 @@ lessons:
     question: Which best describes the <code>-m</code> flag used when committing changes
       to a file?
   solution: ''
+  solution_title: ''
   text: "<p>Git's primary function is version control, or to track a project as it\
     \ exists at particular points in time. Now that we have a file to track\u2014\
     our <code>syllabus.md</code>\u2014let's use Git to save the current state of the\
@@ -1000,6 +1014,7 @@ lessons:
     on GitHub?</li>
 
     </ul>'
+  challenge_title: ''
   keywords:
   - Push
   - Repository
@@ -1074,6 +1089,7 @@ lessons:
     local machine and the folder on GitHub.</li>
 
     </ul>'
+  solution_title: ''
   text: "<p>Now, you may want to backup or share and collaborate around a file on\
     \ the Internet. Let's connect the directory you created on your local computer\
     \ to GitHub's cloud service, which you can access through the web.</p>\n<p>Remember,\
@@ -1166,6 +1182,7 @@ lessons:
     to the repository on GitHub.</li>
 
     </ol>'
+  challenge_title: ''
   keywords:
   - Cloning
   - Forking
@@ -1196,6 +1213,7 @@ lessons:
 
     <p>After you''ve made and saved the changes, you''ll know you''ve completed step
     three when your changes appear in the project folder on <em>your</em> GitHub account.</p>'
+  solution_title: ''
   text: "<p>GitHub was built for sharing and collaborating on projects. A key advantage\
     \ of the platform is that you can find lots of bits of software that do many different\
     \ things\u2014such as code for plugins for WordPress or Leaflet. Increasingly,\

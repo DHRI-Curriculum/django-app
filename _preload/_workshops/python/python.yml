@@ -155,6 +155,7 @@ lessons:
     \ learn is the exponent\u2014you know, \"x raised to the power of...\" If you\
     \ were Guido van Rossum, the creator of Python, how would you define this operator?</p>\n\
     </li>\n</ol>"
+  challenge_title: ''
   keywords:
   - REPL
   order: 1
@@ -173,6 +174,7 @@ lessons:
     number <code>3</code> to the power of <code>2</code> would be expressed as <code>3**2</code>.</li>
 
     </ol>'
+  solution_title: ''
   text: "<p>Let's begin by starting an \"interactive session\" session with Python.\
     \ This means we will be using Python in the terminal, which is a special space\
     \ that allows us to run little bits of Python, experimenting and exploring what\
@@ -224,6 +226,7 @@ lessons:
     through the first few results. What words do you recognize, and which ones look
     unfamiliar? What do you think the unfamiliar ones mean? Try to rephrase some of
     this new language, and guess what they mean in your own words.</p>
+  challenge_title: ''
   keywords:
   - Function
   - Boolean
@@ -247,6 +250,7 @@ lessons:
     for inputting and outputting data from a function. It's important to become familiar
     with the Python's terminology about functions, as it will be helpful later on
     when you start working with these components.</p>
+  solution_title: ''
   text: '<p>Types are classifications that let the computer know how a programmer
     intends to use a piece of data. You can just think of them as, well, types of
     data.</p>
@@ -333,6 +337,7 @@ lessons:
 
     <p>Only one way to find out. Try giving weird names to variables and see if you
     can learn a bit about the rules.</p>'
+  challenge_title: ''
   keywords:
   - Variables
   order: 3
@@ -365,6 +370,7 @@ lessons:
     python always recognizes the first thing written as the thing to be assigned.
     The thing that comes after the <code>=</code> is the data that becomes attached
     to the preceding variable.</p>'
+  solution_title: ''
   text: '<p>A variable is <strong>a symbol that refers to an object</strong>, such
     as a string, integer, or list. If you''re not already at the Python prompt, open
     your terminal and type <code>python</code> at the <code>$</code>. You''re in the
@@ -438,6 +444,7 @@ lessons:
     \ searching for a program called <code>IDLE</code> that comes with Python. It's\
     \ a special editor (or IDE) that lets you run Python code from inside it. You\
     \ might like it more than Git Bash.</p>\n</li>\n</ol>"
+  challenge_title: ''
   keywords:
   - REPL
   - Scripts
@@ -475,6 +482,7 @@ lessons:
     </li>
 
     </ol>'
+  solution_title: ''
   text: "<p>So far, you've interacted with Python one line at a time in the REPL.\
     \ This is what we call the Interactive Mode, which is like a playground for experimenting\
     \ and exploring different Python expressions, like <code>2 + 2</code> or <code>type(\"\
@@ -534,6 +542,7 @@ lessons:
     getting your first two syntax errors, try instead to get traceback errors. Some
     areas to try include mathematical impossibilities and using math operations on
     types that do not support them.</p>
+  challenge_title: ''
   keywords:
   - Syntax Errors
   - Traceback Errors
@@ -646,6 +655,7 @@ lessons:
     </li>
 
     </ul>'
+  solution_title: ''
   text: "<p>Our usual response when seeing an error on a computer screen is a stress\
     \ response. Our heart rate elevates and, if we cannot do what we were asking the\
     \ computer to do, our frustration mounts. This is because many errors when interacting\
@@ -713,6 +723,7 @@ lessons:
     number. How do you get python to print out the book in the middle of the list?
     What about the three books in the middle? Remember that the first value in a slice
     is <em>inclusive</em>, and the final value is <em>exclusive</em>.</p>
+  challenge_title: ''
   keywords:
   - list
   - list indexing
@@ -743,6 +754,7 @@ lessons:
     &gt;&gt;&gt; books[<span class="pl-c1">1</span>:<span class="pl-c1">4</span>]
     <span class="pl-c"><span class="pl-c">#</span> [''Cruising Utopia'', ''Living
     a Feminist Life'', ''Radiant Textuality'']</span></pre></div>'
+  solution_title: ''
   text: '<p>Remember lists? They look like this:</p>
 
     <div class="highlight highlight-source-python"><pre><span class="pl-s1">books</span>
@@ -886,6 +898,7 @@ lessons:
     \ can <a href=\"https://realpython.com/python-f-strings/#f-strings-a-new-and-improved-way-to-format-strings-in-python\"\
     \ rel=\"nofollow\">read more about this new string formatting method</a>.</p>\n\
     </li>\n</ol>"
+  challenge_title: ''
   keywords:
   - for-loop
   - f-string
@@ -939,6 +952,7 @@ lessons:
     </li>
 
     </ol>'
+  solution_title: ''
   text: "<p>What if we want to print out each item in the list separately? For that,\
     \ we'll need something called a loop:</p>\n<div class=\"highlight highlight-source-python\"\
     ><pre><span class=\"pl-s1\">books</span> <span class=\"pl-c1\">=</span> [<span\
@@ -991,6 +1005,7 @@ lessons:
     it better able to handle different potential fields of study. Change the field
     of study a couple of times, making sure to save after each change, to test out
     your code.</p>
+  challenge_title: ''
   keywords:
   - if-Statement
   order: 8
@@ -1045,6 +1060,7 @@ lessons:
 
     &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span class="pl-s">"I
     don''t know what field you''re talking about! I''m just a little program..."</span>)</pre></div>'
+  solution_title: ''
   text: "<p>Conditionals allow programs to change their behavior based on whether\
     \ some statement is true or false. Let's try this out by writing a script that\
     \ will give different outputs (consisting of book titles) based on the specified\
@@ -1133,6 +1149,7 @@ lessons:
     of code that sets the <code>field</code> variable to an <code>input()</code>.
     Make sure you include a little prompt that asks the user what book they want to
     select or read that day.</p>'
+  challenge_title: ''
   keywords:
   - input()
   order: 9
@@ -1172,6 +1189,7 @@ lessons:
 
     &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span class="pl-s">"I
     don''t know what field you''re talking about! I''m just a little program..."</span>)</pre></div>'
+  solution_title: ''
   text: '<p><strong>Note:</strong> If you''re using Python 2.7, replace all <code>input()</code>
     functions in the code below with <code>raw_input()</code>. You can check your
     version by running <code>python --version</code> in the command line.</p>
@@ -1290,6 +1308,7 @@ lessons:
 
     <p>After adding a few more conditions, test out your code! You should have a little
     library app that sorts, adds, and removes books from your list.</p>'
+  challenge_title: ''
   keywords:
   - append
   - sort()
@@ -1345,6 +1364,7 @@ lessons:
 
     &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span class="pl-s">"I
     don''t know what you want me to do!"</span>)</pre></div>'
+  solution_title: ''
   text: '<p>Okay. Let''s make our little book application a little more robust. We
     are going to create a list of books (remember lists?) that we can then manipulate
     in all sorts of ways.</p>
@@ -1495,6 +1515,7 @@ lessons:
     </li>
 
     </ol>'
+  challenge_title: ''
   keywords:
   - lower()
   - Method
@@ -1593,6 +1614,7 @@ lessons:
     </li>
 
     </ol>'
+  solution_title: ''
   text: "<p>Our library app is working pretty well, but you may have noticed that\
     \ it's case sensitive:</p>\n<pre><code>What do you want to do with your books\
     \ today?\nSort\nI don't know what you want me to do!\n</code></pre>\n<p>How could\
@@ -1724,6 +1746,7 @@ lessons:
     <p>In your research, you may also want to look at the libraries that come with
     Python. You can find a list of libraries in these libraries <a href="https://docs.python.org/3/py-modindex.html"
     rel="nofollow">here</a>.</p>'
+  challenge_title: ''
   keywords:
   - Modules
   - Random
@@ -1773,6 +1796,7 @@ lessons:
     </li>
 
     </ol>'
+  solution_title: ''
   text: "<p>Early on, we learned a bit about lists, which look like this:</p>\n<div\
     \ class=\"highlight highlight-source-python\"><pre>[<span class=\"pl-s\">\"Gender\
     \ Trouble\"</span>, <span class=\"pl-s\">\"Cruising Utopia\"</span>, <span class=\"\
@@ -1838,6 +1862,7 @@ lessons:
     \ This is an advanced challenge, meant to expose you to the beginning of your\
     \ exploration with this module. This is only the first step to running more robust\
     \ web scraping experiments.</p>"
+  challenge_title: ''
   keywords:
   - Modules
   - requests
@@ -1918,6 +1943,7 @@ lessons:
     <p>This is just the tip of the iceberg for using <code>requests</code>. In order
     to get more information, you''ll have to read up on the module. Here is <a href="https://scotch.io/tutorials/getting-started-with-python-requests-get-requests"
     rel="nofollow">an excellent tutorial</a> to get started.</p>'
+  solution_title: ''
   text: "<p>Objects in Python (and other programming languages) are basically containers\
     \ that can hold data and/or functions inside them. When a function is inside an\
     \ object, we usually call the function a \"method.\" When data is inside an object,\

@@ -182,6 +182,7 @@ frontmatter:
     url: https://www.w3.org/standards/webdesign/accessibility
 lessons:
 - challenge: ''
+  challenge_title: ''
   keywords:
   - CSS
   - HTML
@@ -199,6 +200,7 @@ lessons:
       appearance, and purpose of content, whereas programming languages are used to
       transform data.'
   solution: ''
+  solution_title: ''
   text: "<p>Websites seem like these magical things that appear when we open our web\
     \ browser (i.e. Chrome, Firefox, Safari). We know that websites are hypertext,\
     \ meaning that we can click between links, travelling from page to page until\
@@ -255,10 +257,12 @@ lessons:
   title: Introduction
   workshop: html-css
 - challenge: ''
+  challenge_title: ''
   keywords: []
   order: 2
   questions: []
   solution: ''
+  solution_title: ''
   text: '<p><strong><em>Note</em>: please use Firefox or Chrome. Safari will not allow
     you to complete this activity.</strong></p>
 
@@ -372,6 +376,7 @@ lessons:
     file. If it does not open in a browser, right click the <code>index.html</code>
     icon and select "Open with..." from the menu. Select Firefox or Google Chrome
     from the app list that appears.</p>'
+  challenge_title: ''
   keywords:
   - Root Element
   order: 3
@@ -383,6 +388,7 @@ lessons:
       - <code>&lt;!DOCTYPE html&gt;</code>
     question: Which of these two HTML commands is also known as the "root element"?
   solution: ''
+  solution_title: ''
   text: "<p>Below is a basic template for an empty HTML Document.</p>\n<div class=\"\
     highlight highlight-text-html-basic\"><pre><span class=\"pl-c1\">&lt;!DOCTYPE\
     \ html<span class=\"pl-kos\">&gt;</span></span>\n<span class=\"pl-kos\">&lt;</span><span\
@@ -430,6 +436,7 @@ lessons:
   title: Basic Template for HTML
   workshop: html-css
 - challenge: ''
+  challenge_title: ''
   keywords:
   - Tag
   - Elements
@@ -442,6 +449,7 @@ lessons:
       - Tags have opening and closing elements.
     question: 'Which of the following statements is correct:'
   solution: ''
+  solution_title: ''
   text: "<p>Tags and elements are the structuring components of html webpages.</p>\n\
     <p><strong>Elements</strong> identify the different parts of a page, such as paragraphs,\
     \ headings, titles, body text, images and more. Elements are demarcated by tags\
@@ -508,6 +516,7 @@ lessons:
 
     <p>What do you notice about how the information is organized in the webpage? In
     other words, where are the title, heading, and paragraph text?</p>'
+  challenge_title: ''
   keywords: []
   order: 5
   questions:
@@ -519,6 +528,7 @@ lessons:
     question: If I wanted to indicate that "About" is a subheading in my page, which
       element should I use?
   solution: ''
+  solution_title: ''
   text: "<p>Paragraphs and headings are the main textual elements of the body of your\
     \ webpages. Because these contain content that you want to organize and display\
     \ on your webpage, these are entered in the body element.</p>\n<p>The <code>&lt;h1&gt;</code>,\
@@ -596,6 +606,7 @@ lessons:
     <li>Re-save your text files and reopen or refresh them in your browser.</li>
 
     </ol>'
+  challenge_title: ''
   keywords:
   - Attributes
   order: 6
@@ -607,6 +618,7 @@ lessons:
       - <code>&lt;a href="https://www.nytimes.com/"&gt;The New York Times&lt;/a&gt;</code>
     question: Which of the following options is a relative link?
   solution: ''
+  solution_title: ''
   text: "<p>Links are the foundation of the World Wide Web, and thus are an important\
     \ component of most websites. Hyperlinking text enables users to move between\
     \ the different webpages on your site (sometimes in the form of a menu or navigation\
@@ -678,6 +690,7 @@ lessons:
     <p>Using the code above as a reference, add that image into your <code>index.html</code>
     file, re-save the file, and re-open or refresh the page in your browser. Your
     image should now appear on the page.</p>'
+  challenge_title: ''
   keywords: []
   order: 7
   questions:
@@ -689,6 +702,7 @@ lessons:
     question: 'True or False: Does including "alt text" in websites improve their
       accessibility?'
   solution: ''
+  solution_title: ''
   text: '<p>Images are another important component of websites. Sometimes these just
     help bring your website to life, but other times they can help communicate information
     to users.</p>
@@ -762,10 +776,12 @@ lessons:
   title: Images
   workshop: html-css
 - challenge: ''
+  challenge_title: ''
   keywords: []
   order: 8
   questions: []
   solution: ''
+  solution_title: ''
   text: "<p>As we\u2019ve gone through the different components of creating a webpage,\
     \ you likely have noticed some common conventions or industry standards for creating\
     \ a webpage using HTML. Can you guess any of these?</p>\n<p>Here are a few examples:</p>\n\
@@ -784,10 +800,12 @@ lessons:
     containing a schedule of events to your Institute website. You can learn more
     about making tables using HTML <a href="https://www.w3schools.com/html/html_tables.asp"
     rel="nofollow">here</a>.</p>'
+  challenge_title: ''
   keywords: []
   order: 9
   questions: []
   solution: ''
+  solution_title: ''
   text: "<p>In this challenge, we will begin creating an introductory page for your\
     \ a Digital Humanities Institute in your home institution. Using the tags we've\
     \ just reviewed, and two additional ones (see below), we will make a barebones\
@@ -833,6 +851,7 @@ lessons:
   title: 'Challenge: Create an Institute Website'
   workshop: html-css
 - challenge: ''
+  challenge_title: ''
   keywords: []
   order: 10
   questions:
@@ -843,6 +862,7 @@ lessons:
       - Programming Language
     question: Is CSS a markup language or a programming language?
   solution: ''
+  solution_title: ''
   text: '<p>CSS stands for Cascading Style Sheets. This language works in coordination
     with HTML, but is its own language with its own rules and terminology. In contrast
     to HTML, which is responsible for the content of the page, CSS is responsible
@@ -876,6 +896,7 @@ lessons:
     <div class="highlight highlight-text-html-basic"><pre><span class="pl-kos">&lt;</span><span
     class="pl-ent">link</span> <span class="pl-c1">rel</span>="<span class="pl-s">stylesheet</span>"
     <span class="pl-c1">href</span>="<span class="pl-s">style.css</span>" /&gt;</pre></div>'
+  challenge_title: ''
   keywords: []
   order: 11
   questions:
@@ -947,6 +968,7 @@ lessons:
 
       &nbsp;&nbsp;&nbsp;&nbsp;'
   solution: ''
+  solution_title: ''
   text: "<p>In order for CSS to inform the style of the content on the page, it must\
     \ be integrated with your HTML. CSS can be integrated into your HTML in three\
     \ ways:</p>\n<ol>\n<li>inline</li>\n<li>internal</li>\n<li>external (<em>recommended</em>)</li>\n\
@@ -1066,6 +1088,7 @@ lessons:
 - challenge: <p>Copy and paste the CSS rules above into your <code>style.css</code>
     file and re-save the file. Then open or refresh your <code>index.html</code> file
     in your browser and see what happens.</p>
+  challenge_title: ''
   keywords:
   - CSS Selectors
   - Class
@@ -1080,6 +1103,7 @@ lessons:
       - By putting the CSS file in the same folder as the HTML page.
     question: How do we associate a CSS file with an HTML page?
   solution: ''
+  solution_title: ''
   text: "<p>CSS is based on selectors and declarations, which together form rule sets\
     \ (or just \"rules\"). Rule sets comprise an external styling file with a <code>.css</code>\
     \ extension. Here is the contents of a sample <code>.css</code> file:</p>\n<div\
@@ -1114,10 +1138,12 @@ lessons:
   title: Rule Sets
   workshop: html-css
 - challenge: ''
+  challenge_title: ''
   keywords: []
   order: 13
   questions: []
   solution: ''
+  solution_title: ''
   text: "<p>Some of you may be wondering whether it matters what order you add the\
     \ rule sets to your <code>style.css</code> document. The answer is no. CSS has\
     \ an automatic filtering function where <strong>the most specific rule in CSS\
@@ -1139,6 +1165,7 @@ lessons:
   title: Filtering
   workshop: html-css
 - challenge: ''
+  challenge_title: ''
   keywords:
   - CSS Selectors
   - Class
@@ -1153,6 +1180,7 @@ lessons:
     question: 'True or False: Classes are used to create categories of related elements,
       IDs are used create unique identifiers.'
   solution: ''
+  solution_title: ''
   text: "<p>Classes and IDs enable more fine-grained styling by allowing you to define\
     \ your own selectors. The difference between classes and IDs is that IDs are unique,\
     \ used to identify one specific element or part of an element, whereas classes\
@@ -1273,10 +1301,12 @@ lessons:
   title: Classes and IDs
   workshop: html-css
 - challenge: ''
+  challenge_title: ''
   keywords: []
   order: 15
   questions: []
   solution: ''
+  solution_title: ''
   text: '<p>Below is a list of useful properties that can be modified with CSS, compiled
     by Digital Fellow <a href="http://smythp.com" rel="nofollow" target="_blank">Patrick
     Smyth</a>. There are also <a href="https://courses.cs.washington.edu/courses/cse154/15sp/cheat-sheets/css-cheat-sheet.pdf"
@@ -1402,10 +1432,12 @@ lessons:
   title: Useful Properties
   workshop: html-css
 - challenge: ''
+  challenge_title: ''
   keywords: []
   order: 16
   questions: []
   solution: ''
+  solution_title: ''
   text: '<p>Using the CSS basics we''ve just reviewed, and the list of properties
     found on the <a href="?page=15">Properties page</a> and online, give your website
     some styling.</p>
@@ -1443,10 +1475,12 @@ lessons:
   title: 'Challenge: Styling Your Institute Website Using CSS'
   workshop: html-css
 - challenge: ''
+  challenge_title: ''
   keywords: []
   order: 17
   questions: []
   solution: ''
+  solution_title: ''
   text: "<p>It is common\u2014especially in the beginning\u2014that you'll add or\
     \ amend something to/in your text editor, but it won't present when rendered by\
     \ your browser.</p>\n<p>Your first inclination should be to scan the text in your\
@@ -1464,10 +1498,12 @@ lessons:
   title: Troubleshooting
   workshop: html-css
 - challenge: ''
+  challenge_title: ''
   keywords: []
   order: 18
   questions: []
   solution: ''
+  solution_title: ''
   text: "<p>Through this workshop, you have learned the basics of two of the most\
     \ commonly-used languages for building on the web: HTML and CSS.</p>\n<p>HTML,\
     \ or Hypertext Markup Language, organizes content on your page using elements\
@@ -1496,12 +1532,14 @@ lessons:
   title: Workshop Summary
   workshop: html-css
 - challenge: ''
+  challenge_title: ''
   keywords:
   - FTP
   - Web Hosting
   order: 19
   questions: []
   solution: ''
+  solution_title: ''
   text: "<p>Great job! Now you have an amazing website, but it's stuck on your computer\
     \ where no one else can find it or view it. How do you get your website onto the\
     \ Internet so it can be shared?</p>\n<p>To get your site on the internet, you'll\

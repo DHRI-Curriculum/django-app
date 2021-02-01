@@ -156,6 +156,7 @@ frontmatter:
     url: https://github.com/DHRI-Curriculum/insights/blob/v2.0/pages/jupyter-notebooks.md
 lessons:
 - challenge: ''
+  challenge_title: ''
   keywords:
   - NLTK
   order: 1
@@ -170,6 +171,7 @@ lessons:
         other or not.
     question: 'Check all sentences below that are correct:'
   solution: ''
+  solution_title: ''
   text: "<p>When we think of \"data,\" we often think of numbers, things that can\
     \ be summarized, statisticized, and graphed. Rarely when I ask people \"what is\
     \ data?\" do they respond \"<em>Moby Dick</em>.\" And yet, more and more, text\
@@ -254,6 +256,7 @@ lessons:
   title: Text as Data
   workshop: text-analysis
 - challenge: ''
+  challenge_title: ''
   keywords:
   - Machine Learning
   - Text Normalization
@@ -273,6 +276,7 @@ lessons:
         the source.
     question: 'Check all sentences below that are correct:'
   solution: ''
+  solution_title: ''
   text: "<p>Generally, however, our questions are more about topics rather than writing\
     \ style. So, once we have a corpus\u2014whether that is one text or millions\u2014\
     we usually want to clean and normalize it. There are three terms we are going\
@@ -332,6 +336,7 @@ lessons:
   title: Cleaning and Normalizing
   workshop: text-analysis
 - challenge: ''
+  challenge_title: ''
   keywords:
   - Corpus
   - Jupyter Notebook
@@ -340,6 +345,7 @@ lessons:
   order: 3
   questions: []
   solution: ''
+  solution_title: ''
   text: "<p>In the following sections, we are going to learn how to work with the\
     \ NLTK Corpus and go through a series of methods that come built-in to NLTK that\
     \ allow us to turn our words into numbers and visualizations.</p>\n<p>All of the\
@@ -432,6 +438,7 @@ lessons:
   title: Using the NLTK Corpus
   workshop: text-analysis
 - challenge: ''
+  challenge_title: ''
   keywords:
   - Concordance
   - Phatic Language
@@ -447,6 +454,7 @@ lessons:
         not necessarily in meaning, like "whale" and "while".
     question: 'Check all sentences below that are correct:'
   solution: ''
+  solution_title: ''
   text: "<p>Let's start by analyzing <em>Moby Dick</em>, which is <code>text1</code>\
     \ for NLTK.</p>\n<p>The first function we will look at is <code>concordance</code>.\
     \ \"Concordance\" in this context means the characters on either side of the word.\
@@ -509,6 +517,7 @@ lessons:
     are related to cleaning, part-of-speech tagging, and other stages in the text
     analysis pipeline (where the pipeline refers to the process of loading, cleaning,
     and analyzing text).</p>'
+  challenge_title: ''
   keywords: []
   order: 5
   questions:
@@ -529,6 +538,7 @@ lessons:
     <div class="highlight highlight-source-python"><pre><span class="pl-s1">text2</span>.<span
     class="pl-en">dispersion_plot</span>([<span class="pl-s">"husband"</span>, <span
     class="pl-s">"wife"</span>])</pre></div>'
+  solution_title: ''
   text: "<p>In many ways, <code>concordance</code> and <code>similar</code> are heightened\
     \ word searches that tell us something about what is happening near the target\
     \ words. Another metric we can use is to visualize where the words appear in the\
@@ -549,6 +559,7 @@ lessons:
   title: Positioning Words
   workshop: text-analysis
 - challenge: ''
+  challenge_title: ''
   keywords: []
   order: 6
   questions:
@@ -562,6 +573,7 @@ lessons:
       - The <code>isalpha()</code> method transforms integers in alphabetical strings.
     question: 'Check all sentences below that are correct:'
   solution: ''
+  solution_title: ''
   text: "<p>We will now turn our attention away from the NLTK library and work with\
     \ our text using the <em>built-in Python functions</em>, the ones that come included\
     \ with the Python language, rather than the NLTK library. (This difference is\
@@ -650,10 +662,12 @@ lessons:
   title: Types vs. Tokens
   workshop: text-analysis
 - challenge: ''
+  challenge_title: ''
   keywords: []
   order: 7
   questions: []
   solution: ''
+  solution_title: ''
   text: "<p>Great! Now <code>text1_tokens</code> is a list of all of the tokens in\
     \ our corpus, with the punctuation removed, and all the words in lowercase. Let's\
     \ check it:</p>\n<div class=\"highlight highlight-source-python\"><pre><span class=\"\
@@ -704,6 +718,7 @@ lessons:
 
     <p>Remember to be aware of the ethical implications for the conclusions that we
     might draw about our data. What assumptions might we be reifying about these writers?</p>'
+  challenge_title: ''
   keywords: []
   order: 8
   questions:
@@ -740,6 +755,7 @@ lessons:
 
     <span class="pl-en">len</span>(<span class="pl-en">set</span>(<span class="pl-s1">text2_slice</span>))
     <span class="pl-c1">/</span> <span class="pl-en">len</span>(<span class="pl-s1">text2_slice</span>)</pre></div>'
+  solution_title: ''
   text: "<p>Now we can calculate the <strong>lexical density</strong>, the number\
     \ of unique words per total words. <a href=\"https://pdfs.semanticscholar.org/c2a8/56959d7f5880c98ccd4cfeb4b4f5b7133ec7.pdf\"\
     \ rel=\"nofollow\" target=\"_blank\">Statistical studies</a> have shown that lexical\
@@ -773,6 +789,7 @@ lessons:
   title: Lexical Density
   workshop: text-analysis
 - challenge: ''
+  challenge_title: ''
   keywords:
   - Stop Words
   order: 9
@@ -788,6 +805,7 @@ lessons:
         following code: <code>import stopwords from nltk.corpus</code>'
     question: 'Check all sentences below that are correct:'
   solution: ''
+  solution_title: ''
   text: "<p>Thus far, we have been asking questions that take stop words and grammatical\
     \ features into account. For the most part, we want to exclude these features\
     \ since they don't actually contribute very much semantic content to our models.\
@@ -849,6 +867,7 @@ lessons:
   title: 'Data Cleaning: Removing Stop Words'
   workshop: text-analysis
 - challenge: ''
+  challenge_title: ''
   keywords:
   - Lemmatization
   - Lexical Density
@@ -863,6 +882,7 @@ lessons:
       incorrect: []
     question: 'Check all sentences below that are correct:'
   solution: ''
+  solution_title: ''
   text: "<p>Now that we've removed the stop words from our corpus, the next step is\
     \ to stem or lemmatize the remaining words. This means that we will strip off\
     \ the grammatical structure from the words. For example, <code>cats \u2B62 cat</code>,\
@@ -944,6 +964,7 @@ lessons:
   title: 'Data Cleaning: Lemmatizing Words'
   workshop: text-analysis
 - challenge: ''
+  challenge_title: ''
   keywords:
   - Stemming
   order: 11
@@ -957,6 +978,7 @@ lessons:
       incorrect: []
     question: 'Check all sentences below that are correct:'
   solution: ''
+  solution_title: ''
   text: "<p>The code to implement this and view the output is below:</p>\n<div class=\"\
     highlight highlight-source-python\"><pre><span class=\"pl-k\">from</span> <span\
     \ class=\"pl-s1\">nltk</span>.<span class=\"pl-s1\">stem</span> <span class=\"\
@@ -1029,6 +1051,7 @@ lessons:
     </li>
 
     </ol>'
+  challenge_title: ''
   keywords: []
   order: 12
   questions:
@@ -1064,6 +1087,7 @@ lessons:
     </li>
 
     </ol>'
+  solution_title: ''
   text: "<p>Now that we've seen some of the differences between both, we will proceed\
     \ using our lemmatized corpus, which we saved as <code>text1_clean</code>:</p>\n\
     <div class=\"highlight highlight-source-python\"><pre><span class=\"pl-s1\">my_dist</span>\
@@ -1112,10 +1136,12 @@ lessons:
   title: 'Data Cleaning: Results'
   workshop: text-analysis
 - challenge: ''
+  challenge_title: ''
   keywords: []
   order: 13
   questions: []
   solution: ''
+  solution_title: ''
   text: "<p>Now that we have seen and implemented a series of text analysis techniques,\
     \ let's go to the Internet to find a new text. You could use something such as\
     \ historic newspapers, or Supreme Court proceedings, or use any txt file on your\
@@ -1183,6 +1209,7 @@ lessons:
 
     <p>If you want to spice your challenge up, do the first three operations <em>in
     a single if statement</em>. Google "python nested if statements" for examples.</p>'
+  challenge_title: ''
   keywords:
   - Metadata
   - Regular Expressions
@@ -1246,6 +1273,7 @@ lessons:
     </li>
 
     </ol>'
+  solution_title: ''
   text: "<p>Now we are going to transform that string into a text that we can perform\
     \ NLTK functions on. Since we already imported nltk at the beginning of our program,\
     \ we don't need to import it again, we can just use its functions by specifying\
@@ -1293,6 +1321,7 @@ lessons:
   title: Make Your Own Corpus (continued)
   workshop: text-analysis
 - challenge: ''
+  challenge_title: ''
   keywords:
   - part-of-speech (POS) tagging
   - Dictionaries
@@ -1309,6 +1338,7 @@ lessons:
         clean your text from stop words before using it.
     question: Which of the following are correct?
   solution: ''
+  solution_title: ''
   text: "<p><em>Note that we are going to use the pre-cleaned, <code>dq_text</code>\
     \ object for this section.</em></p>\n<p>POS (Part-of-Speech) tagging is going\
     \ through a text and identifying which part of speech each word belongs to (i.e.,\

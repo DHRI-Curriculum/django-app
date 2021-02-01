@@ -155,10 +155,12 @@ frontmatter:
     url: http://mally.stanford.edu/~sr/computing/basic-unix.html
 lessons:
 - challenge: ''
+  challenge_title: ''
   keywords: []
   order: 1
   questions: []
   solution: ''
+  solution_title: ''
   text: '<p>The command line is a text-based way of interacting with your computer.
     You may hear it called different names, such as the terminal, the shell, or bash.
     In practice, you can use these terms interchangeably. (If you''re curious, though,
@@ -189,6 +191,7 @@ lessons:
   title: What Is the Command Line?
   workshop: command-line
 - challenge: ''
+  challenge_title: ''
   keywords: []
   order: 2
   questions:
@@ -208,6 +211,7 @@ lessons:
       incorrect: []
     question: What is the Command Line? How is it different from your text editor?
   solution: ''
+  solution_title: ''
   text: "<h2>\n<a aria-hidden=\"true\" class=\"anchor\" href=\"#what-is-text\" id=\"\
     user-content-what-is-text\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"\
     ></span></a>What is Text?</h2>\n<p>Before we explain which program we'll be using\
@@ -286,10 +290,12 @@ lessons:
   title: Text Editors
   workshop: command-line
 - challenge: ''
+  challenge_title: ''
   keywords: []
   order: 3
   questions: []
   solution: ''
+  solution_title: ''
   text: '<p>Initially, for some of us, the command line can feel a bit unfamiliar.
     Why step away from a point-and-click workflow? By using the command line, we move
     into an environment where we have more minute control over each task we''d like
@@ -325,10 +331,12 @@ lessons:
   title: Why is the Command Line Useful?
   workshop: command-line
 - challenge: ''
+  challenge_title: ''
   keywords: []
   order: 4
   questions: []
   solution: ''
+  solution_title: ''
   text: "<h2>\n<a aria-hidden=\"true\" class=\"anchor\" href=\"#macos\" id=\"user-content-macos\"\
     ><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>macOS</h2>\n\
     <p>If you're using macOS:</p>\n<ol>\n<li>\n<p>Click the Spotlight Search button\
@@ -386,10 +394,12 @@ lessons:
   title: Getting to the Command Line
   workshop: command-line
 - challenge: ''
+  challenge_title: ''
   keywords: []
   order: 5
   questions: []
   solution: ''
+  solution_title: ''
   text: "<p>Before we get started, I wanted to give you a couple of tips of things\
     \ to keep in mind.</p>\n<p>First, go slow at first and check your spelling! One\
     \ of the biggest things you can do to make sure your code runs correctly and you\
@@ -419,6 +429,7 @@ lessons:
     \ up in the filesystem. That's a <code>cd</code> with two periods after it:</p>\n\
     <div class=\"highlight highlight-text-shell-session\"><pre>$ <span class=\"pl-s1\"\
     ><span class=\"pl-c1\">cd</span> ..</span></pre></div>"
+  challenge_title: ''
   keywords:
   - Filesystem
   - GUI
@@ -467,6 +478,7 @@ lessons:
     <li>Type <code>cd name-of-your-folder</code> to enter a subfolder.</li>
 
     </ol>'
+  solution_title: ''
   text: "<h2>\n<a aria-hidden=\"true\" class=\"anchor\" href=\"#getting-started-know-thyself\"\
     \ id=\"user-content-getting-started-know-thyself\"><span aria-hidden=\"true\"\
     \ class=\"octicon octicon-link\"></span></a>Getting started: know thyself</h2>\n\
@@ -539,6 +551,7 @@ lessons:
   title: Navigation
   workshop: command-line
 - challenge: <p>Try and create a sub-folder and file on your own!</p>
+  challenge_title: ''
   keywords: []
   order: 7
   questions:
@@ -566,6 +579,7 @@ lessons:
     <li>Type <code>ls</code> to check whether you created the file correctly.</li>
 
     </ol>'
+  solution_title: ''
   text: "<h2>\n<a aria-hidden=\"true\" class=\"anchor\" href=\"#creating-a-file\"\
     \ id=\"user-content-creating-a-file\"><span aria-hidden=\"true\" class=\"octicon\
     \ octicon-link\"></span></a>Creating a File</h2>\n<p>So far, we've only performed\
@@ -637,6 +651,7 @@ lessons:
     <p>Save the file.</p>\n<p>Once you're done, check the contents of the file on\
     \ the command line with the <code>cat</code> command followed by the name of your\
     \ file.</p>"
+  challenge_title: ''
   keywords: []
   order: 8
   questions:
@@ -689,6 +704,7 @@ lessons:
     </li>
 
     </ul>'
+  solution_title: ''
   text: "<p>In this section, we'll create a text file that we can use as a cheat sheet.\
     \ You can use it to keep track of all the awesome commands you're learning.</p>\n\
     <h2>\n<a aria-hidden=\"true\" class=\"anchor\" href=\"#echo\" id=\"user-content-echo\"\
@@ -755,6 +771,7 @@ lessons:
   title: Creating a Cheat Sheet
   workshop: command-line
 - challenge: ''
+  challenge_title: ''
   keywords: []
   order: 9
   questions:
@@ -766,6 +783,7 @@ lessons:
       - Pipes let you work on multiple files at the same time.
     question: What do pipes allow you to do?
   solution: ''
+  solution_title: ''
   text: '<p>So far, you''ve learned a number of commands and one special symbol, the
     <code>&gt;</code> or redirect. Now we''re going to learn another, the <code>|</code>
     or "pipe."</p>
@@ -809,6 +827,7 @@ lessons:
     the <code>nypl_items.csv</code> file with the duplicated lines removed. (Hint:
     <em>redirects</em> from the lesson when we made a <a href="https://curriculum.dhinstitutes.org/workshops/command-line/lessons/?page=8"
     rel="nofollow">cheat sheet</a> are your friend.)</p>'
+  challenge_title: ''
   keywords:
   - Path
   order: 10
@@ -832,6 +851,7 @@ lessons:
     <p>Type <code>cat nypl_items.csv | uniq &gt; new_nypl_items.csv</code> to create
     a new version of the <code>nypl_items.csv</code> file with the duplicated lines
     removed.</p>'
+  solution_title: ''
   text: "<p>So far the only text file we've been working with is our cheat sheet.\
     \ Now, this is where the command line can be a very powerful tool: let's try working\
     \ with a large text file, one that would be too large to work with by hand.</p>\n\
@@ -899,10 +919,12 @@ lessons:
   title: Exploring Text Data
   workshop: command-line
 - challenge: ''
+  challenge_title: ''
   keywords: []
   order: 11
   questions: []
   solution: ''
+  solution_title: ''
   text: "<h2>\n<a aria-hidden=\"true\" class=\"anchor\" href=\"#a-favorite-command-line-feature-tab-completion\"\
     \ id=\"user-content-a-favorite-command-line-feature-tab-completion\"><span aria-hidden=\"\
     true\" class=\"octicon octicon-link\"></span></a>A Favorite Command Line Feature:\
@@ -930,6 +952,7 @@ lessons:
   workshop: command-line
 - challenge: <p>Use the <code>grep</code> command to explore our <code>.csv</code>
     file a bit. What areas are best covered by the data set?</p>
+  challenge_title: ''
   keywords: []
   order: 12
   questions:
@@ -954,6 +977,7 @@ lessons:
     test interfaces are available from <a href="https://www.google.com/search?w&amp;q=regex+tester"
     rel="nofollow">a simple google search</a>, such as <a href="https://regexr.com/"
     rel="nofollow">RegExr</a>, which includes a handy cheat sheet.</p>
+  solution_title: ''
   text: '<p>So we''ve cleaned our data set, but how do we find entries that use a
     particular term?</p>
 
@@ -993,10 +1017,12 @@ lessons:
   title: Searching Text Data
   workshop: command-line
 - challenge: ''
+  challenge_title: ''
   keywords: []
   order: 13
   questions: []
   solution: ''
+  solution_title: ''
   text: "<p>Now is a good time to do a quick review!</p>\n<p>In this session, we learned:</p>\n\
     <ul>\n<li>how to use <code>touch</code> and <code>echo</code> to create files</li>\n\
     <li>how to use <code>mkdir</code> to create folders</li>\n<li>how to navigate\
