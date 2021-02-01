@@ -58,19 +58,25 @@ def log_created(created:bool, model='', preview='', id='', log=None):
 
 class Logger():
     def __init__(self, *args, **kwargs):
-        self.name = ''
-        self.bypass_verbose = False
-        if 'name' in kwargs:
-            self.name = kwargs['name']
-        if 'bypass_verbose' in kwargs:
-            self.bypass_verbose = kwargs['bypass_verbose']
-        if self.bypass_verbose == True:
-            VERBOSE = True
+        self.name = kwargs.get('name', '')
+        self.force_verbose = False
+        self.force_silent = False
+        
+        if ('force_verbose' in kwargs and kwargs['force_verbose']) and ('force_silent' in kwargs and kwargs['force_silent']):
+            exit('Logger can only accept either force_verbose OR force_silent, not both simultaneously.')
+
+        self.VERBOSE = VERBOSE
+
+        if kwargs.get('force_verbose'):
+            self.VERBOSE = True
+
+        if kwargs.get('force_silent'):
+            self.VERBOSE = False
 
     def log(self, message="", kill=False, color='green', force=False):
         message = self._fix_message(message)
         message = colorize(message, fg=color, opts=('',))
-        if VERBOSE or force == True: self.output(message)
+        if self.VERBOSE or force == True: self.output(message)
 
     def error(self, message="", raise_error=None, kill=True, color='red'):
         if raise_error:

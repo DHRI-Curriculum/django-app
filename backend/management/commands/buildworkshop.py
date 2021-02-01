@@ -3,10 +3,9 @@ from django.conf import settings
 from backend.dhri.log import Logger
 from backend import dhri_settings
 from backend.dhri.loader import Loader, process_links
+from ._shared import get_name
 import yaml
 import pathlib
-
-log = Logger(name='build-workshop')
 
 
 def check_for_cancel(SAVE_DIR, workshop):
@@ -31,13 +30,17 @@ class Command(BaseCommand):
         group = parser.add_mutually_exclusive_group(required=False)
         group.add_argument('--name', nargs='+', type=str)
         group.add_argument('--all', action='store_true')
+        parser.add_argument('--silent', action='store_true')
+        parser.add_argument('--verbose', action='store_true')
 
     def handle(self, *args, **options):
+        log = Logger(name=get_name(__file__), force_verbose=options.get('verbose'), force_silent=options.get('silent'))
+
         if options.get('all') or options.get('reset'):
             options['name'] = [x[0] for x in dhri_settings.AUTO_REPOS]
 
         if not options.get('name'):
-            exit(
+            log.error(
                 'No workshop names provided. Use any of the following settings:\n    --name [repository name]\n    --all')
 
         for workshop in options.get('name'):
@@ -57,9 +60,9 @@ class Command(BaseCommand):
                 'lessons': []
             }
             slug = workshop
-            name = workshop.replace('-', ' ').title() # TODO: fetch this from the raw data instead
             url = f'https://github.com/DHRI-Curriculum/{workshop}'
             branch = 'v2.0'
+
             # TODO: force_download doesn't seem to work here.
             l = Loader(url, branch, force_download=options.get('force'))
 
@@ -124,7 +127,6 @@ class Command(BaseCommand):
 
             for resourcedata in l.resources:
                 r_title, url = process_links(resourcedata, 'resource')
-                print(r_title, url)
                 if 'https://raw.githubusercontent.com/DHRI-Curriculum/' in url or ('github.com/DHRI-Curriculum/' and '/raw/' in url):
                     data['frontmatter']['resources'].append({'type': 'internal_download', 'url': url, 'title': r_title, 'full_text': resourcedata})
                 else:
@@ -146,7 +148,7 @@ class Command(BaseCommand):
                     is_past = 'original' in low_role or 'past' in low_role
 
                     if not is_current and not is_past:
-                        print('could not find current, original, or past in role',
+                        log.warning('could not find current, original, or past in role',
                               low_role, '--setting automatically to past.')
 
                 contributor_data = {

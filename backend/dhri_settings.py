@@ -94,11 +94,11 @@ REPLACEMENTS = {
 ##### Cache ##############################
 
 CACHE_DIRS = {
-    'ROOT': '.loader-cache/',
+    'ROOT': '/tmp/.loader-cache/',
     # .loader-cache/parser/ # TODO: For documentation - it's good to keep this in a unique directory on the hard drive...
     'PARSER': '/tmp/.gh-api-cache/',
-    'WEB': '.loader-cache/web/',
-    'ZOTERO': '.loader-cache/zotero/'
+    'WEB': '/tmp/.loader-cache/web/',
+    'ZOTERO': '/tmp/.loader-cache/zotero/'
 }
 
 # The following are written as days
@@ -122,8 +122,9 @@ IMAGE_CACHE = {
 
 ##### Dev features ##############################
 
-# If VERBOSE is set to True, every output message will display the source module (good for troubleshooting)
+# If VERBOSE is set to True, every output message will display the source module/function (good for troubleshooting)
 VERBOSE = True
+CACHE_VERBOSE = False # Note: this outputs a message for each cache age check = generates a LOT of output
 
 
 NORMALIZING_SECTIONS = {

@@ -4,13 +4,18 @@ class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
-    help = 'Shortcut to run through all the ingest commands in the correct order'
+    help = 'Shortcut to run through all the ingest commands in the correct order and with the --forceupdate flag automatically turned on'
+
+    def add_arguments(self, parser):
+        parser.add_argument('--silent', action='store_true')
+        parser.add_argument('--verbose', action='store_true')
 
     def handle(self, *args, **options):
-        call_command('ingestgroups', '--forceupdate')
-        call_command('ingestusers', '--forceupdate')
-        call_command('ingestglossary', '--forceupdate')
-        call_command('ingestinstalls', '--forceupdate')
-        call_command('ingestinsights', '--forceupdate')
-        call_command('ingestworkshop', '--forceupdate') #TODO #326             # call_command('ingestblurbs', '--forceupdate') #TODO #326 (consolidate into `ingestrepo`)
-        call_command('ingestsnippets', '--forceupdate') #TODO #326
+        call_command('ingestgroups', '--forceupdate', silent=options.get('silent'), verbose=options.get('verbose'))
+        call_command('ingestusers', '--forceupdate', silent=options.get('silent'), verbose=options.get('verbose'))
+        call_command('ingestglossary', '--forceupdate', silent=options.get('silent'), verbose=options.get('verbose'))
+        call_command('ingestinstalls', '--forceupdate', silent=options.get('silent'), verbose=options.get('verbose'))
+        call_command('ingestinsights', '--forceupdate', silent=options.get('silent'), verbose=options.get('verbose'))
+        call_command('ingestworkshop', '--forceupdate', silent=options.get('silent'), verbose=options.get('verbose'))
+        call_command('ingestsnippets', '--forceupdate', silent=options.get('silent'), verbose=options.get('verbose'))
+        call_command('ingestblurbs', '--forceupdate', silent=options.get('silent'), verbose=options.get('verbose'))

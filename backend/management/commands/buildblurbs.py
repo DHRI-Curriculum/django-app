@@ -2,10 +2,10 @@ from django.core.management import BaseCommand
 from django.conf import settings
 from backend.dhri.log import Logger
 from backend import dhri_settings
+from ._shared import get_name
 import yaml
 import pathlib
 
-log = Logger(name='build-blurbs')
 DATA_FILE = 'blurb.yml'
 
 
@@ -23,7 +23,13 @@ class Command(BaseCommand):
 
     help = 'Build YAML files from blurbs (provided through AUTO_USERS in backend.dhri_settings)'
 
+    def add_arguments(self, parser):
+        parser.add_argument('--silent', action='store_true')
+        parser.add_argument('--verbose', action='store_true')
+
     def handle(self, *args, **options):
+        log = Logger(name=get_name(__file__), force_verbose=options.get('verbose'), force_silent=options.get('silent'))
+
         for cat in list(dhri_settings.AUTO_USERS.keys()):
             for u in dhri_settings.AUTO_USERS[cat]:
                 if u.get('blurb'):

@@ -7,27 +7,7 @@ from django.core.management import BaseCommand
 from django.conf import settings
 from backend.dhri.log import Logger, Input
 from backend.mixins import convert_html_quotes
-from ._shared import get_yaml, get_name
-
-import os
-
-log = Logger(name=get_name(__file__))
-input = Input(name=get_name(__file__))
-WORKSHOPS_DIR = settings.BASE_DIR + '/_preload/_workshops'
-GLOSSARY_FILE = settings.BASE_DIR + '/_preload/_meta/glossary/glossary.yml'
-
-
-def get_all_existing_workshops(specific_names=None):
-    if not specific_names:
-        return [(x, f'{WORKSHOPS_DIR}/{x}') for x in os.listdir(WORKSHOPS_DIR) if not x.startswith('.')]
-    
-    _ = list()
-    for name in specific_names:
-        if name in os.listdir(WORKSHOPS_DIR):
-            _.append((name, f'{WORKSHOPS_DIR}/{name}'))
-        else:
-            log.error(f'The workshop `{name}` failed to ingest as the workshop\'s directory has yet to be created. Try running python manage.py buildworkshop --name {name} before running this command again.')
-    return _
+from ._shared import get_yaml, get_name, get_all_existing_workshops, GLOSSARY_FILE
 
 
 class Command(BaseCommand):
@@ -40,11 +20,12 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--forceupdate', action='store_true')
         parser.add_argument('--name', nargs='+', type=str)
+        parser.add_argument('--silent', action='store_true')
+        parser.add_argument('--verbose', action='store_true')
 
     def handle(self, *args, **options):
-
-        # Temp here - remove
-        # Workshop.objects.all().delete()
+        log = Logger(name=get_name(__file__), force_verbose=options.get('verbose'), force_silent=options.get('silent'))
+        input = Input(name=get_name(__file__))
 
         workshops = get_all_existing_workshops()
         
@@ -67,7 +48,6 @@ class Command(BaseCommand):
             workshop, created = Workshop.objects.get_or_create(
                 name = workshopdata.get('name'),
                 defaults = {
-                    'name': workshopdata.get('name'),
                     'parent_backend': workshopdata.get('parent_backend'),
                     'parent_branch': workshopdata.get('parent_branch'),
                     'parent_repo': workshopdata.get('parent_repo')
@@ -81,7 +61,7 @@ class Command(BaseCommand):
                     f'Workshop `{workshopdata.get("name")}` already exists. Update with new content? [y/N]')
                 if choice.lower() != 'y':
                     continue
-
+            
             # 2. ENTER FRONTMATTER
             frontmatter, created = Frontmatter.objects.get_or_create(workshop=workshop)
 
@@ -262,3 +242,5 @@ class Command(BaseCommand):
                         log.warning(f'The keyword `{keyword}` used in workshop {workshop.name}\'s lesson {lesson.title} cannot be found in the glossary. Are you sure it is in the glossary and synchronized with the database? Make sure the data file for glossary is available ({GLOSSARY_FILE}) and that the term is defined in the file. Then run python manage.py ingestglossary.')
                     else:
                         log.error(f'Multiple definitions of `{keyword}` exists in the database. Try resetting the glossary and rerun python manage.py ingestglossary before you run the ingestworkshop command again.')
+
+        log.log('Added/updated workshops: ' + ', '.join([x[0] for x in workshops]))

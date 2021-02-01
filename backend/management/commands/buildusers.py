@@ -2,15 +2,12 @@ from django.core.management import BaseCommand
 from django.conf import settings
 from backend.dhri.log import Logger
 from backend import dhri_settings
-from backend.dhri.loader import GlossaryLoader
-
 from shutil import copyfile
 from PIL import Image
-
+from ._shared import get_name
 import yaml
 import pathlib
 
-log = Logger(name='build-users')
 SAVE_DIR = f'{settings.BASE_DIR}/_preload/_meta/users'
 SAVE_DIR_IMG = f'{settings.BASE_DIR}/_preload/_meta/users/images'
 DATA_FILE = 'users.yml'
@@ -34,8 +31,12 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('--nocrop', action='store_true')
-    
+        parser.add_argument('--silent', action='store_true')
+        parser.add_argument('--verbose', action='store_true')
+
     def handle(self, *args, **options):
+        log = Logger(name=get_name(__file__), force_verbose=options.get('verbose'), force_silent=options.get('silent'))
+
         users = list()
 
         if not pathlib.Path(SAVE_DIR).exists():

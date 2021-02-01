@@ -23,7 +23,7 @@ from backend.dhri.webcache import WebCache
 
 from backend.dhri_settings import NORMALIZING_SECTIONS, FORCE_DOWNLOAD, BACKEND_AUTO, \
                                     REPO_AUTO, BRANCH_AUTO, TEST_AGES, CACHE_DIRS, \
-                                    STATIC_IMAGES, LESSON_TRANSPOSITIONS
+                                    STATIC_IMAGES, LESSON_TRANSPOSITIONS, VERBOSE, CACHE_VERBOSE
 
 from backend.dhri.new_functions import mini_parse_eval, mini_parse_keywords
 
@@ -68,7 +68,7 @@ def _is_expired(path, age_checker=TEST_AGES['ROOT'], force_download=FORCE_DOWNLO
         log.warning(f'Cache has expired for {path} - older than {age_checker}...')
         return True
 
-    # log.log(f'Cache is OK for {path} - not older than {age_checker}....') #TODO: turn back
+    if CACHE_VERBOSE == True: log.log(f'Cache is OK for {path} - not older than {age_checker}....', force=True)
     return False
 
 
