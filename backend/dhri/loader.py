@@ -347,6 +347,7 @@ class Loader():
         # Fixing the image
         REPO_CLEAR = self.repo.split("/")[-1]
         soup = BeautifulSoup(self.as_html.image, 'lxml')
+        local_file, local_url = '', ''
         for image in soup.find_all("img")[:1]: # we stick with the first image here.
             src = image.get('src')
             if not src:
@@ -365,7 +366,8 @@ class Loader():
             image['src'] = local_url
             image['class'] = image.get('class', []) + ['img-fluid', 'd-block', 'my-4']
 
-        self.image_url = local_url[1:]
+        self.image_path = str(local_file)
+        self.local_url = local_url
         self.title = self.content.get('title')
 
         # Mapping frontmatter sections

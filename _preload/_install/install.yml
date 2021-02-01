@@ -1,5 +1,5 @@
 - instruction:
-    image: static/website/images/software_headers/firefox@3x.png
+    image: /Users/kallewesterling/Repositories/django-app/website/static/website/images/software_headers/firefox@3x.png
     steps:
     - header: Go to the Firefox download webpage
       order: '1'
@@ -50,7 +50,7 @@
   operating_system: Windows
   software: Firefox
 - instruction:
-    image: static/website/images/software_headers/firefox@3x.png
+    image: /Users/kallewesterling/Repositories/django-app/website/static/website/images/software_headers/firefox@3x.png
     steps:
     - header: Go to the Firefox download webpage
       order: '1'
@@ -104,7 +104,7 @@
   operating_system: macOS
   software: Firefox
 - instruction:
-    image: static/website/images/software_headers/git@3x.png
+    image: /Users/kallewesterling/Repositories/django-app/website/static/website/images/software_headers/git@3x.png
     steps:
     - header: Download Git for Windows
       order: '1'
@@ -229,7 +229,7 @@
   operating_system: Windows
   software: Git (and Git Bash)
 - instruction:
-    image: static/website/images/software_headers/git@3x.png
+    image: /Users/kallewesterling/Repositories/django-app/website/static/website/images/software_headers/git@3x.png
     steps:
     - header: Open a terminal
       order: '1'
@@ -305,7 +305,7 @@
   operating_system: macOS
   software: Git (and Git Bash)
 - instruction:
-    image: static/website/images/software_headers/nltk@3x.png
+    image: /Users/kallewesterling/Repositories/django-app/website/static/website/images/software_headers/nltk@3x.png
     steps:
     - header: Checking if NLTK is already installed
       order: '1'
@@ -425,7 +425,7 @@
   operating_system: Windows
   software: Natural Language Toolkit
 - instruction:
-    image: static/website/images/software_headers/nltk@3x.png
+    image: /Users/kallewesterling/Repositories/django-app/website/static/website/images/software_headers/nltk@3x.png
     steps:
     - header: Checking if NLTK is already installed
       order: '1'
@@ -571,7 +571,7 @@
   operating_system: macOS
   software: Natural Language Toolkit
 - instruction:
-    image: static/website/images/software_headers/python@3x.png
+    image: /Users/kallewesterling/Repositories/django-app/website/static/website/images/software_headers/python@3x.png
     steps:
     - header: 'Download Python 3.+:'
       order: '1'
@@ -674,7 +674,7 @@
   operating_system: Windows
   software: Python (and Anaconda)
 - instruction:
-    image: static/website/images/software_headers/python@3x.png
+    image: /Users/kallewesterling/Repositories/django-app/website/static/website/images/software_headers/python@3x.png
     steps:
     - header: Download Python 3.+
       order: '1'
@@ -797,7 +797,7 @@
   operating_system: macOS
   software: Python (and Anaconda)
 - instruction:
-    image: static/website/images/software_headers/visual-studio-code@3x.png
+    image: /Users/kallewesterling/Repositories/django-app/website/static/website/images/software_headers/visual-studio-code@3x.png
     steps:
     - header: Download Visual Studio Code Installer
       order: '1'
@@ -878,7 +878,7 @@
   operating_system: Windows
   software: Microsoft Visual Studio Code
 - instruction:
-    image: static/website/images/software_headers/visual-studio-code@3x.png
+    image: /Users/kallewesterling/Repositories/django-app/website/static/website/images/software_headers/visual-studio-code@3x.png
     steps:
     - header: Download Visual Studio Code Installer
       order: '1'

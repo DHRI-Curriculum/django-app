@@ -67,14 +67,15 @@ class Command(BaseCommand):
             branch = 'v2.0'
 
             l = Loader(url, branch, force_download=options.get('force_download'))
-
+            
             # 1. Extract workshop data
             workshop = {
                 'slug': slug,
                 'name': l.title,
                 'parent_backend': l.parent_backend,
                 'parent_repo': l.parent_repo,
-                'parent_branch': l.parent_branch
+                'parent_branch': l.parent_branch,
+                'image': l.image_path,
             }
             data['workshop'] = workshop
 

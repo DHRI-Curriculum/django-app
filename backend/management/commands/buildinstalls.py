@@ -59,7 +59,7 @@ class Command(BaseCommand):
                         'instruction': {
                             'what': instructions.what.strip(),
                             'why': instructions.why.strip(),
-                            'image': instructions.image_url,
+                            'image': instructions.image_path,
                             'steps': []
                         }
                     }

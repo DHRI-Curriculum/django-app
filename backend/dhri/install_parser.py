@@ -129,6 +129,7 @@ class InstallParser():
         # Get the image
         if self.image_html:
             soup = BeautifulSoup(self.image_html, 'lxml')
+            local_file, local_url = '', ''
             for image in soup.find_all("img")[:1]: # we stick with the first image here.
                 src = image.get('src')
                 if not src:
@@ -147,6 +148,7 @@ class InstallParser():
                 image['src'] = local_url
 
             self.image_url = local_url[1:]
+            self.image_path = str(local_file)
 
         # Correct the instruction lists into sections
         operating_systems = ['mac os', 'windows']
