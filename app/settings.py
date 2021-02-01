@@ -157,7 +157,7 @@ MEDIA_URL = '/media/'
 
 SESSION_SAVE_EVERY_REQUEST = True
 
-# TODO: Should be bootstrap5 once there is support
+# TODO: #360 Should be bootstrap5 once there is support https://github.com/django-crispy-forms/crispy-bootstrap5
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL = 'website:index'

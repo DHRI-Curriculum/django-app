@@ -173,117 +173,10 @@ STATIC_IMAGES = {
 }
 
 
-# REMOVED FEATURES (So can likely be removed)
-
-# If set to True, resets all the DHRI curriculum database elements automatically before script runs (not recommended in production)
-# AUTO_RESET = True # TODO: I believe this isn't in use anymore
-
-# If set to True, the database will be erased and reset for each run
-# DEBUG = True # TODO: I believe this isn't in use anymore
-
-
-# This is where the final fixtures JSON file will be saved
-# FIXTURE_PATH = 'app/fixtures.json' # TODO: Remove, after making sure the app works.
-
-'''
-# Django backend settings
-DJANGO_PATHS = {
-        'DJANGO': 'app/',
-        'DB': 'app/db.sqlite3',
-        'MANAGE': 'app/manage.py',
-    }
-'''  # TODO: Remove, after making sure the app works.
-
-
-'''
-AUTO_USERS = {
-    'SUPER': {
-        'kalle': {
-            'first_name': 'Kalle',
-            'last_name': 'Westerling',
-            'password': 'admin',
-            'groups': ['Team'],
-        },
-        'lisa': {
-            'first_name': 'Lisa',
-            'last_name': 'Rhody',
-            'password': 'admin',
-            'groups': ['Team'],
-        },
-        'steve': {
-            'first_name': 'Steve',
-            'last_name': 'Zweibel',
-            'password': 'admin',
-            'groups': ['Team'],
-        }
-    },
-
-    'STAFF': {
-        'admin': {
-            'first_name': 'Administrator',
-            'last_name': 'General',
-            'password': 'admin',
-            'groups': ['Team'],
-        },
-        'param': {
-            'first_name': 'Param',
-            'last_name': 'Ajmera',
-            'password': 'admin',
-            'groups': ['Team'],
-        },
-        'di': {
-            'first_name': 'Di',
-            'last_name': 'Yoong',
-            'password': 'admin',
-            'groups': ['Team'],
-        },
-        'filipa': {
-            'first_name': 'Filipa',
-            'last_name': 'Calado',
-            'password': 'admin',
-            'groups': ['Team'],
-        },
-        'rafa': {
-            'first_name': 'Rafa',
-            'last_name': 'Davis Portela',
-            'password': 'admin',
-            'groups': ['Team'],
-        },
-        'stefano': {
-            'first_name': 'Stefano',
-            'last_name': 'Morello',
-            'password': 'admin',
-            'groups': ['Team'],
-        },
-        'kristen': {
-            'first_name': 'Kristen',
-            'last_name': 'Hackett',
-            'password': 'admin',
-            'groups': ['Team'],
-        }
-    },
-
-    'USER': {
-        'test': {
-            'first_name': 'Test',
-            'last_name': 'User',
-            'password': 'test',
-            'groups': ['Learner'],
-        }
-    }
-}
-'''
-
 
 # MAKE NO CHANGES BELOW
 
 
-'''
-DJANGO_PATHS['DB'] = Path(DJANGO_PATHS['DB'])
-
-for path in DJANGO_PATHS:
-    DJANGO_PATHS[path] = Path(__file__).absolute().parent.parent / DJANGO_PATHS[path]
-'''  # TODO: Remove after making sure the app works
 
 for cat in STATIC_IMAGES:
     STATIC_IMAGES[cat] = Path(STATIC_IMAGES[cat])
@@ -336,17 +229,17 @@ try:
     with open(USER_SETUP, 'r') as f:
         AUTO_USERS = yaml.safe_load(f)
 except FileNotFoundError:
-    # TODO: Figure out import of log and change `print` to `log.error` here
+    # TODO: #361 Figure out import of log and change `print` to `log.error` here
     print(f'Cannot open {USER_SETUP} to read the automatic user information. Make sure your `dhri_settings.py` file contains the correct filename.')
     print('This means that the script will skip the user setup. Run `manage.py createsuperuser` to be able to access the backend.')
     # exit()
 except yaml.parser.ParserError as e:
-    # TODO: Figure out import of log and change `print` to `log.error` here
+    # TODO: #361 Figure out import of log and change `print` to `log.error` here
     print(f'Cannot parse file {USER_SETUP}: {e}')
     print('This means that the script will skip the user setup. Run `manage.py createsuperuser` to be able to access the backend.')
     # exit()
 except yaml.scanner.ScannerError as e:
-    # TODO: Figure out import of log and change `print` to `log.error` here
+    # TODO: #361 Figure out import of log and change `print` to `log.error` here
     print(f'Cannot parse file {USER_SETUP}: {e}')
     print('This means that the script will skip the user setup. Run `manage.py createsuperuser` to be able to access the backend.')
     # exit()
@@ -356,17 +249,17 @@ try:
     with open(SNIPPET_SETUP, 'r') as f:
         AUTO_SNIPPETS = yaml.safe_load(f)
 except FileNotFoundError:
-    # TODO: Figure out import of log and change `print` to `log.error` here
+    # TODO: #361 Figure out import of log and change `print` to `log.error` here
     print(f'Cannot open {SNIPPET_SETUP} to read the automatic snippet information. Make sure your `dhri_settings.py` file contains the correct filename.')
     print('This means that the script will skip the snippet setup.')
     # exit()
 except yaml.parser.ParserError as e:
-    # TODO: Figure out import of log and change `print` to `log.error` here
+    # TODO: #361 Figure out import of log and change `print` to `log.error` here
     print(f'Cannot parse file {SNIPPET_SETUP}: {e}')
     print('This means that the script will skip the snippet setup.')
     # exit()
 except yaml.scanner.ScannerError as e:
-    # TODO: Figure out import of log and change `print` to `log.error` here
+    # TODO: #361 Figure out import of log and change `print` to `log.error` here
     print(f'Cannot parse file {SNIPPET_SETUP}: {e}')
     print('This means that the script will skip the snippet setup.')
     # exit()
@@ -377,7 +270,7 @@ for cat in AUTO_USERS:
     for u in AUTO_USERS[cat]:
         for section in REQUIRED_IN_USERS:
             if not u.get(section):
-                # TODO: Figure out import of log and change `print` to `log.error` here
+                # TODO: #361 Figure out import of log and change `print` to `log.error` here
                 print(
                     f'User setup file does not contain section `{section}` (in user with username `{u.get("username")}`). Make sure all the users in the `{USER_SETUP}` file contains all the required sections: `{"`, `".join(REQUIRED_IN_USERS)}`.')
                 exit()
