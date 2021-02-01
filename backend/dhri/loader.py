@@ -923,11 +923,13 @@ class GlossaryCache():
         self.path = CACHE_DIRS['ROOT'] / (self.loader.repo_name + ".json")
         self.expired = _is_expired(self.path, age_checker=TEST_AGES["GLOSSARY"], force_download=force_download) == True
 
+        new_content = False
         if not self.path.exists():
             log.warning(f'{self.path} does not exist so downloading glossary cache...')
             self._setup_raw_content()
+            new_content = True
 
-        if force_download == True or self.expired == True:
+        if new_content == False and (force_download == True or self.expired == True):
             if force_download == True:
                 log.warning(f'Force download is set to True or cache file has expired so downloading glossary cache...')
             self._setup_raw_content()

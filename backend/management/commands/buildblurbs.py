@@ -30,6 +30,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         log = Logger(name=get_name(__file__), force_verbose=options.get('verbose'), force_silent=options.get('silent'))
 
+        log.log('Building blurbs...')
+
         for cat in list(dhri_settings.AUTO_USERS.keys()):
             for u in dhri_settings.AUTO_USERS[cat]:
                 if u.get('blurb'):
@@ -47,5 +49,7 @@ class Command(BaseCommand):
                                     'user': u.get('username'),
                                     'text': text
                                 }))
+                            
+                            log.log(f'Saved blurb datafile: {SAVE_DIR}/{DATA_FILE}.')
                         else:
                             log.error(f'No directory available for `{workshop}` ({SAVE_DIR}). Did you run `python manage.py build --repo {workshop}` before running this script?', kill=True)

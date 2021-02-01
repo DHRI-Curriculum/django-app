@@ -26,6 +26,7 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--reset', action='store_true')
         parser.add_argument('--force', action='store_true')
+        parser.add_argument('--force_download', action='store_true')
         parser.add_argument('--save_all', action='store_true')
         group = parser.add_mutually_exclusive_group(required=False)
         group.add_argument('--name', nargs='+', type=str)
@@ -35,6 +36,8 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         log = Logger(name=get_name(__file__), force_verbose=options.get('verbose'), force_silent=options.get('silent'))
+
+        log.log('Building workshop files...')
 
         if options.get('all') or options.get('reset'):
             options['name'] = [x[0] for x in dhri_settings.AUTO_REPOS]
@@ -63,8 +66,7 @@ class Command(BaseCommand):
             url = f'https://github.com/DHRI-Curriculum/{workshop}'
             branch = 'v2.0'
 
-            # TODO: force_download doesn't seem to work here.
-            l = Loader(url, branch, force_download=options.get('force'))
+            l = Loader(url, branch, force_download=options.get('force_download'))
 
             # 1. Extract workshop data
             workshop = {
@@ -281,3 +283,5 @@ class Command(BaseCommand):
             # Save all data
             with open(f'{SAVE_DIR}/{DATA_FILE}', 'w+') as file:
                 file.write(yaml.dump(data))
+
+            log.log(f'Saved workshop datafile: {SAVE_DIR}/{DATA_FILE}.')

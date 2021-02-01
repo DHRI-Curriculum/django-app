@@ -17,16 +17,19 @@ class Command(BaseCommand):
     help = 'Build YAML files from insight repository'
 
     def add_arguments(self, parser):
+        parser.add_argument('--force_download', action='store_true')
         parser.add_argument('--silent', action='store_true')
         parser.add_argument('--verbose', action='store_true')
 
     def handle(self, *args, **options):
         log = Logger(name=get_name(__file__), force_verbose=options.get('verbose'), force_silent=options.get('silent'))
 
+        log.log('Building insight files...')
+
         if not pathlib.Path(SAVE_DIR).exists():
             pathlib.Path(SAVE_DIR).mkdir(parents=True)
 
-        loader = InsightLoader()
+        loader = InsightLoader(force_download=options.get('force_download'))
         insights = list()
 
         for _, i in loader.insights.items():
@@ -54,3 +57,5 @@ class Command(BaseCommand):
         # Save all data
         with open(f'{SAVE_DIR}/{DATA_FILE}', 'w+') as file:
             file.write(yaml.dump(insights))
+
+        log.log(f'Saved insights data file: {SAVE_DIR}/{DATA_FILE}')

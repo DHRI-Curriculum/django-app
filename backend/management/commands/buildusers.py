@@ -37,6 +37,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         log = Logger(name=get_name(__file__), force_verbose=options.get('verbose'), force_silent=options.get('silent'))
 
+        log.log('Building user files...')
+
         users = list()
 
         if not pathlib.Path(SAVE_DIR).exists():
@@ -99,3 +101,5 @@ class Command(BaseCommand):
         # Save all data
         with open(f'{SAVE_DIR}/{DATA_FILE}', 'w+') as file:
             file.write(yaml.dump(users))
+
+        log.log(f'Saved user datafile: {SAVE_DIR}/{DATA_FILE}.')

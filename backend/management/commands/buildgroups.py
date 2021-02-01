@@ -23,6 +23,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         log = Logger(name=get_name(__file__), force_verbose=options.get('verbose'), force_silent=options.get('silent'))
 
+        log.log('Building group files...')
+
         if not pathlib.Path(SAVE_DIR).exists():
             pathlib.Path(SAVE_DIR).mkdir(parents=True)
 
@@ -39,3 +41,5 @@ class Command(BaseCommand):
         # Save all data
         with open(f'{SAVE_DIR}/{DATA_FILE}', 'w+') as file:
             file.write(yaml.dump(permissions))
+
+        log.log(f'Saved groups data file: {SAVE_DIR}/{DATA_FILE}')

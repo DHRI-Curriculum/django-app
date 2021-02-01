@@ -18,13 +18,16 @@ class Command(BaseCommand):
     help = 'Build YAML files from glossary repository (provided through dhri_settings.GLOSSARY_REPO)'
 
     def add_arguments(self, parser):
+        parser.add_argument('--force_download', action='store_true')
         parser.add_argument('--silent', action='store_true')
         parser.add_argument('--verbose', action='store_true')
 
     def handle(self, *args, **options):
         log = Logger(name=get_name(__file__), force_verbose=options.get('verbose'), force_silent=options.get('silent'))
 
-        loader = GlossaryLoader(dhri_settings.GLOSSARY_REPO)
+        log.log('Building glossary...')
+
+        loader = GlossaryLoader(dhri_settings.GLOSSARY_REPO, force_download=options.get('force_download'))
 
         glossary = list()
 
@@ -39,3 +42,5 @@ class Command(BaseCommand):
 
         with open(f'{SAVE_DIR}/{DATA_FILE}', 'w+') as file:
             file.write(yaml.dump(glossary))
+
+        log.log(f'Saved glossary datafile: {SAVE_DIR}/{DATA_FILE}.')
