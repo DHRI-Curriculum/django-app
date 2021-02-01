@@ -4,10 +4,32 @@ from lesson.models import Challenge, Evaluation, Solution, Lesson, Question, Ans
 from library.models import Project, Reading, Resource, Tutorial
 from workshop.models import Collaboration, Contributor, DiscussionQuestion, EthicalConsideration, LearningObjective, NextStep, Workshop, Frontmatter, Praxis
 from django.core.management import BaseCommand
+from django.core.files import File
 from django.conf import settings
 from backend.dhri.log import Logger, Input
 from backend.mixins import convert_html_quotes
 from ._shared import get_yaml, get_name, get_all_existing_workshops, GLOSSARY_FILE
+import os
+
+
+def get_workshop_image_path(image_file, relative_to_upload_field=False):
+    workshop = os.path.basename(os.path.dirname(image_file))
+    if not relative_to_upload_field:
+        return settings.MEDIA_ROOT + '/' + Workshop.image.field.upload_to + workshop + '-' + os.path.basename(image_file)
+    
+    return Workshop.image.field.upload_to + workshop + '-' + os.path.basename(image_file)
+
+
+def workshop_image_exists(image_file):
+    return os.path.exists(get_workshop_image_path(image_file))
+
+
+def get_default_workshop_image():
+    return Workshop.image.field.upload_to + Workshop.image.field.default
+
+
+def default_workshop_image_exists():
+    return os.path.exists(get_default_workshop_image())
 
 
 class Command(BaseCommand):
@@ -46,12 +68,7 @@ class Command(BaseCommand):
 
             # 1. ENTER WORKSHOP
             workshop, created = Workshop.objects.get_or_create(
-                name = workshopdata.get('name'),
-                defaults = {
-                    'parent_backend': workshopdata.get('parent_backend'),
-                    'parent_branch': workshopdata.get('parent_branch'),
-                    'parent_repo': workshopdata.get('parent_repo')
-                })
+                name = workshopdata.get('name'))
 
             workshop.slug = workshopdata.get('slug')
             workshop.save_slug() # Special method for saving the slug in a format that matches the GitHub repositories.
@@ -62,6 +79,28 @@ class Command(BaseCommand):
                 if choice.lower() != 'y':
                     continue
             
+            Workshop.objects.filter(name = workshopdata.get('name')).update(
+                parent_backend = workshopdata.get('parent_backend'),
+                parent_branch = workshopdata.get('parent_branch'),
+                parent_repo = workshopdata.get('parent_repo'),
+            )
+
+            workshop.refresh_from_db()
+
+            if workshopdata.get('image'):
+                if workshop_image_exists(workshopdata.get('image')):
+                    workshop.image.name = get_workshop_image_path(workshopdata.get('image'), True)
+                    workshop.save_slug()
+                else:
+                    with open(workshopdata.get('image'), 'rb') as f:
+                        workshop.image = File(f, name=f'{workshopdata.get("slug")}-{os.path.basename(f.name)}')
+                        workshop.save_slug()
+            else:
+                workshop.image.name = get_default_workshop_image()
+                workshop.save_slug()
+                log.warning(f'Workshop {workshopdata.get("name")} does not have an image assigned to them. Add filepaths to an existing file in your datafile ({DATAFILE}) if you want to update the specific workshop.')
+
+
             # 2. ENTER FRONTMATTER
             frontmatter, created = Frontmatter.objects.get_or_create(workshop=workshop)
 
@@ -242,5 +281,8 @@ class Command(BaseCommand):
                         log.warning(f'The keyword `{keyword}` used in workshop {workshop.name}\'s lesson {lesson.title} cannot be found in the glossary. Are you sure it is in the glossary and synchronized with the database? Make sure the data file for glossary is available ({GLOSSARY_FILE}) and that the term is defined in the file. Then run python manage.py ingestglossary.')
                     else:
                         log.error(f'Multiple definitions of `{keyword}` exists in the database. Try resetting the glossary and rerun python manage.py ingestglossary before you run the ingestworkshop command again.')
+
+        if default_workshop_image_exists() == False:
+            log.warning(f'No default workshop image exists. Make sure the image with the path {get_default_workshop_image()} exists.')
 
         log.log('Added/updated workshops: ' + ', '.join([x[0] for x in workshops]))

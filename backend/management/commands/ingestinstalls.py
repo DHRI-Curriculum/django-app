@@ -1,5 +1,6 @@
 from install.models import Software, Instruction, Screenshot, Step
 from django.core.management import BaseCommand
+from django.core.files import File
 from django.conf import settings
 from backend.dhri.log import Logger, Input
 from backend.mixins import convert_html_quotes
@@ -27,6 +28,25 @@ def get_screenshot_path(image_file, relative_to_upload_field=False):
 
 def screenshot_exists(image_file):
     return os.path.exists(get_screenshot_path(image_file))
+
+
+def get_instruction_image_path(image_file, relative_to_upload_field=False):
+    if not relative_to_upload_field:
+        return settings.MEDIA_ROOT + '/' + Instruction.image.field.upload_to + os.path.basename(image_file).replace('@', '')
+    
+    return Instruction.image.field.upload_to + 'software_headers/' + os.path.basename(image_file).replace('@', '')
+
+
+def instruction_image_exists(image_file):
+    return os.path.exists(get_instruction_image_path(image_file))
+
+
+def get_default_instruction_image():
+    return Instruction.image.field.upload_to + Instruction.image.field.default
+
+
+def default_instruction_image_exists():
+    return os.path.exists(get_default_instruction_image())
 
 
 class Command(BaseCommand):
@@ -66,16 +86,19 @@ class Command(BaseCommand):
 
             instruction.refresh_from_db()
 
-            if installdata.get('instruction', {}).get('image'):
-                path = f'{settings.BASE_DIR}/website/{installdata.get("instruction", {}).get("image")}'
-                if os.path.exists(path):
-                    pass  # log.log('image is already in place')
+            original_file = installdata.get('instruction', {}).get('image')
+            if original_file:
+                if instruction_image_exists(original_file):
+                    instruction.image.name = get_instruction_image_path(original_file, True)
+                    instruction.save()
                 else:
-                    log.error(
-                        f'Unfortunately, the image `{os.path.basename(path)}` cannot be found in the correct directory ({os.path.dirname(path)}). You need to place the file there manually.')
+                    with open(original_file, 'rb') as f:
+                        instruction.image = File(f, name=os.path.basename(f.name))
+                        instruction.save()
             else:
-                log.error(
-                    f'Installation instructions for `{installdata.get("software")}` (with OS `{installdata.get("operating_system")}`) is missing an image. Add a filepath to an existing file in your datafile ({FULL_PATH}) to be able to run this command.')
+                instruction.image.name = get_default_instruction_image()
+                instruction.save()
+                log.warning(f'Installation instruction for {installdata.get("software")} does not have an image assigned to them. Add filepaths to an existing file in your datafile ({FULL_PATH}) if you want to update the specific instruction image.')
 
             for stepdata in installdata.get('instruction', {}).get('steps', []):
                 # TODO: rewrite this below with convert_html_quotes...
