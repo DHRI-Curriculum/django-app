@@ -35,7 +35,7 @@
 <div class="row">
     <div class="col-12 col-lg-9">
         {% if workshop.image %}
-            <img src="{{ MEDIA_URL }}{{ workshop.image }}" class="img-fluid" alt="{{ workshop.name }}">
+            <img src="{{ workshop.image.url }}" class="img-fluid" alt="{{ workshop.name }}">
         {% else%}
             <h2>{{ workshop.name }}</h2>
         {% endif %}
@@ -129,7 +129,7 @@
                 </div>
                 <div class="col-sm-3"><!--left col-->
                     <div class="text-center">
-                        <img src="{{ MEDIA_URL }}{{ c.contributor.profile.image.url }}" class="avatar img-circle img-thumbnail" alt="avatar">
+                        <img src="{{ c.contributor.profile.image.url }}" class="avatar img-circle img-thumbnail" alt="avatar">
                     </div>
                 </div>
           {% endfor %}
