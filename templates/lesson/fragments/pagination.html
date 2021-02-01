@@ -8,8 +8,8 @@
       <li class="page-item">
         <a class="page-link {% if request.GET.page %}{% ifequal request.GET.page page_number|slugify %}current{% endifequal %}{% endif %}" href="?page={{ page_number }}">{{ page_number }}</a></li>
     {% endfor %}
-    <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
-      <a class="page-link {% if not page_obj.has_next %}disabled{% endif %}" href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% endif %}">Next</a>
+    <li class="page-item">
+      <a class="page-link" href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% else %}{% url 'workshop:praxis' slug=workshop.slug %}{% endif %}">{% if page_obj.has_next %}Next{% else %}Theory to Practice{% endif %}</a>
     </li>
   </ul>
 </nav>
