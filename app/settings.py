@@ -169,9 +169,11 @@ EMAIL_HOST = 'dhinstitutes.org'
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
+'''
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
         'LOCATION': '/home/dhinstit/.cache/django',
     }
 }
+'''
