@@ -1,6 +1,7 @@
 <div class="col-12 col-sm-6 col-xl-4 mb-3">
     <div class="card h-100" style="box-shadow: 0 1rem 3rem rgba(0,0,0,0.375) !important;">
         {% if workshop.image %}
+            <p class="d-none">{{ workshop.image.url }}</p>
             <a href="{% url 'workshop:frontmatter' slug=workshop.slug %}" class="stretched-link"><img src="{{ workshop.image.url }}" class="card-img-top" alt="{{ workshop.name }}"></a>
         {% else %}
             <div class="card-body">
