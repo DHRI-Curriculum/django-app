@@ -774,10 +774,10 @@ class LessonParser():
                         OUTBOUND_CLEAR = "".join(href.split("http://www.github.com/DHRI-Curriculum/")[1:])
                     if OUTBOUND_CLEAR.strip() == '': OUTBOUND_CLEAR = href
 
-                    if 'raw=true' in OUTBOUND_CLEAR.lower() or 'raw.githubusercontent.com' in href.lower():
+                    if 'raw=true' in OUTBOUND_CLEAR.lower() or '/raw/' in OUTBOUND_CLEAR.lower() or 'raw.githubusercontent.com' in href.lower():
                         c = WebCache(href)
                         link['target'] = '_blank'
-                    elif 'raw=true' not in OUTBOUND_CLEAR.lower() and OUTBOUND_CLEAR.lower().startswith(REPO_CLEAR.lower()):
+                    elif 'raw=true' not in OUTBOUND_CLEAR.lower() and '/raw/' not in OUTBOUND_CLEAR.lower() and OUTBOUND_CLEAR.lower().startswith(REPO_CLEAR.lower()):
                         log.warning(f"The lesson `{title}` links to same workshop: {href}")
                     else:
                         workshop = OUTBOUND_CLEAR.split('/')[0]
