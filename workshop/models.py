@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.text import slugify
 from library.models import Reading, Project, Resource, Tutorial
+from install.models import Software
+from insight.models import Insight
 from django.contrib.auth.models import User
 from backend.mixins import CurlyQuotesMixin
 #from backend.dhri.text import dhri_slugify
@@ -41,7 +43,8 @@ class Workshop(models.Model):
         upload_to='workshop_headers/', default='workshop_headers/default.jpg')
 
     def save(self, *args, **kwargs):
-        self.slug = dhri_slugify(self.name)
+        if not self.id:
+            self.slug = dhri_slugify(self.name)
         super(Workshop, self).save()
 
     def save_slug(self, *args, **kwargs):
@@ -120,11 +123,41 @@ class Frontmatter(CurlyQuotesMixin, models.Model):
         'library.Reading', related_name="frontmatters", blank=True)
     contributors = models.ManyToManyField(
         Contributor, related_name="frontmatters", blank=True, through='Collaboration')
-    prerequisites = models.ManyToManyField(
-        Workshop, related_name="prerequisites", blank=True)
 
     def __str__(self):
         return f'Frontmatter for {self.workshop.name}'
+
+
+class Prerequisite(CurlyQuotesMixin, models.Model):
+    curly_fields = ['text']
+    EXTERNAL_LINK = 'external'
+    INSTALL = 'install'
+    INSIGHT = 'insight'
+    WORKSHOP = 'workshop'
+    CATEGORY_CHOICES = [
+        (EXTERNAL_LINK, 'External link'),
+        (INSIGHT, 'Insight'),
+        (INSTALL, 'Installation instructions for software'),
+        (WORKSHOP, 'Workshop'),
+    ]
+
+    text = models.TextField()
+    url = models.TextField(max_length=200, null=True, blank=True)
+    required = models.BooleanField(default=False)
+    recommended = models.BooleanField(default=False)
+    frontmatter = models.ManyToManyField(Frontmatter, related_name="prerequisites")
+    linked_workshop = models.ForeignKey(Workshop, related_name="prerequisite_for", on_delete=models.CASCADE, null=True)
+    linked_software = models.ManyToManyField(Software, related_name="prerequisite_for", through='PrerequisiteSoftware')
+    linked_insight = models.ForeignKey(Insight, related_name="prerequisite_for", on_delete=models.CASCADE, null=True)
+    category = models.CharField(max_length=8, choices=CATEGORY_CHOICES, default=EXTERNAL_LINK)
+
+
+class PrerequisiteSoftware(models.Model):
+    prerequisite = models.ForeignKey(Prerequisite, on_delete=models.CASCADE)
+    software = models.ForeignKey(Software, on_delete=models.CASCADE)
+    required = models.BooleanField(default=False)
+    recommended = models.BooleanField(default=False)
+
 
 
 class Collaboration(models.Model):

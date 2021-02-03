@@ -1,6 +1,7 @@
+from install.models import Instruction
 from django.shortcuts import render, HttpResponse, get_object_or_404, HttpResponseRedirect
 from django.core.paginator import Paginator
-from workshop.models import Workshop, Collaboration, Blurb
+from workshop.models import Prerequisite, Workshop, Collaboration, Blurb
 from lesson.models import Lesson
 from learner.models import Profile, Progress
 from django.conf import settings
@@ -31,6 +32,32 @@ class FrontmatterView(DetailView):
         context['user_favorited'] = self.has_favorited()
         context['num_terms'], context['all_terms'] = self.get_all_terms()
         context['frontmatter'] = self.get_object().frontmatter
+        context['prerequisites'] = {
+            'required': [],
+            'recommended': [],
+            'workshops': [],
+            'installs': {
+                'by_software': {},
+                'by_os': {},
+            },
+            'insights': [],
+            'external_links': [],
+        }
+        for req in self.get_object().frontmatter.prerequisites.all():
+            if req.required: context['prerequisites']['required'].append(req)
+            if req.recommended: context['prerequisites']['recommended'].append(req)
+
+            if req.category == Prerequisite.WORKSHOP: context['prerequisites']['workshops'].append(req)
+            elif req.category == Prerequisite.INSIGHT: context['prerequisites']['insights'].append(req)
+            elif req.category == Prerequisite.EXTERNAL_LINK: context['prerequisites']['external_links'].append(req)
+
+            for req in req.linked_software.all():
+                if not req.software in context['prerequisites']['installs']['by_software']:
+                    context['prerequisites']['installs']['by_software'][req.software] = Instruction.objects.by_software()[req.software]
+
+                if not req.operating_system in context['prerequisites']['installs']['by_os']:
+                    context['prerequisites']['installs']['by_os'][req.operating_system] = Instruction.objects.by_os()[req.operating_system]
+
         context['learning_objectives'] = [x.label.replace('<p>', '').replace(
             '</p>', '') for x in context['frontmatter'].learning_objectives.all()]
         context['default_user_image'] = settings.MEDIA_URL + \
