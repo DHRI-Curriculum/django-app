@@ -59,6 +59,94 @@
 
         </div>
 
+        <h3 class="mt-5 pt-4 pb-4 border-top-double border-bottom">Before you get started</h3>
+        <div class="mt-4">
+            <div class="lead">{% snippet "introduction-before-you-get-started" %}</div>
+            {% if prerequisites.external_links|length %}
+              <div class="mt-2">
+                  <h4>External Links</h4>
+                  <div class="small mb-3 pb-1 border-bottom">{% snippet "prerequisite-external-links" %}</div>
+                  {% for prerequisite in prerequisites.external_links %}
+                      <div class="p-2 my-3 rounded-lg linked-comment">
+                          <div class="small">
+                            <strong>Link</strong>
+                            {{ prerequisite.text | as_string | markdown | safe }}
+                          </div>
+                      </div>
+                  {% endfor %}
+              </div>
+            {% endif %}
+        </div>
+        <div class="row">
+          <div class="col-12 col-xl-4 mt-4 mt-md-2 overflow-hidden">
+              <h4 class="py-2 border-bottom">Workshops</h4>
+                  {% if not prerequisites.workshops|length %}
+                        <em class="small text-muted">There are no recommended or required workshops for you to complete before starting this workshop.</em>
+                  {% else %}
+                        <div class="small mb-3">{% snippet "prerequisite-workshops" %}</div>
+                        {% for prerequisite in prerequisites.workshops %}
+                            <div class="p-2 my-3 rounded-lg linked-comment">
+                                <h6><a href="{% url 'workshop:frontmatter' slug=prerequisite.linked_workshop.slug %}">{{ prerequisite.linked_workshop.name }}</a></h6>
+                                <small>{{ prerequisite.text | as_string | markdown | safe }}</small>
+                            </div>
+                        {% endfor %}
+                  {% endif %}
+          </div>
+          {% if prerequisites.installs|length %}
+              <div class="col-12 {% if prerequisites.insights|length %}col-xl-4{% else %}col-xl-8{% endif %} mt-4 mt-md-2 overflow-hidden">
+                  <h4 class="py-2 border-bottom">Software installations</h4>
+                  <div class="small mb-3">{% snippet "prerequisite-installs" %}</div>
+                  
+                  {% for software, d in prerequisites.installs.by_software.items %}
+                      <div class="p-2 my-3 rounded-lg linked-comment">
+                          <h5 class="m-0">{{ software }}</h5>
+                          <div class="my-2 small">
+                            {% if prerequisite.text %}
+                                {{ prerequisite.text }}
+                            {% else %}
+                                {% for os, instructions in d.items %}
+                                    {% if forloop.first %}{{ instructions.why | as_string | safe }}{% endif %}
+                                {% endfor %}
+                            {% endif %}
+                          </div>
+                          <div class="btn-group btn-group-sm" role="group" aria-label="Links to installation of {{ software }} for different operating systems.">
+                              {% for os, instructions in d.items %}
+                                  {% if 'macintosh' in request.META.HTTP_USER_AGENT.lower and 'mac' in os.lower %}
+                                      <!-- This is a mac and these are MAC instructions...-->
+                                      <a href="{% url 'install:installation' slug=instructions.slug %}" class="btn btn-warning shadow">Install for {{ os }}</a>
+                                  {% elif 'windows' in request.META.HTTP_USER_AGENT.lower and 'windows' in os.lower %}
+                                      <!-- This is a windows machine and these are WINDOWS instructions...-->
+                                      <a href="{% url 'install:installation' slug=instructions.slug %}" class="btn btn-warning shadow">Install for {{ os }}</a>
+                                  {% else %}
+                                      <a href="{% url 'install:installation' slug=instructions.slug %}" class="btn btn-outline-primary">Install for {{ os }}</a>
+                                  {% endif %}
+                              {% endfor %}
+                          </div>
+                      </div>
+                  {% endfor %}
+                  
+              </div>
+          {% endif %}
+          {% if prerequisites.insights|length %}
+              <div class="col-12 col-xl-4 mt-4 mt-md-2 overflow-hidden">
+                  <h4 class="py-2 border-bottom">Insights</h4>
+                  <div class="small mb-3">{% snippet "prerequisite-insights" %}</div>
+                  {% for prerequisite in prerequisites.insights %}
+                      <div class="p-2 my-3 rounded-lg linked-comment">
+                          <h6><a href="{% url 'insight:insight' slug=prerequisite.linked_insight.slug %}">{{ prerequisite.linked_insight.title }}</a></h6>
+                          <div class="small">
+                              {% if prerequisite.text %}
+                                  {{ prerequisite.text | as_string | markdown | safe }}
+                              {% else %}
+                                  {{ prerequisite.linked_insight.text | as_string | safe }}
+                              {% endif %}
+                          </div>
+                      </div>
+                  {% endfor %}
+              </div>
+          {% endif %}
+        </div>
+
         <h3 class="mt-5 pt-4 pb-4 border-top-double border-bottom">Contexts</h3>
         <div class="lead mt-4">
             {% snippet "introduction-context" %}
@@ -70,7 +158,9 @@
                     <h4 class="py-2 border-bottom">Ethical considerations</h4>
                     <div class="small mb-3 pb-1 border-bottom">{% snippet "introduction-ethical-considerations" %}</div>
                     {% for label in frontmatter.ethical_considerations.all %}
-                        {{ label | as_string | markdown | safe }}
+                        <div class="p-2 my-3 rounded-lg linked-comment">
+                            {{ label | as_string | markdown | safe }}
+                        </div>
                     {% endfor %}
                 </div>
             {% endif %}
@@ -274,6 +364,18 @@
         document.querySelector('#moreTerms').innerHTML += additional_terms;
       });
     }
+
+    var triggerTabList = [].slice.call(document.querySelectorAll('#myTab a'))
+    triggerTabList.forEach(function (triggerEl) {
+      var tabTrigger = new bootstrap.Tab(triggerEl)
+
+      triggerEl.addEventListener('click', function (event) {
+        console.log('tab triggered', event);
+        event.preventDefault()
+        tabTrigger.show()
+      })
+    })
+
   </script>
   <script src="{% static 'workshop/js/navbar.js' %}" crossorigin="anonymous"></script>
   <script src="{% static 'workshop/js/favorite.js' %}" crossorigin="anonymous"></script>
