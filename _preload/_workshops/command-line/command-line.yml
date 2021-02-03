@@ -89,22 +89,21 @@ frontmatter:
   - <p>Search text files using the <code>grep</code> command</p>
   - <p>Create and sort cheat sheets for the commands we learn</p>
   prerequisites:
-  - full_text: '[Visual Studio Code](https://github.com/DHRI-Curriculum/install/blob/v2.0/guides/visual-studio-code.md)
-      (recommended) You can use any plain text editor but for our purposes, Visual
-      Studio Code ("VS Code") will be used.'
+  - potential_name: Visual Studio Code
     potential_slug_fragment: visual-studio-code
-    potential_software: Visual Studio Code
     recommended: true
     required: false
+    text: You can use any plain text editor but for our purposes, Visual Studio Code
+      ("VS Code") will be used.
     type: install
-  - full_text: To know what operating system you're using. If you are on a Mac, you
-      will be using the built-in Terminal. If you're using Windows, you will need
-      to follow the instructions to install [Git Bash](https://github.com/DHRI-Curriculum/install/blob/v2.0/guides/git.md),
-      so that we can work in the cross-platform Unix command line for this session.
+  - potential_name: Git Bash
     potential_slug_fragment: git
-    potential_software: Git Bash
     recommended: false
     required: false
+    text: To know what operating system you're using. If you are on a Mac, you will
+      be using the built-in Terminal. If you're using Windows, you will need to follow
+      the instructions to install , so that we can work in the cross-platform Unix
+      command line for this session.
     type: install
   projects:
   - annotation: Most Python- and R-based projects will require you to have some knowledge
@@ -231,9 +230,9 @@ lessons:
     img-fluid d-block my-4\" src=\"/static/website/images/lessons/command-line/worddoc.png\"\
     \ style=\"max-width:100%;\"/></a></p>\n<p>Users with visual disabilities, <a href=\"\
     https://github.com/DHRI-Curriculum/command-line/raw/v2.0/files/WordProcessorExample.docx\"\
-    >click here</a> to download the Word file.</p>\n<p>If you ask the command line\
-    \ to read that file, this Word <code>.docx</code> file will look something like\
-    \ this</p>\n<p><a href=\"/static/website/images/lessons/command-line/CatWordDoc.png\"\
+    \ target=\"_blank\">click here</a> to download the Word file.</p>\n<p>If you ask\
+    \ the command line to read that file, this Word <code>.docx</code> file will look\
+    \ something like this</p>\n<p><a href=\"/static/website/images/lessons/command-line/CatWordDoc.png\"\
     \ rel=\"noopener noreferrer\" target=\"_blank\"><img alt=\"Word Doc as visualized\
     \ by Command Line\" class=\"img-fluid d-block my-4\" src=\"/static/website/images/lessons/command-line/CatWordDoc.png\"\
     \ style=\"max-width:100%;\"/></a></p>\n<p>Users with visual disabilities, <a href=\"\
@@ -856,22 +855,23 @@ lessons:
     \ Now, this is where the command line can be a very powerful tool: let's try working\
     \ with a large text file, one that would be too large to work with by hand.</p>\n\
     <p>Let's download the data we're going to work with:</p>\n<p><a href=\"https://github.com/DHRI-Curriculum/command-line/raw/v2.0/files/nypl_items.csv\"\
-    >Download <code>nypl_items.csv</code></a></p>\n<p>Our data set is a list of public\
-    \ domain items from the New York Public Library. It's in <code>.csv</code> format,\
-    \ which is a plain text spreadsheet format. CSV stands for \"comma separated values,\"\
-    \ and each field in the spreadsheet is separated with a comma. It's all still\
-    \ plain text, though, so we can manipulate the data using the command line.</p>\n\
-    <h2>\n<a aria-hidden=\"true\" class=\"anchor\" href=\"#move-command\" id=\"user-content-move-command\"\
-    ><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>Move Command</h2>\n\
-    <p>Once the file is downloaded, move it from your <code>Downloads</code> folder\
-    \ to the <code>projects</code> folder on your desktop\u2014either through the\
-    \ command line, or drag and drop in the GUI. Since this is indeed a command line\
-    \ workshop, you should try the former!</p>\n<p>To move this file using the command\
-    \ line, you first need to navigate to your <code>Downloads</code> folder where\
-    \ that file is saved. Then type the <code>mv</code> command followed by the name\
-    \ of the file you want to move and then the file path to your <code>projects</code>\
-    \ folder on your desktop, which is where you want to move that file to (note that\
-    \ <code>~</code> refers to your home folder):</p>\n<div class=\"highlight highlight-text-shell-session\"\
+    \ target=\"_blank\">Download <code>nypl_items.csv</code></a></p>\n<p>Our data\
+    \ set is a list of public domain items from the New York Public Library. It's\
+    \ in <code>.csv</code> format, which is a plain text spreadsheet format. CSV stands\
+    \ for \"comma separated values,\" and each field in the spreadsheet is separated\
+    \ with a comma. It's all still plain text, though, so we can manipulate the data\
+    \ using the command line.</p>\n<h2>\n<a aria-hidden=\"true\" class=\"anchor\"\
+    \ href=\"#move-command\" id=\"user-content-move-command\"><span aria-hidden=\"\
+    true\" class=\"octicon octicon-link\"></span></a>Move Command</h2>\n<p>Once the\
+    \ file is downloaded, move it from your <code>Downloads</code> folder to the <code>projects</code>\
+    \ folder on your desktop\u2014either through the command line, or drag and drop\
+    \ in the GUI. Since this is indeed a command line workshop, you should try the\
+    \ former!</p>\n<p>To move this file using the command line, you first need to\
+    \ navigate to your <code>Downloads</code> folder where that file is saved. Then\
+    \ type the <code>mv</code> command followed by the name of the file you want to\
+    \ move and then the file path to your <code>projects</code> folder on your desktop,\
+    \ which is where you want to move that file to (note that <code>~</code> refers\
+    \ to your home folder):</p>\n<div class=\"highlight highlight-text-shell-session\"\
     ><pre>$ <span class=\"pl-s1\">mv nypl_items.csv <span class=\"pl-k\">~</span>/Desktop/projects/</span></pre></div>\n\
     <p>You can then navigate to that <code>projects</code> folder and use the <code>ls</code>\
     \ command to check that the file is now there.</p>\n<h2>\n<a aria-hidden=\"true\"\

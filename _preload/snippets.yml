@@ -16,3 +16,13 @@ introduction-tutorials: "<p>DHRI workshops provide a foundational comprehension 
 introduction-resources: "<p>After they complete a workshop, participants often ask: what next? Here are some additional resources that can help you think about the projects that could be developed, the resources that you might need, the ways this skill could be used in the classroom, or debates in the field of digital humanities that provide context to what you've just learned.</p>"
 
 introduction-library: "<p class=\"lead\">Introductory text to the library. Should live in the new pedagagogy part of the website settings.</p>"
+
+introduction-before-you-get-started: '<p>This is a short introduction of the section "before you get started." We want to introduce here the idea of some more central steps that participants want to take before they get started with this workshop, such as software installations, downloads of files from external sources, etc.'
+
+prerequisite-workshops: '<p>An introduction of the prerequisite workshops and why we ask participants to engage with other workshops before the one they are about to embark on.'
+
+prerequisite-installs: '<p>An introduction of the prerequisite installations and why we ask participants to install certain software.'
+
+prerequisite-insights: '<p>An introduction of the prerequisite insights, what they are, and why we ask participants to go through them in advance...'
+
+prerequisite-external-links: '<p>A quick little informative text that helps the learner understand why we include some important links to external websites on our website. Since these are separate from our course content, we want to make sure that it is clear to learners why they are there.</p>'

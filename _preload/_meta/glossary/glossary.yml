@@ -495,13 +495,9 @@
     For example, we might use the function <code>choice</code> from the <a href="https://docs.python.org/3/library/random.html"
     rel="nofollow"><code>random</code></a> module, to generate random numbers.</p>
 
-    <div class="highlight highlight-text-python-console"><pre>&gt;&gt;&gt; <span class="pl-k">import</span>
-    random
+    <pre lang="pycon"><code>&gt;&gt;&gt; import random
 
-    &gt;&gt;&gt; numbers <span class="pl-k">=</span> [<span class="pl-c1">1</span>,
-    <span class="pl-c1">2</span>, <span class="pl-c1">3</span>, <span class="pl-c1">4</span>,
-    <span class="pl-c1">5</span>, <span class="pl-c1">6</span>, <span class="pl-c1">7</span>,
-    <span class="pl-c1">8</span>, <span class="pl-c1">9</span>]
+    &gt;&gt;&gt; numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9]
 
     &gt;&gt;&gt; random.choice(numbers)
 
@@ -525,7 +521,9 @@
 
     &gt;&gt;&gt; random.choice(numbers)
 
-    9</pre></div>'
+    9
+
+    </code></pre>'
   term: Modules
 - explication: <p>The Natural Language Toolkit (NLTK) is platform for Python for working
     with human language data.</p>
