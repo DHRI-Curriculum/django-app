@@ -3,15 +3,17 @@ from django.core.management import BaseCommand
 from django.contrib.auth.models import User
 from backend.dhri.log import Logger, Input
 from backend.mixins import convert_html_quotes
-from ._shared import get_yaml, get_name, get_all_existing_workshops
+from ._shared import get_yaml, get_name, get_all_existing_workshops, LogSaver
 
 
-class Command(BaseCommand):
+class Command(LogSaver, BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
     help = 'Ingests internal DHRI YAML files with blurb information into the database'
     requires_migrations_checks = True
+    SAVE_DIR = ''
+    WARNINGS, LOGS = [], []
 
     def add_arguments(self, parser):
         parser.add_argument('--forceupdate', action='store_true')
@@ -38,7 +40,7 @@ class Command(BaseCommand):
                 log.error(f'Username was not defined for the blurb for workshop {name} was not found. Check the datafile {DATAFILE} to verify the username attributed to the blurb.')
 
             if not data.get('workshop'):
-                log.warning(f'Blurb had no workshop assigned, but will proceed with the blurb\'s parent folder ({name}) as assumed workshop. To fix this warning, you can try running python manage.py buildblurbs before running ingestblurbs.')
+                self.WARNINGS.append(log.warning(f'Blurb had no workshop assigned, but will proceed with the blurb\'s parent folder ({name}) as assumed workshop. To fix this warning, you can try running python manage.py buildblurbs before running ingestblurbs.'))
                 data['workshop'] = name
             
             if not data.get('text'):
@@ -65,4 +67,8 @@ class Command(BaseCommand):
             blurb.text = data.get('text')
             blurb.save()
 
-        log.log('Added/updated blurbs for workshops: ' + ', '.join([x[0] for x in workshops]))
+        self.LOGS.append(log.log('Added/updated blurbs for workshops: ' + ', '.join([x[0] for x in workshops])))
+
+        self.SAVE_DIR = self.SAVE_DIR = f'{LogSaver.LOG_DIR}/ingestblurbs'
+        if self._save(data='ingestblurbs', name='warnings.md', warnings=True) or self._save(data='ingestblurbs', name='logs.md', warnings=False, logs=True):
+            log.log('Log files with any warnings and logging information is now available in the' + self.SAVE_DIR, force=True)

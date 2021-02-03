@@ -3,8 +3,7 @@ from django.core.management import BaseCommand
 from django.core.files import File
 from django.conf import settings
 from backend.dhri.log import Logger, Input
-from backend.mixins import convert_html_quotes
-from ._shared import test_for_required_files, get_yaml, get_name
+from ._shared import test_for_required_files, get_yaml, get_name, LogSaver
 from shutil import copyfile
 import os
 
@@ -49,12 +48,14 @@ def default_instruction_image_exists():
     return os.path.exists(get_default_instruction_image())
 
 
-class Command(BaseCommand):
+class Command(LogSaver, BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
     help = 'Ingests internal DHRI YAML files with installs information into the database'
     requires_migrations_checks = True
+    SAVE_DIR = ''
+    WARNINGS, LOGS = [], []
 
     def add_arguments(self, parser):
         parser.add_argument('--forceupdate', action='store_true')
@@ -98,7 +99,7 @@ class Command(BaseCommand):
             else:
                 instruction.image.name = get_default_instruction_image()
                 instruction.save()
-                log.warning(f'Installation instruction for {installdata.get("software")} does not have an image assigned to them. Add filepaths to an existing file in your datafile ({FULL_PATH}) if you want to update the specific instruction image.') # TODO: Move warning to build stage
+                self.WARNINGS.append(log.warning(f'Installation instruction for {installdata.get("software")} does not have an image assigned to them. Add filepaths to an existing file in your datafile ({FULL_PATH}) if you want to update the specific instruction image.')) # TODO: Move warning to build stage
 
             for stepdata in installdata.get('instruction', {}).get('steps', []):
                 # TODO: #365 rewrite this below with convert_html_quotes...
@@ -133,5 +134,9 @@ class Command(BaseCommand):
                         log.error(
                             'Too many identical screenshots. Try resetting and re-run python manage.py ingestinstalls.')
 
-        log.log('Added/updated installation instructions: ' +
-                ', '.join([f'{x.get("software")} ({x.get("operating_system")})' for x in data]))
+        self.LOGS.append(log.log('Added/updated installation instructions: ' +
+                ', '.join([f'{x.get("software")} ({x.get("operating_system")})' for x in data])))
+
+        self.SAVE_DIR = self.SAVE_DIR = f'{LogSaver.LOG_DIR}/ingestinstalls'
+        if self._save(data='ingestinstalls', name='warnings.md', warnings=True) or self._save(data='ingestinstalls', name='logs.md', warnings=False, logs=True):
+            log.log('Log files with any warnings and logging information is now available in the' + self.SAVE_DIR, force=True)

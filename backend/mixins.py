@@ -22,6 +22,8 @@ def quote_converter(string):
 
 
 def convert_html_quotes(html):
+    if not html:
+        return ''
     soup = BeautifulSoup(html, 'lxml')
     for text_node in soup.find_all(string=True): # TODO: this should exclude code, where we don't want to enforce any curly quotes due to accessibility (ease of copying code etc)
         text_node.replaceWith(quote_converter(text_node))

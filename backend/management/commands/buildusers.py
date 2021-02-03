@@ -4,7 +4,7 @@ from backend.dhri.log import Logger
 from backend import dhri_settings
 from shutil import copyfile
 from PIL import Image
-from ._shared import get_name
+from ._shared import get_name, LogSaver
 import yaml
 import pathlib
 
@@ -23,11 +23,13 @@ def crop_center(pil_img, crop_width, crop_height):
                          (img_height + crop_height) // 2))
 
 
-class Command(BaseCommand):
+class Command(LogSaver, BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
     help = 'Build YAML files from user information (provided through dhri_settings.AUTO_USER)'
+    SAVE_DIR = ''
+    WARNINGS, LOGS = [], []
 
     def add_arguments(self, parser):
         parser.add_argument('--nocrop', action='store_true')
@@ -37,7 +39,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         log = Logger(name=get_name(__file__), force_verbose=options.get('verbose'), force_silent=options.get('silent'))
 
-        log.log('Building user files...')
+        log.log('Building user files... Please be patient as this can take some time.')
 
         users = list()
 
@@ -91,6 +93,8 @@ class Command(BaseCommand):
                                 cropped_img = crop_center(cropped_img, min(cropped_img.size), min(cropped_img.size)) # crop to square from center!
                             cropped_img = cropped_img.resize((MAX_SIZE, MAX_SIZE), Image.LANCZOS)
                             cropped_img.save(user['profile']['image'], 'jpeg', quality=50)
+                else:
+                    self.WARNINGS.append(log.warning(f'User `{u.get("username")}` does not have an image assigned to them. Add filepaths to an existing file in your datafile (`{SAVE_DIR}/{DATA_FILE}`) or follow the steps in the documentation to add user images if you want to make sure the specific user has a profile picture. Then, rerun `python manage.py buildusers` or `python manage.py build`'))
 
                 for link in u.get('links', []):
                     user['profile']['links'].append({
@@ -105,4 +109,8 @@ class Command(BaseCommand):
         with open(f'{SAVE_DIR}/{DATA_FILE}', 'w+') as file:
             file.write(yaml.dump(users))
 
-        log.log(f'Saved user datafile: {SAVE_DIR}/{DATA_FILE}.')
+        self.LOGS.append(log.log(f'Saved user datafile: {SAVE_DIR}/{DATA_FILE}.'))
+            
+        self.SAVE_DIR = self.SAVE_DIR = f'{LogSaver.LOG_DIR}/buildusers'
+        if self._save(data='buildusers', name='warnings.md', warnings=True) or self._save(data='buildusers', name='logs.md', warnings=False, logs=True):
+            log.log('Log files with any warnings and logging information is now available in the' + self.SAVE_DIR, force=True)

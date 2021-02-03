@@ -8,7 +8,7 @@ from django.core.files import File
 from django.conf import settings
 from backend.dhri.log import Logger, Input
 from backend.mixins import convert_html_quotes
-from ._shared import get_yaml, get_name, get_all_existing_workshops, GLOSSARY_FILE
+from ._shared import get_yaml, get_name, get_all_existing_workshops, GLOSSARY_FILE, LogSaver
 import os
 
 
@@ -32,12 +32,14 @@ def default_workshop_image_exists():
     return os.path.exists(get_default_workshop_image())
 
 
-class Command(BaseCommand):
+class Command(LogSaver, BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
     help = 'Ingests internal DHRI YAML files with information about all the existing workshops into the database'
     requires_migrations_checks = True
+    SAVE_DIR = ''
+    WARNINGS, LOGS = [], []
 
     def add_arguments(self, parser):
         parser.add_argument('--forceupdate', action='store_true')
@@ -98,7 +100,7 @@ class Command(BaseCommand):
             else:
                 workshop.image.name = get_default_workshop_image()
                 workshop.save_slug()
-                log.warning(f'Workshop {workshopdata.get("name")} does not have an image assigned to them. Add filepaths to an existing file in your datafile ({DATAFILE}) if you want to update the specific workshop.') # TODO: Move warning to build stage
+                self.WARNINGS.append(log.warning(f'Workshop {workshopdata.get("name")} does not have an image assigned to them. Add filepaths to an existing file in your datafile ({DATAFILE}) if you want to update the specific workshop.')) # TODO: Move warning to build stage
 
 
             # 2. ENTER FRONTMATTER
@@ -133,9 +135,6 @@ class Command(BaseCommand):
                 frontmatter.readings.add(reading)
                 frontmatter.save()
 
-            for prereqdata in frontmatterdata.get('prerequisites'):
-                pass # print(prereqdata) # TODO: #366 the database model that exists only links frontmatter to workshops, but we need more flexibility here with text, and a _potential_ link to workshop instead.
-            
             for resourcedata in frontmatterdata.get('resources', []):
                 pass # print(resourcedata) # TODO: #367 The Frontmatter object needs a new many-to-many relationship to resources. Create it and include in the ingestion here.
 
@@ -278,11 +277,16 @@ class Command(BaseCommand):
                         lesson.terms.add(finder[0])
                         lesson.save()
                     elif finder.count() == 0:
-                        log.warning(f'The keyword `{keyword}` used in workshop {workshop.name}\'s lesson {lesson.title} cannot be found in the glossary. Are you sure it is in the glossary and synchronized with the database? Make sure the data file for glossary is available ({GLOSSARY_FILE}) and that the term is defined in the file. Then run python manage.py ingestglossary.')
+                        self.WARNINGS.append(log.warning(f'The keyword `{keyword}` used in workshop {workshop.name}\'s lesson {lesson.title} cannot be found in the glossary. Are you sure it is in the glossary and synchronized with the database? Make sure the data file for glossary is available ({GLOSSARY_FILE}) and that the term is defined in the file. Then run python manage.py ingestglossary.'))
                     else:
                         log.error(f'Multiple definitions of `{keyword}` exists in the database. Try resetting the glossary and rerun python manage.py ingestglossary before you run the ingestworkshop command again.')
 
         if default_workshop_image_exists() == False:
-            log.warning(f'No default workshop image exists. Make sure the image with the path {get_default_workshop_image()} exists.')
+            self.WARNINGS.append(log.warning(f'No default workshop image exists. Make sure the image with the path {get_default_workshop_image()} exists.'))
 
-        log.log('Added/updated workshops: ' + ', '.join([x[0] for x in workshops]))
+        self.LOGS.append(log.log('Added/updated workshops: ' + ', '.join([x[0] for x in workshops])))
+        self.LOGS.append(log.log('Do not forget to run `ingestprerequisites` after running the `ingestworkshop` command (without the --name flag).', color='yellow'))
+
+        self.SAVE_DIR = self.SAVE_DIR = f'{LogSaver.LOG_DIR}/ingestworkshop'
+        if self._save(data='ingestworkshop', name='warnings.md', warnings=True) or self._save(data='ingestworkshop', name='logs.md', warnings=False, logs=True):
+            log.log('Log files with any warnings and logging information is now available in the' + self.SAVE_DIR, force=True)

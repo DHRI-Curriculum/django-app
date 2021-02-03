@@ -2,49 +2,39 @@ from django.core.management import BaseCommand
 from django.conf import settings
 from backend.dhri.log import Logger
 from backend.dhri.install_parser import InstallLoader
-from ._shared import get_name
+from ._shared import get_name, LogSaver
 from shutil import copyfile
 import re
 import pathlib
 import yaml
 
 
-def _get_order(step):
-    g = re.search(r"Step ([0-9]+): ", step)
-    if g:
-        order = g.groups()[0]
-        step = re.sub(r'Step ([0-9]+): ', '', step)
-    else:
-        order = 0
-        log.warning(
-            'Found an installation step that does not show the order clearly (see documentation). Cannot determine order: ' + str(step))
-    return(order, step)
-
-
 SAVE_DIR = f'{settings.BASE_DIR}/_preload/_install'
 DATA_FILE = 'install.yml'
 
 
-class Command(BaseCommand):
+class Command(LogSaver, BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
     help = 'Build YAML files from install repository'
+    SAVE_DIR = ''
+    WARNINGS, LOGS = [], []
 
     def add_arguments(self, parser):
         parser.add_argument('--silent', action='store_true')
         parser.add_argument('--verbose', action='store_true')
-        parser.add_argument('--force_download', action='store_true')
+        parser.add_argument('--forcedownload', action='store_true')
 
     def handle(self, *args, **options):
         log = Logger(name=get_name(__file__), force_verbose=options.get('verbose'), force_silent=options.get('silent'))
 
-        log.log('Building installation instruction files...')
+        log.log('Building installation instruction files... Please be patient as this can take some time.')
 
         if not pathlib.Path(SAVE_DIR).exists():
             pathlib.Path(SAVE_DIR).mkdir(parents=True)
 
-        loader = InstallLoader(force_download=options.get('force_download'))
+        loader = InstallLoader(force_download=options.get('forcedownload'))
         installs = list()
 
         for software in loader.all_software:
@@ -82,4 +72,8 @@ class Command(BaseCommand):
         with open(f'{SAVE_DIR}/{DATA_FILE}', 'w+') as file:
             file.write(yaml.dump(installs))
 
-        log.log(f'Saved installs datafile: {SAVE_DIR}/{DATA_FILE}.')
+        self.LOGS.append(log.log(f'Saved installs datafile: {SAVE_DIR}/{DATA_FILE}.'))
+            
+        self.SAVE_DIR = self.SAVE_DIR = f'{LogSaver.LOG_DIR}/buildinstalls'
+        if self._save(data='buildinstalls', name='warnings.md', warnings=True) or self._save(data='buildinstalls', name='logs.md', warnings=False, logs=True):
+            log.log('Log files with any warnings and logging information is now available in the' + self.SAVE_DIR, force=True)

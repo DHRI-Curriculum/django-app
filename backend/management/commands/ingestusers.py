@@ -4,7 +4,7 @@ from django.core.management import BaseCommand
 from django.core.files import File
 from django.conf import settings
 from backend.dhri.log import Logger, Input
-from ._shared import test_for_required_files, get_yaml, get_name
+from ._shared import test_for_required_files, get_yaml, get_name, LogSaver
 import os
 
 
@@ -31,12 +31,14 @@ def get_default_profile_picture():
     return Profile.image.field.upload_to + '/' + Profile.image.field.default
 
 
-class Command(BaseCommand):
+class Command(LogSaver, BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
     help = 'Ingests internal DHRI YAML files with user information into the database'
     requires_migrations_checks = True
+    SAVE_DIR = ''
+    WARNINGS, LOGS = [], []
 
     def add_arguments(self, parser):
         parser.add_argument('--forceupdate', action='store_true')
@@ -99,6 +101,9 @@ class Command(BaseCommand):
             else:
                 profile.image.name = get_default_profile_picture()
                 profile.save()
-                log.warning(f'User {userdata.get("username")} does not have an image assigned to them. Add filepaths to an existing file in your datafile ({FULL_PATH}) if you want to update the specific user.') # TODO: Move warning to build stage
 
-        log.log('Added/updated users: ' + ', '.join([x.get('username') for x in data]))
+        self.LOGS.append(log.log('Added/updated users: ' + ', '.join([x.get('username') for x in data])))
+
+        self.SAVE_DIR = self.SAVE_DIR = f'{LogSaver.LOG_DIR}/ingestusers'
+        if self._save(data='ingestusers', name='warnings.md', warnings=True) or self._save(data='ingestusers', name='logs.md', warnings=False, logs=True):
+            log.log('Log files with any warnings and logging information is now available in the' + self.SAVE_DIR, force=True)

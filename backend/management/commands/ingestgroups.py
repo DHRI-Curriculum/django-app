@@ -2,7 +2,7 @@ from django.contrib.auth.models import Group, Permission
 from django.core.management import BaseCommand
 from django.conf import settings
 from backend.dhri.log import Logger, Input
-from ._shared import test_for_required_files, get_yaml, get_name
+from ._shared import test_for_required_files, get_yaml, get_name, LogSaver
 
 
 SAVE_DIR = f'{settings.BASE_DIR}/_preload/_meta/users'
@@ -13,12 +13,14 @@ REQUIRED_PATHS = [
 ]
 
 
-class Command(BaseCommand):
+class Command(LogSaver, BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
     help = 'Ingests internal DHRI YAML files with groups information into the database'
     requires_migrations_checks = True
+    SAVE_DIR = ''
+    WARNINGS, LOGS = [], []
 
     def add_arguments(self, parser):
         parser.add_argument('--forceupdate', action='store_true')
@@ -45,6 +47,10 @@ class Command(BaseCommand):
                     # Find permission object and add to group
                     perm = Permission.objects.get(codename=codename)
                     group.permissions.add(perm)
-                    log.log(f'Adding {codename} to group {group.__str__()}.')
+                    self.LOGS.append(log.log(f'Adding {codename} to group {group.__str__()}.'))
                 except Permission.DoesNotExist:
                     log.error(f'{codename} not found.')
+
+        self.SAVE_DIR = self.SAVE_DIR = f'{LogSaver.LOG_DIR}/ingestgroups'
+        if self._save(data='ingestgroups', name='warnings.md', warnings=True) or self._save(data='ingestgroups', name='logs.md', warnings=False, logs=True):
+            log.log('Log files with any warnings and logging information is now available in the' + self.SAVE_DIR, force=True)

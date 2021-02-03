@@ -7,7 +7,7 @@ import requests
 import re
 
 from pathlib import Path
-from bs4 import BeautifulSoup, Comment
+from bs4 import BeautifulSoup
 from requests.exceptions import HTTPError, MissingSchema
 
 from django.urls import reverse
@@ -23,7 +23,7 @@ from backend.dhri.webcache import WebCache
 
 from backend.dhri_settings import NORMALIZING_SECTIONS, FORCE_DOWNLOAD, BACKEND_AUTO, \
                                     REPO_AUTO, BRANCH_AUTO, TEST_AGES, CACHE_DIRS, \
-                                    STATIC_IMAGES, LESSON_TRANSPOSITIONS, VERBOSE, CACHE_VERBOSE
+                                    STATIC_IMAGES, LESSON_TRANSPOSITIONS, VERBOSE, CACHE_VERBOSE, TERMINAL_WIDTH
 
 from backend.dhri.new_functions import mini_parse_eval, mini_parse_keywords
 
@@ -72,17 +72,33 @@ def _is_expired(path, age_checker=TEST_AGES['ROOT'], force_download=FORCE_DOWNLO
     return False
 
 
-def process_links(input, obj):
+def process_links(input, obj, is_html=False) -> tuple:
     """<#TODO: docstr>"""
-    links = extract_links(input)
-    if links:
-        title, url = links[0]
+    title, url = None, None
+    if is_html == False:
+        links = extract_links(input)
+        if links:
+            title, url = links[0]
+        else:
+            return(None, None)
     else:
-        return(None, None)
+        soup = BeautifulSoup(input, 'lxml')
+        links = soup.find_all("a")
+        if not len(links):
+            log.warning(f'A link was expected in the input but could not be parsed: {input}')
+            return(None, None)
+        title, url = links[0].text, links[0]['href']
+
     if len(links) > 1:
-        link_list = '\n    - ' + "\n    - ".join([x[1][:50] for x in links[1:]])
-        log.warning(f'One project seems to contain more than one URL, but only one ({url[:50]}) is captured:')
-        # print(link_list)
+        if is_html:
+            url_list = [x['href'] for x in links]
+            url_list.insert(0,'*** '+url)
+            link_list = '- ' + "\n    - ".join([x[:TERMINAL_WIDTH-30] for x in url_list])
+        else:
+            links = [x[1] for x in links]
+            links[0] = '*** '+links[0]
+            link_list = '- ' + "\n    - ".join([x[:TERMINAL_WIDTH-30] for x in links])
+        log.warning(f'One project seems to contain more than one URL, but only the first is captured:' + link_list) # TODO: Better handling of this in general....
     if title == None or title == '':
         from backend.dhri.webcache import WebCache
         title = WebCache(url).title
@@ -312,7 +328,7 @@ class Loader():
         self.frontmatter['projects'] = [str(_) for _ in as_list(self.frontmatter.get('projects'))]
         self.frontmatter['learning_objectives'] = [PARSER.convert(_) for _ in as_list(self.frontmatter.get('learning_objectives'))] # make into HTML
         self.frontmatter['ethical_considerations'] = [PARSER.convert(_) for _ in as_list(self.frontmatter.get('ethical_considerations'))]
-        self.frontmatter['prerequisites'] = [_ for _ in as_list(self.frontmatter.get('prerequisites'))]
+        self.frontmatter['prerequisites'] = [PARSER.convert(_) for _ in as_list(self.frontmatter.get('prerequisites'))]
         self.frontmatter['resources'] = [_ for _ in as_list(self.frontmatter.get('resources'))]
 
         # fix praxis data sections
@@ -778,7 +794,7 @@ class LessonParser():
                         c = WebCache(href)
                         link['target'] = '_blank'
                     elif 'raw=true' not in OUTBOUND_CLEAR.lower() and '/raw/' not in OUTBOUND_CLEAR.lower() and OUTBOUND_CLEAR.lower().startswith(REPO_CLEAR.lower()):
-                        log.warning(f"The lesson `{title}` links to same workshop: {href}")
+                        log.warning(f"The lesson `{title}` links to the workshop on GitHub rather than the curriculum site: {href}")
                     else:
                         workshop = OUTBOUND_CLEAR.split('/')[0]
 
@@ -795,7 +811,7 @@ class LessonParser():
                                         url = reverse('install:installation', args=[i.slug])
                                         if not link_url: link_url = url
                                 link['href'] = link_url
-                                log.log(f"Found a link to an installation instruction for a software that was found in the site's installation instructions ({slug}). Added link to {link_url}.")
+                                log.info(f"Found a link to an installation instruction for a software that was found in the site's installation instructions ({slug}). Added link to {link_url}.")
                             else:
                                 log.warning(f"Found a link to an installation instruction for a software that cannot be found in the site's installation instructions ({slug}). Will add link to general installation instead. You may want to add this installation instruction to the /install/ repo on GitHub.")
                                 link['href'] = reverse('install:index')
@@ -834,7 +850,7 @@ class LessonParser():
                                     s = s.last()
                                     url = reverse('glossary:term', args=[s.slug])
                                     link['href'] = url
-                                    log.log(f'Found a link to the glossary that corresponded to a term existing on the site. Adding...')
+                                    log.info(f'Found a link to the glossary that corresponded to a term existing on the site. Adding...')
                                 else:
                                     link['href'] = reverse('glossary:index')
                                     log.warning(f"Could not interpret result when searching for a term in the site's glossary ({slug}). Result generated was: {s}. Will add link to general glossary instead. You may want to add this term to the /glossary/ repo on GitHub.")
@@ -862,13 +878,13 @@ class LessonParser():
                     if g:
                         order = int(g.groups()[0])
                         link['href'] = f'?page={order}'
-                        log.log(f"The lesson `{title}` links to an internal file `{href}` and has been relinked to `?page={order}` instead.", color="yellow")
+                        log.warning(f"The lesson `{title}` links to an internal file `{href}` and has been relinked to `?page={order}` instead. You may want to change this manually, in case the pages do not match any longer.")
                     else:
                         if ".png" in href or ".jpg" in href or ".jpeg" in href or ".gif" in href:
                             filename = href.split('/')[-1]
                             local_url = f'/static/website/images/lessons/{REPO_CLEAR}/{filename}'
                             link['href'] = local_url
-                            log.log(f"The lesson `{title}` links to an image and has been rerouted: {href} —> {local_url})", color='yellow')
+                            log.info(f"The lesson `{title}` links to an image and has been rerouted: {href} —> {local_url})")
                         else:
                             log.warning(f"The lesson `{title}` links to an internal file: {href} (** could not be deciphered)")
 

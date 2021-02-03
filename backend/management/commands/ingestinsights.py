@@ -3,7 +3,7 @@ from django.core.management import BaseCommand
 from django.conf import settings
 from backend.dhri.log import Logger, Input
 from backend.mixins import convert_html_quotes
-from ._shared import test_for_required_files, get_yaml, get_name, dhri_slugify
+from ._shared import test_for_required_files, get_yaml, get_name, LogSaver
 
 
 SAVE_DIR = f'{settings.BASE_DIR}/_preload/_insights'
@@ -16,12 +16,14 @@ REQUIRED_PATHS = [
 ]
 
 
-class Command(BaseCommand):
+class Command(LogSaver, BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
     help = 'Ingests internal DHRI YAML files with insights information into the database'
     requires_migrations_checks = True
+    SAVE_DIR = ''
+    WARNINGS, LOGS = [], []
 
     def add_arguments(self, parser):
         parser.add_argument('--forceupdate', action='store_true')
@@ -59,5 +61,9 @@ class Command(BaseCommand):
                     section=related_section,
                     operating_system=os, defaults={'text': osdata.get('text')})
 
-        log.log('Added/updated insights: ' +
-                ', '.join([x.get("title") for x in data]))
+        self.LOGS.append(log.log('Added/updated insights: ' +
+                ', '.join([x.get("title") for x in data])))
+
+        self.SAVE_DIR = self.SAVE_DIR = f'{LogSaver.LOG_DIR}/ingestinsights'
+        if self._save(data='ingestinsights', name='warnings.md', warnings=True) or self._save(data='ingestinsights', name='logs.md', warnings=False, logs=True):
+            log.log('Log files with any warnings and logging information is now available in the' + self.SAVE_DIR, force=True)
