@@ -37,6 +37,26 @@ Collecting django==3.0.7 (from -r requirements.txt (line 1))
 
 That should show you the progress of the installation of all the python dependencies for the project.
 
+# Step 4: Add your secrets
+
+In a file inside the `app/secrets.py` directory, put the following information:
+
+```py
+SECRET_KEY = '<create a django secret key here>'
+EMAIL_HOST_USER = '<insert your email user here>'
+EMAIL_HOST_PASSWORD = '<insert your email password here>'
+GITHUB_TOKEN = '<insert your GitHub token here>'
+ZOTERO_KEY = '<this can be left empty for now>'
+```
+
+If you have Visual Studio Code installed, you can just type the following command and copy and paste the structure from above into the window that opens, change your information, and then close and save the file:
+
+```sh
+code app/secrets.py
+```
+
+Of course, you can make the same edits with whichever plain text editor you prefer to use.
+
 ---
 
 ### Continue install track
