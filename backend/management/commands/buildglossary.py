@@ -25,11 +25,14 @@ class Command(LogSaver, BaseCommand):
         parser.add_argument('--verbose', action='store_true')
 
     def handle(self, *args, **options):
-        log = Logger(path=__file__, force_verbose=options.get('verbose'), force_silent=options.get('silent'))
-
+        log = Logger(path=__file__,
+            force_verbose=options.get('verbose'),
+            force_silent=options.get('silent')
+        )
         log.log('Building glossary... Please be patient as this can take some time.')
 
-        loader = GlossaryLoader(dhri_settings.GLOSSARY_REPO, force_download=options.get('forcedownload'))
+        loader = GlossaryLoader(
+            dhri_settings.GLOSSARY_REPO, force_download=options.get('forcedownload'))
 
         glossary = list()
 
@@ -45,8 +48,10 @@ class Command(LogSaver, BaseCommand):
         with open(f'{SAVE_DIR}/{DATA_FILE}', 'w+') as file:
             file.write(yaml.dump(glossary))
 
-        self.LOGS.append(log.log(f'Saved glossary datafile: {SAVE_DIR}/{DATA_FILE}.'))
-            
+        self.LOGS.append(
+            log.log(f'Saved glossary datafile: {SAVE_DIR}/{DATA_FILE}.'))
+
         self.SAVE_DIR = self.SAVE_DIR = f'{LogSaver.LOG_DIR}/buildglossary'
         if self._save(data='buildglossary', name='warnings.md', warnings=True) or self._save(data='buildglossary', name='logs.md', warnings=False, logs=True):
-            log.log('Log files with any warnings and logging information is now available in the' + self.SAVE_DIR, force=True)
+            log.log('Log files with any warnings and logging information is now available in the' +
+                    self.SAVE_DIR, force=True)

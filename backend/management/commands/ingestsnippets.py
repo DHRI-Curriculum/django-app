@@ -22,25 +22,32 @@ class Command(LogSaver, BaseCommand):
         parser.add_argument('--verbose', action='store_true')
 
     def handle(self, *args, **options):
-        log = Logger(path=__file__, force_verbose=options.get('verbose'), force_silent=options.get('silent'))
+        log = Logger(path=__file__,
+            force_verbose=options.get('verbose'),
+            force_silent=options.get('silent')
+        )
         input = Input(path=__file__)
+
         data = AUTO_SNIPPETS
 
         for identifier, snippetdata in data.items():
-            snippet, created = Snippet.objects.get_or_create(identifier=identifier)
-            
+            snippet, created = Snippet.objects.get_or_create(
+                identifier=identifier)
+
             if not created and not options.get('forceupdate'):
                 choice = input.ask(
                     f'Snippet `{identifier}` already exists. Update with new definition? [y/N]')
                 if choice.lower() != 'y':
                     continue
-            
+
             Snippet.objects.filter(identifier=identifier).update(
                 snippet=snippetdata
             )
 
-        self.LOGS.append(log.log('Added/updated snippets: ' + ', '.join([x for x in data])))
+        self.LOGS.append(log.log('Added/updated snippets: ' +
+                                 ', '.join([x for x in data])))
 
         self.SAVE_DIR = self.SAVE_DIR = f'{LogSaver.LOG_DIR}/ingestsnippets'
         if self._save(data='ingestsnippets', name='warnings.md', warnings=True) or self._save(data='ingestsnippets', name='logs.md', warnings=False, logs=True):
-            log.log('Log files with any warnings and logging information is now available in the' + self.SAVE_DIR, force=True)
+            log.log('Log files with any warnings and logging information is now available in the' +
+                    self.SAVE_DIR, force=True)

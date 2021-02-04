@@ -11,15 +11,17 @@ import os
 SAVE_DIR = f'{settings.BASE_DIR}/_preload/_meta/users'
 FULL_PATH = f'{SAVE_DIR}/users.yml'
 REQUIRED_PATHS = [
-    (SAVE_DIR, f'The required directory ({SAVE_DIR}) does not exist. Did you run `python manage.py buildusers` before you ran this command?'),
-    (FULL_PATH, f'The required data file ({FULL_PATH}) does not exist. Did you run `python manage.py buildusers` before you ran this command?')
+    (SAVE_DIR,
+     f'The required directory ({SAVE_DIR}) does not exist. Did you run `python manage.py buildusers` before you ran this command?'),
+    (FULL_PATH,
+     f'The required data file ({FULL_PATH}) does not exist. Did you run `python manage.py buildusers` before you ran this command?')
 ]
 
 
 def get_profile_picture_path(image_file, relative_to_upload_field=False):
     if not relative_to_upload_field:
         return settings.MEDIA_ROOT + '/' + Profile.image.field.upload_to + '/' + os.path.basename(image_file)
-    
+
     return Profile.image.field.upload_to + '/' + os.path.basename(image_file)
 
 
@@ -46,30 +48,35 @@ class Command(LogSaver, BaseCommand):
         parser.add_argument('--verbose', action='store_true')
 
     def handle(self, *args, **options):
-        log = Logger(path=__file__, force_verbose=options.get('verbose'), force_silent=options.get('silent'))
+        log = Logger(path=__file__,
+            force_verbose=options.get('verbose'),
+            force_silent=options.get('silent')
+        )
         input = Input(path=__file__)
         test_for_required_files(REQUIRED_PATHS=REQUIRED_PATHS, log=log)
         data = get_yaml(f'{FULL_PATH}')
 
         for userdata in data:
             if not userdata.get('username'):
-                log.error(f'Username is required. Check the datafile ({FULL_PATH}) to make sure that all the users in the file are assigned a username.')
+                log.error(
+                    f'Username is required. Check the datafile ({FULL_PATH}) to make sure that all the users in the file are assigned a username.')
 
-            user, created = User.objects.get_or_create(username=userdata.get('username'))
+            user, created = User.objects.get_or_create(
+                username=userdata.get('username'))
 
             if not created and not options.get('forceupdate'):
                 choice = input.ask(
                     f'User `{userdata.get("username")}` already exists. Update with new information? [y/N]')
                 if choice.lower() != 'y':
                     continue
-            
+
             User.objects.filter(username=userdata.get('username')).update(
-                first_name = userdata.get('first_name'),
-                last_name = userdata.get('last_name'),
-                email = userdata.get('email'),
-                password = userdata.get('password'),
-                is_superuser = userdata.get('superuser'),
-                is_staff = userdata.get('staff'),
+                first_name=userdata.get('first_name'),
+                last_name=userdata.get('last_name'),
+                email=userdata.get('email'),
+                password=userdata.get('password'),
+                is_superuser=userdata.get('superuser'),
+                is_staff=userdata.get('staff'),
             )
 
             if not userdata.get('profile'):
@@ -84,15 +91,16 @@ class Command(LogSaver, BaseCommand):
                     continue
 
             Profile.objects.filter(user=user).update(
-                bio = userdata.get('profile', {}).get('bio'),
-                pronouns = userdata.get('profile', {}).get('pronouns'),
+                bio=userdata.get('profile', {}).get('bio'),
+                pronouns=userdata.get('profile', {}).get('pronouns'),
             )
 
             profile.refresh_from_db()
 
             if userdata.get('profile', {}).get('image'):
                 if profile_picture_exists(userdata.get('profile', {}).get('image')):
-                    profile.image.name = get_profile_picture_path(userdata.get('profile', {}).get('image'), True)
+                    profile.image.name = get_profile_picture_path(
+                        userdata.get('profile', {}).get('image'), True)
                     profile.save()
                 else:
                     with open(userdata.get('profile', {}).get('image'), 'rb') as f:
@@ -102,8 +110,10 @@ class Command(LogSaver, BaseCommand):
                 profile.image.name = get_default_profile_picture()
                 profile.save()
 
-        self.LOGS.append(log.log('Added/updated users: ' + ', '.join([x.get('username') for x in data])))
+        self.LOGS.append(log.log('Added/updated users: ' +
+                                 ', '.join([x.get('username') for x in data])))
 
         self.SAVE_DIR = self.SAVE_DIR = f'{LogSaver.LOG_DIR}/ingestusers'
         if self._save(data='ingestusers', name='warnings.md', warnings=True) or self._save(data='ingestusers', name='logs.md', warnings=False, logs=True):
-            log.log('Log files with any warnings and logging information is now available in the' + self.SAVE_DIR, force=True)
+            log.log('Log files with any warnings and logging information is now available in the' +
+                    self.SAVE_DIR, force=True)

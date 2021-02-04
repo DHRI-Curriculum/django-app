@@ -30,7 +30,10 @@ class Command(LogSaver, BaseCommand):
         parser.add_argument('--verbose', action='store_true')
 
     def handle(self, *args, **options):
-        log = Logger(path=__file__, force_verbose=options.get('verbose'), force_silent=options.get('silent'))
+        log = Logger(path=__file__,
+            force_verbose=options.get('verbose'),
+            force_silent=options.get('silent')
+        )
 
         log.log('Building blurbs... Please be patient as this can take some time.')
 
@@ -51,11 +54,14 @@ class Command(LogSaver, BaseCommand):
                                     'user': u.get('username'),
                                     'text': text
                                 }))
-                            
-                            self.LOGS.append(log.log(f'Saved blurb datafile: {SAVE_DIR}/{DATA_FILE}.'))
+
+                            self.LOGS.append(
+                                log.log(f'Saved blurb datafile: {SAVE_DIR}/{DATA_FILE}.'))
                         else:
-                            log.error(f'No directory available for `{workshop}` ({SAVE_DIR}). Did you run `python manage.py build --repo {workshop}` before running this script?', kill=True)
+                            log.error(
+                                f'No directory available for `{workshop}` ({SAVE_DIR}). Did you run `python manage.py build --repo {workshop}` before running this script?', kill=True)
 
         self.SAVE_DIR = f'{LogSaver.LOG_DIR}/buildblurbs'
         if self._save(data='buildblurbs', name='warnings.md', warnings=True) or self._save(data='buildblurbs', name='logs.md', warnings=False, logs=True):
-            log.log('Log files with any warnings and logging information is now available in the' + self.SAVE_DIR, force=True)
+            log.log('Log files with any warnings and logging information is now available in the' +
+                    self.SAVE_DIR, force=True)

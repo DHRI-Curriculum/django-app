@@ -33,7 +33,7 @@ def screenshot_exists(image_file):
 def get_instruction_image_path(image_file, relative_to_upload_field=False):
     if not relative_to_upload_field:
         return settings.MEDIA_ROOT + '/' + Instruction.image.field.upload_to + os.path.basename(image_file).replace('@', '')
-    
+
     return Instruction.image.field.upload_to + os.path.basename(image_file).replace('@', '')
 
 
@@ -64,8 +64,12 @@ class Command(LogSaver, BaseCommand):
         parser.add_argument('--verbose', action='store_true')
 
     def handle(self, *args, **options):
-        log = Logger(path=__file__, force_verbose=options.get('verbose'), force_silent=options.get('silent'))
+        log = Logger(path=__file__,
+            force_verbose=options.get('verbose'),
+            force_silent=options.get('silent')
+        )
         input = Input(path=__file__)
+
         test_for_required_files(REQUIRED_PATHS=REQUIRED_PATHS, log=log)
         data = get_yaml(f'{FULL_PATH}')
 
@@ -91,16 +95,20 @@ class Command(LogSaver, BaseCommand):
             original_file = installdata.get('instruction', {}).get('image')
             if original_file:
                 if instruction_image_exists(original_file):
-                    instruction.image.name = get_instruction_image_path(original_file, True)
+                    instruction.image.name = get_instruction_image_path(
+                        original_file, True)
                     instruction.save()
                 else:
                     with open(original_file, 'rb') as f:
-                        instruction.image = File(f, name=os.path.basename(f.name))
+                        instruction.image = File(
+                            f, name=os.path.basename(f.name))
                         instruction.save()
             else:
                 instruction.image.name = get_default_instruction_image()
                 instruction.save()
-                self.WARNINGS.append(log.warning(f'Installation instruction for {installdata.get("software")} does not have an image assigned to them. Add filepaths to an existing file in your datafile ({FULL_PATH}) if you want to update the specific instruction image.')) # TODO: Move warning to build stage
+                # TODO: Move warning to build stage
+                self.WARNINGS.append(log.warning(
+                    f'Installation instruction for {installdata.get("software")} does not have an image assigned to them. Add filepaths to an existing file in your datafile ({FULL_PATH}) if you want to update the specific instruction image.'))
 
             for stepdata in installdata.get('instruction', {}).get('steps', []):
                 step, created = Step.objects.get_or_create(
@@ -113,7 +121,7 @@ class Command(LogSaver, BaseCommand):
                         continue
 
                 Step.objects.filter(instruction=instruction, order=stepdata.get('order')).update(
-                    header = stepdata.get('header'),text = stepdata.get('text'),
+                    header=stepdata.get('header'), text=stepdata.get('text'),
                 )
 
                 for order, path in enumerate(stepdata.get('screenshots'), start=1):
@@ -134,8 +142,9 @@ class Command(LogSaver, BaseCommand):
                             'Too many identical screenshots. Try resetting and re-run python manage.py ingestinstalls.')
 
         self.LOGS.append(log.log('Added/updated installation instructions: ' +
-                ', '.join([f'{x.get("software")} ({x.get("operating_system")})' for x in data])))
+                                 ', '.join([f'{x.get("software")} ({x.get("operating_system")})' for x in data])))
 
         self.SAVE_DIR = self.SAVE_DIR = f'{LogSaver.LOG_DIR}/ingestinstalls'
         if self._save(data='ingestinstalls', name='warnings.md', warnings=True) or self._save(data='ingestinstalls', name='logs.md', warnings=False, logs=True):
-            log.log('Log files with any warnings and logging information is now available in the' + self.SAVE_DIR, force=True)
+            log.log('Log files with any warnings and logging information is now available in the' +
+                    self.SAVE_DIR, force=True)

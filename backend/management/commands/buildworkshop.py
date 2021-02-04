@@ -25,13 +25,15 @@ def process_prereq_text(html, log=None):
     captured_link = False
     warnings = []
     for text_node in soup.find_all(string=True):
-        if text_node.parent.name.lower() == 'a' and not captured_link: # strip out the first link
+        if text_node.parent.name.lower() == 'a' and not captured_link:  # strip out the first link
             captured_link = text_node.parent['href']
             continue
-        
+
         if text_node.parent.name.lower() == 'a':
-            warnings.append(log.warning(f'Found more than one link in a prerequirement. The first link (`{captured_link}`) will be treated as the requirement, and any following links, such as `{text_node.parent["href"]}`, will be included in the accompanying text for the requirement.'))
-            text += f'<a href="{text_node.parent["href"]}" target="_blank">' + text_node.strip().replace('(recommended) ', '').replace('(required) ', '') + '</a> '
+            warnings.append(log.warning(
+                f'Found more than one link in a prerequirement. The first link (`{captured_link}`) will be treated as the requirement, and any following links, such as `{text_node.parent["href"]}`, will be included in the accompanying text for the requirement.'))
+            text += f'<a href="{text_node.parent["href"]}" target="_blank">' + text_node.strip(
+            ).replace('(recommended) ', '').replace('(required) ', '') + '</a> '
         elif text_node.parent.name.lower() == 'p':
             text += text_node.strip().replace('(recommended) ', '').replace('(required) ', '')
         elif not text_node.parent.attrs and not text_node.parent.is_empty_element:
@@ -40,7 +42,7 @@ def process_prereq_text(html, log=None):
             log.error(f'The prerequirement contains a HTML tag ({text_node.parent.name}) that cannot be processed. They need to be added to the process_prereq_text function. If you do not know how to do this, try reformulating the provided HTML to only include <a>, <p>, or any _not self-closing tags_ with _no attributes_ (i.e. `<code>...</code>`, `<i>...</i>`, etc.) on the top level of your HTML:' + html, raise_error=NotImplementedError)
 
     text = text.strip()
-    
+
     if text == '(required)':
         text = None
 
@@ -62,18 +64,26 @@ class Command(LogSaver, BaseCommand):
     WARNINGS, LOGS = [], []
 
     def add_arguments(self, parser):
-        parser.add_argument('--force', action='store_true', help='Automatically approves any requests to replace/update existing local data.')
-        parser.add_argument('--forcedownload', action='store_true', help='Forces the script to re-load all the locally stored data, despite any settings made for expiry dates on caches.')
+        parser.add_argument('--force', action='store_true',
+                            help='Automatically approves any requests to replace/update existing local data.')
+        parser.add_argument('--forcedownload', action='store_true',
+                            help='Forces the script to re-load all the locally stored data, despite any settings made for expiry dates on caches.')
         parser.add_argument('--save_all', action='store_true')
         group = parser.add_mutually_exclusive_group(required=False)
-        group.add_argument('--name', nargs='+', type=str, help='Provide a specific name of a workshop to build.')
-        group.add_argument('--all', action='store_true', help='Build all workshop datafiles.')
-        parser.add_argument('--silent', action='store_true', help='Makes as little output as possible, although still saves all the information in log files (see debugging docs).')
-        parser.add_argument('--verbose', action='store_true', help='Provides all output possible, which can be overwhelming. Good for debug purposes, not for the faint of heart.')
+        group.add_argument('--name', nargs='+', type=str,
+                           help='Provide a specific name of a workshop to build.')
+        group.add_argument('--all', action='store_true',
+                           help='Build all workshop datafiles.')
+        parser.add_argument('--silent', action='store_true',
+                            help='Makes as little output as possible, although still saves all the information in log files (see debugging docs).')
+        parser.add_argument('--verbose', action='store_true',
+                            help='Provides all output possible, which can be overwhelming. Good for debug purposes, not for the faint of heart.')
 
     def handle(self, *args, **options):
-        log = Logger(path=__file__, force_verbose=options.get('verbose'), force_silent=options.get('silent'))
-
+        log = Logger(path=__file__,
+            force_verbose=options.get('verbose'),
+            force_silent=options.get('silent')
+        )
 
         if options.get('all'):
             options['name'] = [x[0] for x in dhri_settings.AUTO_REPOS]
@@ -82,7 +92,8 @@ class Command(LogSaver, BaseCommand):
             log.error(
                 'No workshop names provided. Use any of the following settings:\n    --name [repository name]\n    --all')
 
-        log.log('Building workshop files... Please be patient as this can take some time.')
+        log.log(
+            'Building workshop files... Please be patient as this can take some time.')
 
         for workshop in options.get('name'):
             SAVE_DIR = f'{settings.BASE_DIR}/_preload/_workshops/{workshop}'
@@ -105,7 +116,7 @@ class Command(LogSaver, BaseCommand):
             branch = 'v2.0'
 
             l = Loader(url, branch, force_download=options.get('forcedownload'))
-            
+
             # 1. Extract workshop data
             workshop = {
                 'slug': slug,
@@ -149,9 +160,10 @@ class Command(LogSaver, BaseCommand):
                     'title': r_title,
                     'url': url
                 })
-            
+
             for html in l.prerequisites:
-                url_text, url = process_links(html, 'prerequisite', is_html=True)
+                url_text, url = process_links(
+                    html, 'prerequisite', is_html=True)
 
                 required, recommended = False, False
                 if '(required)' in html:
@@ -163,36 +175,47 @@ class Command(LogSaver, BaseCommand):
                     text, w = process_prereq_text(html, log)
                     self.WARNINGS.extend(w)
                     if not text:
-                        self.WARNINGS.append(log.warning(f'No clarifying text was found when processing prerequired installation (`{url_text}`) for workshop `{workshop.get("name")}`. Note that the clarifying text will be replaced by the "why" text from the installation instructions. You may want to change this in the frontmatter\'s requirements for the workshop {workshop.get("name")} and re-run `buildworkshop --name {os.path.basename(DATA_FILE).replace(".md", "")}` or manually edit the data file: `{SAVE_DIR}/{DATA_FILE}`'))
-                    data['frontmatter']['prerequisites'].append({'type': 'install', 'potential_name': url_text, 'potential_slug_fragment': url.split('/')[-1].replace('.md', ''), 'text': text, 'required': required, 'recommended': recommended})
+                        self.WARNINGS.append(log.warning(
+                            f'No clarifying text was found when processing prerequired installation (`{url_text}`) for workshop `{workshop.get("name")}`. Note that the clarifying text will be replaced by the "why" text from the installation instructions. You may want to change this in the frontmatter\'s requirements for the workshop {workshop.get("name")} and re-run `buildworkshop --name {os.path.basename(DATA_FILE).replace(".md", "")}` or manually edit the data file: `{SAVE_DIR}/{DATA_FILE}`'))
+                    data['frontmatter']['prerequisites'].append({'type': 'install', 'potential_name': url_text, 'potential_slug_fragment': url.split(
+                        '/')[-1].replace('.md', ''), 'text': text, 'required': required, 'recommended': recommended})
                 elif 'github.com/DHRI-Curriculum/insights/' in url:
                     text, w = process_prereq_text(html, log)
                     self.WARNINGS.extend(w)
                     if not text:
-                        self.WARNINGS.append(log.warning(f'No clarifying text was found when processing prerequired insight (`{url_text}`) for workshop `{workshop.get("name")}`. Note that the clarifying text will be replaced by the text presenting the insight. You may want to change this in the frontmatter\'s requirements for the workshop {workshop.get("name")} and re-run `buildworkshop --name {os.path.basename(DATA_FILE).replace(".md", "")}` or manually edit the data file: `{SAVE_DIR}/{DATA_FILE}`'))
-                    data['frontmatter']['prerequisites'].append({'type': 'insight', 'potential_name': url_text, 'potential_slug_fragment': url.split('/')[-1].replace('.md', ''), 'text': text, 'required': required, 'recommended': recommended})
+                        self.WARNINGS.append(log.warning(
+                            f'No clarifying text was found when processing prerequired insight (`{url_text}`) for workshop `{workshop.get("name")}`. Note that the clarifying text will be replaced by the text presenting the insight. You may want to change this in the frontmatter\'s requirements for the workshop {workshop.get("name")} and re-run `buildworkshop --name {os.path.basename(DATA_FILE).replace(".md", "")}` or manually edit the data file: `{SAVE_DIR}/{DATA_FILE}`'))
+                    data['frontmatter']['prerequisites'].append({'type': 'insight', 'potential_name': url_text, 'potential_slug_fragment': url.split(
+                        '/')[-1].replace('.md', ''), 'text': text, 'required': required, 'recommended': recommended})
                 elif 'github.com/DHRI-Curriculum/' in url and not '/blob/' in url:
                     text, w = process_prereq_text(html, log)
                     self.WARNINGS.extend(w)
                     if not text:
-                        self.WARNINGS.append(log.warning(f'No clarifying text was found when processing prerequired workshop (`{url_text}`) for workshop `{workshop.get("name")}`. Note that the clarifying text will not be replaced by any other text. You may want to change this in the frontmatter\'s requirements for the workshop {workshop.get("name")} and re-run `buildworkshop --name {os.path.basename(DATA_FILE).replace(".md", "")}` or manually edit the data file: `{SAVE_DIR}/{DATA_FILE}`'))
-                    data['frontmatter']['prerequisites'].append({'type': 'workshop', 'potential_name': url_text, 'text': text, 'required': required, 'recommended': recommended})
+                        self.WARNINGS.append(log.warning(
+                            f'No clarifying text was found when processing prerequired workshop (`{url_text}`) for workshop `{workshop.get("name")}`. Note that the clarifying text will not be replaced by any other text. You may want to change this in the frontmatter\'s requirements for the workshop {workshop.get("name")} and re-run `buildworkshop --name {os.path.basename(DATA_FILE).replace(".md", "")}` or manually edit the data file: `{SAVE_DIR}/{DATA_FILE}`'))
+                    data['frontmatter']['prerequisites'].append(
+                        {'type': 'workshop', 'potential_name': url_text, 'text': text, 'required': required, 'recommended': recommended})
                 else:
                     text, w = process_prereq_text(html, log)
                     self.WARNINGS.extend(w)
                     if not text:
-                        self.WARNINGS.append(log.warning(f'No accompanying text was found when processing prerequired external link (`{url}`) for workshop `{workshop.get("name")}`. Note that the clarifying text will not be replaced by any other text. You may want to change this in the frontmatter\'s requirements for the workshop {workshop.get("name")} and re-run `buildworkshop --name {os.path.basename(DATA_FILE).replace(".md", "")}` or manually edit the data file: `{SAVE_DIR}/{DATA_FILE}`'))
+                        self.WARNINGS.append(log.warning(
+                            f'No accompanying text was found when processing prerequired external link (`{url}`) for workshop `{workshop.get("name")}`. Note that the clarifying text will not be replaced by any other text. You may want to change this in the frontmatter\'s requirements for the workshop {workshop.get("name")} and re-run `buildworkshop --name {os.path.basename(DATA_FILE).replace(".md", "")}` or manually edit the data file: `{SAVE_DIR}/{DATA_FILE}`'))
                     if not url_text:
-                        self.WARNINGS.append(log.warning(f'No text accompanying _the link_ was found when processing prerequired external link (`{url}`) for workshop `{workshop.get("name")}`. Note that this means that the external link requirement in {workshop.get("name")} will have a general "Link" header. You may want to change this in the frontmatter\'s requirements for the workshop {workshop.get("name")} and re-run `buildworkshop --name {os.path.basename(DATA_FILE).replace(".md", "")}` or manually edit the data file: `{SAVE_DIR}/{DATA_FILE}`'))
-                    data['frontmatter']['prerequisites'].append({'type': 'external link', 'url': url, 'url_text': url_text, 'text': text, 'required': required, 'recommended': recommended})
+                        self.WARNINGS.append(log.warning(
+                            f'No text accompanying _the link_ was found when processing prerequired external link (`{url}`) for workshop `{workshop.get("name")}`. Note that this means that the external link requirement in {workshop.get("name")} will have a general "Link" header. You may want to change this in the frontmatter\'s requirements for the workshop {workshop.get("name")} and re-run `buildworkshop --name {os.path.basename(DATA_FILE).replace(".md", "")}` or manually edit the data file: `{SAVE_DIR}/{DATA_FILE}`'))
+                    data['frontmatter']['prerequisites'].append(
+                        {'type': 'external link', 'url': url, 'url_text': url_text, 'text': text, 'required': required, 'recommended': recommended})
 
             for resourcedata in l.resources:
                 r_title, url = process_links(resourcedata, 'resource')
                 if 'https://raw.githubusercontent.com/DHRI-Curriculum/' in url or ('github.com/DHRI-Curriculum/' and '/raw/' in url):
-                    data['frontmatter']['resources'].append({'type': 'internal_download', 'url': url, 'title': r_title, 'full_text': resourcedata})
+                    data['frontmatter']['resources'].append(
+                        {'type': 'internal_download', 'url': url, 'title': r_title, 'full_text': resourcedata})
                 else:
-                    data['frontmatter']['resources'].append({'type': 'external_link', 'url': url, 'title': r_title, 'full_text': resourcedata})
-                
+                    data['frontmatter']['resources'].append(
+                        {'type': 'external_link', 'url': url, 'title': r_title, 'full_text': resourcedata})
+
             for contributor in l.contributors:
                 role = ''
                 is_current = False
@@ -210,7 +233,7 @@ class Command(LogSaver, BaseCommand):
 
                     if not is_current and not is_past:
                         self.WARNINGS.append(log.warning('could not find current, original, or past in role',
-                              low_role, '--setting automatically to past.'))
+                                                         low_role, '--setting automatically to past.'))
 
                 contributor_data = {
                     'first_name': contributor.get('first_name'),
@@ -257,7 +280,7 @@ class Command(LogSaver, BaseCommand):
                     'title': r_title,
                     'url': url
                 })
-            
+
             for annotation in l.further_projects:
                 p_title, url = process_links(annotation, 'reading')
                 data['praxis']['further_projects'].append({
@@ -265,7 +288,7 @@ class Command(LogSaver, BaseCommand):
                     'title': p_title,
                     'url': url
                 })
-            
+
             for annotation in l.more_resources:
                 p_title, url = process_links(annotation, 'project')
                 data['praxis']['more_resources'].append({
@@ -343,8 +366,10 @@ class Command(LogSaver, BaseCommand):
             with open(f'{SAVE_DIR}/{DATA_FILE}', 'w+') as file:
                 file.write(yaml.dump(data))
 
-            self.LOGS.append(log.log(f'Saved workshop datafile: `{SAVE_DIR}/{DATA_FILE}`'))
+            self.LOGS.append(
+                log.log(f'Saved workshop datafile: `{SAVE_DIR}/{DATA_FILE}`'))
 
             self.SAVE_DIR = self.SAVE_DIR = f'{LogSaver.LOG_DIR}/buildworkshop/{workshop.get("slug")}'
             if self._save(data=workshop, name='warnings.md', warnings=True) or self._save(data=workshop, name='logs.md', warnings=False, logs=True):
-                log.log('Log files with any warnings and logging information is now available in the' + self.SAVE_DIR, force=True)
+                log.log(
+                    'Log files with any warnings and logging information is now available in the' + self.SAVE_DIR, force=True)
