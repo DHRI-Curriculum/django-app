@@ -85,6 +85,9 @@ CACHE_DIRS = {
     'WEB': '/tmp/.loader-cache/web/',
     'ZOTERO': '/tmp/.loader-cache/zotero/'
 }
+IMAGE_CACHE = {
+    'INSTALL': '/tmp/.loader-cache/images/install'
+}
 
 # The following are written as days
 TEST_AGES = {
@@ -100,9 +103,6 @@ TEST_AGES = {
 # If set to True, the script will override the cache every time (effectively disregarding TEST_AGES above)
 FORCE_DOWNLOAD = False
 
-IMAGE_CACHE = {
-    'INSTALL': '.loader-cache/images/install'
-}
 
 
 ##### Dev features ##############################

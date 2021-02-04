@@ -11,5 +11,5 @@ def post_save_user_signal_handler(sender, instance, created, **kwargs):
             group = Group.objects.get(name='Learner')
             instance.groups.add(group)
         except Group.DoesNotExist:
-            print("Could not add user!") # TODO: Debug so remove in production
+            pass print("Could not add user!") # TODO: Debug so remove in production
         instance.save()

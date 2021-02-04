@@ -807,7 +807,7 @@ class LessonParser():
                                 for software in s:
                                     for i in software.instructions.all():
                                         if not i.slug:
-                                            print(i, 'has no slug!!!')
+                                            log.error(i, 'has no slug!!!')
                                             continue
                                         url = reverse('install:installation', args=[i.slug])
                                         if not link_url: link_url = url

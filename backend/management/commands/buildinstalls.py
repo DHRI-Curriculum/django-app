@@ -62,13 +62,8 @@ class Command(LogSaver, BaseCommand):
                         }
 
                         for screenshot in d.get('screenshots'):
-                            print(screenshot)
-                            try:
-                                copyfile(screenshot[1], f'{SAVE_DIR}/images/{screenshot[0]}')
-                                step['screenshots'].append(f'{SAVE_DIR}/images/{screenshot[0]}')
-                            except:
-                                print(screenshot) # TODO: why is this happening?!
-                                exit()
+                            copyfile(screenshot[1], f'{SAVE_DIR}/images/{screenshot[0]}')
+                            step['screenshots'].append(f'{SAVE_DIR}/images/{screenshot[0]}')
 
                         install['instruction']['steps'].append(step)
                     installs.append(install)
