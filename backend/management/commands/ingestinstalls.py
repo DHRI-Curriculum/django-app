@@ -33,7 +33,7 @@ def get_instruction_image_path(image_file, relative_to_upload_field=False):
     if not relative_to_upload_field:
         return settings.MEDIA_ROOT + '/' + Instruction.image.field.upload_to + os.path.basename(image_file).replace('@', '')
     
-    return Instruction.image.field.upload_to + 'software_headers/' + os.path.basename(image_file).replace('@', '')
+    return Instruction.image.field.upload_to + os.path.basename(image_file).replace('@', '')
 
 
 def instruction_image_exists(image_file):

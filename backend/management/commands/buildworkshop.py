@@ -70,7 +70,6 @@ class Command(LogSaver, BaseCommand):
     def handle(self, *args, **options):
         log = Logger(name=get_name(__file__), force_verbose=options.get('verbose'), force_silent=options.get('silent'))
 
-        log.log('Building workshop files... Please be patient as this can take some time.')
 
         if options.get('all'):
             options['name'] = [x[0] for x in dhri_settings.AUTO_REPOS]
@@ -78,6 +77,8 @@ class Command(LogSaver, BaseCommand):
         if not options.get('name'):
             log.error(
                 'No workshop names provided. Use any of the following settings:\n    --name [repository name]\n    --all')
+
+        log.log('Building workshop files... Please be patient as this can take some time.')
 
         for workshop in options.get('name'):
             SAVE_DIR = f'{settings.BASE_DIR}/_preload/_workshops/{workshop}'
