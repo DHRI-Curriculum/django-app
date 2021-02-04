@@ -2,7 +2,7 @@ from website.models import Snippet
 from django.core.management import BaseCommand
 from backend.dhri.log import Logger, Input
 from backend.dhri_settings import AUTO_SNIPPETS
-from ._shared import get_name, LogSaver
+from ._shared import LogSaver
 
 
 # TODO #362: Note that there is no buildsnippets since it comes in straight from a YAML file defined in dhri_settings
@@ -22,8 +22,8 @@ class Command(LogSaver, BaseCommand):
         parser.add_argument('--verbose', action='store_true')
 
     def handle(self, *args, **options):
-        log = Logger(name=get_name(__file__), force_verbose=options.get('verbose'), force_silent=options.get('silent'))
-        input = Input(name=get_name(__file__))
+        log = Logger(path=__file__, force_verbose=options.get('verbose'), force_silent=options.get('silent'))
+        input = Input(path=__file__)
         data = AUTO_SNIPPETS
 
         for identifier, snippetdata in data.items():

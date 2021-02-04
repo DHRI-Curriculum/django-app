@@ -8,7 +8,7 @@ from django.core.files import File
 from django.conf import settings
 from backend.dhri.log import Logger, Input
 from backend.mixins import convert_html_quotes
-from ._shared import get_yaml, get_name, get_all_existing_workshops, GLOSSARY_FILE, LogSaver
+from ._shared import get_yaml, get_all_existing_workshops, GLOSSARY_FILE, LogSaver
 import os
 
 
@@ -48,8 +48,8 @@ class Command(LogSaver, BaseCommand):
         parser.add_argument('--verbose', action='store_true')
 
     def handle(self, *args, **options):
-        log = Logger(name=get_name(__file__), force_verbose=options.get('verbose'), force_silent=options.get('silent'))
-        input = Input(name=get_name(__file__))
+        log = Logger(path=__file__, force_verbose=options.get('verbose'), force_silent=options.get('silent'))
+        input = Input(path=__file__)
 
         workshops = get_all_existing_workshops()
         
