@@ -40,7 +40,6 @@ def process_prereq_text(html, log=None):
             log.error(f'The prerequirement contains a HTML tag ({text_node.parent.name}) that cannot be processed. They need to be added to the process_prereq_text function. If you do not know how to do this, try reformulating the provided HTML to only include <a>, <p>, or any _not self-closing tags_ with _no attributes_ (i.e. `<code>...</code>`, `<i>...</i>`, etc.) on the top level of your HTML:' + html, raise_error=NotImplementedError)
 
     text = text.strip()
-    log.error(text, kill=False)
     
     if text == '(required)':
         text = None
