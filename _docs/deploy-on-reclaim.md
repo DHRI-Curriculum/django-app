@@ -2,7 +2,20 @@
 
 ## Setting up a Django app on Reclaim
 
-...
+... [#TODO #362](https://github.com/DHRI-Curriculum/django-app/issues/362) = only for MySQL connection ([#313](https://github.com/DHRI-Curriculum/django-app/issues/313))
+
+In the `root` directory (likely `curriculum.dhinstitutes.org`), `sql.cnf` with the following contents:
+
+```
+[client]
+database = <dhinstit_curriculum>
+user = <user with access>
+password = <password for username>
+default-character-set = utf8
+host = dhinstitutes.org
+port = 3306
+sql_mode = STRICT_TRANS_TABLES
+```
 
 ## Updating the Django app on Reclaim
 

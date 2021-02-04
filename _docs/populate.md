@@ -17,6 +17,8 @@ $ python manage.py makemigrations && python manage.py migrate
 
 That should tell you which migrations that will run, and then proceed to run the migrations:
 
+![Animated GIF showing the migration process also represented in text below.](images/07-migrate.gif)
+
 ```sh
 No changes detected
 Operations to perform:
@@ -35,11 +37,19 @@ Next, we want to make a mirrored copy of all of the data that lives in the GitHu
 $ python manage.py build --forcedownload
 ```
 
-This should create a local "mirror" of all the GitHub repositories related to the DHRI curriculum, inside a directory called `_preload` in the root of the repository.
+![Animated GIF showing the process following entering the `build` command.](images/08-build.gif)
 
-There is the possibility of you running into error message, warnings, etc. in this process. All of this is described in the [debugging](debug.md) part of the documentation.
+This will take some time—up to several minutes—so get yourself a cup of coffee. You're doing well!
 
-### Optional flags
+The `build` command should create a local "mirror" of all the GitHub repositories related to the DHRI curriculum, inside a directory called `_preload` in the root of the repository.
+
+There is a (large) possibility of you running into error message, warnings, etc. in this process. Don't worry too much about them; the ones that will stop the import of the data to the database will stop you in your tracks with a red error message. Everything else is on a "warning" level, which means that you can safely continue with the process. All of this is described in the [debugging](debug.md) part of the documentation.
+
+Once the `build` command has finished, you can move on to Step 2 below, or read the following section with more detailed information about the `build` command.
+
+### More details about `build`
+
+#### Optional flags
 
 The `build` command can also be called using flags that modify its function:
 
@@ -49,9 +59,7 @@ The `build` command can also be called using flags that modify its function:
 | `--verbose`       | Provides _all_ output possible, which can be overwhelming. Good for debug purposes, not for the faint of heart. |
 | `--forcedownload` | Forces the script to re-load all the locally stored data, despite any settings made for expiry dates on caches. |
 
----
-
-### More details about `build`
+#### Behind the scenes
 
 The `build` command is in fact a "shortcut" that actually runs a number of commands, which can also be run individually, in the correct order:
 
@@ -81,9 +89,13 @@ In the following step, we want to ingest the mirrored copy of all of the data th
 $ python manage.py ingest
 ```
 
-Granted that you do not run into any problems (warnings, error messages, etc.), the database should now be fully populated with the information necessary to get it all up and running.
+![Animated GIF showing the process following entering the `ingest` command.](images/09-ingest.gif)
 
-### Optional flags
+Granted that you do not run into any problems (warnings, error messages, etc.), the database should now be fully populated with the information necessary to get it all [up and running](run.md).
+
+### More details about `ingest`
+
+#### Optional flags
 
 The `ingest` command can also be called using flags that modify its function:
 
@@ -94,9 +106,7 @@ The `ingest` command can also be called using flags that modify its function:
 | `--reset`         | Removes all the DHRI-related objects in the database and starts a fresh installation.                           |
 | `--force`         | Automatically selects "yes" for questions about whether database objects should be updated. "Forces" its way.   |
 
----
-
-### More details about `ingest`
+#### Behind the scenes
 
 Just like the `build` command, `ingest` is a "shortcut" that runs a number of commands, which can, just like the `build` commands parts, be run individually. The `ingest` command runs them all in the correct order:
 
