@@ -88,7 +88,7 @@
                             <div class="p-2 my-3 rounded-lg linked-comment">
                                 <h6><a href="{% url 'workshop:frontmatter' slug=prerequisite.linked_workshop.slug %}">{{ prerequisite.linked_workshop.name }}</a></h6>
                                 <small>{{ prerequisite.text | as_string | markdown | safe }}</small>
-                                <a href="{% url 'workshop:frontmatter' prerequisite.linked_workshop.slug %}lessons/" class="btn btn-warning btn-sm shadow-sm">Quickstart</a>
+                                <a href="{% url 'workshop:frontmatter' prerequisite.linked_workshop.slug %}lessons/" class="prereq-btn btn btn-warning btn-sm shadow-sm">Quickstart</a>
                             </div>
                         {% endfor %}
                   {% endif %}
@@ -115,10 +115,10 @@
                               {% for os, instructions in d.items %}
                                   {% if 'macintosh' in request.META.HTTP_USER_AGENT.lower and 'mac' in os.lower %}
                                       <!-- This is a mac and these are MAC instructions...-->
-                                      <a href="{% url 'install:installation' slug=instructions.slug %}" class="btn btn-warning shadow-sm">Install for {{ os }}</a>
+                                      <a href="{% url 'install:installation' slug=instructions.slug %}" class="prereq-btn btn btn-warning shadow-sm">Install for {{ os }}</a>
                                   {% elif 'windows' in request.META.HTTP_USER_AGENT.lower and 'windows' in os.lower %}
                                       <!-- This is a windows machine and these are WINDOWS instructions...-->
-                                      <a href="{% url 'install:installation' slug=instructions.slug %}" class="btn btn-warning shadow-sm">Install for {{ os }}</a>
+                                      <a href="{% url 'install:installation' slug=instructions.slug %}" class="prereq-btn btn btn-warning shadow-sm">Install for {{ os }}</a>
                                   {% else %}
                                       <a href="{% url 'install:installation' slug=instructions.slug %}" class="btn btn-outline-warning text-dark">Install for {{ os }}</a>
                                   {% endif %}
