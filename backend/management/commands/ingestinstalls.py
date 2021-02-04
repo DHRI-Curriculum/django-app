@@ -1,3 +1,4 @@
+from backend.mixins import convert_html_quotes
 from install.models import Software, Instruction, Screenshot, Step
 from django.core.management import BaseCommand
 from django.core.files import File
@@ -102,20 +103,18 @@ class Command(LogSaver, BaseCommand):
                 self.WARNINGS.append(log.warning(f'Installation instruction for {installdata.get("software")} does not have an image assigned to them. Add filepaths to an existing file in your datafile ({FULL_PATH}) if you want to update the specific instruction image.')) # TODO: Move warning to build stage
 
             for stepdata in installdata.get('instruction', {}).get('steps', []):
-                # TODO: #365 rewrite this below with convert_html_quotes...
-                step = Step.objects.filter(
-                    instruction=instruction, order=stepdata.get('order'))
-                if step.count() == 1:
-                    step = step.last()
-                    step.text = stepdata.get('text')
-                    step.header = stepdata.get('header')
-                    step.save()
-                elif step.count() == 0:
-                    step = Step.objects.create(instruction=instruction, order=stepdata.get(
-                        'order'), text=stepdata.get('text'), header=stepdata.get('header'))
-                else:
-                    log.error(
-                        'Too many identical installation steps! Try resetting and re-run python manage.py ingestinstalls.')
+                step, created = Step.objects.get_or_create(
+                    instruction=instruction, order=stepdata.get('order'), defaults={'header': stepdata.get('header'), 'text': convert_html_quotes(stepdata.get('text'))})
+
+                if not created and not options.get('forceupdate'):
+                    choice = input.ask(
+                        f'Step {stepdata.get("order")} for installation of `{installdata.get("software")}` (with OS `{installdata.get("operating_system")}`) seems to already exist. Update with new instructions? [y/N]')
+                    if choice.lower() != 'y':
+                        continue
+
+                Step.objects.filter(instruction=instruction, order=stepdata.get('order')).update(
+                    header = stepdata.get('header'),text = stepdata.get('text'),
+                )
 
                 for order, path in enumerate(stepdata.get('screenshots'), start=1):
                     screenshot = Screenshot.objects.filter(
