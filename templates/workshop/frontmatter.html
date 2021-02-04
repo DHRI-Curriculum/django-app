@@ -69,7 +69,7 @@
                   {% for prerequisite in prerequisites.external_links %}
                       <div class="p-2 my-3 rounded-lg linked-comment">
                           <div class="small">
-                            <strong>Link</strong>
+                            <a href="{{ prerequisite.url }}" target="_blank"><strong>{% if prerequisite.label %}{{ prerequisite.label }}{% else %}Link{% endif %}</strong></a>
                             {{ prerequisite.text | as_string | markdown | safe }}
                           </div>
                       </div>
@@ -78,7 +78,7 @@
             {% endif %}
         </div>
         <div class="row">
-          <div class="col-12 col-xl-4 mt-4 mt-md-2 overflow-hidden">
+          <div class="col-12 {% if prerequisites.installs.by_software|length or prerequisites.insights|length %}col-xl-4{% elif not prerequisites.installs.by_software|length and not prerequisites.insights|length %}col-xl-12{% else %}{% endif %} mt-4 mt-md-2 overflow-hidden">
               <h4 class="py-2 border-bottom">Workshops</h4>
                   {% if not prerequisites.workshops|length %}
                         <em class="small text-muted">There are no recommended or required workshops for you to complete before starting this workshop.</em>
@@ -88,15 +88,17 @@
                             <div class="p-2 my-3 rounded-lg linked-comment">
                                 <h6><a href="{% url 'workshop:frontmatter' slug=prerequisite.linked_workshop.slug %}">{{ prerequisite.linked_workshop.name }}</a></h6>
                                 <small>{{ prerequisite.text | as_string | markdown | safe }}</small>
+                                <a href="{% url 'workshop:frontmatter' prerequisite.linked_workshop.slug %}lessons/" class="btn btn-warning btn-sm shadow-sm">Quickstart</a>
                             </div>
                         {% endfor %}
                   {% endif %}
           </div>
-          {% if prerequisites.installs|length %}
+          
+          {% if prerequisites.installs.by_software|length %}
               <div class="col-12 {% if prerequisites.insights|length %}col-xl-4{% else %}col-xl-8{% endif %} mt-4 mt-md-2 overflow-hidden">
                   <h4 class="py-2 border-bottom">Software installations</h4>
                   <div class="small mb-3">{% snippet "prerequisite-installs" %}</div>
-                  
+
                   {% for software, d in prerequisites.installs.by_software.items %}
                       <div class="p-2 my-3 rounded-lg linked-comment">
                           <h5 class="m-0">{{ software }}</h5>
@@ -113,12 +115,12 @@
                               {% for os, instructions in d.items %}
                                   {% if 'macintosh' in request.META.HTTP_USER_AGENT.lower and 'mac' in os.lower %}
                                       <!-- This is a mac and these are MAC instructions...-->
-                                      <a href="{% url 'install:installation' slug=instructions.slug %}" class="btn btn-warning shadow">Install for {{ os }}</a>
+                                      <a href="{% url 'install:installation' slug=instructions.slug %}" class="btn btn-warning shadow-sm">Install for {{ os }}</a>
                                   {% elif 'windows' in request.META.HTTP_USER_AGENT.lower and 'windows' in os.lower %}
                                       <!-- This is a windows machine and these are WINDOWS instructions...-->
-                                      <a href="{% url 'install:installation' slug=instructions.slug %}" class="btn btn-warning shadow">Install for {{ os }}</a>
+                                      <a href="{% url 'install:installation' slug=instructions.slug %}" class="btn btn-warning shadow-sm">Install for {{ os }}</a>
                                   {% else %}
-                                      <a href="{% url 'install:installation' slug=instructions.slug %}" class="btn btn-outline-primary">Install for {{ os }}</a>
+                                      <a href="{% url 'install:installation' slug=instructions.slug %}" class="btn btn-outline-warning text-dark">Install for {{ os }}</a>
                                   {% endif %}
                               {% endfor %}
                           </div>
@@ -172,7 +174,7 @@
                     {% for reading in frontmatter.readings.all %}
                         <div class="p-2 my-3 rounded-lg linked-comment">
                             <a class="text-decoration-none" target="_blank" href="{{ reading.url }}">
-                                {% if reading.title %}{{ reading.title | as_string | markdown | safe | striptags }}{% include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" %}{% else %}Untitled{% endif %}
+                                <i class="bi bi-link pr-1 text-muted"></i>{% if reading.title %}{{ reading.title | as_string | markdown | safe | striptags }}<!-- include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" -->{% else %}Untitled{% endif %}
                             </a>
                             {% if reading.annotation %}<div class="small"><strong>Annotation:</strong> {{ reading.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
                         </div>
@@ -188,7 +190,7 @@
                         <div class="p-2 my-3 rounded-lg linked-comment">
                             {% if project.url != None %}
                                 <a class="text-decoration-none" target="_blank" href="{{ project.url }}">
-                                  {% if project.title %}{{ project.title | as_string | markdown | safe | striptags }}{% include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" %}{% else %}Untitled{% endif %}
+                                    <i class="bi bi-link pr-1 text-muted"></i>{% if project.title %}{{ project.title | as_string | markdown | safe | striptags }}<!-- include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" -->{% else %}Untitled{% endif %}
                                 </a>
                             {% else %}
                                 Untitled

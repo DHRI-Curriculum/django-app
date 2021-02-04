@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="{% static 'website/css/bootstrap-style.min.css' %}">
 <link rel="stylesheet" href="{% static 'website/css/icons.css' %}">
 <link rel="stylesheet" href="{% static 'website/css/main.css' %}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
 
 {% include "website/fragments/head/favicons.html" %}
 
@@ -20,11 +21,8 @@
     // A CSRF token is required when making post requests in Django
     // To be used for making AJAX requests
     window.CSRF_TOKEN = "{{ csrf_token }}";
-    {% if workshop %}
-    window.workshop = "{{ workshop.slug }}";
-    {% else %}
-    window.workshop = undefined;
-    {% endif %}
+
+    window.workshop = {% if workshop %}"{{ workshop.slug }}"{% else %}undefined{% endif %};
 
     function getCookie(name) {
         let cookieValue = null;

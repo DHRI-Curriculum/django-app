@@ -156,6 +156,11 @@ class Command(LogSaver, BaseCommand):
 
                 prerequisite, created = Prerequisite.objects.get_or_create(category=category, linked_workshop=linked_workshop, linked_insight=linked_insight, url=url, text=convert_html_quotes(prereqdata.get('text', '')), required=prereqdata.get('required'), recommended=prereqdata.get('recommended'))
 
+                if category == Prerequisite.EXTERNAL_LINK:
+                    label = prereqdata.get('url_text')
+                    prerequisite.label = label
+                    prerequisite.save()
+
                 if linked_installs:
                     for software in linked_installs:
                         through = PrerequisiteSoftware(prerequisite=prerequisite, software=software, required=prereqdata.get('required'), recommended=prereqdata.get('recommended'))

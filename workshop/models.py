@@ -142,6 +142,7 @@ class Prerequisite(CurlyQuotesMixin, models.Model):
     ]
 
     text = models.TextField()
+    label = models.TextField(max_length=200, blank=True, null=True)
     url = models.TextField(max_length=200, null=True, blank=True)
     required = models.BooleanField(default=False)
     recommended = models.BooleanField(default=False)

@@ -32,10 +32,15 @@ def process_prereq_text(html, log=None):
         if text_node.parent.name.lower() == 'a':
             warnings.append(log.warning(f'Found more than one link in a prerequirement. The first link (`{captured_link}`) will be treated as the requirement, and any following links, such as `{text_node.parent["href"]}`, will be included in the accompanying text for the requirement.'))
             text += f'<a href="{text_node.parent["href"]}" target="_blank">' + text_node.strip().replace('(recommended) ', '').replace('(required) ', '') + '</a> '
+        elif text_node.parent.name.lower() == 'p':
+            text += text_node.strip().replace('(recommended) ', '').replace('(required) ', '')
+        elif not text_node.parent.attrs and not text_node.parent.is_empty_element:
+            text += f' <{text_node.parent.name}>{text_node}</{text_node.parent.name}> '
         else:
-            text += text_node.strip().replace('(recommended) ', '').replace('(required) ', '') + ' '
+            log.error(f'The prerequirement contains a HTML tag ({text_node.parent.name}) that cannot be processed. They need to be added to the process_prereq_text function. If you do not know how to do this, try reformulating the provided HTML to only include <a>, <p>, or any _not self-closing tags_ with _no attributes_ (i.e. `<code>...</code>`, `<i>...</i>`, etc.) on the top level of your HTML:' + html, raise_error=NotImplementedError)
 
     text = text.strip()
+    log.error(text, kill=False)
     
     if text == '(required)':
         text = None
@@ -174,10 +179,13 @@ class Command(LogSaver, BaseCommand):
                         self.WARNINGS.append(log.warning(f'No clarifying text was found when processing prerequired workshop (`{url_text}`) for workshop `{workshop.get("name")}`. Note that the clarifying text will not be replaced by any other text. You may want to change this in the frontmatter\'s requirements for the workshop {workshop.get("name")} and re-run `buildworkshop --name {os.path.basename(DATA_FILE).replace(".md", "")}` or manually edit the data file: `{SAVE_DIR}/{DATA_FILE}`'))
                     data['frontmatter']['prerequisites'].append({'type': 'workshop', 'potential_name': url_text, 'text': text, 'required': required, 'recommended': recommended})
                 else:
-                    text = html
+                    text, w = process_prereq_text(html, log)
+                    self.WARNINGS.extend(w)
                     if not text:
                         self.WARNINGS.append(log.warning(f'No accompanying text was found when processing prerequired external link (`{url}`) for workshop `{workshop.get("name")}`. Note that the clarifying text will not be replaced by any other text. You may want to change this in the frontmatter\'s requirements for the workshop {workshop.get("name")} and re-run `buildworkshop --name {os.path.basename(DATA_FILE).replace(".md", "")}` or manually edit the data file: `{SAVE_DIR}/{DATA_FILE}`'))
-                    data['frontmatter']['prerequisites'].append({'type': 'external link', 'url': url, 'text': text, 'required': required, 'recommended': recommended})
+                    if not url_text:
+                        self.WARNINGS.append(log.warning(f'No text accompanying _the link_ was found when processing prerequired external link (`{url}`) for workshop `{workshop.get("name")}`. Note that this means that the external link requirement in {workshop.get("name")} will have a general "Link" header. You may want to change this in the frontmatter\'s requirements for the workshop {workshop.get("name")} and re-run `buildworkshop --name {os.path.basename(DATA_FILE).replace(".md", "")}` or manually edit the data file: `{SAVE_DIR}/{DATA_FILE}`'))
+                    data['frontmatter']['prerequisites'].append({'type': 'external link', 'url': url, 'url_text': url_text, 'text': text, 'required': required, 'recommended': recommended})
 
             for resourcedata in l.resources:
                 r_title, url = process_links(resourcedata, 'resource')
