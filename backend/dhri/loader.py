@@ -492,6 +492,7 @@ def download_image(url, local_file):
             with open(local_file, 'wb+') as f:
                 for chunk in r:
                     f.write(chunk)
+            return local_file
         elif r.status_code == 404:
             url = url.replace('/images/', '/sections/images/')
             r = requests.get(url)
