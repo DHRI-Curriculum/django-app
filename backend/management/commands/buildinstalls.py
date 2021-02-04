@@ -62,6 +62,7 @@ class Command(LogSaver, BaseCommand):
                         }
 
                         for screenshot in d.get('screenshots'):
+                            print(screenshot)
                             try:
                                 copyfile(screenshot[1], f'{SAVE_DIR}/images/{screenshot[0]}')
                                 step['screenshots'].append(f'{SAVE_DIR}/images/{screenshot[0]}')
