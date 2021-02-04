@@ -53,6 +53,8 @@ class Command(LogSaver, BaseCommand):
 
             Insight.objects.filter(title=insightdata.get('title')).update(
                 text=convert_html_quotes(insightdata.get('text')))
+            
+            # TODO: #368 Add insight image here
 
             for sectiondata in insightdata.get('sections', []):
                 section, created = Section.objects.get_or_create(insight=insight, title=sectiondata.get(

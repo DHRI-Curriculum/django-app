@@ -45,6 +45,7 @@ class Command(LogSaver, BaseCommand):
                 'sections': [],
                 'specific_operating_systems': {}
             }
+            # TODO: #368 Add insight image here
 
             order = 1
             for section, text in i.sections.items():
