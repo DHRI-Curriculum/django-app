@@ -29,10 +29,6 @@ def get_yaml(file):
         exit(f'A required datafile was not found ({file}). Try running python manage.py build before you run this command. If it does not work, consult the documentation.')
 
 
-def get_name(path):
-    return path.split('/')[-1].replace('.py', '')
-
-
 def get_all_existing_workshops(specific_names=None, log=None):
     if not specific_names:
         return [(x, f'{WORKSHOPS_DIR}/{x}') for x in os.listdir(WORKSHOPS_DIR) if not x.startswith('.')]

@@ -2,7 +2,7 @@ from django.core.management import BaseCommand
 from django.conf import settings
 from backend.dhri.log import Logger
 from backend.dhri.install_parser import InstallLoader
-from ._shared import get_name, LogSaver
+from ._shared import LogSaver
 from shutil import copyfile
 import re
 import pathlib
@@ -27,7 +27,7 @@ class Command(LogSaver, BaseCommand):
         parser.add_argument('--forcedownload', action='store_true')
 
     def handle(self, *args, **options):
-        log = Logger(name=get_name(__file__), force_verbose=options.get('verbose'), force_silent=options.get('silent'))
+        log = Logger(path=__file__, force_verbose=options.get('verbose'), force_silent=options.get('silent'))
 
         log.log('Building installation instruction files... Please be patient as this can take some time.')
 

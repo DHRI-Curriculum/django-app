@@ -2,7 +2,7 @@ from django.core.management import BaseCommand
 from django.conf import settings
 from backend.dhri.log import Logger
 from backend import dhri_settings
-from ._shared import get_name, LogSaver
+from ._shared import LogSaver
 import yaml
 import pathlib
 
@@ -30,7 +30,7 @@ class Command(LogSaver, BaseCommand):
         parser.add_argument('--verbose', action='store_true')
 
     def handle(self, *args, **options):
-        log = Logger(name=get_name(__file__), force_verbose=options.get('verbose'), force_silent=options.get('silent'))
+        log = Logger(path=__file__, force_verbose=options.get('verbose'), force_silent=options.get('silent'))
 
         log.log('Building blurbs... Please be patient as this can take some time.')
 

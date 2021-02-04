@@ -13,3 +13,15 @@ def get_regex(selector='NUMBERS'):
         return MARKDOWN_HREF
     elif selector == 'COMPLEX_SEARCH_FOR_URLS':
         return COMPLEX_SEARCH_FOR_URLS
+
+def get_verbose():
+    from backend.dhri_settings import VERBOSE
+    return VERBOSE
+
+def get_terminal_width():
+    from backend.dhri_settings import TERMINAL_WIDTH
+    return TERMINAL_WIDTH
+
+def get_saved_prefix():
+    from backend.dhri_settings import saved_prefix
+    return saved_prefix

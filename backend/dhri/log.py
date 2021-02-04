@@ -3,8 +3,7 @@ from colorama import Fore, Back, Style
 
 import textwrap
 
-from backend.dhri_settings import VERBOSE, TERMINAL_WIDTH, saved_prefix
-
+from backend.dhri.constants import get_verbose, get_terminal_width, get_saved_prefix
 
 COLON_SAFE = {
     'http://': 'HTTP///',
@@ -62,9 +61,9 @@ def _fix_message(main_message='', following_lines=[], first_line_add='--> ', ind
 
     # Fix terminal width
     if len(first_line_add) >= len(indentation):
-        width = TERMINAL_WIDTH - len(first_line_add)
+        width = get_terminal_width() - len(first_line_add)
     else:
-        width = TERMINAL_WIDTH - len(indentation)
+        width = get_terminal_width() - len(indentation)
 
     dedented_text = textwrap.dedent(main_message)
     wrapped = textwrap.fill(dedented_text, width=width)
@@ -90,8 +89,7 @@ def log_created(created:bool, model='', preview='', id='', log=None):
         from backend.dhri.log import Logger
         log = Logger(name='created')
     if created:
-        from backend.dhri_settings import saved_prefix
-        log.log(saved_prefix + f'{model} `{preview}` added (ID {id}).')
+        log.log(get_saved_prefix() + f'{model} `{preview}` added (ID {id}).')
     else:
         log.warning(f'{model} `{preview}` was not saved as it already exists (ID {id}).', color='green') # Set to green to not alarm
 
@@ -99,13 +97,18 @@ def log_created(created:bool, model='', preview='', id='', log=None):
 class Logger():
     def __init__(self, *args, **kwargs):
         self.name = kwargs.get('name', '')
+        self.path = kwargs.get('path', '')
+        
+        if self.path:
+            self.name = self.path.split('/')[-1].replace('.py', '')
+
         self.force_verbose = False
         self.force_silent = False
         
         if ('force_verbose' in kwargs and kwargs['force_verbose']) and ('force_silent' in kwargs and kwargs['force_silent']):
             exit('Logger can only accept either force_verbose OR force_silent, not both simultaneously.')
 
-        self.VERBOSE = VERBOSE
+        self.VERBOSE = get_verbose()
 
         if kwargs.get('force_verbose'):
             self.VERBOSE = True
@@ -152,7 +155,7 @@ class Logger():
 
     def created(self, created:bool, model='', preview='', id='', force=False, warning_color='yellow'):
         if created:
-            self.log(saved_prefix + f'{model} `{preview}` added (ID {id}).', force=force)
+            self.log(get_saved_prefix() + f'{model} `{preview}` added (ID {id}).', force=force)
         else:
             self.warning(f'{model} `{preview}` was not saved as it already exists (ID {id}).', color=warning_color)
 
@@ -161,9 +164,11 @@ class Logger():
 class Input:
 
     def __init__(self, *args, **kwargs):
-        self.name = ''
-        if 'name' in kwargs:
-            self.name = kwargs['name']
+        self.name = kwargs.get('name', '')
+        self.path = kwargs.get('path', '')
+
+        if self.path:
+            self.name = self.path.split('/')[-1].replace('.py', '')
 
     def ask(self, question='', bold=True, color='yellow', start_with_newline=True):
         indentation = (len(self.name) + 3) * ' ' # +3 because name is put in brackets and a space is added

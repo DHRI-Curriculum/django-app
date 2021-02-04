@@ -161,6 +161,8 @@ STATIC_IMAGES = {
 
 # MAKE NO CHANGES BELOW
 
+from backend.dhri.log import Logger
+log = Logger(path=__name__)
 
 
 for cat in STATIC_IMAGES:
@@ -209,25 +211,17 @@ if TERMINAL_WIDTH > MAX_TERMINAL_WIDTH:
 
 saved_prefix = '----> '
 
+
 AUTO_USERS = dict()
 try:
     with open(USER_SETUP, 'r') as f:
         AUTO_USERS = yaml.safe_load(f)
 except FileNotFoundError:
-    # TODO: #361 Figure out import of log and change `print` to `log.error` here
-    print(f'Cannot open {USER_SETUP} to read the automatic user information. Make sure your `dhri_settings.py` file contains the correct filename.')
-    print('This means that the script will skip the user setup. Run `manage.py createsuperuser` to be able to access the backend.')
-    # exit()
+    log.error(f'Cannot open {USER_SETUP} to read the automatic user information. Make sure your `dhri_settings.py` file contains the correct filename. This means that the script will skip the user setup. Run `manage.py createsuperuser` to be able to access the backend.')
 except yaml.parser.ParserError as e:
-    # TODO: #361 Figure out import of log and change `print` to `log.error` here
-    print(f'Cannot parse file {USER_SETUP}: {e}')
-    print('This means that the script will skip the user setup. Run `manage.py createsuperuser` to be able to access the backend.')
-    # exit()
+    log.error(f'Cannot parse file {USER_SETUP}. This means that the script will skip the user setup. Run `manage.py createsuperuser` to be able to access the backend. The full error was: {e}')
 except yaml.scanner.ScannerError as e:
-    # TODO: #361 Figure out import of log and change `print` to `log.error` here
-    print(f'Cannot parse file {USER_SETUP}: {e}')
-    print('This means that the script will skip the user setup. Run `manage.py createsuperuser` to be able to access the backend.')
-    # exit()
+    log.error(f'Cannot parse file {USER_SETUP}. This means that the script will skip the user setup. Run `manage.py createsuperuser` to be able to access the backend. The full error was: {e}')
 
 AUTO_SNIPPETS = dict()
 try:

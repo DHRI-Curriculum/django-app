@@ -1,5 +1,5 @@
 from django.core.management import BaseCommand, call_command
-from ._shared import all_models, get_name
+from ._shared import all_models
 from backend.dhri.log import get_or_default, Logger
 
 class Command(BaseCommand):
@@ -17,7 +17,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         if options.get('reset'):
-            log = Logger(name=get_name(__file__), force_verbose=options.get('verbose'), force_silent=options.get('silent'))
+            log = Logger(path=__file__, force_verbose=options.get('verbose'), force_silent=options.get('silent'))
             if options.get('force'):
                 i = get_or_default(f'Warning: This will remove ALL OF THE OBJECTS from the database and reset them from the datafiles. Are you sure you want to continue?', color='red', default_variable='N')
                 if i.lower() != 'y':
