@@ -501,13 +501,13 @@ def download_image(url, local_file):
                         f.write(chunk)
                 return local_file
             elif r.status_code == 404:
-                log.warning(f"Could not download image {local_file.name} (not found): {url}")
+                log.error(f"Could not download image {local_file.name} (not found): {url}")
                 return None
             elif r.status_code == 403:
-                log.warning(f"Could not download image {local_file.name} (not allowed)")
+                log.error(f"Could not download image {local_file.name} (not allowed)")
                 return None
         elif r.status_code == 403:
-            log.warning(f"Could not download image {local_file.name} (not allowed)")
+            log.error(f"Could not download image {local_file.name} (not allowed)")
             return None
     else:
         return local_file
