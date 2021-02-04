@@ -13,7 +13,11 @@ Resolving deltas: 100% (1843/1843), done.
 
 ![Animated GIF showing the result from running the `git clone` command above, illustrating the text-representation above.](images/01-clone.gif)
 
-After it is finished, navigate into the repository, using `cd django-app`.
+After it is finished, navigate into the repository, using:
+
+```sh
+$ cd django-app
+```
 
 ![Animated GIF showing the `cd django-app` command.](images/02-cd-django-app.gif)
 
