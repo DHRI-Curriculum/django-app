@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from learner.models import Profile
+from learner.models import Profile, ProfileLink
 from django.core.management import BaseCommand
 from django.core.files import File
 from django.conf import settings
@@ -49,9 +49,9 @@ class Command(LogSaver, BaseCommand):
 
     def handle(self, *args, **options):
         log = Logger(path=__file__,
-            force_verbose=options.get('verbose'),
-            force_silent=options.get('silent')
-        )
+                     force_verbose=options.get('verbose'),
+                     force_silent=options.get('silent')
+                     )
         input = Input(path=__file__)
         test_for_required_files(REQUIRED_PATHS=REQUIRED_PATHS, log=log)
         data = get_yaml(f'{FULL_PATH}')
@@ -78,6 +78,8 @@ class Command(LogSaver, BaseCommand):
                 is_superuser=userdata.get('superuser'),
                 is_staff=userdata.get('staff'),
             )
+
+            user.refresh_from_db()
 
             if not userdata.get('profile'):
                 log.error(f'User {userdata.get("username")} does not have profile information (bio, image, links, and/or pronouns) added. Make sure you add all this information for each user in the datafile before running this command ({FULL_PATH}).')
@@ -109,6 +111,26 @@ class Command(LogSaver, BaseCommand):
             else:
                 profile.image.name = get_default_profile_picture()
                 profile.save()
+
+            if userdata.get('profile', {}).get('links'):
+                for link in userdata.get('profile', {}).get('links'):
+                    if link.get('cat') == 'personal':
+                        link['cat'] = ProfileLink.PERSONAL
+                    elif link.get('cat') == 'project':
+                        link['cat'] = ProfileLink.PROJECT
+                    else:
+                        log.error(
+                            f'Link {link.get("url")} is assigned a category that has no correspondence in the database model: {link.get("cat")}. Please set the category to either `personal` or `project`.')
+
+                    _, _ = ProfileLink.objects.get_or_create(profile=profile, url=link.get('url'), defaults={
+                        'cat': link.get('cat'),
+                        'label': link.get('label')
+                    })
+
+                    ProfileLink.objects.filter(profile=profile, url=link.get('url')).update(
+                        cat=link.get('cat'),
+                        label=link.get('label')
+                    )
 
         self.LOGS.append(log.log('Added/updated users: ' +
                                  ', '.join([x.get('username') for x in data])))

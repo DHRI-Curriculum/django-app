@@ -39,9 +39,9 @@ class Command(LogSaver, BaseCommand):
 
     def handle(self, *args, **options):
         log = Logger(path=__file__,
-            force_verbose=options.get('verbose'),
-            force_silent=options.get('silent')
-        )
+                     force_verbose=options.get('verbose'),
+                     force_silent=options.get('silent')
+                     )
 
         log.log('Building user files... Please be patient as this can take some time.')
 

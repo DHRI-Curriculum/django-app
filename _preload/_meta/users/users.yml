@@ -13,7 +13,10 @@
       \ for digital humanities across several higher education institutions across\
       \ the U.S."
     image: /Users/kallewesterling/Repositories/django-app/_preload/_meta/users/images/kalle-westerling.jpg
-    links: []
+    links:
+    - cat: personal
+      label: westerling.nu
+      url: http://www.westerling.nu
     pronouns: he/him
   staff: false
   superuser: true
@@ -67,7 +70,10 @@
       \ and Know Thy Shelf, a radio frequency identification (RFID)-based library\
       \ inventory system."
     image: /Users/kallewesterling/Repositories/django-app/_preload/_meta/users/images/steve-zweibel.jpg
-    links: []
+    links:
+    - cat: project
+      label: DH Box
+      url: https://dhbox.org/
     pronouns: he/him
   staff: false
   superuser: true
@@ -105,23 +111,23 @@
       \ Param is also developing a website titled Indian Students Abroad that exhibits\
       \ his archival findings. Param has previously worked on the Women Writers Project,\
       \ the CERES Exhibit Toolkit, and the Graduate Center Digital Research Institute.\
-      \ He currently serves on the Editorial Collective of The Journal of Interactive\
-      \ Technology and Pedagogy."
+      \ He currently serves on the Editorial Collective of _The Journal of Interactive\
+      \ Technology and Pedagogy_."
     image: /Users/kallewesterling/Repositories/django-app/_preload/_meta/users/images/param-ajmera.jpg
     links:
-    - cat: PR
+    - cat: project
       label: Indian Students Abroad
       url: https://indianstudentsabroad.com/
-    - cat: PR
+    - cat: project
       label: Women Writers Project
       url: https://wwp.northeastern.edu/
-    - cat: PR
+    - cat: project
       label: CERES Exhibit Toolkit
       url: https://cerestoolkit.dsg.northeastern.edu/
-    - cat: PR
+    - cat: project
       label: Graduate Center Digital Research Institute
       url: https://gcdri.commons.gc.cuny.edu/
-    - cat: PR
+    - cat: project
       label: The Journal of Interactive Technology and Pedagogy
       url: https://jitp.commons.gc.cuny.edu/
     pronouns: null
@@ -209,15 +215,18 @@
       \ explores the heterotopic space of the East Bay punk scene, its modes of resistance\
       \ and (dis-)association, and the clashes between its politics and aesthetics.\
       \ He serves as co-chair of the Graduate Forum of the Italian Association for\
-      \ American Studies (AISNA) and is a founding editor of its journal, JAm It!\
-      \ (Journal of American Studies in Italy). As a digital humanist, Stefano focuses\
+      \ American Studies (AISNA) and is a founding editor of its journal, _JAm It!\
+      \ (Journal of American Studies in Italy)_. As a digital humanist, Stefano focuses\
       \ on archival practices with a knack for archival pedagogy and public-facing\
       \ initiatives. He created the East Bay Punk Digital Archive, an open access\
       \ archive of East Bay punk-zines, and worked as a curator and consultant for\
       \ Lawrence Livermore\u2019s archive at Cornell University. He was a Wellcome\
       \ Trust Transdisciplinary Fellow in 2019-2020."
     image: /Users/kallewesterling/Repositories/django-app/_preload/_meta/users/images/stefano-morello.jpg
-    links: []
+    links:
+    - cat: project
+      label: East Bay Punk Digital Archive
+      url: https://eastbaypunkda.com/
     pronouns: null
   staff: true
   superuser: false
@@ -245,19 +254,19 @@
       \ https://kristenhackett.info/."
     image: /Users/kallewesterling/Repositories/django-app/_preload/_meta/users/images/kristen-hackett.jpg
     links:
-    - cat: PR
+    - cat: project
       label: gcdi.commons.gc.cuny.edu
       url: http://gcdi.commons.gc.cuny.edu
-    - cat: PE
+    - cat: personal
       label: kristenhackett.info
       url: http://kristenhackett.info
-    - cat: PR
+    - cat: project
       label: Understanding Change in Context
       url: http://recalibratingqueens.nyc/data-analysis/understanding-change-in-context/
-    - cat: PR
+    - cat: project
       label: Recalibrating Queens
       url: http://recalibratingqueens.nyc/drafting/
-    - cat: PR
+    - cat: project
       label: Mapping Arts, NYC
       url: http://gcdiprojects.org/MappingArtsNYC/
     pronouns: null
