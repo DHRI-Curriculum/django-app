@@ -31,7 +31,7 @@
                                 {% for reading in term.readings.all %}
                                     <div class="p-2 my-3 rounded-lg linked-comment">
                                         <a class="text-decoration-none" target="_blank" href="{{ reading.url }}">
-                                            <i class="bi bi-link pr-1 text-muted"></i>{{ reading.title }}<!-- include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" -->
+                                            <i class="bi bi-link pr-1 text-muted"></i>{{ reading.title }}<!-- #285 include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" -->
                                         </a>
                                         {% if reading.annotation %}<div class="small"><strong>Annotation:</strong> {{ reading.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
                                     </div>
@@ -45,7 +45,7 @@
                                 {% for tutorial in term.tutorials.all %}
                                     <div class="p-2 my-3 rounded-lg linked-comment">
                                         <a class="text-decoration-none" target="_blank" href="{{ tutorial.url }}">
-                                            <i class="bi bi-link pr-1 text-muted"></i>{{ tutorial.label }}<!-- include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" -->
+                                            <i class="bi bi-link pr-1 text-muted"></i>{{ tutorial.label }}<!-- #285 include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" -->
                                         </a>
                                         {% if tutorial.annotation %}<div class="small"><strong>Annotation:</strong> {{ tutorial.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
                                     </div>

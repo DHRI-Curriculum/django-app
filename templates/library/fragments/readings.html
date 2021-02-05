@@ -5,7 +5,7 @@
         {% if reading.url %}
             <a class="text-decoration-none" target="_blank" href="{{ reading.url }}">
                 <i class="bi bi-link pr-1 text-muted"></i>{% if reading.title %}{{ reading.title | as_string | markdown | safe | striptags }}{% else %}Untitled{% endif %}
-                <!-- include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" -->
+                <!-- #285 include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" -->
             </a>
         {% else %}
             Untitled
