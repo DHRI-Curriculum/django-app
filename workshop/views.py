@@ -60,8 +60,7 @@ class FrontmatterView(DetailView):
 
         context['learning_objectives'] = [x.label.replace('<p>', '').replace(
             '</p>', '') for x in context['frontmatter'].learning_objectives.all()]
-        context['default_user_image'] = settings.MEDIA_URL + \
-            Profile.image.field.default
+        context['default_user_image'] = settings.MEDIA_URL + Profile.image.field.upload_to + '/' + Profile.image.field.default
 
         context['all_collaborators'] = Collaboration.objects.filter(
             frontmatter=context['frontmatter']).order_by('contributor__last_name')
