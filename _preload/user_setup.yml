@@ -155,8 +155,6 @@ by_groups:
           url: http://gcdiprojects.org/MappingArtsNYC/
           cat: project
 
-  USER:
-
     - first_name: Jojo
       last_name: Karlin
       username: jojokarlin
@@ -226,6 +224,8 @@ by_groups:
         - text: Personal website
           url: http://www.cuny.is/oildefon
           cat: personal
+
+  USER:
 
     - first_name: Test
       last_name: User
