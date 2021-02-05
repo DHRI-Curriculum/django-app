@@ -39,9 +39,9 @@ class Command(LogSaver, BaseCommand):
 
     def handle(self, *args, **options):
         log = Logger(path=__file__,
-            force_verbose=options.get('verbose'),
-            force_silent=options.get('silent')
-        )
+                     force_verbose=options.get('verbose'),
+                     force_silent=options.get('silent')
+                     )
 
         log.log('Building user files... Please be patient as this can take some time.')
 
@@ -73,14 +73,10 @@ class Command(LogSaver, BaseCommand):
                         'pronouns': u.get('pronouns'),
                         'links': []
                     },
-                    'superuser': False,
-                    'staff': False,
+                    'superuser': is_super,
+                    'staff': is_staff,
                     'groups': u.get('groups', [])
                 }
-                if is_super:
-                    user['superuser'] = True
-                elif is_staff:
-                    user['staff'] = True
 
                 if u.get('img'):
                     if options.get('nocrop'):

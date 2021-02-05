@@ -1,3 +1,4 @@
+from backend.dhri.log import Logger
 import yaml
 from backend.dhri.exceptions import ConstantError
 from pathlib import Path
@@ -104,12 +105,12 @@ TEST_AGES = {
 FORCE_DOWNLOAD = False
 
 
-
 ##### Dev features ##############################
 
 # If VERBOSE is set to True, every output message will display the source module/function (good for troubleshooting)
 VERBOSE = True
-CACHE_VERBOSE = False # Note: this outputs a message for each cache age check = generates a LOT of output
+# Note: this outputs a message for each cache age check = generates a LOT of output
+CACHE_VERBOSE = False
 
 
 NORMALIZING_SECTIONS = {
@@ -158,10 +159,8 @@ STATIC_IMAGES = {
 }
 
 
-
 # MAKE NO CHANGES BELOW
 
-from backend.dhri.log import Logger
 log = Logger(path=__name__)
 
 
@@ -219,29 +218,24 @@ try:
 except FileNotFoundError:
     log.error(f'Cannot open {USER_SETUP} to read the automatic user information. Make sure your `dhri_settings.py` file contains the correct filename. This means that the script will skip the user setup. Run `manage.py createsuperuser` to be able to access the backend.')
 except yaml.parser.ParserError as e:
-    log.error(f'Cannot parse file {USER_SETUP}. This means that the script will skip the user setup. Run `manage.py createsuperuser` to be able to access the backend. The full error was: {e}')
+    log.error(
+        f'Cannot parse file {USER_SETUP}. This means that the script will skip the user setup. Run `manage.py createsuperuser` to be able to access the backend. The full error was: {e}')
 except yaml.scanner.ScannerError as e:
-    log.error(f'Cannot parse file {USER_SETUP}. This means that the script will skip the user setup. Run `manage.py createsuperuser` to be able to access the backend. The full error was: {e}')
+    log.error(
+        f'Cannot parse file {USER_SETUP}. This means that the script will skip the user setup. Run `manage.py createsuperuser` to be able to access the backend. The full error was: {e}')
 
 AUTO_SNIPPETS = dict()
 try:
     with open(SNIPPET_SETUP, 'r') as f:
         AUTO_SNIPPETS = yaml.safe_load(f)
 except FileNotFoundError:
-    # TODO: #361 Figure out import of log and change `print` to `log.error` here
-    print(f'Cannot open {SNIPPET_SETUP} to read the automatic snippet information. Make sure your `dhri_settings.py` file contains the correct filename.')
-    print('This means that the script will skip the snippet setup.')
-    # exit()
+    log.error(f'Cannot open {SNIPPET_SETUP} to read the automatic snippet information. This means that the script will skip the snippet setup. Make sure your `dhri_settings.py` file contains the correct filename.')
 except yaml.parser.ParserError as e:
-    # TODO: #361 Figure out import of log and change `print` to `log.error` here
-    print(f'Cannot parse file {SNIPPET_SETUP}: {e}')
-    print('This means that the script will skip the snippet setup.')
-    # exit()
+    log.error(
+        f'Cannot parse file {SNIPPET_SETUP}. This means that the script will skip the snippet setup. The full error message was: {e}')
 except yaml.scanner.ScannerError as e:
-    # TODO: #361 Figure out import of log and change `print` to `log.error` here
-    print(f'Cannot parse file {SNIPPET_SETUP}: {e}')
-    print('This means that the script will skip the snippet setup.')
-    # exit()
+    log.error(
+        f'Cannot parse file {SNIPPET_SETUP}. This means that the script will skip the snippet setup. The full error message was: {e}')
 
 REQUIRED_IN_USERS = ['first_name', 'last_name', 'username', 'password']
 # AUTO_USERS testing data
@@ -249,10 +243,8 @@ for cat in AUTO_USERS:
     for u in AUTO_USERS[cat]:
         for section in REQUIRED_IN_USERS:
             if not u.get(section):
-                # TODO: #361 Figure out import of log and change `print` to `log.error` here
-                print(
+                log.error(
                     f'User setup file does not contain section `{section}` (in user with username `{u.get("username")}`). Make sure all the users in the `{USER_SETUP}` file contains all the required sections: `{"`, `".join(REQUIRED_IN_USERS)}`.')
-                exit()
 
 for _, dir in IMAGE_CACHE.items():
     IMAGE_CACHE[_] = Path(dir)

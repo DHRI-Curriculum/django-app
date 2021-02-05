@@ -49,9 +49,9 @@ class Command(LogSaver, BaseCommand):
 
     def handle(self, *args, **options):
         log = Logger(path=__file__,
-            force_verbose=options.get('verbose'),
-            force_silent=options.get('silent')
-        )
+                     force_verbose=options.get('verbose'),
+                     force_silent=options.get('silent')
+                     )
         input = Input(path=__file__)
         test_for_required_files(REQUIRED_PATHS=REQUIRED_PATHS, log=log)
         data = get_yaml(f'{FULL_PATH}')
@@ -61,23 +61,29 @@ class Command(LogSaver, BaseCommand):
                 log.error(
                     f'Username is required. Check the datafile ({FULL_PATH}) to make sure that all the users in the file are assigned a username.')
 
-            user, created = User.objects.get_or_create(
-                username=userdata.get('username'))
+            if User.objects.filter(username=userdata.get('username'),
+                                   first_name=userdata.get('first_name'),
+                                   last_name=userdata.get('last_name'),
+                                   email=userdata.get('email'),
+                                   is_staff=userdata.get('staff')
+                                   ).count():
+                continue
+            func = User.objects.create_user
+            if userdata.get('superuser'):
+                func = User.objects.create_superuser
 
-            if not created and not options.get('forceupdate'):
-                choice = input.ask(
-                    f'User `{userdata.get("username")}` already exists. Update with new information? [y/N]')
-                if choice.lower() != 'y':
-                    continue
-
-            User.objects.filter(username=userdata.get('username')).update(
+            user, created = func(
+                username=userdata.get('username'),
                 first_name=userdata.get('first_name'),
                 last_name=userdata.get('last_name'),
                 email=userdata.get('email'),
-                password=userdata.get('password'),
-                is_superuser=userdata.get('superuser'),
-                is_staff=userdata.get('staff'),
+                is_staff=userdata.get('staff')
             )
+
+            # if None, sets to unusable password, see https://docs.djangoproject.com/en/3.1/ref/contrib/auth/#django.contrib.auth.models.User.set_password
+            u = User.objects.get(username=userdata.get('username'))
+            u.set_password(userdata.get('password'))
+            u.save()
 
             if not userdata.get('profile'):
                 log.error(f'User {userdata.get("username")} does not have profile information (bio, image, links, and/or pronouns) added. Make sure you add all this information for each user in the datafile before running this command ({FULL_PATH}).')

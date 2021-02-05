@@ -15,7 +15,7 @@
     image: /Users/kallewesterling/Repositories/django-app/_preload/_meta/users/images/kalle-westerling.jpg
     links: []
     pronouns: he/him
-  staff: false
+  staff: true
   superuser: true
   username: kalle
 - email: ''
@@ -41,7 +41,7 @@
     image: /Users/kallewesterling/Repositories/django-app/_preload/_meta/users/images/lisa-rhody.jpg
     links: []
     pronouns: she/her
-  staff: false
+  staff: true
   superuser: true
   username: lisa
 - email: ''
@@ -69,7 +69,7 @@
     image: /Users/kallewesterling/Repositories/django-app/_preload/_meta/users/images/steve-zweibel.jpg
     links: []
     pronouns: he/him
-  staff: false
+  staff: true
   superuser: true
   username: steve
 - email: ''
