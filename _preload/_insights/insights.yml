@@ -7,27 +7,49 @@
   specific_operating_systems:
     MacOS:
       section: How to check your current version of Anaconda
-      text: "<ol>\n<li>Click the Spotlight Search button (the magnifying glass) in\
-        \ the top right of your desktop.</li>\n<li>Type <code>terminal</code> into\
-        \ the bar that appears.</li>\n<li>Select the first item that appears in the\
-        \ list.</li>\n<li>When the Terminal pops up, you will likely see either a\
-        \ window with black text over white background or colored text over a black\
-        \ background.</li>\n<li>In your Terminal, type <code>conda --version</code>\
-        \ and press enter. \n\_\_\_\_The output of your query will tell you which\
-        \ version of Anaconda is installed on your computer. <em>E.g.</em>, <code>conda\
-        \ 4.7.12</code></li>\n</ol>"
+      text: '<ol>
+
+        <li>Click the Spotlight Search button (the magnifying glass) in the top right
+        of your desktop.</li>
+
+        <li>Type <code>terminal</code> into the bar that appears.</li>
+
+        <li>Select the first item that appears in the list.</li>
+
+        <li>When the Terminal pops up, you will likely see either a window with black
+        text over white background or colored text over a black background.</li>
+
+        <li>In your Terminal, type <code>conda --version</code> and press enter.
+
+        The output of your query will tell you which version of Anaconda is installed
+        on your computer. <em>E.g.</em>, <code>conda 4.7.12</code>
+
+        </li>
+
+        </ol>'
     Windows:
       section: How to check your current version of Anaconda
-      text: "<ol>\n<li>Look for Git Bash in your programs menu and open.</li>\n<li>If\
-        \ you can't find the git folder, just type <code>git bash</code> in the search\
-        \ box and select <code>git bash</code> when it appears.</li>\n<li>Open the\
-        \ program.</li>\n<li>When the terminal pops up, you will likely see either\
-        \ a window with black text over white background or colored text over a black\
-        \ background.You know you're in the right place when you see the <code>$</code>.</li>\n\
-        <li>In your terminal, type <code>conda --version</code> and press <code>Enter</code>.\n\
-        \_\_\_\_The output of your query will tell you which version of Anaconda is\
-        \ installed on your computer. <em>E.g.</em>, <code>conda 4.7.12</code></li>\n\
-        </ol>"
+      text: '<ol>
+
+        <li>Look for Git Bash in your programs menu and open.</li>
+
+        <li>If you can''t find the git folder, just type <code>git bash</code> in
+        the search box and select <code>git bash</code> when it appears.</li>
+
+        <li>Open the program.</li>
+
+        <li>When the terminal pops up, you will likely see either a window with black
+        text over white background or colored text over a black background.You know
+        you''re in the right place when you see the <code>$</code>.</li>
+
+        <li>In your terminal, type <code>conda --version</code> and press <code>Enter</code>.
+
+        The output of your query will tell you which version of Anaconda is installed
+        on your computer. <em>E.g.</em>, <code>conda 4.7.12</code>
+
+        </li>
+
+        </ol>'
   text: <p>From time to time, and especially before you start working on a new project
     or when you are running into unexpected issues, you're going to want to make sure
     that your Anaconda installation and its packages are up to date. Through software
@@ -38,9 +60,9 @@
   image_alt: Header image for Choosing a text editor
   sections:
   - order: 1
-    text: '<p>For our workshops, we will be using <a href="https://code.visualstudio.com/">Visual
-      Studio Code</a>. Not only is Visual Studio Code free and open source, but it
-      is also consistent across macOS, Windows, and Linux systems.
+    text: '<p>For our workshops, we will be using <a href="https://code.visualstudio.com/"
+      rel="nofollow">Visual Studio Code</a>. Not only is Visual Studio Code free and
+      open source, but it is also consistent across macOS, Windows, and Linux systems.
 
       You can follow our download and installation instructions for <a href="https://github.com/DHRI-Curriculum/install/blob/v2.0/guides/visual-studio-code.md">Visual
       Studio Code</a> on the installations page.</p>'
@@ -82,19 +104,20 @@
       \ computer (you should be able to find it in the folder with your other applications).\
       \ From Anaconda Navigator's interface, launch a Jupyter Notebook.\n<img alt=\"\
       jupyter\" class=\"img-fluid d-block my-4\" src=\"/static/insight/images/jupyter.png\"\
-      />\nJupyter Notebook will open as a tab in your default browser, which is where\
-      \ you will be working. All of the directories (folders) in your <code>home</code>\
-      \ directory will appear. (This may vary depending on what operating system\u2014\
-      macOS, Windows, etc.\u2014you are using, as the file structure can be different)\n\
-      We will now open a new file. It is very important that you make sure to open\
-      \ the file in the right place, so you can find it later. Navigate on the directories\
-      \ clicking on them until you are on the desired directory.\nOnce you are in\
-      \ the right place, select <code>New</code> &gt;&gt; <code>Python3</code> in\
-      \ the upper right corner.\n<img alt='jupyter notebook \"open new file\" screen'\
-      \ class=\"img-fluid d-block my-4\" src=\"/static/insight/images/jupyter1.png\"\
-      />\nA blank page with an empty box should appear.\n<img alt=\"empty box on jupyter\
-      \ notebook new file\" class=\"img-fluid d-block my-4\" src=\"/static/insight/images/jupyter2.png\"\
-      /></p>"
+      \ style=\"max-width:100%;\"/>\nJupyter Notebook will open as a tab in your default\
+      \ browser, which is where you will be working. All of the directories (folders)\
+      \ in your <code>home</code> directory will appear. (This may vary depending\
+      \ on what operating system\u2014macOS, Windows, etc.\u2014you are using, as\
+      \ the file structure can be different)\nWe will now open a new file. It is very\
+      \ important that you make sure to open the file in the right place, so you can\
+      \ find it later. Navigate on the directories clicking on them until you are\
+      \ on the desired directory.\nOnce you are in the right place, select <code>New</code>\
+      \ &gt;&gt; <code>Python3</code> in the upper right corner.\n<img alt='jupyter\
+      \ notebook \"open new file\" screen' class=\"img-fluid d-block my-4\" src=\"\
+      /static/insight/images/jupyter1.png\" style=\"max-width:100%;\"/>\nA blank page\
+      \ with an empty box should appear.\n<img alt=\"empty box on jupyter notebook\
+      \ new file\" class=\"img-fluid d-block my-4\" src=\"/static/insight/images/jupyter2.png\"\
+      \ style=\"max-width:100%;\"/></p>"
     title: How to open a Jupyter notebook
   - order: 3
     text: '<p>Jupyter Notebook allows you to write and run codes in containers, which
@@ -136,18 +159,27 @@
       you a lot of time in the long run. To see the list of shortcuts, in the top
       menu click on <code>Help</code> &gt;&gt; <code>Keyboard Shortcuts</code>.
 
-      Here are a few that I have found helpful:
+      Here are a few that I have found helpful:</p>
 
-      - <a href="https://www.dataquest.io/blog/jupyter-notebook-tips-tricks-shortcuts/">28
-      Jupyter Notebook Tips, Tricks and Shortcuts</a>
+      <ul>
 
-      - <a href="https://www.youtube.com/watch?v=HW29067qVWk">Corey Schafer''s videos</a>
+      <li><a href="https://www.dataquest.io/blog/jupyter-notebook-tips-tricks-shortcuts/"
+      rel="nofollow">28 Jupyter Notebook Tips, Tricks and Shortcuts</a></li>
 
-      - DataQuest''s <a href="https://www.dataquest.io/blog/jupyter-notebook-tutorial">Jupyter
-      Notebook for Beginners: A Tutorial</a>
+      <li><a href="https://www.youtube.com/watch?v=HW29067qVWk" rel="nofollow">Corey
+      Schafer''s videos</a></li>
 
-      - Programming Historian''s <a href="https://programminghistorian.org/en/lessons/jupyter-notebooks">longer
-      tutorial</a></p>'
+      <li>DataQuest''s <a href="https://www.dataquest.io/blog/jupyter-notebook-tutorial"
+      rel="nofollow">Jupyter Notebook for Beginners: A Tutorial</a>
+
+      </li>
+
+      <li>Programming Historian''s <a href="https://programminghistorian.org/en/lessons/jupyter-notebooks"
+      rel="nofollow">longer tutorial</a>
+
+      </li>
+
+      </ul>'
     title: Learning more/Resources
   specific_operating_systems: {}
   text: <p>In some of our workshops we use Jupyter Notebooks. Whether you want to

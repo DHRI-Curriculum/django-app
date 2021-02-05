@@ -5,17 +5,21 @@ by_groups:
     - first_name: Kalle
       last_name: Westerling
       email: kwesterling1@gradcenter.cuny.edu
-      username: kalle
+      username: kallewesterling
       password: admin
       groups:
         - Team
       bio: Kalle Westerling is a Ph.D. Candidate in Theatre and Performance at The Graduate Center, CUNY, where he works on a dissertation about the history and aesthetics of male-identified bodies in 20th-century burlesque and 21st-century boylesque. He is also the project manager for the NEH-funded project “Expanding Communities of Practice,” aimed at helping to create infrastructure for digital humanities across several higher education institutions across the U.S.
       pronouns: 'he/him'
       img: "_preload/user_setup/kalle-westerling.png"
+      links:
+        - text: Personal website
+          url: http://www.westerling.nu
+          cat: personal
 
     - first_name: Lisa
       last_name: Rhody
-      username: lisa
+      username: lisarhody
       password: admin
       groups:
         - Team
@@ -25,13 +29,17 @@ by_groups:
 
     - first_name: Stephen
       last_name: Zweibel
-      username: steve
+      username: stevezweibel
       password: admin
       groups:
         - Team
       bio: Stephen Zweibel supports digital project creation by GC researchers across the disciplines, helps preserve those projects, and supports faculty and students with their data-based research and data management needs. He also coordinates the library’s growing series of workshops on research skills and tools. Steve earned his master’s degree in library and information science from Long Island University in 2010, and received a master’s degree in the Digital Humanities track of the GC’s MALS program. As a MALS student, he built DH Box, a cloud-based computer lab for digital humanities research (including the tools Omeka, NLTK, IPython, R Studio, and Mallet). DH Box won a National Endowment for the Humanities Start-Up grant. Before coming to the Graduate Center, Steve was a visiting lecturer at Hunter College, where he built several useful library tools, including Augur, a web application to track reference question data; a mobile app for the CUNY library catalog; and Know Thy Shelf, a radio frequency identification (RFID)-based library inventory system.
       img: "_preload/user_setup/steve-zweibel.png"
       pronouns: 'he/him'
+      links:
+        - text: DH Box
+          cat: project
+          url: https://dhbox.org/
 
   STAFF:
     - first_name: Administrator
@@ -44,7 +52,7 @@ by_groups:
 
     - first_name: Param
       last_name: Ajmera
-      username: param
+      username: paramajmera
       password: admin
       groups:
         - Team
@@ -52,19 +60,19 @@ by_groups:
       links:
         - text: Indian Students Abroad
           url: https://indianstudentsabroad.com/
-          cat: PR
+          cat: project
         - text: Women Writers Project
           url: https://wwp.northeastern.edu/
-          cat: PR
+          cat: project
         - text: CERES Exhibit Toolkit
           url: https://cerestoolkit.dsg.northeastern.edu/
-          cat: PR
+          cat: project
         - text: Graduate Center Digital Research Institute
           url: https://gcdri.commons.gc.cuny.edu/
-          cat: PR
+          cat: project
         - text: The Journal of Interactive Technology and Pedagogy
           url: https://jitp.commons.gc.cuny.edu/
-          cat: PR
+          cat: project
       img: _preload/user_setup/param-ajmera.jpg
       blurb:
         text: My interests in digital humanities emerges at the intersection of digital archives and website development. I am particularly inspired by the ways in which digital archives like the South Asian American Digital Archive, the HathiTrust Digital Library, and Chronicling America, among many others, provide us with relatively easy access to an abundance of historical documents. I am eager to learn new ways of creatively using the materials provided by these digital archives to curate historical moments and raise cultural questions. These interests started to shape up during my first year as a graduate student, when I worked on a digital exhibition project called Latin American Jewish Writers and Artists. This opportunity allowed me to work with research conducted over many decades to preserve the cultural heritage of the Latin American Jewish community. I was part of the team that decided how the videos, images, and documents in this collection would be presented to the public. The discussions we had regarding the design and layout of the website often led to discussions of larger issues of cultural significance, politics, and memory. I found the whole exercise to be immensely intellectually enriching and I’ve been teaching and learning with websites and digital archives ever since.
@@ -72,7 +80,7 @@ by_groups:
 
     - first_name: Di
       last_name: Yoong
-      username: di
+      username: diyoong
       password: admin
       groups:
         - Team
@@ -97,7 +105,7 @@ by_groups:
 
     - first_name: Rafael
       last_name: Davis Portela
-      username: rafa
+      username: rafadavisportela
       password: admin
       groups:
         - Team
@@ -109,7 +117,7 @@ by_groups:
 
     - first_name: Stefano
       last_name: Morello
-      username: stefano
+      username: stefanomorello
       password: admin
       groups:
         - Team
@@ -121,7 +129,7 @@ by_groups:
 
     - first_name: Kristen
       last_name: Hackett
-      username: kristen
+      username: kristenhackett
       password: admin
       groups:
         - Team
@@ -133,21 +141,91 @@ by_groups:
       links:
         - text: gcdi.commons.gc.cuny.edu
           url: http://gcdi.commons.gc.cuny.edu
-          cat: PR
+          cat: project
         - text: kristenhackett.info
           url: http://kristenhackett.info
-          cat: PE
+          cat: personal
         - text: Understanding Change in Context
           url: http://recalibratingqueens.nyc/data-analysis/understanding-change-in-context/
-          cat: PR
+          cat: project
         - text: Recalibrating Queens
           url: http://recalibratingqueens.nyc/drafting/
-          cat: PR
+          cat: project
         - text: Mapping Arts, NYC
           url: http://gcdiprojects.org/MappingArtsNYC/
-          cat: PR
+          cat: project
 
   USER:
+
+    - first_name: Jojo
+      last_name: Karlin
+      username: jojokarlin
+      password: nopassword
+      bio: Jojo Karlin researches transmissions of memory after periods of rapid technological transformation. Coming from a theater background, Jojo loves the intersection of disciplines, multiple media, and diverse expertises she finds in Digital Humanities. For her first big DH project, she did outreach for TANDEM, a web tool that gathers text and image data, and she now proudly coordinates outreach for DH Box, the GC's NEH-funded DH cloud laboratory. She is a freelance editor for the Tow Center for Digital Journalism at Columbia, and is developing a digital interface for a collection of historical letters. Jojo is deeply interested in digital editions preserving past materiality while exploring new materials.
+      groups:
+        - Team
+      pronouns: 'she/her'
+      links:
+        - text: Twitter
+          url: http://www.twitter.com/jojokarlin
+          cat: personal
+        - text: Personal website
+          url: http://www.jojokarlin.com/
+          cat: personal
+        - text: GitHub
+          url: http://www.github.com/jojokarlin
+          cat: personal
+
+    - first_name: Patrick
+      last_name: Smyth
+      username: patricksmyth
+      password: nopassword
+      bio: "Patrick Smyth's research focuses on Utopian thought and the history of science in 18th and 19th century British literature. As a digital humanist, Patrick is concerned with digital platforms for research and pedagogy. He is currently a developer on the NEH-funded DH Box, a cloud-based platform for accessing digital humanities tools, and has received a Provost's Digital Innovation grant for an online archive of science fiction works. His most recent publication is “Ebooks and the Digital Paratext: Emerging Trends in the Interpretation of Digital Media” in Examining Paratextual Theory and Its Applications in Digital Culture. Patrick was a 2010 Fulbright Teaching Fellow in Berlin, Germany, and teaches composition and literature at Queens College."
+      groups:
+        - Team
+      pronouns: 'he/him'
+      links:
+        - text: Twitter
+          url: http://www.twitter.com/psmyth01
+          cat: personal
+        - text: GitHub
+          url: http://www.github.com/smythp
+          cat: personal
+
+    - first_name: Javier 
+      last_name: Otero Peña
+      username: javioteropena
+      password: nopassword
+      bio: "Javier Otero Peña is a GC Digital Fellow since 2016 and a member of the Public Space Research Group, and currently works as a research assistant for the PARCS study in the CUNY School for Public Health. His dissertation will study the contextual impacts of park renovations in New York City, and will involve a map analysis using GIS technologies, a mini-ethnography using Qualitative Data Analysis (QDA) software, and natural language analysis of social media posts. Javier’s field research paper studied the politicization of public spaces through a participatory mural in East Harlem. In 2016, he took part in the CUNY-Humboldt University Summer School in Berlin, and in 2017 he participated in the Digital Humanities Research Institute in Victoria University, Canada. He also received the 2017 Provost’s Digital Innovation Grant. Javier holds a Master in Environmental Policies and Sustainable Development, and taught a class on Sustainable Development in Latin America and the Caribbean at the Paris Catholic University. He also studied Urban Planning and Management at UCV, and Sustainable Urban Mobility in Developing Countries (UNITAR). Javier worked as a consultant for the United Nations Environment Programme for three years."
+      groups:
+        - Team
+      pronouns: 'he/him'
+      links:
+        - text: Twitter
+          url: http://www.twitter.com/javo01
+          cat: personal
+        - text: GitHub
+          url: http://www.github.com/javo0101
+          cat: personal
+
+    - first_name: Olivia 
+      last_name: Ildefonso
+      username: oliviaildefonso
+      password: nopassword
+      bio: "Olivia Ildefonso is a Ph.D. Student in Earth and Environmental Sciences with a specialization in Human Geography at the Graduate Center (CUNY). She studies the political economy of school segregation. Her research focuses on Long Island, New York. Olivia is a Long Island native and has worked as a racial justice activist on Long Island for the past ten years. She has worked for civil rights organization, ERASE Racism since 2010 and she has served on the board of directors for STRONG Youth since 2013. Olivia is currently a GC Digital Fellow. She specializes in GIS Mapping, website management, and multi-media storytelling. Before becoming a GC Digital Fellow, Olivia was an Adjunct Lecturer at Queens College and a Writing Across the Curriculum (WAC) fellow at John Jay College."
+      groups:
+        - Team
+      pronouns: 'she/her'
+      links:
+        - text: Twitter
+          url: http://www.twitter.com/oildefon
+          cat: personal
+        - text: GitHub
+          url: http://www.github.com/oildefon
+          cat: personal
+        - text: Personal website
+          url: http://www.cuny.is/oildefon
+          cat: personal
 
     - first_name: Test
       last_name: User

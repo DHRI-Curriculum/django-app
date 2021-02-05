@@ -65,31 +65,34 @@ class Command(LogSaver, BaseCommand):
                 log.error(
                     f'Username is required. Check the datafile ({FULL_PATH}) to make sure that all the users in the file are assigned a username.')
 
-            if User.objects.filter(username=userdata.get('username'),
-                                   first_name=userdata.get('first_name'),
-                                   last_name=userdata.get('last_name'),
-                                   email=userdata.get('email'),
-                                   is_staff=userdata.get('staff')
-                                   ).count():
-                continue
-            func = User.objects.create_user
-            if userdata.get('superuser'):
-                func = User.objects.create_superuser
+            finder = User.objects.filter(username=userdata.get('username'))
+            if finder.count():
+                finder.update(
+                    first_name=userdata.get('first_name'),
+                    last_name=userdata.get('last_name'),
+                    email=userdata.get('email'),
+                    is_staff=userdata.get('staff')
+                )
+                
+                user = User.objects.get(username=userdata.get('username'))
+            else:
+                func = User.objects.create_user
+                if userdata.get('superuser'):
+                    func = User.objects.create_superuser
 
-            user, created = func(
-                username=userdata.get('username'),
-                first_name=userdata.get('first_name'),
-                last_name=userdata.get('last_name'),
-                email=userdata.get('email'),
-                is_staff=userdata.get('staff')
-            )
+                user = func(
+                    username=userdata.get('username'),
+                    first_name=userdata.get('first_name'),
+                    last_name=userdata.get('last_name'),
+                    email=userdata.get('email'),
+                    is_staff=userdata.get('staff')
+                )
 
-            user.refresh_from_db()
+                user.refresh_from_db()
 
             # if None, sets to unusable password, see https://docs.djangoproject.com/en/3.1/ref/contrib/auth/#django.contrib.auth.models.User.set_password
-            u = User.objects.get(username=userdata.get('username'))
-            u.set_password(userdata.get('password'))
-            u.save()
+            user.set_password(userdata.get('password'))
+            user.save()
 
             if not userdata.get('profile'):
                 log.error(f'User {userdata.get("username")} does not have profile information (bio, image, links, and/or pronouns) added. Make sure you add all this information for each user in the datafile before running this command ({FULL_PATH}).')
