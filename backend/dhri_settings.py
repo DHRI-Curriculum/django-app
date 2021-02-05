@@ -245,6 +245,8 @@ except yaml.scanner.ScannerError as e:
 
 REQUIRED_IN_USERS = ['first_name', 'last_name', 'username', 'password']
 # AUTO_USERS testing data
+AUTO_USER_DEFAULT = AUTO_USERS.get('default')
+AUTO_USERS = AUTO_USERS.get('by_groups')
 for cat in AUTO_USERS:
     for u in AUTO_USERS[cat]:
         for section in REQUIRED_IN_USERS:
