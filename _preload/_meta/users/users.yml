@@ -1,4 +1,4 @@
-default: _preload/user_setup/default.jpg
+default: backend/setup/users/default.jpg
 users:
 - email: kwesterling1@gradcenter.cuny.edu
   first_name: Kalle

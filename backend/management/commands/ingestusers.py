@@ -155,7 +155,7 @@ class Command(LogSaver, BaseCommand):
                     'Default profile picture added to the /media/ directory.'))
             elif not data.get('default'):
                 log.error(
-                    f'No default profile picture was defined in your datafile (`{FULL_PATH}`). Add the file, and then add the path to the file (relative to the `django-app` directory) in a `default` dictionary in your `user_setup.yml` file, like this:\n' + '`default: _preload/user_setup/default.jpg`')
+                    f'No default profile picture was defined in your datafile (`{FULL_PATH}`). Add the file, and then add the path to the file (relative to the `django-app` directory) in a `default` dictionary in your `users.yml` file, like this:\n' + '`default: backend/setup/users/default.jpg`')
             elif not os.path.exists(data.get('default')):
                 log.error(
                     f'The default profile picture (`{data.get("default")}`) in your datafile (`{FULL_PATH}`) does not exist in its expected directory (`{os.path.dirname(data.get("default"))}`). Make sure it is in the directory or update the datafile accordingly, or add the file before running this command.')
