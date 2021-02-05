@@ -1,41 +1,52 @@
 # Add snippets for the DHRI Curriculum website here.
-# 
-# Follow the format:
-# shortcut-name-with-no-spaces-or-strange-characters: <p>block of text</p>
 #
-# You can use any HTML that you'd like (although make sure, after ingestion that the snippet looks good on the page where it appears).
+# You can use any HTML or markdown that you'd like (although make sure, after ingestion that the snippet looks good on the page where it appears).
+#
+# Important note: If you user markdown, don't mix it with HTML as the GitHub parser won't understand that the HTML snippet contains markdown.
+#
+# Thus, follow either of these formats:
+# (1) shortcut-name-with-no-spaces-or-strange-characters: block of markdown text using [links](<href>) and **bold** and _italic_.
+# (2) shortcut-name-with-no-spaces-or-strange-characters: <p>block of HTML text using <a href="<href>">links</a> and <strong>bold</strong> and <em>italic</em>.
+#
 # If you need help with understanding how to put text blocks in a YAML-file, a good resource is YAML Multiline: https://yaml-multiline.info/
+#
+# If you need to start a new paragraph, the rule is: new-line 2x-space new-line!
 #
 # Once you're done with your edits here, run the following command in the django-app directory:
 # `python manage.py ingestsnippets`
-# 
+#
 # That should update all the snippets across the website.
 
-introduction-website: '<p class="lead">The Digital Humanities Research Institute (DHRI) curriculum features workshops, tutorials, glossaries, resources, reading materials, and more that have been developed at The Graduate Center, City Univerity of New York since 2016. Part of a 2019 grant from the National Endowment for the Humanities (NEH) Office of Digital Humanities (ODH), DHRI''s curriculum, which was originally developed for in-person workshops, was revised in Summer 2020 to better meet the needs of virtual instruction due to the covid-19 pandemic. While the curriculum has always been available openly on <a href="https://github.com/DHRI-curriculum">GitHub</a>, this site creates a more user-friendly and functional interface that is open and free for public use.</p>'
+introduction-website: "The Digital Humanities Research Institute (DHRI) curriculum features workshops, tutorials, glossaries, resources, reading materials, and more that have been developed at The Graduate Center, City Univerity of New York since 2016. Part of a 2019 grant from the National Endowment for the Humanities (NEH) Office of Digital Humanities (ODH), DHRI's curriculum, which was originally developed for in-person workshops, was revised in Summer 2020 to better meet the needs of virtual instruction due to the covid-19 pandemic. While the curriculum has always been available openly on [GitHub](https://github.com/DHRI-curriculum), this site creates a more user-friendly and functional interface that is open and free for public use."
 
-introduction-curriculum: '<p class="lead">The DHRI curriculum focuses on technical skills and concepts upon which additional technologies and tools rely. We call these <strong>foundational</strong> skills. Approximately one-third of all workshops at the Institute could be described as foundational: they introduce concepts such as the command line, version control & data collaboration, data literacy, and an introduction to programming with Python. The materials and workshops on this site are designed for users who are either unfamiliar with technology or could simply benefit from filling in gaps in their knowledge. Workshops and tutorials here encourage the use of open source technologies making them accessible to the widest possible audiences. We believe our emphasis on foundational skills demonstrates our commitment to empowering humanities researchers to become confident self-teachers and mentors in their own right who can make informed decisions about their research materials and methods that will lead to successful, sustainable, and long-term research goals.</p><p>Read more about our philosophy on the <a href="https://www.dhinstitutes.org">DHRI website</a>.</p>'
-
-introduction-context: <p>Why am I learning this? Why does it matter? How will it help my project? Learning new digital skills is an investment of your valuable time, so it is reasonable to want to know—essentially—what will I get out of taking this workshop? The materials below help situate the skills you are about to learn within a larger context of how they are used, by whom, and to what ends.</p>
-
-introduction-ethical-considerations: <p>Digital tools and the skills required to use them are part of our culture and, therefore, never neutral. Digital humanists and social scientists consider the ethical challenges and responsibilities of the tools and methods that they use. The following materials are designed to introduce you to issues you may want to consider as you learn this new skill and decide how to integrate it into your own research and teaching.</p>
-
-introduction-projects: <p>The following are sample projects that use the skill or tool (either implicitly or explicitly) that you are about to learn. Some skills that are foundational may seem not to lead to a specific project goal that you have in mind. You might be surprised to learn that the following projects depend on the skills learned in this workshop.</p>
-
-introduction-readings: <p>The readings listed below situate what you are about to learn in cultural contexts, such as a particular humanities or social science field, the information or computer sciences, or popular discourse. The purpose of the readings is to provide a theoretical framework you can use to contextualize how you intend to use the skill or tool introduced in this workshop.</p>
+introduction-curriculum: >
+    The DHRI curriculum focuses on technical skills and concepts upon which additional technologies and tools rely. We call these **foundational** skills. Approximately one-third of all workshops at the Institute could be described as foundational: they introduce concepts such as the command line, version control & data collaboration, data literacy, and an introduction to programming with Python. The materials and workshops on this site are designed for users who are either unfamiliar with technology or could simply benefit from filling in gaps in their knowledge. Workshops and tutorials here encourage the use of open source technologies making them accessible to the widest possible audiences. We believe our emphasis on foundational skills demonstrates our commitment to empowering humanities researchers to become confident self-teachers and mentors in their own right who can make informed decisions about their research materials and methods that will lead to successful, sustainable, and long-term research goals.  
+      
+    Read more about our philosophy on the [DHRI website](https://www.dhinstitutes.org).
 
 
-introduction-tutorials: <p>DHRI workshops provide a foundational comprehension of digital skills and tools often used in digital humanities and humanistic social science research. While having a strong foundation is important, there is usually more to learn if you want to get started on your own. Now that you have an awareness of the basics, here are some other tutorials to try that will extend your learning.</p>
+introduction-context: Why am I learning this? Why does it matter? How will it help my project? Learning new digital skills is an investment of your valuable time, so it is reasonable to want to know—essentially—what will I get out of taking this workshop? The materials below help situate the skills you are about to learn within a larger context of how they are used, by whom, and to what ends.
 
-introduction-resources: '<p>After they complete a workshop, participants often ask: what next? Here are some additional resources that can help you think about the projects that could be developed, the resources that you might need, the ways this skill could be used in the classroom, or debates in the field of digital humanities that provide context to what you''ve just learned.</p>'
+introduction-ethical-considerations: Digital tools and the skills required to use them are part of our culture and, therefore, never neutral. Digital humanists and social scientists consider the ethical challenges and responsibilities of the tools and methods that they use. The following materials are designed to introduce you to issues you may want to consider as you learn this new skill and decide how to integrate it into your own research and teaching.
 
-introduction-library: <p class="lead">Introductory text to the library. Should live in the new pedagagogy part of the website settings.</p>
+introduction-projects: The following are sample projects that use the skill or tool (either implicitly or explicitly) that you are about to learn. Some skills that are foundational may seem not to lead to a specific project goal that you have in mind. You might be surprised to learn that the following projects depend on the skills learned in this workshop.
 
-introduction-before-you-get-started: <p>In this section, we want to introduce some central steps that you want to take before you get started with this workshop. For instance, there are workshop suggestions that you may want to engage with before you start this workshop, some required or recommended software installations, some files from external sources to download, etc.
+introduction-readings: The readings listed below situate what you are about to learn in cultural contexts, such as a particular humanities or social science field, the information or computer sciences, or popular discourse. The purpose of the readings is to provide a theoretical framework you can use to contextualize how you intend to use the skill or tool introduced in this workshop.
 
-prerequisite-workshops: <p>This is a list of workshops that we suggest you engage with before you get started with this one. They are listed here as they contain some central concepts or tools that you may need before you can digest all the information you will be presented in this workshop.</p>
+introduction-tutorials: DHRI workshops provide a foundational comprehension of digital skills and tools often used in digital humanities and humanistic social science research. While having a strong foundation is important, there is usually more to learn if you want to get started on your own. Now that you have an awareness of the basics, here are some other tutorials to try that will extend your learning.
 
-prerequisite-installs: <p>Some software is required for you to participate in this workshop, other is recommended. This is a list of the prerequisite installations that are required of you, a link to each of their instructions (your operating system should have been highlighted below, as long as we have them available) and an indication as to whether it is required or not.</p>
+introduction-resources: >
+    After they complete a workshop, participants often ask: what next? Here are some additional resources that can help you think about the projects that could be developed, the resources that you might need, the ways this skill could be used in the classroom, or debates in the field of digital humanities that provide context to what you have just learned.
 
-prerequisite-insights: <p>This is a list of recommended and required "insights" that you may want to engage with. Insights can be considered "mini-workshops," about a particular smaller topic or task that you may need to complete. In this list, you will find Insights that we have deemed important or interesting enough for you, and that are related to this workshop.</p>
 
-prerequisite-external-links: <p>Sometimes, we ask you to complete a short task on an external website before you start the workshop. This can be because we want you to work on a particular dataset that you download here, or because we want you to sign up for a service. Note that these links will take you out of our website, so we will open them in a new tab for you. Once you are done, you can close down the window and easily return here.</p>
+introduction-library: Introductory text to the library. Should live in the new pedagagogy part of the website settings.
+
+introduction-before-you-get-started: In this section, we want to introduce some central steps that you want to take before you get started with this workshop. For instance, there are workshop suggestions that you may want to engage with before you start this workshop, some required or recommended software installations, some files from external sources to download, etc.
+
+prerequisite-workshops: This is a list of workshops that we suggest you engage with before you get started with this one. They are listed here as they contain some central concepts or tools that you may need before you can digest all the information you will be presented in this workshop.
+
+prerequisite-installs: Some software is required for you to participate in this workshop, other is recommended. This is a list of the prerequisite installations that are required of you, a link to each of their instructions (your operating system should have been highlighted below, as long as we have them available) and an indication as to whether it is required or not.
+
+prerequisite-insights: This is a list of recommended and required "insights" that you may want to engage with. Insights can be considered "mini-workshops," about a particular smaller topic or task that you may need to complete. In this list, you will find Insights that we have deemed important or interesting enough for you, and that are related to this workshop.
+
+prerequisite-external-links: Sometimes, we ask you to complete a short task on an external website before you start the workshop. This can be because we want you to work on a particular dataset that you download here, or because we want you to sign up for a service. Note that these links will take you out of our website, so we will open them in a new tab for you. Once you are done, you can close down the window and easily return here.

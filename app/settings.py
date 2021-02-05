@@ -49,7 +49,8 @@ INSTALLED_APPS = [
     'insight.apps.InsightConfig',
     'backend',
     'adminsortable',
-    'crispy_forms'
+    'crispy_forms',
+    'crispy_bootstrap5',
 ]
 
 MIDDLEWARE = [
@@ -158,8 +159,8 @@ MEDIA_URL = '/media/'
 
 SESSION_SAVE_EVERY_REQUEST = True
 
-# TODO: #360 Should be bootstrap5 once there is support https://github.com/django-crispy-forms/crispy-bootstrap5
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 LOGIN_REDIRECT_URL = 'website:index'
 LOGIN_URL = 'login'

@@ -7,6 +7,7 @@
 {% block main %}
     <div class="row pt-4">
         <div class="col">
+            <img src="{{ insight.image.url }}" class="img-fluid mb-3" style="min-width:100%;" />
             <h2 class="py-2">{{ insight.title }}</h2>
             {% if insight.text %}
             <div class="lead pb-4 mb-4 border-bottom">
@@ -16,19 +17,19 @@
         </div>
     </div>
     {% for section in insight.sections.all %}
-    <div class="row py-2 my-4">
-        <div class="col-12">
-            <h3>{% if section.title %}{{ section.title | safe }}{% endif %}</h3>
-        </div>
-        <div class="col-12">
-            <div class="lead">{{ section.text | safe }}</div>
-        </div>
-        {% for os_section in section.os_specific_sections.all %}
+        <div class="row py-2 my-4">
             <div class="col-12">
-                <h4>{{ os_section.operating_system }}</h4>
-                {{ os_section.text | safe }}
+                <h3>{% if section.title %}{{ section.title | safe }}{% endif %}</h3>
             </div>
-        {% endfor %}
-    </div>
+            <div class="col-12">
+                <div class="lead">{{ section.text | safe }}</div>
+            </div>
+            {% for os_section in section.os_specific_sections.all %}
+                <div class="col-12">
+                    <h4>{{ os_section.operating_system }}</h4>
+                    {{ os_section.text | safe }}
+                </div>
+            {% endfor %}
+        </div>
     {% endfor %}
 {% endblock %}

@@ -73,14 +73,10 @@ class Command(LogSaver, BaseCommand):
                         'pronouns': u.get('pronouns'),
                         'links': []
                     },
-                    'superuser': False,
-                    'staff': False,
+                    'superuser': is_super,
+                    'staff': is_staff,
                     'groups': u.get('groups', [])
                 }
-                if is_super:
-                    user['superuser'] = True
-                elif is_staff:
-                    user['staff'] = True
 
                 if u.get('img'):
                     if options.get('nocrop'):
@@ -102,7 +98,7 @@ class Command(LogSaver, BaseCommand):
                                 user['profile']['image'], 'jpeg', quality=50)
                 else:
                     self.WARNINGS.append(log.warning(
-                        f'User `{u.get("username")}` does not have an image assigned to them. Add filepaths to an existing file in your datafile (`{SAVE_DIR}/{DATA_FILE}`) or follow the steps in the documentation to add user images if you want to make sure the specific user has a profile picture. Then, rerun `python manage.py buildusers` or `python manage.py build`'))
+                        f'User `{u.get("username")}` does not have an image assigned to them and will be assigned the default picture. Add filepaths to an existing file in your datafile (`{SAVE_DIR}/{DATA_FILE}`) or follow the steps in the documentation to add user images if you want to make sure the specific user has a profile picture. Then, rerun `python manage.py buildusers` or `python manage.py build`'))
 
                 for link in u.get('links', []):
                     user['profile']['links'].append({
@@ -115,7 +111,8 @@ class Command(LogSaver, BaseCommand):
 
         # Save all data
         with open(f'{SAVE_DIR}/{DATA_FILE}', 'w+') as file:
-            file.write(yaml.dump(users))
+            file.write(
+                yaml.dump({'users': users, 'default': dhri_settings.AUTO_USER_DEFAULT}))
 
         self.LOGS.append(
             log.log(f'Saved user datafile: {SAVE_DIR}/{DATA_FILE}.'))

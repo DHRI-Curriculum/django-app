@@ -42,7 +42,7 @@ def instruction_image_exists(image_file):
 
 
 def get_default_instruction_image():
-    return Instruction.image.field.upload_to + Instruction.image.field.default
+    return Instruction.image.field.default
 
 
 def default_instruction_image_exists():
@@ -65,9 +65,9 @@ class Command(LogSaver, BaseCommand):
 
     def handle(self, *args, **options):
         log = Logger(path=__file__,
-            force_verbose=options.get('verbose'),
-            force_silent=options.get('silent')
-        )
+                     force_verbose=options.get('verbose'),
+                     force_silent=options.get('silent')
+                     )
         input = Input(path=__file__)
 
         test_for_required_files(REQUIRED_PATHS=REQUIRED_PATHS, log=log)

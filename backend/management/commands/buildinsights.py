@@ -25,9 +25,9 @@ class Command(LogSaver, BaseCommand):
 
     def handle(self, *args, **options):
         log = Logger(path=__file__,
-            force_verbose=options.get('verbose'),
-            force_silent=options.get('silent')
-        )
+                     force_verbose=options.get('verbose'),
+                     force_silent=options.get('silent')
+                     )
 
         log.log(
             'Building insight files... Please be patient as this can take some time.')
@@ -41,6 +41,8 @@ class Command(LogSaver, BaseCommand):
         for _, i in loader.insights.items():
             insight = {
                 'title': i.header.strip(),
+                'image': i.image,
+                'image_alt': i.image_alt,
                 'text': i.introduction.strip(),
                 'sections': [],
                 'specific_operating_systems': {}

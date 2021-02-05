@@ -12,7 +12,9 @@ class Insight(CurlyQuotesMixin, models.Model):
     slug = models.CharField(max_length=200, blank=True, unique=True)
     software = models.ManyToManyField(Software)
     text = models.TextField(blank=True, null=True)
-    # TODO: #368 Add image field
+    image = models.ImageField(
+        upload_to='insight_headers/', default='insight_headers/default.png')
+    image_alt = models.TextField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
         self.slug = dhri_slugify(self.title)
