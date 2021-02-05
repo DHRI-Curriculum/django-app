@@ -225,16 +225,16 @@ lessons:
     \ processor like Microsoft Word and don't realize how much is going on behind\
     \ the words shown on the screen. For the purposes of communicating with the computer\
     \ and for easier movement between different programs, we need to use text without\
-    \ hidden formatting.</p>\n<p><a href=\"/static/website/images/lessons/command-line/worddoc.png\"\
+    \ hidden formatting.</p>\n<p><a href=\"//static.dhinstitutes.org/curriculum/website/images/lessons/command-line/worddoc.png\"\
     \ rel=\"noopener noreferrer\" target=\"_blank\"><img alt=\"Word Doc\" class=\"\
-    img-fluid d-block my-4\" src=\"/static/website/images/lessons/command-line/worddoc.png\"\
+    img-fluid d-block my-4\" src=\"//static.dhinstitutes.org/curriculum/website/images/lessons/command-line/worddoc.png\"\
     \ style=\"max-width:100%;\"/></a></p>\n<p>Users with visual disabilities, <a href=\"\
     https://github.com/DHRI-Curriculum/command-line/raw/v2.0/files/WordProcessorExample.docx\"\
     \ target=\"_blank\">click here</a> to download the Word file.</p>\n<p>If you ask\
     \ the command line to read that file, this Word <code>.docx</code> file will look\
-    \ something like this</p>\n<p><a href=\"/static/website/images/lessons/command-line/CatWordDoc.png\"\
+    \ something like this</p>\n<p><a href=\"//static.dhinstitutes.org/curriculum/website/images/lessons/command-line/CatWordDoc.png\"\
     \ rel=\"noopener noreferrer\" target=\"_blank\"><img alt=\"Word Doc as visualized\
-    \ by Command Line\" class=\"img-fluid d-block my-4\" src=\"/static/website/images/lessons/command-line/CatWordDoc.png\"\
+    \ by Command Line\" class=\"img-fluid d-block my-4\" src=\"//static.dhinstitutes.org/curriculum/website/images/lessons/command-line/CatWordDoc.png\"\
     \ style=\"max-width:100%;\"/></a></p>\n<p>Users with visual disabilities, <a href=\"\
     https://raw.githubusercontent.com/DHRI-Curriculum/command-line/v2.0/files/PK.md\"\
     \ rel=\"nofollow\" target=\"_blank\">click here</a> to download the text file.</p>\n\
@@ -343,9 +343,9 @@ lessons:
     <p>Type <code>terminal</code> into the bar that appears.</p>\n</li>\n<li>\n<p>Select\
     \ the first item that appears in the list.</p>\n</li>\n<li>\n<p>When the Terminal\
     \ pops up, you will likely see either a window with black text over white background\
-    \ or colored text over a black background.</p>\n<p><a href=\"/static/website/images/lessons/command-line/osx_term.png\"\
+    \ or colored text over a black background.</p>\n<p><a href=\"//static.dhinstitutes.org/curriculum/website/images/lessons/command-line/osx_term.png\"\
     \ rel=\"noopener noreferrer\" target=\"_blank\"><img alt=\"Terminal in macOS\"\
-    \ class=\"img-fluid d-block my-4\" src=\"/static/website/images/lessons/command-line/osx_term.png\"\
+    \ class=\"img-fluid d-block my-4\" src=\"//static.dhinstitutes.org/curriculum/website/images/lessons/command-line/osx_term.png\"\
     \ style=\"max-width:100%;\"/></a></p>\n</li>\n</ol>\n<p>Please note: You can change\
     \ the color of your Terminal or BashShell background and text by selecting <code>Shell</code>\
     \ from the top menu bar, then selecting a theme from the menu under <code>New\
@@ -496,9 +496,9 @@ lessons:
     <p>Your computer's files are organized in what's known as a hierarchical filesystem.\
     \ That means there's a top level or <code>root</code> folder on your system. That\
     \ folder has other folders in it, and those folders have folders in them, and\
-    \ so on. You can draw these relationships in a tree:</p>\n<p><a href=\"/static/website/images/lessons/command-line/hierarchical-filesystem-example.png\"\
+    \ so on. You can draw these relationships in a tree:</p>\n<p><a href=\"//static.dhinstitutes.org/curriculum/website/images/lessons/command-line/hierarchical-filesystem-example.png\"\
     \ rel=\"noopener noreferrer\" target=\"_blank\"><img alt=\"An example of how a\
-    \ hierarchical filesystem looks\" class=\"img-fluid d-block my-4\" src=\"/static/website/images/lessons/command-line/hierarchical-filesystem-example.png\"\
+    \ hierarchical filesystem looks\" class=\"img-fluid d-block my-4\" src=\"//static.dhinstitutes.org/curriculum/website/images/lessons/command-line/hierarchical-filesystem-example.png\"\
     \ style=\"max-width:100%;\"/></a></p>\n<p>The root or highest-level folder on\
     \ macOS is just called <code>/</code>. We won't need to go in there, though, since\
     \ that's mostly just files for the operating system. On Windows, the root directory\
