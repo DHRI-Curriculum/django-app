@@ -52,7 +52,7 @@ def main_navigation(context):
 
     # Installations mini menu
     html += get_template('_main-navbar/installations-mini-menu.html').render(
-        {'all': obj['installations']})
+        {'all': obj['installations'], 'request': context.request})
 
     # Insights mini menu
     html += get_template('_main-navbar/insights-mini-menu.html').render(
