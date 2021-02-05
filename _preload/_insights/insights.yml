@@ -13,9 +13,9 @@
         \ list.</li>\n<li>When the Terminal pops up, you will likely see either a\
         \ window with black text over white background or colored text over a black\
         \ background.</li>\n<li>In your Terminal, type <code>conda --version</code>\
-        \ and press enter.\n\_\_\_\_The output of your query will tell you which version\
-        \ of Anaconda is installed on your computer. <em>E.g.</em>, <code>conda 4.7.12</code></li>\n\
-        </ol>"
+        \ and press enter. \n\_\_\_\_The output of your query will tell you which\
+        \ version of Anaconda is installed on your computer. <em>E.g.</em>, <code>conda\
+        \ 4.7.12</code></li>\n</ol>"
     Windows:
       section: How to check your current version of Anaconda
       text: "<ol>\n<li>Look for Git Bash in your programs menu and open.</li>\n<li>If\
@@ -128,18 +128,26 @@
       we strongly suggest you to avoid running cells out of order.</p>'
     title: Choosing, Starting, and Restarting a kernel
   - order: 5
-    text: "<p>The best way to learn Jupyter Notebook is working with it for a while.\
-      \ Once you get more comfortable, make sure to read tutorials to see advanced\
-      \ possibilities. We suggest some below.\nAlso, it is a good idea to try to learn\
-      \ the keyboard shortcuts. They can save you a lot of time in the long run. To\
-      \ see the list of shortcuts, in the top menu click on <code>Help</code> &gt;&gt;\
-      \ <code>Keyboard Shortcuts</code>.\nHere are a few that I have found helpful:\n\
-      -\_\_ <a href=\"https://www.dataquest.io/blog/jupyter-notebook-tips-tricks-shortcuts/\"\
-      >28 Jupyter Notebook Tips, Tricks and Shortcuts</a>\n-\_\_ <a href=\"https://www.youtube.com/watch?v=HW29067qVWk\"\
-      >Corey Schafer's videos</a>\n-\_\_ DataQuest's <a href=\"https://www.dataquest.io/blog/jupyter-notebook-tutorial\"\
-      >Jupyter Notebook for Beginners: A Tutorial</a>\n-\_\_ Programming Historian's\
-      \ <a href=\"https://programminghistorian.org/en/lessons/jupyter-notebooks\"\
-      >longer tutorial</a></p>"
+    text: '<p>The best way to learn Jupyter Notebook is working with it for a while.
+      Once you get more comfortable, make sure to read tutorials to see advanced possibilities.
+      We suggest some below.
+
+      Also, it is a good idea to try to learn the keyboard shortcuts. They can save
+      you a lot of time in the long run. To see the list of shortcuts, in the top
+      menu click on <code>Help</code> &gt;&gt; <code>Keyboard Shortcuts</code>.
+
+      Here are a few that I have found helpful:
+
+      - <a href="https://www.dataquest.io/blog/jupyter-notebook-tips-tricks-shortcuts/">28
+      Jupyter Notebook Tips, Tricks and Shortcuts</a>
+
+      - <a href="https://www.youtube.com/watch?v=HW29067qVWk">Corey Schafer''s videos</a>
+
+      - DataQuest''s <a href="https://www.dataquest.io/blog/jupyter-notebook-tutorial">Jupyter
+      Notebook for Beginners: A Tutorial</a>
+
+      - Programming Historian''s <a href="https://programminghistorian.org/en/lessons/jupyter-notebooks">longer
+      tutorial</a></p>'
     title: Learning more/Resources
   specific_operating_systems: {}
   text: <p>In some of our workshops we use Jupyter Notebooks. Whether you want to

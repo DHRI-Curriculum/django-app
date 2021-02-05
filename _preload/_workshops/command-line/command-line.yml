@@ -264,8 +264,7 @@ lessons:
     \ be using <a href=\"https://code.visualstudio.com/\" target=\"_blank\">Visual\
     \ Studio Code</a>. Not only is Visual Studio Code free and open source, but it\
     \ is also consistent across macOS, Windows, and Linux systems.</p>\n<p>You will\
-    \ have downloaded Visual Studio Code according to the <a href=\"/installations/microsoft-visual-studio-code-windows/\"\
-    >instructions</a> on the installations page. We won't be using the editor a lot\
+    \ have downloaded Visual Studio Code according to the <a href=\"/installations/microsoft-visual-studio-code-windows/\">instructions</a> on the installations page. We won't be using the editor a lot\
     \ in this tutorial, so don't worry about getting to know the editor now. In other\
     \ workshops we will discuss syntax highlighting and version control, which Visual\
     \ Studio Code supports. For now we will get back to working in the command line\
@@ -713,7 +712,7 @@ lessons:
     \ in your file names, as they sometimes can prompt you to confuse them with system\
     \ files or file extensions (e.g., the full name of a PDF file is usually <code>file.pdf</code>).</p>\n\
     <h2>Using a Text Editor</h2>\n<p>The challenge for this section will be using\
-    \ a text editor, specifically Visual Studio Code (<a href=\"/installations/microsoft-visual-studio-code-windows/\"\
+    \ a text editor, specifically Visual Studio Code (<a href=\"/installations/\"\
     >install guide here</a>), to add some of the commands that we've learned to the\
     \ newly created cheat sheet. Text editors are programs that allow you to edit\
     \ plain text files, such as <code>.txt</code>, <code>.py</code> (Python scripts),\

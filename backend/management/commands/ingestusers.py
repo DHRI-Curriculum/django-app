@@ -29,8 +29,11 @@ def profile_picture_exists(image_file):
     return os.path.exists(get_profile_picture_path(image_file))
 
 
-def get_default_profile_picture():
-    return Profile.image.field.upload_to + '/' + Profile.image.field.default
+def get_default_profile_picture(full_path=False):
+    if full_path == False:
+        return Profile.image.field.upload_to + '/' + Profile.image.field.default
+    return settings.MEDIA_ROOT + '/' + Profile.image.field.upload_to + \
+        '/' + Profile.image.field.default
 
 
 class Command(LogSaver, BaseCommand):
@@ -49,35 +52,42 @@ class Command(LogSaver, BaseCommand):
 
     def handle(self, *args, **options):
         log = Logger(path=__file__,
-            force_verbose=options.get('verbose'),
-            force_silent=options.get('silent')
-        )
+                     force_verbose=options.get('verbose'),
+                     force_silent=options.get('silent')
+                     )
         input = Input(path=__file__)
+
         test_for_required_files(REQUIRED_PATHS=REQUIRED_PATHS, log=log)
         data = get_yaml(f'{FULL_PATH}')
 
-        for userdata in data:
+        for userdata in data.get('users', []):
             if not userdata.get('username'):
                 log.error(
                     f'Username is required. Check the datafile ({FULL_PATH}) to make sure that all the users in the file are assigned a username.')
 
-            user, created = User.objects.get_or_create(
-                username=userdata.get('username'))
+            if User.objects.filter(username=userdata.get('username'),
+                                   first_name=userdata.get('first_name'),
+                                   last_name=userdata.get('last_name'),
+                                   email=userdata.get('email'),
+                                   is_staff=userdata.get('staff')
+                                   ).count():
+                continue
+            func = User.objects.create_user
+            if userdata.get('superuser'):
+                func = User.objects.create_superuser
 
-            if not created and not options.get('forceupdate'):
-                choice = input.ask(
-                    f'User `{userdata.get("username")}` already exists. Update with new information? [y/N]')
-                if choice.lower() != 'y':
-                    continue
-
-            User.objects.filter(username=userdata.get('username')).update(
+            user, created = func(
+                username=userdata.get('username'),
                 first_name=userdata.get('first_name'),
                 last_name=userdata.get('last_name'),
                 email=userdata.get('email'),
-                password=userdata.get('password'),
-                is_superuser=userdata.get('superuser'),
-                is_staff=userdata.get('staff'),
+                is_staff=userdata.get('staff')
             )
+
+            # if None, sets to unusable password, see https://docs.djangoproject.com/en/3.1/ref/contrib/auth/#django.contrib.auth.models.User.set_password
+            u = User.objects.get(username=userdata.get('username'))
+            u.set_password(userdata.get('password'))
+            u.save()
 
             if not userdata.get('profile'):
                 log.error(f'User {userdata.get("username")} does not have profile information (bio, image, links, and/or pronouns) added. Make sure you add all this information for each user in the datafile before running this command ({FULL_PATH}).')
@@ -110,8 +120,23 @@ class Command(LogSaver, BaseCommand):
                 profile.image.name = get_default_profile_picture()
                 profile.save()
 
+        if not profile_picture_exists(get_default_profile_picture(full_path=True)):
+            if data.get('default', False) and os.path.exists(data.get('default')):
+                from shutil import copyfile
+
+                copyfile(data.get('default'),
+                         get_default_profile_picture(full_path=True))
+                self.LOGS.append(log.log(
+                    'Default profile picture added to the /media/ directory.'))
+            elif not data.get('default'):
+                log.error(
+                    f'No default profile picture was defined in your datafile (`{FULL_PATH}`). Add the file, and then add the path to the file (relative to the `django-app` directory) in a `default` dictionary in your `user_setup.yml` file, like this:\n' + '`default: _preload/user_setup/default.jpg`')
+            elif not os.path.exists(data.get('default')):
+                log.error(
+                    f'The default profile picture (`{data.get("default")}`) in your datafile (`{FULL_PATH}`) does not exist in its expected directory (`{os.path.dirname(data.get("default"))}`). Make sure it is in the directory or update the datafile accordingly, or add the file before running this command.')
+
         self.LOGS.append(log.log('Added/updated users: ' +
-                                 ', '.join([x.get('username') for x in data])))
+                                 ', '.join([x.get('username') for x in data.get('users')])))
 
         self.SAVE_DIR = self.SAVE_DIR = f'{LogSaver.LOG_DIR}/ingestusers'
         if self._save(data='ingestusers', name='warnings.md', warnings=True) or self._save(data='ingestusers', name='logs.md', warnings=False, logs=True):
