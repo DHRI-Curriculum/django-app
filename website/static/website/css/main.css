@@ -478,8 +478,8 @@ div.dropdown-submenu {
     opacity: 0.05;
 }
 .card:hover {
-    -webkit-box-shadow: 0 1rem 3rem rgba(0,0,0,0.175) !important;
-    box-shadow: 0 1rem 3rem rgba(0,0,0,0.175) !important;
+    -webkit-box-shadow: 0 1rem 3rem rgba(0,0,0,0.5) !important;
+    box-shadow: 0 1rem 3rem rgba(0,0,0,0.5) !important;
 }
 
 .card-img-overlay > h5,
