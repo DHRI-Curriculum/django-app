@@ -1,4 +1,6 @@
-- sections:
+- image: /static/insight/images/header-anaconda.png
+  image_alt: Header image for Keeping your Anaconda installation up to date
+  sections:
   - order: 1
     text: ''
     title: How to check your current version of Anaconda
@@ -32,7 +34,9 @@
     and package updates developers implement new functionalities, usability improvements,
     ensure compatibility with other software, and especially patch known coding flaws.</p>
   title: Keeping your Anaconda installation up to date
-- sections:
+- image: /static/insight/images/header-text-editor.png
+  image_alt: Header image for Choosing a text editor
+  sections:
   - order: 1
     text: '<p>For our workshops, we will be using <a href="https://code.visualstudio.com/">Visual
       Studio Code</a>. Not only is Visual Studio Code free and open source, but it
@@ -58,7 +62,9 @@
     Graphical user interfaces (GUIs), user options, and "hackability" vary from program
     to program.</p>'
   title: Choosing a text editor
-- sections:
+- image: /static/insight/images/header-jupiter-notebooks.png
+  image_alt: Header image for Choosing a text editor
+  sections:
   - order: 1
     text: '<p>Jupyter Notebooks is a form of "computational notebook" (sometimes called
       "Notebook Interfaces"). They have existed for decades, and were created to let

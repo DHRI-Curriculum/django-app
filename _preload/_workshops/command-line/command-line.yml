@@ -164,9 +164,10 @@ lessons:
   text: '<p>The command line is a text-based way of interacting with your computer.
     You may hear it called different names, such as the terminal, the shell, or bash.
     In practice, you can use these terms interchangeably. (If you''re curious, though,
-    you can read more about them <a href="/glossary/">in the glossary</a>.) The shell
-    we use (whether terminal, shell, or bash) is a program that accepts commands as
-    text input and converts commands into appropriate operating system functions.</p>
+    you can read more about them <a href="/glossary/term/command-line/">in the glossary</a>.)
+    The shell we use (whether terminal, shell, or bash) is a program that accepts
+    commands as text input and converts commands into appropriate operating system
+    functions.</p>
 
     <p>The command line (of computers today) receives these commands as text that
     is typed in.</p>
@@ -263,8 +264,7 @@ lessons:
     \ be using <a href=\"https://code.visualstudio.com/\" target=\"_blank\">Visual\
     \ Studio Code</a>. Not only is Visual Studio Code free and open source, but it\
     \ is also consistent across macOS, Windows, and Linux systems.</p>\n<p>You will\
-    \ have downloaded Visual Studio Code according to the <a href=\"/installations/\"\
-    >instructions</a> on the installations page. We won't be using the editor a lot\
+    \ have downloaded Visual Studio Code according to the <a href=\"/installations/microsoft-visual-studio-code-windows/\">instructions</a> on the installations page. We won't be using the editor a lot\
     \ in this tutorial, so don't worry about getting to know the editor now. In other\
     \ workshops we will discuss syntax highlighting and version control, which Visual\
     \ Studio Code supports. For now we will get back to working in the command line\
@@ -338,7 +338,7 @@ lessons:
     \ session\u2014it is tricky and sometimes a bit tiring when you start, but you\
     \ can really pick up speed when you practice!</p>\n<h2>Windows</h2>\n<p>We won't\
     \ be using Windows's own non-UNIX version of the command line. Instead, we will\
-    \ use Git Bash. If you haven't installed it yet, you can follow <a href=\"/installations/\"\
+    \ use Git Bash. If you haven't installed it yet, you can follow <a href=\"/installations/git-and-git-bash-windows/\"\
     >these instructions</a>. The reason we use Git Bash as the command line on Windows\
     \ is that it makes you able to run the same commands as you would on a computer\
     \ running macOS or Linux. Git Bash includes core utilities available on Linux\
