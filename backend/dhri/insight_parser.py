@@ -70,6 +70,8 @@ class InsightCache():
         return json.loads(self.path.read_text())
 
 
+    #368 Add insight image here
+
 
 
 class InsightLoader():
