@@ -1,4 +1,4 @@
-default: null
+default: _preload/user_setup/default.jpg
 users:
 - email: kwesterling1@gradcenter.cuny.edu
   first_name: Kalle
@@ -17,12 +17,12 @@ users:
     image: /Users/kallewesterling/Repositories/django-app/_preload/_meta/users/images/kalle-westerling.jpg
     links:
     - cat: personal
-      label: westerling.nu
+      label: Personal website
       url: http://www.westerling.nu
     pronouns: he/him
   staff: true
   superuser: true
-  username: kalle
+  username: kallewesterling
 - email: ''
   first_name: Lisa
   groups:
@@ -48,7 +48,7 @@ users:
     pronouns: she/her
   staff: true
   superuser: true
-  username: lisa
+  username: lisarhody
 - email: ''
   first_name: Stephen
   groups:
@@ -79,7 +79,7 @@ users:
     pronouns: he/him
   staff: true
   superuser: true
-  username: steve
+  username: stevezweibel
 - email: ''
   first_name: Administrator
   groups:
@@ -113,8 +113,8 @@ users:
       \ Param is also developing a website titled Indian Students Abroad that exhibits\
       \ his archival findings. Param has previously worked on the Women Writers Project,\
       \ the CERES Exhibit Toolkit, and the Graduate Center Digital Research Institute.\
-      \ He currently serves on the Editorial Collective of _The Journal of Interactive\
-      \ Technology and Pedagogy_."
+      \ He currently serves on the Editorial Collective of The Journal of Interactive\
+      \ Technology and Pedagogy."
     image: /Users/kallewesterling/Repositories/django-app/_preload/_meta/users/images/param-ajmera.jpg
     links:
     - cat: project
@@ -135,7 +135,7 @@ users:
     pronouns: null
   staff: true
   superuser: false
-  username: param
+  username: paramajmera
 - email: ''
   first_name: Di
   groups:
@@ -159,7 +159,7 @@ users:
     pronouns: they
   staff: true
   superuser: false
-  username: di
+  username: diyoong
 - email: ''
   first_name: Filipa
   groups:
@@ -202,7 +202,7 @@ users:
     pronouns: null
   staff: true
   superuser: false
-  username: rafa
+  username: rafadavisportela
 - email: ''
   first_name: Stefano
   groups:
@@ -217,22 +217,19 @@ users:
       \ explores the heterotopic space of the East Bay punk scene, its modes of resistance\
       \ and (dis-)association, and the clashes between its politics and aesthetics.\
       \ He serves as co-chair of the Graduate Forum of the Italian Association for\
-      \ American Studies (AISNA) and is a founding editor of its journal, _JAm It!\
-      \ (Journal of American Studies in Italy)_. As a digital humanist, Stefano focuses\
+      \ American Studies (AISNA) and is a founding editor of its journal, JAm It!\
+      \ (Journal of American Studies in Italy). As a digital humanist, Stefano focuses\
       \ on archival practices with a knack for archival pedagogy and public-facing\
       \ initiatives. He created the East Bay Punk Digital Archive, an open access\
       \ archive of East Bay punk-zines, and worked as a curator and consultant for\
       \ Lawrence Livermore\u2019s archive at Cornell University. He was a Wellcome\
       \ Trust Transdisciplinary Fellow in 2019-2020."
     image: /Users/kallewesterling/Repositories/django-app/_preload/_meta/users/images/stefano-morello.jpg
-    links:
-    - cat: project
-      label: East Bay Punk Digital Archive
-      url: https://eastbaypunkda.com/
+    links: []
     pronouns: null
   staff: true
   superuser: false
-  username: stefano
+  username: stefanomorello
 - email: ''
   first_name: Kristen
   groups:
@@ -274,7 +271,135 @@ users:
     pronouns: null
   staff: true
   superuser: false
-  username: kristen
+  username: kristenhackett
+- email: ''
+  first_name: Jojo
+  groups:
+  - Team
+  last_name: Karlin
+  password: nopassword
+  profile:
+    bio: Jojo Karlin researches transmissions of memory after periods of rapid technological
+      transformation. Coming from a theater background, Jojo loves the intersection
+      of disciplines, multiple media, and diverse expertises she finds in Digital
+      Humanities. For her first big DH project, she did outreach for TANDEM, a web
+      tool that gathers text and image data, and she now proudly coordinates outreach
+      for DH Box, the GC's NEH-funded DH cloud laboratory. She is a freelance editor
+      for the Tow Center for Digital Journalism at Columbia, and is developing a digital
+      interface for a collection of historical letters. Jojo is deeply interested
+      in digital editions preserving past materiality while exploring new materials.
+    image: ''
+    links:
+    - cat: personal
+      label: Twitter
+      url: http://www.twitter.com/jojokarlin
+    - cat: personal
+      label: Personal website
+      url: http://www.jojokarlin.com/
+    - cat: personal
+      label: GitHub
+      url: http://www.github.com/jojokarlin
+    pronouns: she/her
+  staff: false
+  superuser: false
+  username: jojokarlin
+- email: ''
+  first_name: Patrick
+  groups:
+  - Team
+  last_name: Smyth
+  password: nopassword
+  profile:
+    bio: "Patrick Smyth's research focuses on Utopian thought and the history of science\
+      \ in 18th and 19th century British literature. As a digital humanist, Patrick\
+      \ is concerned with digital platforms for research and pedagogy. He is currently\
+      \ a developer on the NEH-funded DH Box, a cloud-based platform for accessing\
+      \ digital humanities tools, and has received a Provost's Digital Innovation\
+      \ grant for an online archive of science fiction works. His most recent publication\
+      \ is \u201CEbooks and the Digital Paratext: Emerging Trends in the Interpretation\
+      \ of Digital Media\u201D in Examining Paratextual Theory and Its Applications\
+      \ in Digital Culture. Patrick was a 2010 Fulbright Teaching Fellow in Berlin,\
+      \ Germany, and teaches composition and literature at Queens College."
+    image: ''
+    links:
+    - cat: personal
+      label: Twitter
+      url: http://www.twitter.com/psmyth01
+    - cat: personal
+      label: GitHub
+      url: http://www.github.com/smythp
+    pronouns: he/him
+  staff: false
+  superuser: false
+  username: patricksmyth
+- email: ''
+  first_name: Javier
+  groups:
+  - Team
+  last_name: "Otero Pe\xF1a"
+  password: nopassword
+  profile:
+    bio: "Javier Otero Pe\xF1a is a GC Digital Fellow since 2016 and a member of the\
+      \ Public Space Research Group, and currently works as a research assistant for\
+      \ the PARCS study in the CUNY School for Public Health. His dissertation will\
+      \ study the contextual impacts of park renovations in New York City, and will\
+      \ involve a map analysis using GIS technologies, a mini-ethnography using Qualitative\
+      \ Data Analysis (QDA) software, and natural language analysis of social media\
+      \ posts. Javier\u2019s field research paper studied the politicization of public\
+      \ spaces through a participatory mural in East Harlem. In 2016, he took part\
+      \ in the CUNY-Humboldt University Summer School in Berlin, and in 2017 he participated\
+      \ in the Digital Humanities Research Institute in Victoria University, Canada.\
+      \ He also received the 2017 Provost\u2019s Digital Innovation Grant. Javier\
+      \ holds a Master in Environmental Policies and Sustainable Development, and\
+      \ taught a class on Sustainable Development in Latin America and the Caribbean\
+      \ at the Paris Catholic University. He also studied Urban Planning and Management\
+      \ at UCV, and Sustainable Urban Mobility in Developing Countries (UNITAR). Javier\
+      \ worked as a consultant for the United Nations Environment Programme for three\
+      \ years."
+    image: ''
+    links:
+    - cat: personal
+      label: Twitter
+      url: http://www.twitter.com/javo01
+    - cat: personal
+      label: GitHub
+      url: http://www.github.com/javo0101
+    pronouns: he/him
+  staff: false
+  superuser: false
+  username: javioteropena
+- email: ''
+  first_name: Olivia
+  groups:
+  - Team
+  last_name: Ildefonso
+  password: nopassword
+  profile:
+    bio: Olivia Ildefonso is a Ph.D. Student in Earth and Environmental Sciences with
+      a specialization in Human Geography at the Graduate Center (CUNY). She studies
+      the political economy of school segregation. Her research focuses on Long Island,
+      New York. Olivia is a Long Island native and has worked as a racial justice
+      activist on Long Island for the past ten years. She has worked for civil rights
+      organization, ERASE Racism since 2010 and she has served on the board of directors
+      for STRONG Youth since 2013. Olivia is currently a GC Digital Fellow. She specializes
+      in GIS Mapping, website management, and multi-media storytelling. Before becoming
+      a GC Digital Fellow, Olivia was an Adjunct Lecturer at Queens College and a
+      Writing Across the Curriculum (WAC) fellow at John Jay College.
+    image: ''
+    links:
+    - cat: personal
+      label: Twitter
+      url: http://www.twitter.com/oildefon
+    - cat: personal
+      label: GitHub
+      url: http://www.github.com/oildefon
+    - cat: personal
+      label: Personal website
+      url: http://www.cuny.is/oildefon
+    pronouns: she/her
+  staff: false
+  superuser: false
+  username: oliviaildefonso
 - email: ''
   first_name: Test
   groups:

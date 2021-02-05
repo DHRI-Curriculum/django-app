@@ -1,16 +1,18 @@
-- explication: "<p>REPL stands for Read, Eval, Print, Loop. It is also known as the\
-    \ Python Interpreter or Interactive Shell, and it refers to a Python environment\
-    \ that processes your code as soon as you press enter. First, it <strong>Reads</strong>\
-    \ your code, then <strong>Evaluates</strong> what you wrote, then <strong>Prints</strong>\
-    \ the result (if there is a result), and finally <strong>Loops</strong> back to\
-    \ the initial prompt, allowing the user to start the loop again. \nThe REPL is\
-    \ useful for testing code on the fly, seeing if it works or what will happen.\
-    \ Since the REPL doesn't save your data after each session, though, you need a\
-    \ text editor to write and save longer scripts. Think of the REPL as a sandbox\
-    \ or playpen for exploring Python commands and expressions in the moment. \nTo\
-    \ use the REPL, just type <code>python</code> into your interpreter. You'll know\
-    \ you're there when you see the three <code>&gt;&gt;&gt;</code>. To get out of\
-    \ the REPL, press <code>control-d</code> or type <code>quit()</code>.</p>"
+- explication: '<p>REPL stands for Read, Eval, Print, Loop. It is also known as the
+    Python Interpreter or Interactive Shell, and it refers to a Python environment
+    that processes your code as soon as you press enter. First, it <strong>Reads</strong>
+    your code, then <strong>Evaluates</strong> what you wrote, then <strong>Prints</strong>
+    the result (if there is a result), and finally <strong>Loops</strong> back to
+    the initial prompt, allowing the user to start the loop again.
+
+    The REPL is useful for testing code on the fly, seeing if it works or what will
+    happen. Since the REPL doesn''t save your data after each session, though, you
+    need a text editor to write and save longer scripts. Think of the REPL as a sandbox
+    or playpen for exploring Python commands and expressions in the moment.
+
+    To use the REPL, just type <code>python</code> into your interpreter. You''ll
+    know you''re there when you see the three <code>&gt;&gt;&gt;</code>. To get out
+    of the REPL, press <code>control-d</code> or type <code>quit()</code>.</p>'
   term: REPL
 - explication: <p>Anaconda is a distribution for Python (and other languages) with
     tools for data analysis.</p>
@@ -42,52 +44,78 @@
     repeating elements across a website. This helps create a consistent look to a
     website.</p>
   term: Class
-- explication: "<p>Cloning a repository means making a copy of a repository on GitHub,\
-    \ to download and work on locally--on your local machine. \nCloning can be especially\
-    \ useful when you're joining a group project that is hosted on GitHub, and you\
-    \ want your changes to eventually be pushed and shared with that same repository.\
-    \ \nCloning can also be used in conjunction with forking. For example, you could\
-    \ fork the GitHub repository of this lesson to your GitHub account, and then clone\
-    \ or download the repository to make edits and admendations. Then you would push\
-    \ those changes to a repository under your GtiHub account. Git and GitHub work\
-    \ to make sure attribution of contributions and lineage are transparent.</p>"
+- explication: '<p>Cloning a repository means making a copy of a repository on GitHub,
+    to download and work on locally--on your local machine.
+
+    Cloning can be especially useful when you''re joining a group project that is
+    hosted on GitHub, and you want your changes to eventually be pushed and shared
+    with that same repository.
+
+    Cloning can also be used in conjunction with forking. For example, you could fork
+    the GitHub repository of this lesson to your GitHub account, and then clone or
+    download the repository to make edits and admendations. Then you would push those
+    changes to a repository under your GtiHub account. Git and GitHub work to make
+    sure attribution of contributions and lineage are transparent.</p>'
   term: Cloning
 - explication: '<p>The command line is a text-based way of interacting with your computer.
     Another way of looking at it is that the command line is a program that accepts
     commands as text input and converts them into appropriate operating system functions.
 
     There are other words that can be used synonymously with "command line." Here
-    are some of them:
+    are some of them:</p>
 
-    - <em>bash</em> - the programming language used in the command line. (Yes, we
-    tricked you, you''re already programming!) Short for "Born Again SHell," for reasons
-    people on the internet will happily tell you about.
+    <ul>
 
-    - <em>the terminal</em> - Particularly used to refer to the command line on macOS.
+    <li>
+
+    <em>bash</em> - the programming language used in the command line. (Yes, we tricked
+    you, you''re already programming!) Short for "Born Again SHell," for reasons people
+    on the internet will happily tell you about.</li>
+
+    <li>
+
+    <em>the terminal</em> - Particularly used to refer to the command line on macOS.
     This term made more sense when universities used mainframes and every computer
-    was only a terminal.
+    was only a terminal.</li>
 
-    - <em>the shell</em> - The part of an operating system that interacts with a human.
+    <li>
+
+    <em>the shell</em> - The part of an operating system that interacts with a human.
     Technically, anything you do in a graphical interface is also in a shell, but
-    in practice this is just another synonym for the command line.
+    in practice this is just another synonym for the command line.</li>
 
-    - <em>cli</em> - "command-line interface," this is a super technical term for
-    the command line used to impress everyone around you.</p>'
+    <li>
+
+    <em>cli</em> - "command-line interface," this is a super technical term for the
+    command line used to impress everyone around you.</li>
+
+    </ul>'
   term: Command Line
-- explication: "<p>When you commit your changes using Git, you are created a version\
-    \ a file that can be referenced even after further changes to the file are made\
-    \ and committed. \nMaking a commit involves 2 steps. \n- First, you need to stage&nbsp;&nbsp;the\
-    \ files, or tell Git, which files it should pay attention to. Where are your changes?\
-    \ You use the command <code>git add</code> to point to them. \n- Second, you create\
-    \ the version by committing the changes. You use the command <code>git commit</code>\
-    \ to take the snapshot and add a label (the -m flag) that can help you in returning\
-    \ to that version in the future.\nMaking a commit is a lot like taking a photo.\
-    \ First, you have to decide who will be in the photo and arrange your friends\
-    \ or family in front of the camera (the staging process). Once everyone is present\
-    \ and ready, you take the picture, entering that moment into the permanent record\
-    \ (the commit process).\nBefore any of this can happen, you must initialize the\
-    \ Git folder, or put it on Git's radar. This only needs to happen one time to\
-    \ a folder.</p>"
+- explication: '<p>When you commit your changes using Git, you are created a version
+    a file that can be referenced even after further changes to the file are made
+    and committed.
+
+    Making a commit involves 2 steps.</p>
+
+    <ul>
+
+    <li>First, you need to stage&nbsp;&nbsp;the files, or tell Git, which files it
+    should pay attention to. Where are your changes? You use the command <code>git
+    add</code> to point to them.</li>
+
+    <li>Second, you create the version by committing the changes. You use the command
+    <code>git commit</code> to take the snapshot and add a label (the -m flag) that
+    can help you in returning to that version in the future.
+
+    Making a commit is a lot like taking a photo. First, you have to decide who will
+    be in the photo and arrange your friends or family in front of the camera (the
+    staging process). Once everyone is present and ready, you take the picture, entering
+    that moment into the permanent record (the commit process).
+
+    Before any of this can happen, you must initialize the Git folder, or put it on
+    Git''s radar. This only needs to happen one time to a folder.</li>
+
+    </ul>'
   term: Commit
 - explication: <p>Nltk function that allows to see the characters on both sides of
     the word; an easy way to investigate the context of a certain word across a corpus.</p>
@@ -107,18 +135,14 @@
     selector applies orange color and italics to all content in the <code>h1</code>
     element.</p>
 
-    <div class="codehilite"><pre><span></span><code><span class="nt">h1</span> <span
-    class="p">{</span>
+    <div class="highlight highlight-source-css"><pre><span class="pl-ent">h1</span>
+    {
 
-    &nbsp;&nbsp;&nbsp;&nbsp;<span class="k">color</span><span class="p">:</span> <span
-    class="kc">orange</span><span class="p">;</span>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-c1">color</span>: orange;
 
-    &nbsp;&nbsp;&nbsp;&nbsp;<span class="k">font-style</span><span class="p">:</span>
-    <span class="kc">italic</span><span class="p">;</span>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-c1">font-style</span>: italic;
 
-    <span class="p">}</span>
-
-    </code></pre></div>'
+    }</pre></div>'
   term: CSS Selectors
 - explication: '<p>CSV or Comma Separated Values uses---you guessed it!---commas to
     separate values. Each line (First Name, Last Name) is a new "record" and each
@@ -127,39 +151,43 @@
     As data types go, it is very rudimentary (even predating computers!) and is easy
     to type, without needing special characters beyond a comma.</p>
 
-    <div class="codehilite"><pre><span></span><code><span class="err">First Name,Last
-    Name</span>
+    <pre><code>First Name,Last Name
 
-    <span class="err">Smally,McTiny</span>
+    Smally,McTiny
 
-    <span class="err">Kitty,Kitty</span>
+    Kitty,Kitty
 
-    <span class="err">Foots,Smith</span>
+    Foots,Smith
 
-    <span class="err">Tiger,Jaws</span>
+    Tiger,Jaws
 
-    </code></pre></div>'
+    </code></pre>'
   term: CSV (file format)
 - explication: <p>There are many different perspectives towards what counts as data.
     Some cites data as "material or information" for which "an argument, theory, test
-    or hypothesis, or another research output is based" upon (<a href="http://www.mopp.qut.edu.au/D/D_02_08.jsp">Queensland
-    University of Technology</a>), while others critiques the understanding of data
-    as "mere descriptions ofa priori conditions" (<a href="http://www.digitalhumanities.org/dhq/vol/5/1/000091/000091.html">Johanna
-    Drucker</a>). Data, in our case, are subjective (because of our interests and
-    assumptions) and are materials and/or information necessary to come to our conclusion.</p>
+    or hypothesis, or another research output is based" upon (<a href="http://www.mopp.qut.edu.au/D/D_02_08.jsp"
+    rel="nofollow">Queensland University of Technology</a>), while others critiques
+    the understanding of data as "mere descriptions ofa priori conditions" (<a href="http://www.digitalhumanities.org/dhq/vol/5/1/000091/000091.html"
+    rel="nofollow">Johanna Drucker</a>). Data, in our case, are subjective (because
+    of our interests and assumptions) and are materials and/or information necessary
+    to come to our conclusion.</p>
   term: Data
 - explication: '<p>Descriptive analysis are techniques geared towards summarizing
-    a data set, such as:
+    a data set, such as:</p>
 
-    - Mean
+    <ul>
 
-    - Median
+    <li>Mean</li>
 
-    - Mode
+    <li>Median</li>
 
-    - Average
+    <li>Mode</li>
 
-    - Standard deviation</p>'
+    <li>Average</li>
+
+    <li>Standard deviation</li>
+
+    </ul>'
   term: Descriptive Analysis
 - explication: <p>A collection which is unordered, changeable and indexed. In Python
     dictionaries are written with curly brackets, and they have keys and values.</p>
@@ -191,12 +219,13 @@
     to each item in that sequence. With for-loops we can carry out a command for multiple
     items in a sequence.</p>
   term: for-loop
-- explication: "<p>Forking is a proper function of the GitHub platform. It supports\
-    \ collaboration by allowing you to copy someone else's repository to your own\
-    \ account on GitHub while maintaining a trail of attribution and derivation. \n\
-    Once the files are forks, you can clone or download them, edit them, and share\
-    \ your changes on GitHub. Git and GitHub help track and be transparent about contributions\
-    \ or attribution.</p>"
+- explication: '<p>Forking is a proper function of the GitHub platform. It supports
+    collaboration by allowing you to copy someone else''s repository to your own account
+    on GitHub while maintaining a trail of attribution and derivation.
+
+    Once the files are forks, you can clone or download them, edit them, and share
+    your changes on GitHub. Git and GitHub help track and be transparent about contributions
+    or attribution.</p>'
   term: Forking
 - explication: <p>FTP is a protocol used to share files from your computer (<em>a
     client</em>) to another computer called a server, and back again over the internet.</p>
@@ -204,40 +233,41 @@
 - explication: "<p>Functions are ways of doing things in Python. They take some input\
     \ and do something with it, and can return a value. For example, a function can\
     \ return the results of a calculation. If your function takes an argument, it\
-    \ will go inside the parentheses. \nFunctions are first defined then called to\
+    \ will go inside the parentheses.\nFunctions are first defined then called to\
     \ be executed. This allows you to first write the function but only call it (execute\
-    \ its code) when you need to in Python.\nExample: </p>\n<div class=\"codehilite\"\
-    ><pre><span></span><code><span class=\"k\">def</span> <span class=\"nf\">multiply</span><span\
-    \ class=\"p\">(</span><span class=\"n\">a</span><span class=\"p\">,</span> <span\
-    \ class=\"n\">b</span><span class=\"p\">):</span>\n&nbsp;&nbsp;&nbsp;&nbsp;<span\
-    \ class=\"n\">result</span> <span class=\"o\">=</span> <span class=\"n\">a</span>\
-    \ <span class=\"o\">*</span> <span class=\"n\">b</span>\n&nbsp;&nbsp;&nbsp;&nbsp;<span\
-    \ class=\"k\">return</span> \n<span class=\"n\">multiply</span><span class=\"\
-    p\">(</span><span class=\"mi\">2</span><span class=\"p\">,</span> <span class=\"\
-    mi\">3</span><span class=\"p\">)</span>\n</code></pre></div>\n\n\n<p>The first\
-    \ code block defines the function <code>multiply()</code> which takes <code>a</code>\
-    \ &amp; <code>b</code> as arguments. The function sets <code>result</code> to\
-    \ the caluclation of <code>a</code> x <code>b</code>. It then returns the value\
-    \ of result. Finally, the function is called with arguments <code>2</code> &amp;\
-    \ <code>3</code>, which will be substituted for <code>a</code> and <code>b</code>\
-    \ in the function definition.</p>"
+    \ its code) when you need to in Python.\nExample:</p>\n<div class=\"highlight\
+    \ highlight-source-python\"><pre><span class=\"pl-k\">def</span> <span class=\"\
+    pl-en\">multiply</span>(<span class=\"pl-s1\">a</span>, <span class=\"pl-s1\"\
+    >b</span>):\n&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"pl-s1\">result</span> <span\
+    \ class=\"pl-c1\">=</span> <span class=\"pl-s1\">a</span> <span class=\"pl-c1\"\
+    >*</span> <span class=\"pl-s1\">b</span>\n&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"\
+    pl-k\">return</span> \n<span class=\"pl-en\">multiply</span>(<span class=\"pl-c1\"\
+    >2</span>, <span class=\"pl-c1\">3</span>)</pre></div>\n<p>The first code block\
+    \ defines the function <code>multiply()</code> which takes <code>a</code> &amp;\
+    \ <code>b</code> as arguments. The function sets <code>result</code> to the caluclation\
+    \ of <code>a</code> x <code>b</code>. It then returns the value of result. Finally,\
+    \ the function is called with arguments <code>2</code> &amp; <code>3</code>, which\
+    \ will be substituted for <code>a</code> and <code>b</code> in the function definition.</p>"
   term: Function
 - explication: "<p>Git is software used for version control\u2014that is, tracking\
     \ the state of files and changes you make to them over time. Git can be enabled\
     \ in a folder, and then used to save the state of the contents in that folder\
     \ at different points in the future, as designated by you.\nGit is also useful\
     \ for collaboration, as a repository can be shared across computers, and its contents\
-    \ can be asynchonously developed and eventually merged with the main project.\
-    \ \nIn this workshop, you'll use Git on your local machines to track changes you\
-    \ make to a file.</p>"
+    \ can be asynchonously developed and eventually merged with the main project.\n\
+    In this workshop, you'll use Git on your local machines to track changes you make\
+    \ to a file.</p>"
   term: Git
-- explication: "<p>GitHub is a online platform for hosting Git repositories. It functions\
-    \ for some, predominantly programmers, as a social network for sharing and collaborating\
-    \ on code-based projects. Users can share their own projects, as well as search\
-    \ for others, which they can then often work on and contribute to.\nDigital Humanists,\
-    \ librarians, and other academics are also finding ways Git and GitHub are useful\
-    \ in writing projects and teaching. \nGitHub also serves as a web-hosting platform,\
-    \ allowing users to create websites from their repositories.</p>"
+- explication: '<p>GitHub is a online platform for hosting Git repositories. It functions
+    for some, predominantly programmers, as a social network for sharing and collaborating
+    on code-based projects. Users can share their own projects, as well as search
+    for others, which they can then often work on and contribute to.
+
+    Digital Humanists, librarians, and other academics are also finding ways Git and
+    GitHub are useful in writing projects and teaching.
+
+    GitHub also serves as a web-hosting platform, allowing users to create websites
+    from their repositories.</p>'
   term: GitHub
 - explication: "<p>\"Graphical User Interface,\u201D pronounced \"gooey.\u201D It\u2019\
     s a system of interactive visual components for computer software\u2026 basically,\
@@ -247,14 +277,14 @@
     \ Some tasks can only be done in a GUI, while others can only be done in the command\
     \ line.</p>"
   term: GUI
-- explication: "<p>High quality data is often understood as valid, accurate, complete,\
-    \ consistent, and uniformed. This is often achieved through the cleaning process.\
-    \ \nMeasurements are valid when they conform to set constraints. They are accurate\
-    \ when they represent the correct values (often requiring cross-referencing trusted\
-    \ external sources). They are complete when they represent everything that might\
-    \ be known and are consistent when observations do not contradict each other.\
-    \ Measurements are uniform when the same unit of measure is used in all relevant\
-    \ measurements.</p>"
+- explication: '<p>High quality data is often understood as valid, accurate, complete,
+    consistent, and uniformed. This is often achieved through the cleaning process.
+
+    Measurements are valid when they conform to set constraints. They are accurate
+    when they represent the correct values (often requiring cross-referencing trusted
+    external sources). They are complete when they represent everything that might
+    be known and are consistent when observations do not contradict each other. Measurements
+    are uniform when the same unit of measure is used in all relevant measurements.</p>'
   term: High Quality Data
 - explication: <p>HTML (Hypertext Markup Language) is a markup language used to write
     web-based documents. It enables us to provide web browsers with information about
@@ -270,49 +300,56 @@
     and are used to write code that "makes decisions". They start with <code>if</code>
     followed by a condition which is evaluated to be either true or false. If it''s
     true, the block after the colon (<code>:</code>) is run. If it''s false, the block
-    under the <code>else:</code> is run. </p>
+    under the <code>else:</code> is run.</p>
 
-    <div class="codehilite"><pre><span></span><code><span class="n">weather</span>
-    <span class="o">=</span> <span class="s2">&quot;sunny&quot;</span>
+    <div class="highlight highlight-source-python"><pre><span class="pl-s1">weather</span>
+    <span class="pl-c1">=</span> <span class="pl-s">"sunny"</span>
 
-    <span class="k">if</span> <span class="n">weather</span> <span class="o">==</span>
-    <span class="s2">&quot;sunny&quot;</span><span class="p">:</span>
+    <span class="pl-k">if</span> <span class="pl-s1">weather</span> <span class="pl-c1">==</span>
+    <span class="pl-s">"sunny"</span>:
 
-    &nbsp;&nbsp;&nbsp;&nbsp;<span class="nb">print</span><span class="p">(</span><span
-    class="s2">&quot;Bring your shades&quot;</span><span class="p">)</span>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span class="pl-s">"Bring
+    your shades"</span>)
 
-    <span class="k">elif</span> <span class="n">weather</span> <span class="o">==</span>
-    <span class="s2">&quot;rainy&quot;</span><span class="p">:</span>
+    <span class="pl-k">elif</span> <span class="pl-s1">weather</span> <span class="pl-c1">==</span>
+    <span class="pl-s">"rainy"</span>:
 
-    &nbsp;&nbsp;&nbsp;&nbsp;<span class="nb">print</span><span class="p">(</span><span
-    class="s2">&quot;Bring your umbrella&quot;</span><span class="p">)</span>
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span class="pl-s">"Bring
+    your umbrella"</span>)
 
-    <span class="k">else</span><span class="p">:</span>
+    <span class="pl-k">else</span>:
 
-    &nbsp;&nbsp;&nbsp;&nbsp;<span class="nb">print</span><span class="p">(</span><span
-    class="s2">&quot;I don&#39;t know what you should bring! I&#39;m just a little
-    program...&quot;</span><span class="p">)</span>
-
-    </code></pre></div>'
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span class="pl-s">"I
+    don''t know what you should bring! I''m just a little program..."</span>)</pre></div>'
   term: if-Statement
 - explication: '<p>Inferential analysis are techniques geared towards testing a hypothesis
-    about a population, based on your data set, such as:
+    about a population, based on your data set, such as:</p>
 
-    - Extrapolation
+    <ul>
 
-    - P-Value calculation</p>'
+    <li>Extrapolation</li>
+
+    <li>P-Value calculation</li>
+
+    </ul>'
   term: Inferential Analysis
-- explication: "<p>The <code>input()</code> function asks the user for an input. It\
-    \ prompts the user to enter input through the keyboard and saves it. This function\
-    \ enables programs to respond to user input. For example, it can ask for the user's\
-    \ name and print the name The input function can take a prompt within the parenthesis,\
-    \ which it will use to prompt the user to enter the input. \nFor example: </p>\n\
-    <div class=\"codehilite\"><pre><span></span><code><span class=\"gp\">&gt;&gt;&gt;\
-    \ </span><span class=\"n\">name</span> <span class=\"o\">=</span> <span class=\"\
-    nb\">input</span><span class=\"p\">(</span><span class=\"s2\">&quot;Enter your\
-    \ name here: &quot;</span><span class=\"p\">)</span>\n<span class=\"go\">Enter\
-    \ your name here: Filipa</span>\n<span class=\"gp\">&gt;&gt;&gt; </span><span\
-    \ class=\"n\">name</span>\n<span class=\"go\">&#39;Filipa&#39;</span>\n</code></pre></div>"
+- explication: '<p>The <code>input()</code> function asks the user for an input. It
+    prompts the user to enter input through the keyboard and saves it. This function
+    enables programs to respond to user input. For example, it can ask for the user''s
+    name and print the name The input function can take a prompt within the parenthesis,
+    which it will use to prompt the user to enter the input.
+
+    For example:</p>
+
+    <div class="highlight highlight-text-python-console"><pre>&gt;&gt;&gt; name <span
+    class="pl-k">=</span> <span class="pl-c1">input</span>(<span class="pl-s"><span
+    class="pl-pds">"</span>Enter your name here: <span class="pl-pds">"</span></span>)
+
+    Enter your name here: Filipa
+
+    &gt;&gt;&gt; name
+
+    ''Filipa''</pre></div>'
   term: input()
 - explication: <p>An integer is a data type, like string, list, boolean, and float.
     It signifies any value that is a whole number. You can check if a value is an
@@ -324,34 +361,37 @@
     \ tied to the <code>Smally</code> value (at least for the first cat!). JSON is\
     \ popular with web applications that save and send data from your browser to web\
     \ servers, because it uses the main language of web browsers, JavaScript, to work\
-    \ with data.</p>\n<div class=\"codehilite\"><pre><span></span><code><span class=\"\
-    p\">{</span>\n&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"nt\">&quot;Cats&quot;</span><span\
-    \ class=\"p\">:</span> <span class=\"p\">[</span> \n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span\
-    \ class=\"p\">{</span>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span\
-    \ class=\"nt\">&quot;firstName&quot;</span><span class=\"p\">:</span> <span class=\"\
-    s2\">&quot;Smally&quot;</span><span class=\"p\">,</span>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span\
-    \ class=\"nt\">&quot;lastName&quot;</span><span class=\"p\">:</span> <span class=\"\
-    s2\">&quot;McTiny&quot;</span>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span\
-    \ class=\"p\">},</span> \n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span\
-    \ class=\"p\">{</span>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span\
-    \ class=\"nt\">&quot;firstName&quot;</span><span class=\"p\">:</span> <span class=\"\
-    s2\">&quot;Kitty&quot;</span><span class=\"p\">,</span>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span\
-    \ class=\"nt\">&quot;lastName&quot;</span><span class=\"p\">:</span> <span class=\"\
-    s2\">&quot;Kitty&quot;</span>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span\
-    \ class=\"p\">},</span>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span\
-    \ class=\"p\">{</span>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span\
-    \ class=\"nt\">&quot;firstName&quot;</span><span class=\"p\">:</span> <span class=\"\
-    s2\">&quot;Foots&quot;</span><span class=\"p\">,</span>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span\
-    \ class=\"nt\">&quot;lastName&quot;</span><span class=\"p\">:</span><span class=\"\
-    s2\">&quot;Smith&quot;</span>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span\
-    \ class=\"p\">},</span> \n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span\
-    \ class=\"p\">{</span>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span\
-    \ class=\"nt\">&quot;firstName&quot;</span><span class=\"p\">:</span> <span class=\"\
-    s2\">&quot;Tiger&quot;</span><span class=\"p\">,</span>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span\
-    \ class=\"nt\">&quot;lastName&quot;</span><span class=\"p\">:</span><span class=\"\
-    s2\">&quot;Jaws&quot;</span>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span\
-    \ class=\"p\">}</span> \n&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"p\">]</span>\n\
-    <span class=\"p\">}</span> \n</code></pre></div>"
+    \ with data.</p>\n<div class=\"highlight highlight-source-json\"><pre>{\n&nbsp;&nbsp;&nbsp;&nbsp;<span\
+    \ class=\"pl-s\"><span class=\"pl-pds\">\"</span>Cats<span class=\"pl-pds\">\"\
+    </span></span>: [ \n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span\
+    \ class=\"pl-s\"><span class=\"pl-pds\">\"</span>firstName<span class=\"pl-pds\"\
+    >\"</span></span>: <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>Smally<span\
+    \ class=\"pl-pds\">\"</span></span>,\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span\
+    \ class=\"pl-s\"><span class=\"pl-pds\">\"</span>lastName<span class=\"pl-pds\"\
+    >\"</span></span>: <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>McTiny<span\
+    \ class=\"pl-pds\">\"</span></span>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},\
+    \ \n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span\
+    \ class=\"pl-s\"><span class=\"pl-pds\">\"</span>firstName<span class=\"pl-pds\"\
+    >\"</span></span>: <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>Kitty<span\
+    \ class=\"pl-pds\">\"</span></span>,\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span\
+    \ class=\"pl-s\"><span class=\"pl-pds\">\"</span>lastName<span class=\"pl-pds\"\
+    >\"</span></span>: <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>Kitty<span\
+    \ class=\"pl-pds\">\"</span></span>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},\n\
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span\
+    \ class=\"pl-s\"><span class=\"pl-pds\">\"</span>firstName<span class=\"pl-pds\"\
+    >\"</span></span>: <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>Foots<span\
+    \ class=\"pl-pds\">\"</span></span>,\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span\
+    \ class=\"pl-s\"><span class=\"pl-pds\">\"</span>lastName<span class=\"pl-pds\"\
+    >\"</span></span>:<span class=\"pl-s\"><span class=\"pl-pds\">\"</span>Smith<span\
+    \ class=\"pl-pds\">\"</span></span>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;},\
+    \ \n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span\
+    \ class=\"pl-s\"><span class=\"pl-pds\">\"</span>firstName<span class=\"pl-pds\"\
+    >\"</span></span>: <span class=\"pl-s\"><span class=\"pl-pds\">\"</span>Tiger<span\
+    \ class=\"pl-pds\">\"</span></span>,\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span\
+    \ class=\"pl-s\"><span class=\"pl-pds\">\"</span>lastName<span class=\"pl-pds\"\
+    >\"</span></span>:<span class=\"pl-s\"><span class=\"pl-pds\">\"</span>Jaws<span\
+    \ class=\"pl-pds\">\"</span></span>\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}\
+    \ \n&nbsp;&nbsp;&nbsp;&nbsp;]\n} </pre></div>"
   term: JSON (file format)
 - explication: <p>The Jupyter Notebook is an open-source web application that allows
     you to create and share documents that contain live code, equations, visualizations
@@ -367,24 +407,24 @@
     the object within the parenthesis. For a string, it will count the number of characters:
     <code>len("hello")</code> will return <code>5</code>, and <code>len("hi there")</code>
     will return <code>8</code>, because it counts blank spaces. For a list, <code>len()</code>
-    will count the number of list items: </p>
+    will count the number of list items:</p>
 
-    <div class="codehilite"><pre><span></span><code><span class="gp">&gt;&gt;&gt;
-    </span><span class="n">groceries</span> <span class="o">=</span> <span class="p">[</span><span
-    class="s2">&quot;berries&quot;</span><span class="p">,</span> <span class="s2">&quot;bananas&quot;</span><span
-    class="p">,</span> <span class="s2">&quot;oat milk&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;eggs&quot;</span><span class="p">,</span> <span class="s2">&quot;spinach&quot;</span><span
-    class="p">,</span> <span class="s2">&quot;bell peppers&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ice cream&quot;</span><span class="p">,</span> <span class="s2">&quot;frozen
-    pizza&quot;</span><span class="p">,</span> <span class="s2">&quot;floss&quot;</span><span
-    class="p">,</span> <span class="s2">&quot;hand soap&quot;</span><span class="p">]</span>
+    <div class="highlight highlight-text-python-console"><pre>&gt;&gt;&gt; groceries
+    <span class="pl-k">=</span> [<span class="pl-s"><span class="pl-pds">"</span>berries<span
+    class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bananas<span
+    class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>oat
+    milk<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>eggs<span
+    class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>spinach<span
+    class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>bell
+    peppers<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>ice
+    cream<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>frozen
+    pizza<span class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>floss<span
+    class="pl-pds">"</span></span>, <span class="pl-s"><span class="pl-pds">"</span>hand
+    soap<span class="pl-pds">"</span></span>]
 
-    <span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span
-    class="n">groceries</span><span class="p">)</span>
+    &gt;&gt;&gt; <span class="pl-c1">len</span>(groceries)
 
-    <span class="go">10</span>
-
-    </code></pre></div>'
+    10</pre></div>'
   term: len()
 - explication: "<p>The number of unique words per total words; a good metric to approximate\
     \ lexical diversity\u2014the range of vocabulary an author uses.</p>"
@@ -418,22 +458,13 @@
 
     In HTML:</p>
 
-    <div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span
-    class="nt">h1</span><span class="p">&gt;</span> Heading 1 <span class="p">&lt;/</span><span
-    class="nt">h1</span><span class="p">&gt;</span>
-
-    </code></pre></div>
-
-
+    <div class="highlight highlight-text-html-basic"><pre><span class="pl-kos">&lt;</span><span
+    class="pl-ent">h1</span><span class="pl-kos">&gt;</span> Heading 1 <span class="pl-kos">&lt;/</span><span
+    class="pl-ent">h1</span><span class="pl-kos">&gt;</span></pre></div>
 
     <p>In Markdown:</p>
 
-    <div class="codehilite"><pre><span></span><code><span class="gh">#</span> Heading
-    1
-
-    </code></pre></div>
-
-
+    <div class="highlight highlight-source-lisp"><pre># Heading <span class="pl-c1">1</span></pre></div>
 
     <p>Whereas you use HTML and CSS with WordPress, you use Markdown with Git and
     GitHub. Markdown has fewer options for marking text than HTML. It was designed
@@ -445,65 +476,72 @@
 - explication: '<p>Any data that describes your book: title, subtitle, author bio,
     book description, price, publication date, ISBN, etc.</p>'
   term: Metadata
-- explication: "<p>A method in Python is similar to a function, in that it allows\
-    \ us to do things with data. However, a method is attached to what we call an\
-    \ <em>object</em>, which is a representation of data. Accordingly, a method operates\
-    \ as a function that is specifically available for that object. \nMethods are\
-    \ accessed through the dot syntax <code>.</code>.&nbsp;&nbsp;For example, the\
-    \ method <code>lower()</code> can be attached to a string object like so: <code>\"\
-    HELLO\".lower()</code> and will return the string <code>'hello'</code>.</p>"
+- explication: '<p>A method in Python is similar to a function, in that it allows
+    us to do things with data. However, a method is attached to what we call an <em>object</em>,
+    which is a representation of data. Accordingly, a method operates as a function
+    that is specifically available for that object.
+
+    Methods are accessed through the dot syntax <code>.</code>.&nbsp;&nbsp;For example,
+    the method <code>lower()</code> can be attached to a string object like so: <code>"HELLO".lower()</code>
+    and will return the string <code>''hello''</code>.</p>'
   term: Method
-- explication: "<p>A module is a python file (like a script) that contains a number\
-    \ of functions and expressions that you want to include in your program. Programmers\
-    \ often import modules written by other programmers and use them like building\
-    \ blocks for their applications. \nIn order to use modules, you need to add them\
-    \ to your script with <code>import</code> and then indicate which function you\
-    \ want to use with the dot syntax <code>.</code>. For example, we might use the\
-    \ function <code>choice</code> from the <a href=\"https://docs.python.org/3/library/random.html\"\
-    ><code>random</code></a> module, to generate random numbers. </p>\n<div class=\"\
-    codehilite\"><pre><span></span><code><span class=\"gp\">&gt;&gt;&gt; </span><span\
-    \ class=\"kn\">import</span> <span class=\"nn\">random</span>\n<span class=\"\
-    gp\">&gt;&gt;&gt; </span><span class=\"n\">numbers</span> <span class=\"o\">=</span>\
-    \ <span class=\"p\">[</span><span class=\"mi\">1</span><span class=\"p\">,</span>\
-    \ <span class=\"mi\">2</span><span class=\"p\">,</span> <span class=\"mi\">3</span><span\
-    \ class=\"p\">,</span> <span class=\"mi\">4</span><span class=\"p\">,</span> <span\
-    \ class=\"mi\">5</span><span class=\"p\">,</span> <span class=\"mi\">6</span><span\
-    \ class=\"p\">,</span> <span class=\"mi\">7</span><span class=\"p\">,</span> <span\
-    \ class=\"mi\">8</span><span class=\"p\">,</span> <span class=\"mi\">9</span><span\
-    \ class=\"p\">]</span>\n<span class=\"gp\">&gt;&gt;&gt; </span><span class=\"\
-    n\">random</span><span class=\"o\">.</span><span class=\"n\">choice</span><span\
-    \ class=\"p\">(</span><span class=\"n\">numbers</span><span class=\"p\">)</span>\n\
-    <span class=\"go\">1</span>\n<span class=\"gp\">&gt;&gt;&gt; </span><span class=\"\
-    n\">random</span><span class=\"o\">.</span><span class=\"n\">choice</span><span\
-    \ class=\"p\">(</span><span class=\"n\">numbers</span><span class=\"p\">)</span>\n\
-    <span class=\"go\">3</span>\n<span class=\"gp\">&gt;&gt;&gt; </span><span class=\"\
-    n\">random</span><span class=\"o\">.</span><span class=\"n\">choice</span><span\
-    \ class=\"p\">(</span><span class=\"n\">numbers</span><span class=\"p\">)</span>\n\
-    <span class=\"go\">3</span>\n<span class=\"gp\">&gt;&gt;&gt; </span><span class=\"\
-    n\">random</span><span class=\"o\">.</span><span class=\"n\">choice</span><span\
-    \ class=\"p\">(</span><span class=\"n\">numbers</span><span class=\"p\">)</span>\n\
-    <span class=\"go\">1</span>\n<span class=\"gp\">&gt;&gt;&gt; </span><span class=\"\
-    n\">random</span><span class=\"o\">.</span><span class=\"n\">choice</span><span\
-    \ class=\"p\">(</span><span class=\"n\">numbers</span><span class=\"p\">)</span>\n\
-    <span class=\"go\">4</span>\n<span class=\"gp\">&gt;&gt;&gt; </span><span class=\"\
-    n\">random</span><span class=\"o\">.</span><span class=\"n\">choice</span><span\
-    \ class=\"p\">(</span><span class=\"n\">numbers</span><span class=\"p\">)</span>\n\
-    <span class=\"go\">9</span>\n</code></pre></div>"
+- explication: '<p>A module is a python file (like a script) that contains a number
+    of functions and expressions that you want to include in your program. Programmers
+    often import modules written by other programmers and use them like building blocks
+    for their applications.
+
+    In order to use modules, you need to add them to your script with <code>import</code>
+    and then indicate which function you want to use with the dot syntax <code>.</code>.
+    For example, we might use the function <code>choice</code> from the <a href="https://docs.python.org/3/library/random.html"
+    rel="nofollow"><code>random</code></a> module, to generate random numbers.</p>
+
+    <div class="highlight highlight-text-python-console"><pre>&gt;&gt;&gt; <span class="pl-k">import</span>
+    random
+
+    &gt;&gt;&gt; numbers <span class="pl-k">=</span> [<span class="pl-c1">1</span>,
+    <span class="pl-c1">2</span>, <span class="pl-c1">3</span>, <span class="pl-c1">4</span>,
+    <span class="pl-c1">5</span>, <span class="pl-c1">6</span>, <span class="pl-c1">7</span>,
+    <span class="pl-c1">8</span>, <span class="pl-c1">9</span>]
+
+    &gt;&gt;&gt; random.choice(numbers)
+
+    1
+
+    &gt;&gt;&gt; random.choice(numbers)
+
+    3
+
+    &gt;&gt;&gt; random.choice(numbers)
+
+    3
+
+    &gt;&gt;&gt; random.choice(numbers)
+
+    1
+
+    &gt;&gt;&gt; random.choice(numbers)
+
+    4
+
+    &gt;&gt;&gt; random.choice(numbers)
+
+    9</pre></div>'
   term: Modules
 - explication: <p>The Natural Language Toolkit (NLTK) is platform for Python for working
     with human language data.</p>
   term: NLTK
-- explication: "<p>Even though you probably don't know it, you've been using objects\
-    \ in Python all along. Nearly everything in Python is made out of objects, which\
-    \ are representations of values. For example, the string <code>\"hello\"</code>\
-    \ is an object. So is the variable <code>greeting</code> that stores <code>\"\
-    hello\"</code>. Integers, floats, and lists are also objects. \nTo help you do\
-    \ more complex things with objects, you can learn <em>object-oriented-programming</em>,\
-    \ which is an approach toward programming that centralizes objects. This approach\
-    \ deploys what we call <em>classes</em> to define and create new objects, as well\
-    \ as <em>inheritance</em> to build new objects from old ones. This is definitely\
-    \ intermediate stuff, so make sure you have a grasp on basic concepts like data\
-    \ types, variables, loops, and conditionals before moving onto object-oriented-programming.</p>"
+- explication: '<p>Even though you probably don''t know it, you''ve been using objects
+    in Python all along. Nearly everything in Python is made out of objects, which
+    are representations of values. For example, the string <code>"hello"</code> is
+    an object. So is the variable <code>greeting</code> that stores <code>"hello"</code>.
+    Integers, floats, and lists are also objects.
+
+    To help you do more complex things with objects, you can learn <em>object-oriented-programming</em>,
+    which is an approach toward programming that centralizes objects. This approach
+    deploys what we call <em>classes</em> to define and create new objects, as well
+    as <em>inheritance</em> to build new objects from old ones. This is definitely
+    intermediate stuff, so make sure you have a grasp on basic concepts like data
+    types, variables, loops, and conditionals before moving onto object-oriented-programming.</p>'
   term: Objects
 - explication: <p>Open data formats are file formats that are available to anyone,
     free of charge, which allows for accessibility, future-proofing, and preservation.
@@ -513,8 +551,8 @@
     are <code>.csv</code>, <code>.pdf</code>, and <code>.json</code>.</p>
   term: Open Data Formats
 - explication: <p>A way to identify the category of words in a given text. For a list
-    of POS classification, see the <a href="https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html">Penn
-    Tree Bank Tag Set</a></p>
+    of POS classification, see the <a href="https://www.ling.upenn.edu/courses/Fall_2003/ling001/penn_treebank_pos.html"
+    rel="nofollow">Penn Tree Bank Tag Set</a></p>
   term: part-of-speech (POS) tagging
 - explication: "<p>A list of folders on your system that are checked for programs\
     \ to generate the list of commands available on the command line. For example,\
@@ -552,13 +590,17 @@
     stored on their servers which you access via your gitHub.com.</p>
   term: Push
 - explication: '<p>Qualitative analysis are techniques geared towards understanding
-    a phenomenon, rather than predicting and testing hypotheses, such as:
+    a phenomenon, rather than predicting and testing hypotheses, such as:</p>
 
-    - Grounded Theory/Computational Grounded Theory
+    <ul>
 
-    - Content Analysis
+    <li>Grounded Theory/Computational Grounded Theory</li>
 
-    - Text Analysis</p>'
+    <li>Content Analysis</li>
+
+    <li>Text Analysis</li>
+
+    </ul>'
   term: Qualitative Analysis
 - explication: <p>The random module or random library allows one to generate random
     output. The module is useful for to choose a random element from a list, or number
@@ -578,13 +620,17 @@
 - explication: <p>Git uses the term repository to refer to a folder that is being
     tracked. Colloquially, this term is often shortened to "repo".</p>
   term: Repository
-- explication: "<p>The requests module or requests library allows users to make requests\
-    \ to web pages. It is a useful tool for web scraping, and though it's relatively\
-    \ easy to get started, the learning curve can be steep. \nTo use requests, import\
-    \ the module into your script, then set up a response object. In the parenthesis,\
-    \ include the URL of the webpage you want to scrape, enclosed by single quotes.</p>\n\
-    <div class=\"codehilite\"><pre><span></span><code><span class=\"go\">import requests</span>\n\
-    <span class=\"go\">x = requests.get(&#39;&lt;websiteURL&gt;&#39;)</span>\n</code></pre></div>"
+- explication: '<p>The requests module or requests library allows users to make requests
+    to web pages. It is a useful tool for web scraping, and though it''s relatively
+    easy to get started, the learning curve can be steep.
+
+    To use requests, import the module into your script, then set up a response object.
+    In the parenthesis, include the URL of the webpage you want to scrape, enclosed
+    by single quotes.</p>
+
+    <div class="highlight highlight-text-python-console"><pre>import requests
+
+    x = requests.get(''&lt;websiteURL&gt;'')</pre></div>'
   term: requests
 - explication: "<p>The root is the top-level directory of a <a href=\"filesystem.md\"\
     >filesystem</a>. Staying with the tree metaphor to represent a hierarchical structure,\
@@ -595,29 +641,31 @@
 - explication: '<p>The root element is used in HTML to denote the outermost element
     that organizes all the content of an HTML document. For example, in the code below,
     <code>&lt;html lang="en"&gt;</code> denotes the opening tag of the root element
-    and <code>&lt;/html&gt;</code> denotes the closing tag of the root element. </p>
+    and <code>&lt;/html&gt;</code> denotes the closing tag of the root element.</p>
 
-    <div class="codehilite"><pre><span></span><code><span class="cp">&lt;!DOCTYPE
-    html&gt;</span>
+    <div class="highlight highlight-text-html-basic"><pre><span class="pl-c1">&lt;!DOCTYPE
+    html<span class="pl-kos">&gt;</span></span>
 
-    <span class="p">&lt;</span><span class="nt">html</span> <span class="na">lang</span><span
-    class="o">=</span><span class="s">&quot;en&quot;</span><span class="p">&gt;</span>
+    <span class="pl-kos">&lt;</span><span class="pl-ent">html</span> <span class="pl-c1">lang</span>="<span
+    class="pl-s">en</span>"<span class="pl-kos">&gt;</span>
 
-    &nbsp;&nbsp;<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
-
-    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...
-
-    &nbsp;&nbsp;<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
-
-    &nbsp;&nbsp;<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+    &nbsp;&nbsp;<span class="pl-kos">&lt;</span><span class="pl-ent">head</span><span
+    class="pl-kos">&gt;</span>
 
     &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...
 
-    &nbsp;&nbsp;<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+    &nbsp;&nbsp;<span class="pl-kos">&lt;/</span><span class="pl-ent">head</span><span
+    class="pl-kos">&gt;</span>
 
-    <span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+    &nbsp;&nbsp;<span class="pl-kos">&lt;</span><span class="pl-ent">body</span><span
+    class="pl-kos">&gt;</span>
 
-    </code></pre></div>'
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;...
+
+    &nbsp;&nbsp;<span class="pl-kos">&lt;/</span><span class="pl-ent">body</span><span
+    class="pl-kos">&gt;</span>
+
+    <span class="pl-kos">&lt;/</span><span class="pl-ent">html</span><span class="pl-kos">&gt;</span></pre></div>'
   term: Root Element
 - explication: <p>A Python script is a file that contains Python code. The filename
     needs to have the extension <code>.py</code>. Generally, in order to run the file,
@@ -645,14 +693,15 @@
 
     <code>"!!!"</code></p>'
   term: string
-- explication: "<p>Along with traceback errors, syntax errors are a common type of\
-    \ error in Python code. It appears when Python is unable to understand a line\
-    \ of code, meaning that there is a mistake. Often, syntax errors point to typos,\
-    \ indentation, or incomplete expressions, like missing quotation marks or parentheses.\
-    \ \nWhen a syntax error occurs, the interpreter will display a caret pointing\
-    \ to the area where the error occured. It will also display the message: <code>SyntaxError:\
-    \ invalid syntax</code>. Take a close look at the display message to get more\
-    \ information about your error, and help you with debugging.</p>"
+- explication: '<p>Along with traceback errors, syntax errors are a common type of
+    error in Python code. It appears when Python is unable to understand a line of
+    code, meaning that there is a mistake. Often, syntax errors point to typos, indentation,
+    or incomplete expressions, like missing quotation marks or parentheses.
+
+    When a syntax error occurs, the interpreter will display a caret pointing to the
+    area where the error occured. It will also display the message: <code>SyntaxError:
+    invalid syntax</code>. Take a close look at the display message to get more information
+    about your error, and help you with debugging.</p>'
   term: Syntax Errors
 - explication: <p>Tags are used in HTML to apply elements. Tags are contained within
     <code>&lt;&nbsp;&nbsp; &gt;</code> symbols.</p>
@@ -668,13 +717,17 @@
     text editors.</p>
   term: Text editor
 - explication: '<p>Tidy data are a way of processing and organizing data in to a data
-    structure that follows these rules:
+    structure that follows these rules:</p>
 
-    1. Each variable is in a column.
+    <ol>
 
-    2. Each observation is a row.
+    <li>Each variable is in a column.</li>
 
-    3. Each value is a cell.</p>'
+    <li>Each observation is a row.</li>
+
+    <li>Each value is a cell.</li>
+
+    </ol>'
   term: Tidy Data
 - explication: <p>An instance of a type (see "type" in this glossary).</p>
   term: Token
@@ -707,27 +760,31 @@
     In our text analysis workshop, <code>type</code> means unique vocabulary items
     in a corpus. (Ex: "Whale" and "whale" are different <em>types</em>.)</p>'
   term: type()
-- explication: "<p>A variable is a name that is assigned to a value, and it stores\
-    \ data for future use. Variable assignment uses a single <code>=</code>. The name\
-    \ given is on the left of the <code>=</code>, the value is on the right of the\
-    \ <code>=</code>. \nAssignment looks like this:</p>\n<div class=\"codehilite\"\
-    ><pre><span></span><code><span class=\"n\">x</span> <span class=\"o\">=</span>\
-    \ <span class=\"mi\">3</span>\n<span class=\"n\">name</span> <span class=\"o\"\
-    >=</span> <span class=\"s2\">&quot;Patrick&quot;</span>\n<span class=\"n\">name2</span>\
-    \ <span class=\"o\">=</span> <span class=\"s2\">&quot;Ignatz&quot;</span>\n<span\
-    \ class=\"n\">grocery_list</span> <span class=\"o\">=</span> <span class=\"p\"\
-    >[</span><span class=\"s2\">&quot;tomato&quot;</span><span class=\"p\">,</span>\
-    \ <span class=\"s2\">&quot;limes&quot;</span><span class=\"p\">,</span> <span\
-    \ class=\"s2\">&quot;chocolate&quot;</span><span class=\"p\">]</span>\n</code></pre></div>"
+- explication: '<p>A variable is a name that is assigned to a value, and it stores
+    data for future use. Variable assignment uses a single <code>=</code>. The name
+    given is on the left of the <code>=</code>, the value is on the right of the <code>=</code>.
+
+    Assignment looks like this:</p>
+
+    <div class="highlight highlight-source-python"><pre><span class="pl-s1">x</span>
+    <span class="pl-c1">=</span> <span class="pl-c1">3</span>
+
+    <span class="pl-s1">name</span> <span class="pl-c1">=</span> <span class="pl-s">"Patrick"</span>
+
+    <span class="pl-s1">name2</span> <span class="pl-c1">=</span> <span class="pl-s">"Ignatz"</span>
+
+    <span class="pl-s1">grocery_list</span> <span class="pl-c1">=</span> [<span class="pl-s">"tomato"</span>,
+    <span class="pl-s">"limes"</span>, <span class="pl-s">"chocolate"</span>]</pre></div>'
   term: Variables
-- explication: "<p>Version control is a system that records changes to a file or set\
-    \ of files over time so that you can recall specific versions later. It allows\
-    \ you to revert selected files back to a previous state, revert the entire project\
-    \ back to a previous state, compare changes over time, see who last modified something\
-    \ that might be causing a problem, who introduced an issue and when, and more.\
-    \ \nUsing a version control software like Git generally means that if you screw\
-    \ things up or lose files, you can easily recover. In addition, you get all this\
-    \ for very little overhead.</p>"
+- explication: '<p>Version control is a system that records changes to a file or set
+    of files over time so that you can recall specific versions later. It allows you
+    to revert selected files back to a previous state, revert the entire project back
+    to a previous state, compare changes over time, see who last modified something
+    that might be causing a problem, who introduced an issue and when, and more.
+
+    Using a version control software like Git generally means that if you screw things
+    up or lose files, you can easily recover. In addition, you get all this for very
+    little overhead.</p>'
   term: Version Control
 - explication: <p>Web Hosting refers to servers that make HTML</p>
   term: Web Hosting
@@ -737,13 +794,11 @@
     type <code>control-c</code> or <code>quit()</code> in the interpreter. Otherwise,
     the loop will keep going.</p>
 
-    <div class="codehilite"><pre><span></span><code><span class="k">while</span> <span
-    class="kc">True</span><span class="p">:</span>
+    <div class="highlight highlight-source-python"><pre><span class="pl-k">while</span>
+    <span class="pl-c1">True</span>:
 
-    &nbsp;&nbsp;&nbsp;&nbsp;<span class="nb">print</span><span class="p">(</span><span
-    class="s2">&quot;Oh no! I&#39;m stuck...&quot;</span><span class="p">)</span>
-
-    </code></pre></div>'
+    &nbsp;&nbsp;&nbsp;&nbsp;<span class="pl-en">print</span>(<span class="pl-s">"Oh
+    no! I''m stuck..."</span>)</pre></div>'
   term: while loops
 - explication: "<p>XML or eXstensible Markup Language is a file format that uses a\
     \ nested structure where the \"tags\" like <code>&lt;Cat&gt;</code> contain other\
@@ -751,25 +806,27 @@
     \ organizing the layout of a document in a tree-like format, just like HTML, where\
     \ we want to nest elements like a sentence within a paragraph, for example. XML\
     \ does not carry any information about how to be displayed and can be used in\
-    \ a variety of presentation scenarios. </p>\n<div class=\"codehilite\"><pre><span></span><code><span\
-    \ class=\"nt\">&lt;Cats&gt;</span> \n&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"nt\"\
-    >&lt;Cat&gt;</span> \n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"\
-    nt\">&lt;firstName&gt;</span>Smally<span class=\"nt\">&lt;/firstName&gt;</span>\
-    \ \n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"nt\">&lt;lastName&gt;</span>McTiny<span\
-    \ class=\"nt\">&lt;/lastName&gt;</span> \n&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"\
-    nt\">&lt;/Cat&gt;</span> \n&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"nt\">&lt;Cat&gt;</span>\
-    \ \n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"nt\">&lt;firstName&gt;</span>Kitty<span\
-    \ class=\"nt\">&lt;/firstName&gt;</span> \n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span\
-    \ class=\"nt\">&lt;lastName&gt;</span>Kitty<span class=\"nt\">&lt;/lastName&gt;</span>\
-    \ \n&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"nt\">&lt;/Cat&gt;</span> \n&nbsp;&nbsp;&nbsp;&nbsp;<span\
-    \ class=\"nt\">&lt;Cat&gt;</span> \n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span\
-    \ class=\"nt\">&lt;firstName&gt;</span>Foots<span class=\"nt\">&lt;/firstName&gt;</span>\
-    \ \n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"nt\">&lt;lastName&gt;</span>Smith<span\
-    \ class=\"nt\">&lt;/lastName&gt;</span> \n&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"\
-    nt\">&lt;/Cat&gt;</span> \n&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"nt\">&lt;Cat&gt;</span>\
-    \ \n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"nt\">&lt;firstName&gt;</span>Tiger<span\
-    \ class=\"nt\">&lt;/firstName&gt;</span> \n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span\
-    \ class=\"nt\">&lt;lastName&gt;</span>Jaws<span class=\"nt\">&lt;/lastName&gt;</span>\
-    \ \n&nbsp;&nbsp;&nbsp;&nbsp;<span class=\"nt\">&lt;/Cat&gt;</span> \n<span class=\"\
-    nt\">&lt;/Cats&gt;</span> \n</code></pre></div>"
+    \ a variety of presentation scenarios.</p>\n<div class=\"highlight highlight-text-xml\"\
+    ><pre>&lt;<span class=\"pl-ent\">Cats</span>&gt; \n&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span\
+    \ class=\"pl-ent\">Cat</span>&gt; \n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span\
+    \ class=\"pl-ent\">firstName</span>&gt;Smally&lt;/<span class=\"pl-ent\">firstName</span>&gt;\
+    \ \n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class=\"pl-ent\"\
+    >lastName</span>&gt;McTiny&lt;/<span class=\"pl-ent\">lastName</span>&gt; \n&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span\
+    \ class=\"pl-ent\">Cat</span>&gt; \n&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class=\"\
+    pl-ent\">Cat</span>&gt; \n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span\
+    \ class=\"pl-ent\">firstName</span>&gt;Kitty&lt;/<span class=\"pl-ent\">firstName</span>&gt;\
+    \ \n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class=\"pl-ent\"\
+    >lastName</span>&gt;Kitty&lt;/<span class=\"pl-ent\">lastName</span>&gt; \n&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span\
+    \ class=\"pl-ent\">Cat</span>&gt; \n&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class=\"\
+    pl-ent\">Cat</span>&gt; \n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span\
+    \ class=\"pl-ent\">firstName</span>&gt;Foots&lt;/<span class=\"pl-ent\">firstName</span>&gt;\
+    \ \n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class=\"pl-ent\"\
+    >lastName</span>&gt;Smith&lt;/<span class=\"pl-ent\">lastName</span>&gt; \n&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span\
+    \ class=\"pl-ent\">Cat</span>&gt; \n&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class=\"\
+    pl-ent\">Cat</span>&gt; \n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span\
+    \ class=\"pl-ent\">firstName</span>&gt;Tiger&lt;/<span class=\"pl-ent\">firstName</span>&gt;\
+    \ \n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class=\"pl-ent\"\
+    >lastName</span>&gt;Jaws&lt;/<span class=\"pl-ent\">lastName</span>&gt; \n&nbsp;&nbsp;&nbsp;&nbsp;&lt;/<span\
+    \ class=\"pl-ent\">Cat</span>&gt; \n&lt;/<span class=\"pl-ent\">Cats</span>&gt;\
+    \ </pre></div>"
   term: XML (file format)

@@ -25,11 +25,11 @@ def workshop_image_exists(image_file):
 
 
 def get_default_workshop_image():
-    return Workshop.image.field.upload_to + Workshop.image.field.default
+    return Workshop.image.field.default
 
 
 def default_workshop_image_exists():
-    return os.path.exists(get_default_workshop_image())
+    return os.path.exists(os.path.join(settings.MEDIA_ROOT, get_default_workshop_image()))
 
 
 class Command(LogSaver, BaseCommand):

@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.core.management import BaseCommand, call_command
 from ._shared import all_models
 from backend.dhri.log import get_or_default, Logger
@@ -13,6 +14,8 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--reset', action='store_true',
                             help='Removes all the DHRI-related objects in the database and starts a fresh installation.')
+        parser.add_argument('--resetusers', action='store_true',
+                            help='Removes all the users in the database and starts a fresh installation from the user_setup.yml file.')
         parser.add_argument('--force', action='store_true',
                             help='Automatically approves any requests to replace/update existing data in the database.')
         parser.add_argument('--silent', action='store_true',
@@ -21,14 +24,15 @@ class Command(BaseCommand):
                             help='Provides all output possible, which can be overwhelming. Good for debug purposes, not for the faint of heart.')
 
     def handle(self, *args, **options):
+        log = Logger(path=__file__,
+            force_verbose=options.get('verbose'),
+            force_silent=options.get('silent')
+        )
+
         if options.get('reset'):
-            log = Logger(path=__file__,
-                force_verbose=options.get('verbose'),
-                force_silent=options.get('silent')
-            )
             if options.get('force'):
                 i = get_or_default(
-                    f'Warning: This will remove ALL OF THE OBJECTS from the database and reset them from the datafiles. Are you sure you want to continue?', color='red', default_variable='N')
+                    f'Warning: This script is about to remove ALL OF THE OBJECTS from the database. Are you sure you want to continue?', color='red', default_variable='N')
                 if i.lower() != 'y':
                     exit()
             for model in all_models:
@@ -41,6 +45,17 @@ class Command(BaseCommand):
                 model.objects.all().delete()
 
                 log.log(f'Removed all `{name}` objects.')
+            
+        if options.get('resetusers'):
+            if options.get('force'):
+                i = get_or_default(
+                    f'Warning: This script is about to remove ALL OF THE USERS from the database. Are you sure you want to continue?', color='red', default_variable='N')
+                if i.lower() != 'y':
+                    exit()
+            
+            User.objects.all().delete()
+
+            log.log(f'Removed all users.')
 
         call_command('ingestgroups',
                      forceupdate=True,
