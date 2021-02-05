@@ -1,10 +1,10 @@
 <div class="col-12 col-sm-6 col-xl-4 mb-3">
-    <div class="card h-100" style="box-shadow: 0 1rem 3rem rgba(0,0,0,0.375) !important;">
+    <div class="card h-100 shadow-sm">
             {% for os, instruction in data.items %}
                 {% if forloop.first %}
                     {% if instruction.image %}
                         <div class="card-img">
-                            <a href="{% url 'install:installation' slug=instruction.slug %}" class="stretched-link"><img src="{{ instruction.image.url }}" class="card-img-top" alt="{{ instruction.software.software }}"></a>
+                            <a href="{% url 'install:installation' slug=instruction.slug %}" class="stretched-link text-decoration-none"><img src="{{ instruction.image.url }}" class="card-img-top" alt="{{ instruction.software.software }}"></a>
                         </div>
                     {% else %}
                     {% endif %}
