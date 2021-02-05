@@ -475,7 +475,7 @@ div.dropdown-submenu {
 }
 .card:hover .card-img,
 .card:focus .card-img {
-    opacity: 0.2;
+    opacity: 0.05;
 }
 
 .card-img-overlay > h5,
