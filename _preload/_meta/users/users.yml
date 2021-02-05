@@ -300,7 +300,7 @@ users:
       label: GitHub
       url: http://www.github.com/jojokarlin
     pronouns: she/her
-  staff: false
+  staff: true
   superuser: false
   username: jojokarlin
 - email: ''
@@ -329,7 +329,7 @@ users:
       label: GitHub
       url: http://www.github.com/smythp
     pronouns: he/him
-  staff: false
+  staff: true
   superuser: false
   username: patricksmyth
 - email: ''
@@ -365,7 +365,7 @@ users:
       label: GitHub
       url: http://www.github.com/javo0101
     pronouns: he/him
-  staff: false
+  staff: true
   superuser: false
   username: javioteropena
 - email: ''
@@ -397,7 +397,7 @@ users:
       label: Personal website
       url: http://www.cuny.is/oildefon
     pronouns: she/her
-  staff: false
+  staff: true
   superuser: false
   username: oliviaildefonso
 - email: ''
