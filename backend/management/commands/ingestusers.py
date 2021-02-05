@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from learner.models import Profile
+from learner.models import Profile, ProfileLink
 from django.core.management import BaseCommand
 from django.core.files import File
 from django.conf import settings
@@ -84,6 +84,8 @@ class Command(LogSaver, BaseCommand):
                 is_staff=userdata.get('staff')
             )
 
+            user.refresh_from_db()
+
             # if None, sets to unusable password, see https://docs.djangoproject.com/en/3.1/ref/contrib/auth/#django.contrib.auth.models.User.set_password
             u = User.objects.get(username=userdata.get('username'))
             u.set_password(userdata.get('password'))
@@ -119,6 +121,26 @@ class Command(LogSaver, BaseCommand):
             else:
                 profile.image.name = get_default_profile_picture()
                 profile.save()
+
+            if userdata.get('profile', {}).get('links'):
+                for link in userdata.get('profile', {}).get('links'):
+                    if link.get('cat') == 'personal':
+                        link['cat'] = ProfileLink.PERSONAL
+                    elif link.get('cat') == 'project':
+                        link['cat'] = ProfileLink.PROJECT
+                    else:
+                        log.error(
+                            f'Link {link.get("url")} is assigned a category that has no correspondence in the database model: {link.get("cat")}. Please set the category to either `personal` or `project`.')
+
+                    _, _ = ProfileLink.objects.get_or_create(profile=profile, url=link.get('url'), defaults={
+                        'cat': link.get('cat'),
+                        'label': link.get('label')
+                    })
+
+                    ProfileLink.objects.filter(profile=profile, url=link.get('url')).update(
+                        cat=link.get('cat'),
+                        label=link.get('label')
+                    )
 
         if not profile_picture_exists(get_default_profile_picture(full_path=True)):
             if data.get('default', False) and os.path.exists(data.get('default')):

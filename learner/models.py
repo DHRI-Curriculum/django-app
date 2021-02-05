@@ -5,7 +5,7 @@ from backend.mixins import CurlyQuotesMixin
 
 class Profile(CurlyQuotesMixin, models.Model):
     from workshop.models import Workshop
-    
+
     curly_fields = ['bio']
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -32,7 +32,7 @@ class ProfileLink(models.Model):
     PROJECT = 'PR'
     CAT_CHOICES = [
         (PERSONAL, 'Personal'),
-        (PROJECT, 'Projects'),
+        (PROJECT, 'Project'),
     ]
 
     profile = models.ForeignKey(
