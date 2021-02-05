@@ -2,9 +2,9 @@
 <browserconfig>
     <msapplication>
         <tile>
-            <square70x70logo src="{% static 'website/touch/mstile-70x70.png' %}"/>
-            <square150x150logo src="{% static 'website/touch/mstile-150x150.png' %}"/>
-            <square310x310logo src="{% static 'website/touch/mstile-310x310.png' %}"/>
+            <square70x70logo src="https://static.dhinstitutes.org/curriculum/website/touch/mstile-70x70.png"/>
+            <square150x150logo src="https://static.dhinstitutes.org/curriculum/website/touch/mstile-150x150.png"/>
+            <square310x310logo src="https://static.dhinstitutes.org/curriculum/website/touch/website/touch/mstile-310x310.png"/>
             <TileColor>#ffffff</TileColor>
         </tile>
     </msapplication>
