@@ -14,6 +14,7 @@ class Insight(CurlyQuotesMixin, models.Model):
     text = models.TextField(blank=True, null=True)
     image = models.ImageField(
         upload_to='insight_headers/', default='insight_headers/default.png')
+    image_alt = models.TextField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
         self.slug = dhri_slugify(self.title)

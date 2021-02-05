@@ -1,10 +1,12 @@
 from insight.models import Insight, OperatingSystemSpecificSection, Section
 from django.core.management import BaseCommand
+from django.core.files import File
 from django.conf import settings
 from backend.dhri.log import Logger, Input
 from backend.mixins import convert_html_quotes
 from ._shared import test_for_required_files, get_yaml, LogSaver
 
+import os
 
 SAVE_DIR = f'{settings.BASE_DIR}/_preload/_insights'
 FULL_PATH = f'{SAVE_DIR}/insights.yml'
@@ -16,7 +18,24 @@ REQUIRED_PATHS = [
 ]
 
 
+def get_insight_image_path(image_file, relative_to_upload_field=False):
+    if not relative_to_upload_field:
+        return settings.MEDIA_ROOT + '/' + Insight.image.field.upload_to + os.path.basename(image_file).replace('@', '')
+
+    return Insight.image.field.upload_to + os.path.basename(image_file).replace('@', '')
+
+
+def insight_image_exists(image_file):
+    return os.path.exists(get_insight_image_path(image_file))
+
+
+def get_default_insight_image():
+    return Insight.image.field.default
+
+
 class Command(LogSaver, BaseCommand):
+    import os
+
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
@@ -32,9 +51,9 @@ class Command(LogSaver, BaseCommand):
 
     def handle(self, *args, **options):
         log = Logger(path=__file__,
-            force_verbose=options.get('verbose'),
-            force_silent=options.get('silent')
-        )
+                     force_verbose=options.get('verbose'),
+                     force_silent=options.get('silent')
+                     )
         input = Input(path=__file__)
 
         test_for_required_files(REQUIRED_PATHS=REQUIRED_PATHS, log=log)
@@ -52,9 +71,34 @@ class Command(LogSaver, BaseCommand):
                     continue
 
             Insight.objects.filter(title=insightdata.get('title')).update(
-                text=convert_html_quotes(insightdata.get('text')))
-            
-            # TODO: #368 Add insight image here
+                text=convert_html_quotes(insightdata.get('text')),
+                image_alt=insightdata.get('image_alt'))
+
+            insight.refresh_from_db()
+
+            original_file = insightdata.get('image')
+            if original_file:
+                filename = original_file.split('/')[-1]
+                if original_file.startswith('/'):
+                    original_file = original_file[1:]
+                original_file = self.os.path.join(
+                    settings.BASE_DIR, 'insight', original_file)
+
+                if insight_image_exists(filename):
+                    insight.image.name = get_insight_image_path(
+                        filename, True)
+                    insight.save()
+                else:
+                    with open(original_file, 'rb') as f:
+                        insight.image = File(
+                            f, name=self.os.path.basename(f.name))
+                        insight.save()
+            else:
+                insight.image.name = get_default_insight_image()
+                insight.save()
+                # TODO: Move warning to build stage
+                self.WARNINGS.append(log.warning(
+                    f'Insight `{insightdata.get("title")}` does not have an image assigned to it. Add filepaths to an existing file in your datafile ({FULL_PATH}) if you want to update the specific insight image.'))
 
             for sectiondata in insightdata.get('sections', []):
                 section, created = Section.objects.get_or_create(insight=insight, title=sectiondata.get(
