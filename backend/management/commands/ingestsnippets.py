@@ -2,6 +2,7 @@ from website.models import Snippet
 from django.core.management import BaseCommand
 from backend.dhri.log import Logger, Input
 from backend.dhri_settings import AUTO_SNIPPETS
+from backend.dhri.markdown_parser import PARSER
 from ._shared import LogSaver
 
 
@@ -23,9 +24,9 @@ class Command(LogSaver, BaseCommand):
 
     def handle(self, *args, **options):
         log = Logger(path=__file__,
-            force_verbose=options.get('verbose'),
-            force_silent=options.get('silent')
-        )
+                     force_verbose=options.get('verbose'),
+                     force_silent=options.get('silent')
+                     )
         input = Input(path=__file__)
 
         data = AUTO_SNIPPETS
@@ -41,7 +42,7 @@ class Command(LogSaver, BaseCommand):
                     continue
 
             Snippet.objects.filter(identifier=identifier).update(
-                snippet=snippetdata
+                snippet=PARSER.convert(snippetdata)
             )
 
         self.LOGS.append(log.log('Added/updated snippets: ' +
