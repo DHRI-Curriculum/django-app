@@ -239,7 +239,7 @@
           </div>
         {% endif %}
 
-        {% if frontmatter.prerequisites.count or frontmatter.resources.count %}
+        {% if frontmatter.resources.count %}
           <div class="row mt-5">
 
             <div class="col-12 pb-2">
@@ -250,17 +250,7 @@
               <hr />
             </div>
 
-            <div class="col-12 col-md-6">
-              {% if frontmatter.prerequisites.count %}
-              <h4 class="py-4 border-bottom">Prerequisites</h4>
-              {% snippet "introduction-prerequisites" %}
-                {% for prerequisite in frontmatter.prerequisites.all %}
-                  {{ prerequisite }}
-                {% endfor %}
-              {% endif %}
-            </div>
-
-            <div class="col-12 col-md-6">
+            <div class="col-12">
               {% if frontmatter.resources.count %}
               <h4 class="py-4 border-bottom">Resources</h4>
               {% snippet "introduction-resources" %}
@@ -272,8 +262,6 @@
 
           </div>
         {% endif %}
-
-
 
     </div>
 
