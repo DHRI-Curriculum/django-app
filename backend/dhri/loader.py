@@ -11,6 +11,7 @@ from bs4 import BeautifulSoup
 from requests.exceptions import HTTPError, MissingSchema
 
 from django.urls import reverse
+from django.conf import settings
 
 from backend.models import *
 
@@ -378,7 +379,7 @@ class Loader():
                 url = url.replace('//', '/').replace('https:/', 'https://').replace('http:/', 'http://')
 
             download_image(url, local_file)
-            local_url = f'/static/website/images/workshop_headers/{REPO_CLEAR}/{filename}'
+            local_url = settings.STATIC_URL + f'website/images/workshop_headers/{REPO_CLEAR}/{filename}'
             image['src'] = local_url
             image['class'] = image.get('class', []) + ['img-fluid', 'd-block', 'my-4']
 
@@ -767,7 +768,7 @@ class LessonParser():
                         url = url.replace('//', '/').replace('https:/', 'https://').replace('http:/', 'http://')
 
                     download_image(url, local_file)
-                    local_url = f'/static/website/images/lessons/{REPO_CLEAR}/{filename}'
+                    local_url = settings.STATIC_URL + f'website/images/lessons/{REPO_CLEAR}/{filename}'
                     image['src'] = local_url
                     image['class'] = image.get('class', []) + ['img-fluid', 'd-block', 'my-4']
 
@@ -883,7 +884,7 @@ class LessonParser():
                     else:
                         if ".png" in href or ".jpg" in href or ".jpeg" in href or ".gif" in href:
                             filename = href.split('/')[-1]
-                            local_url = f'/static/website/images/lessons/{REPO_CLEAR}/{filename}'
+                            local_url = settings.STATIC_URL + f'website/images/lessons/{REPO_CLEAR}/{filename}'
                             link['href'] = local_url
                             log.info(f"The lesson `{title}` links to an image and has been rerouted: {href} —> {local_url})")
                         else:

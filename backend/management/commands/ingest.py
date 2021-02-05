@@ -34,7 +34,7 @@ class Command(BaseCommand):
                 i = get_or_default(
                     f'Warning: This script is about to remove ALL OF THE OBJECTS from the database. Are you sure you want to continue?', color='red', default_variable='N')
                 if i.lower() != 'y':
-                    exit()
+                    log.error('User opted to stop.')
             for model in all_models:
                 name = model.__name__.replace('_', ' ')
                 if not options.get('force'):
@@ -51,7 +51,7 @@ class Command(BaseCommand):
                 i = get_or_default(
                     f'Warning: This script is about to remove ALL OF THE USERS from the database. Are you sure you want to continue?', color='red', default_variable='N')
                 if i.lower() != 'y':
-                    exit()
+                    log.error('User opted to stop.')
             
             User.objects.all().delete()
 

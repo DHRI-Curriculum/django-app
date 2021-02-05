@@ -103,7 +103,7 @@
       \ comes with Anaconda by default.\nFind and open the Anaconda Navigator on your\
       \ computer (you should be able to find it in the folder with your other applications).\
       \ From Anaconda Navigator's interface, launch a Jupyter Notebook.\n<img alt=\"\
-      jupyter\" class=\"img-fluid d-block my-4\" src=\"/static/insight/images/jupyter.png\"\
+      jupyter\" class=\"img-fluid d-block my-4\" src=\"//static.dhinstitutes.org/curriculum/insight/images/jupyter.png\"\
       \ style=\"max-width:100%;\"/>\nJupyter Notebook will open as a tab in your default\
       \ browser, which is where you will be working. All of the directories (folders)\
       \ in your <code>home</code> directory will appear. (This may vary depending\
@@ -114,10 +114,11 @@
       \ on the desired directory.\nOnce you are in the right place, select <code>New</code>\
       \ &gt;&gt; <code>Python3</code> in the upper right corner.\n<img alt='jupyter\
       \ notebook \"open new file\" screen' class=\"img-fluid d-block my-4\" src=\"\
-      /static/insight/images/jupyter1.png\" style=\"max-width:100%;\"/>\nA blank page\
-      \ with an empty box should appear.\n<img alt=\"empty box on jupyter notebook\
-      \ new file\" class=\"img-fluid d-block my-4\" src=\"/static/insight/images/jupyter2.png\"\
-      \ style=\"max-width:100%;\"/></p>"
+      //static.dhinstitutes.org/curriculum/insight/images/jupyter1.png\" style=\"\
+      max-width:100%;\"/>\nA blank page with an empty box should appear.\n<img alt=\"\
+      empty box on jupyter notebook new file\" class=\"img-fluid d-block my-4\" src=\"\
+      //static.dhinstitutes.org/curriculum/insight/images/jupyter2.png\" style=\"\
+      max-width:100%;\"/></p>"
     title: How to open a Jupyter notebook
   - order: 3
     text: '<p>Jupyter Notebook allows you to write and run codes in containers, which

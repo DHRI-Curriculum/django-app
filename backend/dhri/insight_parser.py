@@ -1,6 +1,8 @@
 import json
 import requests
 
+from django.conf import settings
+
 from bs4 import BeautifulSoup
 from collections import OrderedDict
 
@@ -179,7 +181,7 @@ class InsightParser():
                             '//', '/').replace('https:/', 'https://').replace('http:/', 'http://')
 
                     download_image(url, local_file)
-                    local_url = f'/static/insight/images/{filename}'
+                    local_url = settings.STATIC_URL + f'insight/images/{filename}'
                     img['src'] = local_url
                     img['class'] = img.get(
                         'class', []) + ['img-fluid', 'd-block', 'my-4']
