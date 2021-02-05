@@ -73,14 +73,10 @@ class Command(LogSaver, BaseCommand):
                         'pronouns': u.get('pronouns'),
                         'links': []
                     },
-                    'superuser': False,
-                    'staff': False,
+                    'superuser': is_super,
+                    'staff': is_staff,
                     'groups': u.get('groups', [])
                 }
-                if is_super:
-                    user['superuser'] = True
-                elif is_staff:
-                    user['staff'] = True
 
                 if u.get('img'):
                     if options.get('nocrop'):
