@@ -58,10 +58,10 @@ AUTO_GROUPS = {
 ##### Standard settings ##############################
 
 # Where user info is stored:
-USER_SETUP = os.path.join(settings.BASE_DIR, '_preload/user_setup.yml')
+USER_SETUP = os.path.join(settings.BASE_DIR, 'backend', 'setup', 'users.yml')
 
 # Where snippet info is stored:
-SNIPPET_SETUP = os.path.join(settings.BASE_DIR, '_preload/snippets.yml')
+SNIPPET_SETUP = os.path.join(settings.BASE_DIR, 'backend', 'setup', 'snippets.yml')
 
 BACKEND_AUTO = 'Github'
 REPO_AUTO = ''

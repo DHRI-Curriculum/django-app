@@ -104,7 +104,7 @@ The `ingest` command can also be called using flags that modify its function:
 | `--silent`        | Makes as little output as possible, although still saves all the information in log files (see [debugging docs](debug.md)).          |
 | `--verbose`       | Provides _all_ output possible, which can be overwhelming. Good for debug purposes, not for the faint of heart. |
 | `--reset`         | Removes all the DHRI-related objects in the database and starts a fresh installation.                           |
-| `--resetusers`    | Removes all the users in the database and starts a fresh installation from the [user_setup.yml](add-new-user.md) file. |
+| `--resetusers`    | Removes all the users in the database and starts a fresh installation from the [users.yml](add-new-user.md) file. |
 | `--force`         | Automatically selects "yes" for questions about whether database objects should be updated. "Forces" its way.   |
 
 #### Behind the scenes

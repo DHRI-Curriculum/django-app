@@ -15,7 +15,7 @@ class Command(BaseCommand):
         parser.add_argument('--reset', action='store_true',
                             help='Removes all the DHRI-related objects in the database and starts a fresh installation.')
         parser.add_argument('--resetusers', action='store_true',
-                            help='Removes all the users in the database and starts a fresh installation from the user_setup.yml file.')
+                            help='Removes all the users in the database and starts a fresh installation from the users.yml file.')
         parser.add_argument('--force', action='store_true',
                             help='Automatically approves any requests to replace/update existing data in the database.')
         parser.add_argument('--silent', action='store_true',
