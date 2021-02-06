@@ -109,11 +109,13 @@ class FrontmatterView(DetailView):
                 return True
         return False
 
-    def get_all_terms(self):
+    def get_all_terms(self, sort=True, reverse=False):
         _ = list()
         for lesson in self.get_object().lessons.all():
             _.extend(list(lesson.terms.all()))
-        return(len(_), _)
+        [_.extend(list(lesson.terms.all())) for lesson in self.get_object().lessons.all()]
+        if sort: _.sort(key=lambda x: x.slug, reverse=reverse)
+        return(len(set(_)), set(_))
 
 
 class PraxisView(DetailView):
