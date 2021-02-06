@@ -29,6 +29,7 @@ blockquote {
 
 .linked-comment {
     cursor: default;
+    position: relative; /* required for stretched-link */
     border-left: 0.5rem solid #ecf0f1 !important;
 }
 
@@ -549,6 +550,7 @@ div.dropdown-submenu {
 }
 
 .alpha-notice {
+    cursor: default;
     font-size: 1rem !important;
     height: 35px !important;
     background-color: #dc3545 !important;
