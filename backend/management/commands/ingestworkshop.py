@@ -1,7 +1,8 @@
 from glossary.models import Term
 from learner.models import Profile
 from lesson.models import Challenge, Evaluation, Solution, Lesson, Question, Answer
-from library.models import Project, Reading, Resource, Tutorial
+from library.models import Project, Reading, Tutorial
+# from library.models import Resource
 from workshop.models import Collaboration, Contributor, DiscussionQuestion, EthicalConsideration, LearningObjective, NextStep, Workshop, Frontmatter, Praxis
 from django.core.management import BaseCommand
 from django.core.files import File
@@ -147,9 +148,11 @@ class Command(LogSaver, BaseCommand):
                 frontmatter.readings.add(reading)
                 frontmatter.save()
 
+            '''
             for resourcedata in frontmatterdata.get('resources', []):
                 # print(resourcedata) # TODO: #367 The Frontmatter object needs a new many-to-many relationship to resources. Create it and include in the ingestion here.
                 pass
+            '''
 
             for contributordata in frontmatterdata.get('contributors'):
                 profile = Profile.objects.filter(user__first_name=contributordata.get(
@@ -248,12 +251,14 @@ class Command(LogSaver, BaseCommand):
                 praxis.tutorials.add(tutorial)
                 praxis.save()
 
+            '''
             for resourcedata in praxisdata.get('more_resources'):
                 resource, created = Resource.objects.get_or_create(title=resourcedata.get(
                     'title'), url=resourcedata.get('url'), annotation=resourcedata.get('annotation'))
 
                 praxis.more_resources.add(resource)
                 praxis.save()
+            '''
 
             # 4. ENTER LESSONS
 

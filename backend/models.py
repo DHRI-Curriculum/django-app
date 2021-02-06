@@ -26,7 +26,8 @@ ALL_MODELS = [
     Lesson, Challenge, Solution, Evaluation, Question, Answer,
 
     ### app: library
-    Tutorial, Project, Resource, Reading,
+    Tutorial, Project, Reading,
+    # Resource, 
 
     ### app: website
     Snippet,

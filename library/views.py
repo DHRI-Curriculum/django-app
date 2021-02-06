@@ -6,14 +6,16 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.generic import ListView
 
 
-from .models import Reading, Resource, Tutorial, Project
+from .models import Reading, Tutorial, Project
+# from .models import Resource
 
 
 payload = dict()
 
 
 class Index(ListView):
-    models = [Reading, Resource, Tutorial, Project]
+    models = [Reading, Tutorial, Project]
+    # models.append(Resource)
     template_name = 'library/index.html'
 
     def get_queryset(self):
@@ -58,6 +60,7 @@ def lazyload_readings(request):
     output_data = { 'html': html, 'has_next': readings.has_next() }
     return JsonResponse(output_data)
 
+'''
 def lazyload_resources(request):
     page = request.headers.get('page')
     resources = Resource.objects.all().order_by('title')
@@ -75,6 +78,7 @@ def lazyload_resources(request):
     )
     output_data = { 'html': html, 'has_next': resources.has_next() }
     return JsonResponse(output_data)
+'''
 
 def lazyload_tutorials(request):
     page = request.headers.get('page')

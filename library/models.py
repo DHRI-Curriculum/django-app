@@ -21,6 +21,7 @@ class Project(models.Model): #TODO: #337 Add CurlyQuotesMixin + curly field anno
         return f'{self.title}'
 
 
+'''
 class Resource(models.Model): #TODO: #337 Add CurlyQuotesMixin + curly field annotation (but it needs to be run through HTML parser first) — and then the ingestworkshop (and anything else referring to the save method on the model) needs updating
     title = models.TextField(max_length=500)
     url = models.TextField(max_length=500)
@@ -29,6 +30,7 @@ class Resource(models.Model): #TODO: #337 Add CurlyQuotesMixin + curly field ann
 
     def __str__(self):
         return f'{self.title}'
+'''
 
 
 class Reading(models.Model): #TODO: #337 Add CurlyQuotesMixin + curly field annotation (but it needs to be run through HTML parser first) — and then the ingestworkshop (and anything else referring to the save method on the model) needs updating

@@ -207,6 +207,7 @@ class Command(LogSaver, BaseCommand):
                     data['frontmatter']['prerequisites'].append(
                         {'type': 'external link', 'url': url, 'url_text': url_text, 'text': text, 'required': required, 'recommended': recommended})
 
+            '''
             for resourcedata in l.resources:
                 r_title, url = process_links(resourcedata, 'resource')
                 if 'https://raw.githubusercontent.com/DHRI-Curriculum/' in url or ('github.com/DHRI-Curriculum/' and '/raw/' in url):
@@ -215,6 +216,7 @@ class Command(LogSaver, BaseCommand):
                 else:
                     data['frontmatter']['resources'].append(
                         {'type': 'external_link', 'url': url, 'title': r_title, 'full_text': resourcedata})
+            '''
 
             for contributor in l.contributors:
                 role = ''

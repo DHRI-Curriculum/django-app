@@ -250,15 +250,17 @@
               <hr />
             </div>
 
+            <!-- See #280
             <div class="col-12">
-              {% if frontmatter.resources.count %}
+               if frontmatter.resources.count 
               <h4 class="py-4 border-bottom">Resources</h4>
-              {% snippet "introduction-resources" %}
-                {% for resource in frontmatter.resources.all %}
+               snippet "introduction-resources" 
+                 for resource in frontmatter.resources.all 
                   {{ resource }}
-                {% endfor %}
-              {% endif %}
+                 endfor 
+               endif 
             </div>
+            -->
 
           </div>
         {% endif %}

@@ -31,16 +31,16 @@ class Migration(migrations.Migration):
                 ('zotero_item', models.TextField(blank=True, max_length=500, null=True)),
             ],
         ),
-        migrations.CreateModel(
-            name='Resource',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.TextField(max_length=500)),
-                ('url', models.TextField(max_length=500)),
-                ('annotation', models.TextField(blank=True, max_length=3000, null=True)),
-                ('zotero_item', models.TextField(blank=True, max_length=500, null=True)),
-            ],
-        ),
+        #migrations.CreateModel(
+        #    name='Resource',
+        #    fields=[
+        #        ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+        #        ('title', models.TextField(max_length=500)),
+        #        ('url', models.TextField(max_length=500)),
+        #        ('annotation', models.TextField(blank=True, max_length=3000, null=True)),
+        #        ('zotero_item', models.TextField(blank=True, max_length=500, null=True)),
+        #    ],
+        #),
         migrations.CreateModel(
             name='Tutorial',
             fields=[
