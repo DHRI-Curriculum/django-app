@@ -32,31 +32,7 @@ class FrontmatterView(DetailView):
         context['user_favorited'] = self.has_favorited()
         context['num_terms'], context['all_terms'] = self.get_all_terms()
         context['frontmatter'] = self.get_object().frontmatter
-        context['prerequisites'] = {
-            'required': [],
-            'recommended': [],
-            'workshops': [],
-            'installs': {
-                'by_software': {},
-                'by_os': {},
-            },
-            'insights': [],
-            'external_links': [],
-        }
-        for req in self.get_object().frontmatter.prerequisites.all():
-            if req.required: context['prerequisites']['required'].append(req)
-            if req.recommended: context['prerequisites']['recommended'].append(req)
-
-            if req.category == Prerequisite.WORKSHOP: context['prerequisites']['workshops'].append(req)
-            elif req.category == Prerequisite.INSIGHT: context['prerequisites']['insights'].append(req)
-            elif req.category == Prerequisite.EXTERNAL_LINK: context['prerequisites']['external_links'].append(req)
-
-            for req in req.linked_software.all():
-                if not req.software in context['prerequisites']['installs']['by_software']:
-                    context['prerequisites']['installs']['by_software'][req.software] = Instruction.objects.by_software()[req.software]
-
-                if not req.operating_system in context['prerequisites']['installs']['by_os']:
-                    context['prerequisites']['installs']['by_os'][req.operating_system] = Instruction.objects.by_os()[req.operating_system]
+        context['prerequisites'] = self.get_prerequisites()
 
         context['learning_objectives'] = [x.label.replace('<p>', '').replace(
             '</p>', '') for x in context['frontmatter'].learning_objectives.all()]
@@ -116,6 +92,44 @@ class FrontmatterView(DetailView):
         [_.extend(list(lesson.terms.all())) for lesson in self.get_object().lessons.all()]
         if sort: _.sort(key=lambda x: x.slug, reverse=reverse)
         return(len(set(_)), set(_))
+
+    def get_prerequisites(self):
+        _ = {
+            'required': [],
+            'recommended': [],
+            'workshops': [],
+            'installs': {
+                'by_software': {},
+                'by_os': {},
+            },
+            'insights': [],
+            'external_links': [],
+        }\
+
+        for req in self.get_object().frontmatter.prerequisites.all():
+            if req.required: _['required'].append(req)
+            if req.recommended: _['recommended'].append(req)
+
+            if req.category == Prerequisite.WORKSHOP: _['workshops'].append(req)
+            elif req.category == Prerequisite.INSIGHT: _['insights'].append(req)
+            elif req.category == Prerequisite.EXTERNAL_LINK: _['external_links'].append(req)
+
+            for software in req.linked_software.all():
+                if not software.software in _['installs']['by_software']:
+                    _['installs']['by_software'][software.software] = {
+                        'required': req.required,
+                        'recommended': req.recommended,
+                        'instructions': Instruction.objects.by_software()[software.software]
+                    }
+
+                if not software.operating_system in _['installs']['by_os']:
+                    _['installs']['by_os'][software.operating_system] = {
+                        'required': req.required,
+                        'recommended': req.recommended,
+                        'instructions': Instruction.objects.by_os()[software.operating_system]
+                    }
+
+        return _
 
 
 class PraxisView(DetailView):
