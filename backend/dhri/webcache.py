@@ -96,7 +96,7 @@ class WebCache():
                 else:
                     return ''
             if self.url in DO_NOT_DOWNLOAD:
-                log.warning(f'{self.url} was detected, a file listed not for download.')
+                log.info(f'{self.url} was detected, a file listed not for download.')
                 return ''
             
             try:

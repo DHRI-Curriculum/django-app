@@ -29,13 +29,13 @@ class InsightCache():
 
         if not self.path.exists() or force_download == True or self.expired == True:
             if not self.path.exists():
-                self.log.warning(
+                self.log.info(
                     f'{self.path} does not exist so downloading install cache...')
             if force_download == True:
-                self.log.warning(
+                self.log.info(
                     f'Force download is set to True so downloading install cache...')
             if self.expired == True:
-                self.log.warning(
+                self.log.info(
                     f'File is expired (set to {self.expired}) so downloading install cache...')
             self._setup_raw_content()
 
