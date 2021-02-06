@@ -3,7 +3,7 @@
 {% for tutorial in tutorials %}
     <div class="p-2 my-3 rounded-lg linked-comment">
         {% if tutorial.url %}
-            <a class="text-decoration-none" target="_blank" href="{{ tutorial.url }}">
+            <a class="text-decoration-none stretched-link" target="_blank" href="{{ tutorial.url }}">
                 <i class="bi bi-link pr-1 text-muted"></i>{% if tutorial.label %}{{ tutorial.label | as_string | markdown | safe | striptags }}{% else %}Untitled{% endif %}
                 <!-- #285 include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" -->
             </a>

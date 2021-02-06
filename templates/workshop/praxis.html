@@ -63,7 +63,7 @@
       {% for tutorial in praxis.tutorials.all %}
         <div class="p-2 my-3 rounded-lg linked-comment">
           {% if tutorial.url %}
-            <p class="font-weight-bold"><a href="{{ tutorial.url }}">{% if tutorial.title %}{{ tutorial.title | as_string | markdown | safe | striptags }}{% else %}Untitled{% endif %}</a></p>
+            <p class="font-weight-bold"><a href="{{ tutorial.url }}" class="stretched-link">{% if tutorial.title %}{{ tutorial.title | as_string | markdown | safe | striptags }}{% else %}Untitled{% endif %}</a></p>
           {% else %}
             <p class="font-weight-bold">Untitled</p>
           {% endif %}
@@ -85,7 +85,7 @@
       {% for reading in praxis.further_readings.all %}
         <div class="p-2 my-3 rounded-lg linked-comment">
           {% if reading.url %}
-            <p class="font-weight-bold"><a href="{{ reading.url }}">{% if reading.title %}{{ reading.title | as_string | markdown | safe | striptags }}{% else %}Untitled{% endif %}</a></p>
+            <p class="font-weight-bold"><a href="{{ reading.url }}" class="stretched-link">{% if reading.title %}{{ reading.title | as_string | markdown | safe | striptags }}{% else %}Untitled{% endif %}</a></p>
           {% else %}
             <p class="font-weight-bold">Untitled</p>
           {% endif %}
@@ -106,7 +106,7 @@
       {% for project in praxis.more_projects.all %}
         <div class="p-2 my-3 rounded-lg linked-comment">
           {% if project.url %}
-              <p class="font-weight-bold"><a href="{{ project.url }}">{% if project.title %}{{ project.title | as_string | markdown | safe | striptags }}{% else %}Untitled{% endif %}</a></p>
+              <p class="font-weight-bold"><a href="{{ project.url }}" class="stretched-link">{% if project.title %}{{ project.title | as_string | markdown | safe | striptags }}{% else %}Untitled{% endif %}</a></p>
             {% else %}
               <p class="font-weight-bold">Untitled</p>
             {% endif %}
@@ -127,7 +127,7 @@
       {% for resource in praxis.more_resources.all %}
         <div class="p-2 my-3 rounded-lg linked-comment">
           {% if resource.url %}
-            <p class="font-weight-bold"><a href="{{ resource.url }}">{% if resource.title %}{{ resource.title | as_string | markdown | safe | striptags }}{% else %}Untitled{% endif %}</a></p>
+            <p class="font-weight-bold"><a href="{{ resource.url }}" class="stretched-link">{% if resource.title %}{{ resource.title | as_string | markdown | safe | striptags }}{% else %}Untitled{% endif %}</a></p>
           {% else %}
             <p class="font-weight-bold">Untitled</p>
           {% endif %}
