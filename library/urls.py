@@ -12,5 +12,5 @@ urlpatterns = [
   path('load-projects/', views.lazyload_projects, name='project_lazyloader'),
   path('load-readings/', views.lazyload_readings, name='reading_lazyloader'),
   path('load-tutorials/', views.lazyload_tutorials, name='tutorials_lazyloader'),
-  path('load-resources/', views.lazyload_resources, name='resources_lazyloader'),
+  # path('load-resources/', views.lazyload_resources, name='resources_lazyloader'),
 ]
