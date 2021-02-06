@@ -21,7 +21,7 @@ class Term(CurlyQuotesMixin, models.Model):
         return f'{self.term}'
 
     class Meta:
-        ordering = ['term']
+        ordering = ['slug']
 
     def get_absolute_url(self):
         return reverse('glossary:letter', kwargs={'letter': self.term[0].upper(), 'slug': self.slug})
