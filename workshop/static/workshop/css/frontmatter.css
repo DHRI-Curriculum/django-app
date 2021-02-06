@@ -1,4 +1,4 @@
-a[data-target='#moreTerms']:hover {
+a[data-target="#moreTerms"]:hover {
     color: white !important;
 }
 
@@ -14,20 +14,82 @@ a[data-target="#moreTerms"][aria-expanded="true"] {
     font-size: 85%;
 }
 
-a[data-term='true'] {
+a[data-term="true"] {
     transition: all 0.3s ease-in-out;
 }
 
-a[data-term='true']:hover {
-    -webkit-box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
-    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
+a[data-term="true"]:hover {
+    -webkit-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }
 
 .prereq-btn:hover {
-    -webkit-box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
-    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15) !important;
+    -webkit-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }
 
 .alert {
     transition: all 0.3s ease;
+}
+
+.linked-recommended {
+    border-left: 0.5rem solid #f39c1250 !important;
+}
+
+.linked-recommended:hover {
+    border-left: 0.5rem solid #f39c12 !important;
+}
+
+.linked-recommended:hover .badge-recommended {
+    visibility: visible !important;
+}
+
+.linked-required {
+    border-left: 0.5rem solid #e74c3c50 !important;
+}
+
+.linked-required:hover {
+    border-left: 0.5rem solid #e74c3c !important;
+}
+
+.linked-required:hover .badge-required {
+    visibility: visible !important;
+}
+
+.badge-recommended {
+    visibility: hidden;
+    color: #fff;
+    background-color: #f39c12;
+}
+
+a.badge-recommended:hover,
+a.badge-recommended:focus {
+    color: #fff;
+    background-color: #c87f0a;
+}
+
+a.badge-recommended:focus,
+a.badge-recommended.focus {
+    outline: 0;
+    -webkit-box-shadow: 0 0 0 0.2rem rgba(243, 156, 18, 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(243, 156, 18, 0.5);
+}
+
+.badge-required {
+    visibility: hidden;
+    color: #fff;
+    background-color: #e74c3c;
+}
+
+a.badge-required:hover,
+a.badge-required:focus {
+    color: #fff;
+    background-color: #d62c1a;
+}
+
+a.badge-required:focus,
+a.badge-required.focus {
+    outline: 0;
+    -webkit-box-shadow: 0 0 0 0.2rem rgba(231, 76, 60, 0.5);
+    box-shadow: 0 0 0 0.2rem rgba(231, 76, 60, 0.5);
 }
