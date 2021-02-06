@@ -69,7 +69,7 @@
                   {% for prerequisite in prerequisites.external_links %}
                       <div class="p-2 my-3 rounded-lg linked-comment {% if prerequisite.required %}linked-required{% elif prerequisite.recommended %}linked-recommended{% endif %}">
                           <div class="small">
-                            <a href="{{ prerequisite.url }}" class="stretched-link" target="_blank"><strong>{% if prerequisite.label %}{{ prerequisite.label }}{% else %}Link{% endif %}</strong></a>{% if d.required %}<span class="badge badge-required text-white ml-1">Required</span>{% elif d.recommended %}<span class="badge badge-recommended text-white ml-1">Recommended</span>{% endif %}
+                            <a href="{{ prerequisite.url }}" class="stretched-link" target="_blank"><strong>{% if prerequisite.label %}{{ prerequisite.label }}{% else %}Link{% endif %}</strong></a>{% if prerequisite.required %}<span class="badge badge-required text-white ml-1">Required</span>{% elif prerequisite.recommended %}<span class="badge badge-recommended text-white ml-1">Recommended</span>{% endif %}
                             {{ prerequisite.text | as_string | markdown | safe }}
                           </div>
                       </div>
@@ -86,7 +86,7 @@
                         <div class="small mb-3">{% snippet "prerequisite-workshops" %}</div>
                         {% for prerequisite in prerequisites.workshops %}
                             <div class="p-2 my-3 rounded-lg linked-comment {% if prerequisite.required %}linked-required{% elif prerequisite.recommended %}linked-recommended{% endif %}">
-                                <h6><a href="{% url 'workshop:frontmatter' slug=prerequisite.linked_workshop.slug %}">{{ prerequisite.linked_workshop.name }}</a>{% if d.required %}<span class="badge badge-required text-white ml-1">Required</span>{% elif d.recommended %}<span class="badge badge-recommended text-white ml-1">Recommended</span>{% endif %}</h6>
+                                <h6><a href="{% url 'workshop:frontmatter' slug=prerequisite.linked_workshop.slug %}">{{ prerequisite.linked_workshop.name }}</a>{% if prerequisite.required %}<span class="badge badge-required text-white ml-1">Required</span>{% elif prerequisite.recommended %}<span class="badge badge-recommended text-white ml-1">Recommended</span>{% endif %}</h6>
                                 <small>{{ prerequisite.text | as_string | markdown | safe }}</small>
                                 <a href="{% url 'workshop:frontmatter' prerequisite.linked_workshop.slug %}lessons/" class="prereq-btn btn btn-warning btn-sm shadow-sm stretched-link">Quickstart</a>
                             </div>
@@ -135,7 +135,7 @@
                   <div class="small mb-3">{% snippet "prerequisite-insights" %}</div>
                   {% for prerequisite in prerequisites.insights %}
                       <div class="p-2 my-3 rounded-lg linked-comment {% if prerequisite.required %}linked-required{% elif prerequisite.recommended %}linked-recommended{% endif %}">
-                          <h6><a href="{% url 'insight:insight' slug=prerequisite.linked_insight.slug %}" class="stretched-link">{{ prerequisite.linked_insight.title }}</a></h6>{% if d.required %}<span class="badge badge-required text-white ml-1">Required</span>{% elif d.recommended %}<span class="badge badge-recommended text-white ml-1">Recommended</span>{% endif %}
+                          <h6><a href="{% url 'insight:insight' slug=prerequisite.linked_insight.slug %}" class="stretched-link">{{ prerequisite.linked_insight.title }}</a></h6>{% if prerequisite.required %}<span class="badge badge-required text-white ml-1">Required</span>{% elif prerequisite.recommended %}<span class="badge badge-recommended text-white ml-1">Recommended</span>{% endif %}
                           <div class="small">
                               {% if prerequisite.text %}
                                   {{ prerequisite.text | as_string | markdown | safe }}
