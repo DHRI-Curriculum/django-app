@@ -6,7 +6,7 @@
 
 # Changing Settings
 
-All the settings for the DHRI script lives inside `/backend/dhri_settings.py`. This is a list of the out-of-the-box settings (as of alpha-3) and an explanatio of what they do.
+All the settings for the DHRI script lives inside `/backend/dhri_settings.py`. This is a list of the out-of-the-box settings (as of alpha-7) and an explanation of what they do.
 
 ## Cache variables
 
@@ -46,28 +46,12 @@ FORCE_DOWNLOAD = False
 
 ## Development features
 
-### DEBUG
-
-~~A boolean that, if set to `True`, will ensure the database is erased and reset for each run.~~ **This setting is not in use as of alpha-3.**
-
-```py
-DEBUG = True
-```
-
 ### VERBOSE
 
 A boolean that, if set to `True`, will ensure that any custom-made scripts for DHRI outputs all of the information about the process possible.
 
 ```py
 VERBOSE = False
-```
-
-### AUTO_RESET
-
-~~A boolean that, if set to `True`, will ensure all the DHRI curriculum database elements reset automatically before script runs (not recommended in production).~~ **This setting is not in use as of alpha-3.**
-
-```py
-AUTO_RESET = True
 ```
 
 ## Standard settings
@@ -128,97 +112,6 @@ AUTO_GROUPS = {
 }
 ```
 
-### AUTO_USERS
-
-A dictionary of user categories (`SUPER`, `STAFF`, `USER`) in the key position, and a second-level dictionary in the value position. The second-level dictionary has usernames in the key position, and a third-level dictionary defining the details of the user in the value position.
-
-The dictionary controls the command:
-
-```sh
-$ python manage.py loadusers
-```
-
-It is also invocated in the `downloaddata` command that may be passed to `manage.py`.
-
-```py
-AUTO_USERS = {
-    'SUPER': {
-        'kalle': {
-            'first_name': 'Kalle',
-            'last_name': 'Westerling',
-            'password': 'admin',
-            'groups': ['Team'],
-        },
-        'lisa': {
-            'first_name': 'Lisa',
-            'last_name': 'Rhody',
-            'password': 'admin',
-            'groups': ['Team'],
-        },
-        'steve': {
-            'first_name': 'Steve',
-            'last_name': 'Zweibel',
-            'password': 'admin',
-            'groups': ['Team'],
-        }
-    },
-
-    'STAFF': {
-        'admin': {
-            'first_name': 'Administrator',
-            'last_name': 'General',
-            'password': 'admin',
-            'groups': ['Team'],
-        },
-        'param': {
-            'first_name': 'Param',
-            'last_name': 'Ajmera',
-            'password': 'admin',
-            'groups': ['Team'],
-        },
-        'di': {
-            'first_name': 'Di',
-            'last_name': 'Yoong',
-            'password': 'admin',
-            'groups': ['Team'],
-        },
-        'filipa': {
-            'first_name': 'Filipa',
-            'last_name': 'Calado',
-            'password': 'admin',
-            'groups': ['Team'],
-        },
-        'rafa': {
-            'first_name': 'Rafa',
-            'last_name': 'Davis Portela',
-            'password': 'admin',
-            'groups': ['Team'],
-        },
-        'stefano': {
-            'first_name': 'Stefano',
-            'last_name': 'Morello',
-            'password': 'admin',
-            'groups': ['Team'],
-        },
-        'kristen': {
-            'first_name': 'Kristen',
-            'last_name': 'Hackett',
-            'password': 'admin',
-            'groups': ['Team'],
-        }
-    },
-
-    'USER': {
-        'test': {
-            'first_name': 'Test',
-            'last_name': 'User',
-            'password': 'test',
-            'groups': ['Learner'],
-        }
-    }
-}
-```
-
 ### BACKEND_AUTO, REPO_AUTO, BRANCH_AUTO
 
 **These settings are not in use as of alpha-3.**
@@ -236,18 +129,6 @@ These two set the automatic and maximum size for terminal output.
 ```py
 MAX_TERMINAL_WIDTH = 140
 AUTO_TERMINAL_WIDTH = 70
-```
-
-### ZOTERO_API_KEY
-
-**These settings are not yet in use for alpha-3.**
-
-```py
-try:
-    with open('./zotero-api-key.txt', 'r') as f:
-        ZOTERO_API_KEY = f.read()
-except:
-    ZOTERO_API_KEY = None
 ```
 
 ### REPLACEMENTS
@@ -275,7 +156,6 @@ NORMALIZING_SECTIONS = {
         'ethical_considerations': ['Ethical consideration', 'Ethical considerations', 'Ethics'],
         'readings': ['Pre-reading suggestions', 'Prereading suggestions', 'Pre reading suggestions', 'Pre-readings', 'Pre readings', 'Prereadings', 'Pre-reading', 'Pre reading', 'Prereading'],
         'projects': ['Project', 'Projects', 'Projects that use these skills', 'Projects which use these skills'],
-        'resources': ['Resources (optional)', 'Resource (optional)', 'Resources optional', 'Resource optional'],
     },
     'theory-to-practice': {
         'discussion_questions': ['Discussion Questions'],

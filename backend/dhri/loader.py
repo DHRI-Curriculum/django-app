@@ -39,16 +39,16 @@ SECTIONS = {
         'estimated_time': (Frontmatter, False),
         'contributors': (Contributor, False),
         'ethical_considerations': (EthicalConsideration, False),
-        'readings': (Reading, False),
-        'projects': (Project, False),
+        'readings': (Resource, False),
+        'projects': (Resource, False),
     },
     'praxis': {
         'intro': (Praxis, False),
         'discussion_questions': (DiscussionQuestion, False),
         'next_steps': (NextStep, False),
-        'tutorials': (Tutorial, False),
-        'further_readings': (Reading, False),
-        'further_projects': (Project, False),
+        'tutorials': (Resource, False),
+        'further_readings': (Resource, False),
+        'further_projects': (Resource, False),
     },
     'assessment': {
         # FIXME #3: add here
@@ -330,7 +330,6 @@ class Loader():
         self.frontmatter['learning_objectives'] = [PARSER.convert(_) for _ in as_list(self.frontmatter.get('learning_objectives'))] # make into HTML
         self.frontmatter['ethical_considerations'] = [PARSER.convert(_) for _ in as_list(self.frontmatter.get('ethical_considerations'))]
         self.frontmatter['prerequisites'] = [PARSER.convert(_) for _ in as_list(self.frontmatter.get('prerequisites'))]
-        self.frontmatter['resources'] = [_ for _ in as_list(self.frontmatter.get('resources'))]
 
         # fix praxis data sections
         self.praxis['discussion_questions'] = [str(_) for _ in as_list(self.praxis.get('discussion_questions'))]
@@ -338,7 +337,6 @@ class Loader():
         self.praxis['tutorials'] = [str(_) for _ in as_list(self.praxis.get('tutorials'))]
         self.praxis['further_readings'] = [str(_) for _ in as_list(self.praxis.get('further_readings'))]
         self.praxis['further_projects'] = [str(_) for _ in as_list(self.praxis.get('further_projects'))]
-        self.praxis['more_resources'] = [str(_) for _ in as_list(self.praxis.get('more_resources'))]
 
         self.as_html = HTMLParser(self)
 
@@ -396,7 +394,6 @@ class Loader():
         self.learning_objectives = self.frontmatter.get('learning_objectives')
         self.ethical_considerations = self.frontmatter.get('ethical_considerations')
         self.prerequisites = self.frontmatter.get('prerequisites')
-        self.resources = self.frontmatter.get('resources')
 
         # Mapping praxis sections
         self.praxis_intro = PARSER.convert(self.praxis.get('intro'))
@@ -405,7 +402,6 @@ class Loader():
         self.tutorials = self.praxis.get('tutorials')
         self.further_readings = self.praxis.get('further_readings')
         self.further_projects = self.praxis.get('further_projects')
-        self.more_resources = self.praxis.get('more_resources')
 
 class ContributorParser():
 

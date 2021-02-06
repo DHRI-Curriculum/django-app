@@ -4,11 +4,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.contrib.auth import views as auth_views
+from django.views.generic import RedirectView
 from learner import views as learner_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('library/', include('library.urls')),
+    path('library/', RedirectView.as_view(pattern_name='resource:index', permanent=False)),
+    path('resource/', include('resource.urls')),
     path('workshops/', include('workshop.urls')),
     path('assessment/', include('assessment.urls')),
     path('learner/', include('learner.urls')),

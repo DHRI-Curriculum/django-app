@@ -142,7 +142,6 @@ class Command(LogSaver, BaseCommand):
                 'readings': [],
                 'contributors': [],
                 'prerequisites': [],
-                'resources': []
             }
 
             for annotation in l.projects:
@@ -207,17 +206,6 @@ class Command(LogSaver, BaseCommand):
                     data['frontmatter']['prerequisites'].append(
                         {'type': 'external link', 'url': url, 'url_text': url_text, 'text': text, 'required': required, 'recommended': recommended})
 
-            '''
-            for resourcedata in l.resources:
-                r_title, url = process_links(resourcedata, 'resource')
-                if 'https://raw.githubusercontent.com/DHRI-Curriculum/' in url or ('github.com/DHRI-Curriculum/' and '/raw/' in url):
-                    data['frontmatter']['resources'].append(
-                        {'type': 'internal_download', 'url': url, 'title': r_title, 'full_text': resourcedata})
-                else:
-                    data['frontmatter']['resources'].append(
-                        {'type': 'external_link', 'url': url, 'title': r_title, 'full_text': resourcedata})
-            '''
-
             for contributor in l.contributors:
                 role = ''
                 is_current = False
@@ -262,16 +250,15 @@ class Command(LogSaver, BaseCommand):
                 'tutorials': [],
                 'further_readings': [],
                 'further_projects': [],
-                'more_resources': [],
                 'discussion_questions': [],
                 'next_steps': []
             }
 
             for annotation in l.tutorials:
-                label, url = process_links(annotation, 'tutorial')
+                title, url = process_links(annotation, 'tutorial')
                 data['praxis']['tutorials'].append({
                     'annotation': annotation,
-                    'label': label,
+                    'title': title,
                     'url': url
                 })
 
@@ -286,14 +273,6 @@ class Command(LogSaver, BaseCommand):
             for annotation in l.further_projects:
                 p_title, url = process_links(annotation, 'reading')
                 data['praxis']['further_projects'].append({
-                    'annotation': annotation,
-                    'title': p_title,
-                    'url': url
-                })
-
-            for annotation in l.more_resources:
-                p_title, url = process_links(annotation, 'project')
-                data['praxis']['more_resources'].append({
                     'annotation': annotation,
                     'title': p_title,
                     'url': url

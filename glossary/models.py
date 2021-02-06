@@ -10,8 +10,8 @@ class Term(CurlyQuotesMixin, models.Model):
     term = models.TextField()
     slug = models.CharField(max_length=200, blank=True, unique=True)
     explication = models.TextField()
-    readings = models.ManyToManyField('library.Reading')
-    tutorials = models.ManyToManyField('library.Tutorial')
+    readings = models.ManyToManyField('resource.Resource', related_name='term_readings')
+    tutorials = models.ManyToManyField('resource.Resource', related_name='term_tutorials')
 
     def save(self, *args, **kwargs):
         self.slug = dhri_slugify(self.term)

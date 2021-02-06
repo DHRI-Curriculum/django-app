@@ -119,29 +119,6 @@
   </div>
   {% endif %}
 
-  <!-- See #280
-   if praxis.more_resources.count 
-  <div class="col-12 mt-5">
-    <h3>More Resources</h3>
-    <hr />
-    <div class="lead mt-4">
-       for resource in praxis.more_resources.all 
-        <div class="p-2 my-3 rounded-lg linked-comment">
-           if resource.url 
-            <p class="font-weight-bold"><a href="{{ resource.url }}" class="stretched-link"> if resource.title {{ resource.title | as_string | markdown | safe | striptags }} else Untitled endif </a></p>
-           else 
-            <p class="font-weight-bold">Untitled</p>
-           endif 
-           if resource.annotation 
-            <p class="small">{{ resource.annotation | stringformat:"s" | markdown | safe }}</p>
-           endif 
-        </div>
-       endfor 
-    </div>
-  </div>
-   endif 
-  -->
-
 </div>
 
 

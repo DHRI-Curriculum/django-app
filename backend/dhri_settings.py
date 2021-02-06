@@ -37,10 +37,11 @@ AUTO_GROUPS = {
         models.EthicalConsideration: ['add', 'change', 'delete', 'view'],
         models.Contributor: ['add', 'change', 'delete', 'view'],
 
-        models.Tutorial: ['add', 'change', 'delete', 'view'],
-        models.Project: ['add', 'change', 'delete', 'view'],
+        models.Resource: ['add', 'change', 'delete', 'view'],
+        #models.Tutorial: ['add', 'change', 'delete', 'view'],
+        #models.Project: ['add', 'change', 'delete', 'view'],
         #models.Resource: ['add', 'change', 'delete', 'view'],
-        models.Reading: ['add', 'change', 'delete', 'view'],
+        #models.Reading: ['add', 'change', 'delete', 'view'],
         models.Praxis: ['add', 'change', 'delete', 'view'],
         models.Workshop: ['add', 'change', 'delete', 'view'],
     },
@@ -122,7 +123,6 @@ NORMALIZING_SECTIONS = {
         'ethical_considerations': ['Ethical consideration', 'Ethical considerations', 'Ethics'],
         'readings': ['Pre-reading suggestions', 'Prereading suggestions', 'Pre reading suggestions', 'Pre-readings', 'Pre readings', 'Prereadings', 'Pre-reading', 'Pre reading', 'Prereading'],
         'projects': ['Project', 'Projects', 'Projects that use these skills', 'Projects which use these skills'],
-        #'resources': ['Resources (optional)', 'Resource (optional)', 'Resources optional', 'Resource optional', 'Resources', 'Resource'],
         'prerequisites': ['Prerequisites', 'Pre-requisites', 'Prerequisite', 'Pre-requisite', 'Pre requisites', 'Pre requisite']
     },
     'theory-to-practice': {
@@ -132,7 +132,6 @@ NORMALIZING_SECTIONS = {
         'further_projects': ['Projects or Challenges to Try', 'Projects to Try', 'Challenges to Try'],
         'further_readings': ['Suggested Further Readings', 'Further Readings', 'Suggested Further Reading', 'Further Reading'],
         'next_steps': ['Next Steps', 'Next Step'],
-        # 'more_resources': ['More Resources', 'Additional Resources', 'Further Resources', 'More Resource', 'Additional Resource', 'Further Resource']
     },
     'assessment': {
         'qualitative_assessment': ['Qualitative Self-Assessment'],

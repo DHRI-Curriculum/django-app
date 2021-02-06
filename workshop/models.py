@@ -1,7 +1,5 @@
 from django.db import models
-from django.utils.text import slugify
-from library.models import Reading, Project, Tutorial
-# from library.models import Resource
+from resource.models import Resource
 from install.models import Software
 from insight.models import Insight
 from django.contrib.auth.models import User
@@ -95,11 +93,9 @@ class Frontmatter(CurlyQuotesMixin, models.Model):
     estimated_time = models.PositiveSmallIntegerField(
         blank=True, null=True, help_text="assign full minutes")
     projects = models.ManyToManyField(
-        'library.Project', related_name="frontmatters", blank=True)
-    #resources = models.ManyToManyField(
-    #    'library.Resource', related_name="frontmatters", blank=True)
+        Resource, related_name="frontmatter_projects", blank=True)
     readings = models.ManyToManyField(
-        'library.Reading', related_name="frontmatters", blank=True)
+        Resource, related_name="frontmatter_readings", blank=True)
     contributors = models.ManyToManyField(
         Contributor, related_name="frontmatters", blank=True, through='Collaboration')
 
@@ -204,10 +200,9 @@ class Praxis(CurlyQuotesMixin, models.Model):
     curly_fields = ['intro']
 
     intro = models.TextField(max_length=3000, blank=True, null=True)
-    further_readings = models.ManyToManyField(Reading, related_name='praxis')
-    further_projects = models.ManyToManyField(Project, related_name='praxis')
-    # more_resources = models.ManyToManyField(Resource, related_name='praxis')
-    tutorials = models.ManyToManyField(Tutorial, related_name='praxis')
+    further_readings = models.ManyToManyField(Resource, related_name='praxis_further_readings')
+    further_projects = models.ManyToManyField(Resource, related_name='praxis_further_projects')
+    tutorials = models.ManyToManyField(Resource, related_name='praxis_tutorials')
     workshop = models.OneToOneField(Workshop, on_delete=models.CASCADE)
 
     def __str__(self):

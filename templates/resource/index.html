@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static markdownify snippet %}
+
+
+{% block hero %}
+    <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Resource Library</h1>
+    {% snippet 'introduction-library' %}
+    </div>
+{% endblock %}
+
+<!-- TODO: #280 -->
+{% block secondary_menu %}{% endblock %}
+
+
+{% block main %}
+    <div class="row">
+        <div class="col-12 col-sm-6 mt-4 mt-md-2 overflow-hidden">
+            <h4>All Projects</h4>
+            <hr />
+            <div id="project-list"></div>
+            <div class="text-center">
+                <a id="loadMoreProjects" class="btn btn-light btn-sm" data-page="2" data-url="/resource/load/project" data-div="project-list">Load More</a>
+            </div>
+        </div>
+
+
+        <div class="col-12 col-sm-6 mt-4 mt-md-2 overflow-hidden">
+            <h4>All Readings</h4>
+            <hr />
+            <div id="reading-list"></div>
+            <div class="text-center">
+                <a id="loadMoreReadings" class="btn btn-light btn-sm" data-page="2" data-url="/resource/load/reading" data-div="reading-list">Load More</a>
+            </div>
+        </div>
+
+
+        <div class="col-12 col-sm-6 mt-4 mt-md-2 overflow-hidden">
+            <h4>All Tutorials</h4>
+            <hr />
+            <div id="tutorial-list"></div>
+            <div class="text-center">
+                <a id="loadMoreTutorials" class="btn btn-light btn-sm" data-page="2" data-url="/resource/load/tutorial" data-div="tutorial-list">Load More</a>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+
+
+{% block javascript %}
+<!--<script src="{% static 'resource/js/button.js' %}" crossorigin="anonymous"></script> TODO: #280 Move this back -->
+
+<script>
+    load_more = function(e) {
+        var link = e.target;
+        var page = parseInt(link.dataset.page);
+        var url = link.dataset.url;
+        var div = link.dataset.div;
+        fetch(url, {
+            method: "POST",
+            credentials: "same-origin",
+            headers: {
+                "X-CSRFToken": getCookie("csrftoken"),
+                "Accept": "application/json",
+                "Content-Type": "application/json",
+                "Page": page
+            },
+            body: ''
+        }).then(function(response) { return response.json();
+        }).then(function(data) {
+            if (data.has_next) {
+                page += 1;
+                link.dataset.page = page;
+            } else {
+                link.style.display = "none";
+            }
+
+            document.getElementById(div).innerHTML += data.html;
+        }).catch(function(ex) {
+            console.error("Error:", ex);
+        });
+    };
+
+    document.getElementById('loadMoreProjects').addEventListener('click', function(e) { load_more(e); });
+    document.getElementById('loadMoreProjects').click();
+
+    document.getElementById('loadMoreReadings').addEventListener('click', function(e) { load_more(e); });
+    document.getElementById('loadMoreReadings').click();
+
+    document.getElementById('loadMoreTutorials').addEventListener('click', function(e) { load_more(e); });
+    document.getElementById('loadMoreTutorials').click();
+</script>
+
+{% endblock %}

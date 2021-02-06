@@ -1,23 +1,23 @@
 {% load markdownify %}
 
-{% for project in projects %}
+{% for resource in resources %}
     <div class="p-2 my-3 rounded-lg linked-comment">
-        {% if project.url %}
-            <a class="text-decoration-none stretched-link" target="_blank" href="{{ project.url }}">
-                <i class="bi bi-link pr-1 text-muted"></i>{% if project.title %}{{ project.title | as_string | markdown | safe | striptags }}{% else %}Untitled{% endif %}
+        {% if resource.url %}
+            <a class="text-decoration-none stretched-link" target="_blank" href="{{ resource.url }}">
+                <i class="bi bi-link pr-1 text-muted"></i>{% if resource.title %}{{ resource.title | as_string | markdown | safe | striptags }}{% else %}Untitled{% endif %}
                 <!-- #285 include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" -->
             </a>
         {% else %}
             Untitled
         {% endif %}
         <div class="small">
-            {% if project.annotation %}
-                <strong>Annotation:</strong> {{ project.annotation | stringformat:"s" | markdown | safe | striptags }}
+            {% if resource.annotation %}
+                <strong>Annotation:</strong> {{ resource.annotation | stringformat:"s" | markdown | safe | striptags }}
             {% endif %}
-            {% for praxis in project.praxis.all %}
+            {% for praxis in resource.praxis.all %}
                 <span class="badge bg-dark"><a class="text-white text-decoration-none" href="{% url 'workshop:frontmatter' slug=praxis.workshop.slug %}">{{ praxis.workshop }}</a></span>
             {% endfor %}
-            {% for frontmatter in project.frontmatters.all %}
+            {% for frontmatter in resource.frontmatters.all %}
                 <span class="badge bg-dark"><a class="text-white text-decoration-none" href="{% url 'workshop:frontmatter' slug=frontmatter.workshop.slug %}">{{ frontmatter.workshop }}</a></span>
             {% endfor %}
         </div>

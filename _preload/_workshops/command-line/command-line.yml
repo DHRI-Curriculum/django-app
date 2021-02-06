@@ -139,7 +139,6 @@ frontmatter:
       the current technoscape.'
     title: Douglas Rushkoff's *Program or Be Programmed*
     url: https://rushkoff.com/books/program-or-be-programmed
-  resources: []
 lessons:
 - challenge: ''
   challenge_title: ''
@@ -1093,19 +1092,18 @@ praxis:
     and CSS</a>. Having a grasp of command line basics will not only make you more
     familiar with how your computer and basic programming work, but it will also give
     you access to tools and communities that will expand your research.</p>
-  more_resources: []
   next_steps: []
   tutorials:
   - annotation: '[*Data Science at the Command Line*](https://www.datascienceatthecommandline.com/)
       is an open access e-book by Jeroen Janssens, a hands-on guide that can help
       you become a more efficient and productive data scientist through the use of
       the command line.'
-    label: '*Data Science at the Command Line*'
+    title: '*Data Science at the Command Line*'
     url: https://www.datascienceatthecommandline.com
   - annotation: '[BashGuide](http://mywiki.wooledge.org/BashGuide) offers some good
       practice techniques for taking your BASH skills to a higher level by teaching
       you write some simple scripts.'
-    label: BashGuide
+    title: BashGuide
     url: http://mywiki.wooledge.org/BashGuide
   workshop: command-line
 workshop:
