@@ -33,6 +33,7 @@ a[data-term="true"]:hover {
 }
 
 .linked-recommended {
+    cursor: default;
     border-left: 0.5rem solid #f39c1250 !important;
 }
 
@@ -45,6 +46,7 @@ a[data-term="true"]:hover {
 }
 
 .linked-required {
+    cursor: default;
     border-left: 0.5rem solid #e74c3c50 !important;
 }
 
