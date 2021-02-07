@@ -10,6 +10,7 @@ import yaml
 
 
 SAVE_DIR = f'{settings.BASE_DIR}/_preload/_install'
+SAVE_DIR_IMAGES = f'{settings.BASE_DIR}/_preload/_install/images'
 DATA_FILE = 'install.yml'
 
 
@@ -37,6 +38,9 @@ class Command(LogSaver, BaseCommand):
 
         if not pathlib.Path(SAVE_DIR).exists():
             pathlib.Path(SAVE_DIR).mkdir(parents=True)
+
+        if not pathlib.Path(SAVE_DIR_IMAGES).exists():
+            pathlib.Path(SAVE_DIR_IMAGES).mkdir(parents=True)
 
         loader = InstallLoader(force_download=options.get('forcedownload'))
         installs = list()
@@ -67,7 +71,7 @@ class Command(LogSaver, BaseCommand):
 
                         for screenshot in d.get('screenshots'):
                             copyfile(
-                                screenshot[1], f'{SAVE_DIR}/images/{screenshot[0]}')
+                                screenshot[1], f'{SAVE_DIR_IMAGES}/{screenshot[0]}')
                             step['screenshots'].append(
                                 f'{SAVE_DIR}/images/{screenshot[0]}')
 
