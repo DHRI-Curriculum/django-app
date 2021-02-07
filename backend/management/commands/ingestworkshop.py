@@ -1,7 +1,7 @@
 from glossary.models import Term
 from learner.models import Profile
 from lesson.models import Challenge, Evaluation, Solution, Lesson, Question, Answer
-from library.models import Project, Reading, Resource, Tutorial
+from resource.models import Resource
 from workshop.models import Collaboration, Contributor, DiscussionQuestion, EthicalConsideration, LearningObjective, NextStep, Workshop, Frontmatter, Praxis
 from django.core.management import BaseCommand
 from django.core.files import File
@@ -136,20 +136,22 @@ class Command(LogSaver, BaseCommand):
                     label))  # convert_html_quotes here to make sure the curly quotes are found
 
             for projectdata in frontmatterdata.get('projects'):
-                project, created = Project.objects.get_or_create(title=projectdata.get(
-                    'title'), url=projectdata.get('url'), annotation=projectdata.get('annotation'))
+                project, created = Resource.objects.update_or_create(
+                    category=Resource.PROJECT, 
+                    title=projectdata.get('title'), 
+                    url=projectdata.get('url'), 
+                    defaults={'annotation': projectdata.get('annotation')})
                 frontmatter.projects.add(project)
                 frontmatter.save()
 
             for readingdata in frontmatterdata.get('readings'):
-                reading, created = Reading.objects.get_or_create(title=readingdata.get(
-                    'title'), url=readingdata.get('url'), annotation=readingdata.get('annotation'))
+                reading, created = Resource.objects.update_or_create(
+                    category=Resource.READING, 
+                    title=readingdata.get('title'), 
+                    url=readingdata.get('url'), 
+                    defaults={'annotation': readingdata.get('annotation')})
                 frontmatter.readings.add(reading)
                 frontmatter.save()
-
-            for resourcedata in frontmatterdata.get('resources', []):
-                # print(resourcedata) # TODO: #367 The Frontmatter object needs a new many-to-many relationship to resources. Create it and include in the ingestion here.
-                pass
 
             for contributordata in frontmatterdata.get('contributors'):
                 profile = Profile.objects.filter(user__first_name=contributordata.get(
@@ -228,31 +230,45 @@ class Command(LogSaver, BaseCommand):
                 nextstep.refresh_from_db()
 
             for readingdata in praxisdata.get('further_readings'):
+                '''
+                # TODO: #280 make this into Resource instead + category = Resource.READING
                 reading, created = Reading.objects.get_or_create(title=readingdata.get(
                     'title'), url=readingdata.get('url'), annotation=readingdata.get('annotation'))
-
+                '''
+                reading, created = Resource.objects.update_or_create(
+                    category=Resource.READING,
+                    title=readingdata.get('title'),
+                    url=readingdata.get('url'),
+                    defaults={'annotation': readingdata.get('annotation')})
                 praxis.further_readings.add(reading)
                 praxis.save()
 
             for projectdata in praxisdata.get('further_projects'):
+                '''
+                # TODO: #280 make this into Resource instead + category = Resource.PROJECT
                 project, created = Project.objects.get_or_create(title=projectdata.get(
                     'title'), url=projectdata.get('url'), annotation=projectdata.get('annotation'))
-
+                '''
+                project, created = Resource.objects.update_or_create(
+                    category=Resource.PROJECT, 
+                    title=projectdata.get('title'), 
+                    url=projectdata.get('url'), 
+                    defaults={'annotation': projectdata.get('annotation')})
                 praxis.further_projects.add(project)
                 praxis.save()
 
             for tutorialdata in praxisdata.get('tutorials'):
+                '''
+                # TODO: #280 make this into Resource instead + category = Resource.TUTORIAL
                 tutorial, created = Tutorial.objects.get_or_create(label=tutorialdata.get(
                     'label'), url=tutorialdata.get('url'), annotation=tutorialdata.get('annotation'))
-
+                '''
+                tutorial, created = Resource.objects.update_or_create(
+                    category=Resource.TUTORIAL, 
+                    title=tutorialdata.get('title'), 
+                    url=tutorialdata.get('url'), 
+                    defaults={'annotation': tutorialdata.get('annotation')})
                 praxis.tutorials.add(tutorial)
-                praxis.save()
-
-            for resourcedata in praxisdata.get('more_resources'):
-                resource, created = Resource.objects.get_or_create(title=resourcedata.get(
-                    'title'), url=resourcedata.get('url'), annotation=resourcedata.get('annotation'))
-
-                praxis.more_resources.add(resource)
                 praxis.save()
 
             # 4. ENTER LESSONS

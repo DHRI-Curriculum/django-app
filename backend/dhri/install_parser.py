@@ -26,12 +26,12 @@ class InstallCache():
 
         new_content = False
         if not self.path.exists():
-            self.log.warning(f'{self.path} does not exist so downloading install cache...')
+            self.log.info(f'{self.path} does not exist so downloading install cache...')
             self._setup_raw_content()
             new_content = True
 
         if new_content == False and (force_download == True or self.expired == True):
-            self.log.warning(f'Force download is set to True or cache file has expired so downloading install cache...')
+            self.log.info(f'Force download is set to True or cache file has expired so downloading install cache...')
             self._setup_raw_content()
 
         self.data = self.load()

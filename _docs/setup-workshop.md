@@ -19,7 +19,7 @@ Without those files in the repo (and branch) that you want to use, you will not 
 
 ## Step 3: Ensure `frontmatter.md` is correctly formatted
 
-In `frontmatter.md` you want to add the following sections as separate headings using a double hash before them (`##`): Abstract, Learning Objectives, Estimated Time, Prerequisites, Contexts, Resources, Acknowledgments. The "Contexts" section should have subheadings for "Pre-reading Suggestions", "Projects That Use These Skills", and "Ethical Considerations".
+In `frontmatter.md` you want to add the following sections as separate headings using a double hash before them (`##`): Abstract, Learning Objectives, Estimated Time, Prerequisites, Contexts, Acknowledgments. The "Contexts" section should have subheadings for "Pre-reading Suggestions", "Projects That Use These Skills", and "Ethical Considerations".
 
 An example of the entire file (easy to copy and paste into `frontmatter.md`) is available here:
 
@@ -59,11 +59,6 @@ Abstract
 - Ethical consideration 1
 - Ethical consideration 2
 - Ethical consideration 3
-
-## Resources (optional)
-
-- Links to required installations
-- Shortcut sheets
 
 ## Acknowledgements
 

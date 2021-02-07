@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'website.apps.WebsiteConfig',
     'workshop.apps.WorkshopConfig',
     'assessment.apps.AssessmentConfig',
-    'library.apps.LibraryConfig',
+    'resource.apps.ResourceConfig',
     'lesson.apps.LessonConfig',
     'learner.apps.LearnerConfig',
     'glossary.apps.GlossaryConfig',

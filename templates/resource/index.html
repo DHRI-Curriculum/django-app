@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static markdownify snippet %}
+
+
+{% block hero %}
+    <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    <h1 class="display-4">Resource Library</h1>
+    {% snippet 'introduction-library' %}
+    </div>
+{% endblock %}
+
+{% block secondary_menu %}{% include 'resource/fragments/secondary-menu.html' %}{% endblock %}
+
+{% block main %}
+    {% if tutorials %}
+        <h3>Tutorials <small class="ml-2"><a class="text-decoration-none text-muted" href="{% url 'resource:category' category='tutorial' %}">See all &raquo;</a></small></h3>
+        <div class="row">
+            {% for obj in tutorials %}
+                {% include 'resource/fragments/resource-card.html' with xl='col-xl-4' %}
+            {% endfor %}
+        </div>
+        <div class="d-flex justify-content-end">
+            <a href="{% url 'resource:category' category='tutorial' %}">See all tutorials</a>
+        </div>
+    {% endif %}
+    
+    {% if projects %}
+        <h3>Projects <small class="ml-2"><a class="text-decoration-none text-muted" href="{% url 'resource:category' category='project' %}">See all &raquo;</a></small></h3>
+        <div class="row">
+            {% for obj in projects %}
+                {% include 'resource/fragments/resource-card.html' with xl='col-xl-4' %}
+            {% endfor %}
+        </div>
+        <div class="d-flex justify-content-end">
+            <a href="{% url 'resource:category' category='project' %}">See all tutorials</a>
+        </div>
+    {% endif %}
+    
+    {% if readings %}
+        <h3>Readings <small class="ml-2"><a class="text-decoration-none text-muted" href="{% url 'resource:category' category='reading' %}">See all &raquo;</a></small></h3>
+        <div class="row">
+            {% for obj in readings %}
+                {% include 'resource/fragments/resource-card.html' with xl='col-xl-4' %}
+            {% endfor %}
+        </div>
+        <div class="d-flex justify-content-end">
+            <a href="{% url 'resource:category' category='reading' %}">See all tutorials</a>
+        </div>
+    {% endif %}
+{% endblock %}
+
+
+{% block javascript %}
+<!--<script src="{% static 'resource/js/button.js' %}" crossorigin="anonymous"></script> TODO: #280 Move this back -->
+{% endblock %}

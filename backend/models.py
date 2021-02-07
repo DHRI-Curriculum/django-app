@@ -6,7 +6,7 @@ from insight.models import *
 from install.models import *
 from learner.models import *
 from lesson.models import *
-from library.models import *
+from resource.models import *
 from website.models import *
 from workshop.models import *
 
@@ -25,8 +25,9 @@ ALL_MODELS = [
     ### app: lesson
     Lesson, Challenge, Solution, Evaluation, Question, Answer,
 
-    ### app: library
-    Tutorial, Project, Resource, Reading,
+    ### app: resource
+    Resource, 
+    # Tutorial, Project, Reading,
 
     ### app: website
     Snippet,

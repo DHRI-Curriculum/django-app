@@ -39,16 +39,16 @@ SECTIONS = {
         'estimated_time': (Frontmatter, False),
         'contributors': (Contributor, False),
         'ethical_considerations': (EthicalConsideration, False),
-        'readings': (Reading, False),
-        'projects': (Project, False),
+        'readings': (Resource, False),
+        'projects': (Resource, False),
     },
     'praxis': {
         'intro': (Praxis, False),
         'discussion_questions': (DiscussionQuestion, False),
         'next_steps': (NextStep, False),
-        'tutorials': (Tutorial, False),
-        'further_readings': (Reading, False),
-        'further_projects': (Project, False),
+        'tutorials': (Resource, False),
+        'further_readings': (Resource, False),
+        'further_projects': (Resource, False),
     },
     'assessment': {
         # FIXME #3: add here
@@ -325,20 +325,18 @@ class Loader():
         # fix frontmatter data sections
         self.frontmatter['estimated_time'] = get_number(self.frontmatter.get('estimated_time'))
         self.frontmatter['contributors'] = ContributorParser(self.frontmatter.get('contributors')).data
-        self.frontmatter['readings'] = [str(_) for _ in as_list(self.frontmatter.get('readings'))]
-        self.frontmatter['projects'] = [str(_) for _ in as_list(self.frontmatter.get('projects'))]
+        self.frontmatter['readings'] = [PARSER.convert(_) for _ in as_list(self.frontmatter.get('readings'))]
+        self.frontmatter['projects'] = [PARSER.convert(_) for _ in as_list(self.frontmatter.get('projects'))]
         self.frontmatter['learning_objectives'] = [PARSER.convert(_) for _ in as_list(self.frontmatter.get('learning_objectives'))] # make into HTML
         self.frontmatter['ethical_considerations'] = [PARSER.convert(_) for _ in as_list(self.frontmatter.get('ethical_considerations'))]
         self.frontmatter['prerequisites'] = [PARSER.convert(_) for _ in as_list(self.frontmatter.get('prerequisites'))]
-        self.frontmatter['resources'] = [_ for _ in as_list(self.frontmatter.get('resources'))]
 
         # fix praxis data sections
         self.praxis['discussion_questions'] = [str(_) for _ in as_list(self.praxis.get('discussion_questions'))]
         self.praxis['next_steps'] = [str(_) for _ in as_list(self.praxis.get('next_steps'))]
-        self.praxis['tutorials'] = [str(_) for _ in as_list(self.praxis.get('tutorials'))]
-        self.praxis['further_readings'] = [str(_) for _ in as_list(self.praxis.get('further_readings'))]
-        self.praxis['further_projects'] = [str(_) for _ in as_list(self.praxis.get('further_projects'))]
-        self.praxis['more_resources'] = [str(_) for _ in as_list(self.praxis.get('more_resources'))]
+        self.praxis['tutorials'] = [PARSER.convert(_) for _ in as_list(self.praxis.get('tutorials'))]
+        self.praxis['further_readings'] = [PARSER.convert(_) for _ in as_list(self.praxis.get('further_readings'))]
+        self.praxis['further_projects'] = [PARSER.convert(_) for _ in as_list(self.praxis.get('further_projects'))]
 
         self.as_html = HTMLParser(self)
 
@@ -396,7 +394,6 @@ class Loader():
         self.learning_objectives = self.frontmatter.get('learning_objectives')
         self.ethical_considerations = self.frontmatter.get('ethical_considerations')
         self.prerequisites = self.frontmatter.get('prerequisites')
-        self.resources = self.frontmatter.get('resources')
 
         # Mapping praxis sections
         self.praxis_intro = PARSER.convert(self.praxis.get('intro'))
@@ -405,7 +402,6 @@ class Loader():
         self.tutorials = self.praxis.get('tutorials')
         self.further_readings = self.praxis.get('further_readings')
         self.further_projects = self.praxis.get('further_projects')
-        self.more_resources = self.praxis.get('more_resources')
 
 class ContributorParser():
 
@@ -945,13 +941,13 @@ class GlossaryCache():
 
         new_content = False
         if not self.path.exists():
-            log.warning(f'{self.path} does not exist so downloading glossary cache...')
+            self.log.info(f'{self.path} does not exist so downloading glossary cache...')
             self._setup_raw_content()
             new_content = True
 
         if new_content == False and (force_download == True or self.expired == True):
             if force_download == True:
-                log.warning(f'Force download is set to True or cache file has expired so downloading glossary cache...')
+                self.log.info(f'Force download is set to True or cache file has expired so downloading glossary cache...')
             self._setup_raw_content()
 
         self.data = self.load()
@@ -965,7 +961,7 @@ class GlossaryCache():
 
 
     def _load_raw_text(self):
-        log.log(f'Loading raw text from {self.loader.repo_name}...')
+        self.log.log(f'Loading raw text from {self.loader.repo_name}...')
 
         r = requests.get(f'https://github.com/DHRI-Curriculum/{self.loader.repo_name}/tree/{self.loader.branch}/terms')
 
@@ -978,7 +974,7 @@ class GlossaryCache():
             filename = link.split('/')[-1]
             term = ".".join(filename.split('.')[:-1])
 
-            log.log(f'Loading raw text from term `{term}`...')
+            self.log.log(f'Loading raw text from term `{term}`...')
             raw_url = f'https://raw.githubusercontent.com/DHRI-Curriculum/{self.loader.repo_name}/{self.loader.branch}/terms/{filename}'
             r = requests.get(raw_url)
             results[term] = r.text

@@ -239,29 +239,6 @@
           </div>
         {% endif %}
 
-        {% if frontmatter.resources.count %}
-          <div class="row mt-5">
-
-            <div class="col-12 pb-2">
-              <h3 class="mt-5 pt-4 pb-4 border-top-double border-bottom">Before you start</h3>
-              <div class="mt-4">
-                {% snippet "introduction-before-you-start" %}
-              </div>
-              <hr />
-            </div>
-
-            <div class="col-12">
-              {% if frontmatter.resources.count %}
-              <h4 class="py-4 border-bottom">Resources</h4>
-              {% snippet "introduction-resources" %}
-                {% for resource in frontmatter.resources.all %}
-                  {{ resource }}
-                {% endfor %}
-              {% endif %}
-            </div>
-
-          </div>
-        {% endif %}
 
     </div>
 
