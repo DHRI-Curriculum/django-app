@@ -1,6 +1,3 @@
-var next = {% if page_obj.has_next %}{{ page_obj.next_page_number }}{% else %}0{% endif %}
-var prev = {% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}0{% endif %}
-
 const go_next = function() {
     if (next != 0) { location.assign("?page=" + next); } else { console.error('no next page'); }
 }
