@@ -24,7 +24,7 @@ Once you have all the information collected, you can start working in the file `
   username: usernamewithoutspacesorothercharacters
   password: <clear-text password here - which means this file should NOT be shared on the internet>
   bio: <insert bio here and make sure the text block follows YAML linting standard>
-  img: backend/setup/users/<firstname-lastname.jpg> <Also don't forget to add this file to the directory -- see below>
+  img: backend/setup/profile-pictures/<firstname-lastname.jpg> <Also don't forget to add this file to the directory -- see below>
   groups:
       - Team <see the dhri_settings.py file and the dictionary AUTO_GROUPS to find the available groups to add here>
   blurb:
