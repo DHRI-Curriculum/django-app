@@ -146,10 +146,7 @@ sql.cnf
 test.py
 secrets.py
 _extra
-_preload/_workshops
-_preload/_meta
-_preload/_install
-_preload/_insights
+_preload
 
 # Apple
 .DS_Store
