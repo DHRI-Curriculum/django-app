@@ -13,43 +13,41 @@
 
 {% block main %}
     {% if tutorials %}
-        <h3>Tutorials <small class="ml-2"><a class="text-decoration-none text-muted" href="{% url 'resource:category' category='tutorial' %}">See all &raquo;</a></small></h3>
+        <h3 class="mt-4"><a class="text-decoration-none" href="{% url 'resource:category' category='tutorial' %}">Tutorials</a></h3>
         <div class="row">
             {% for obj in tutorials %}
-                {% include 'resource/fragments/resource-card.html' with xl='col-xl-4' %}
+                {% include 'resource/fragments/resource-card.html' with xl='col-xl-4' lg='col-lg-4' md='col-md-12' sm='col-sm-12' %}
             {% endfor %}
         </div>
         <div class="d-flex justify-content-end">
-            <a href="{% url 'resource:category' category='tutorial' %}">See all tutorials</a>
+            <a href="{% url 'resource:category' category='tutorial' %}">See all...</a>
         </div>
     {% endif %}
     
     {% if projects %}
-        <h3>Projects <small class="ml-2"><a class="text-decoration-none text-muted" href="{% url 'resource:category' category='project' %}">See all &raquo;</a></small></h3>
+        <h3 class="mt-4"><a class="text-decoration-none" href="{% url 'resource:category' category='project' %}">Projects</a></h3>
         <div class="row">
             {% for obj in projects %}
-                {% include 'resource/fragments/resource-card.html' with xl='col-xl-4' %}
+                {% include 'resource/fragments/resource-card.html' with xl='col-xl-4' lg='col-lg-4' md='col-md-12' sm='col-sm-12' %}
             {% endfor %}
         </div>
         <div class="d-flex justify-content-end">
-            <a href="{% url 'resource:category' category='project' %}">See all tutorials</a>
+            <a href="{% url 'resource:category' category='project' %}">See all...</a>
         </div>
     {% endif %}
     
     {% if readings %}
-        <h3>Readings <small class="ml-2"><a class="text-decoration-none text-muted" href="{% url 'resource:category' category='reading' %}">See all &raquo;</a></small></h3>
+        <h3 class="mt-4"><a class="text-decoration-none" href="{% url 'resource:category' category='reading' %}">Readings</a></h3>
         <div class="row">
             {% for obj in readings %}
-                {% include 'resource/fragments/resource-card.html' with xl='col-xl-4' %}
+                {% include 'resource/fragments/resource-card.html' with xl='col-xl-4' lg='col-lg-4' md='col-md-12' sm='col-sm-12' %}
             {% endfor %}
         </div>
         <div class="d-flex justify-content-end">
-            <a href="{% url 'resource:category' category='reading' %}">See all tutorials</a>
+            <a href="{% url 'resource:category' category='reading' %}">See all...</a>
         </div>
     {% endif %}
 {% endblock %}
 
 
-{% block javascript %}
-<!--<script src="{% static 'resource/js/button.js' %}" crossorigin="anonymous"></script> TODO: #280 Move this back -->
-{% endblock %}
+{% block javascript %}{% endblock %}
