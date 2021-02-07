@@ -98,12 +98,13 @@
   </div>
   {% endif %}
 
-  {% if praxis.more_projects.count %}
+  {% if praxis.further_projects.count %}
   <div class="col-12 mt-5">
-    <h3>More Projects</h3>
+    <h3>Further Projects</h3>
+    <div class="font-weight-bold">{% snippet 'introduction-further-projects' %}</div>
     <hr />
     <div class="lead mt-4">
-      {% for project in praxis.more_projects.all %}
+      {% for project in praxis.further_projects.all %}
         <div class="p-2 my-3 rounded-lg linked-comment">
           {% if project.url %}
               <p class="font-weight-bold"><a href="{{ project.url }}" class="stretched-link">{% if project.title %}{{ project.title | as_string | markdown | safe | striptags }}{% else %}Untitled{% endif %}</a></p>

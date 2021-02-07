@@ -13,7 +13,13 @@ class Resource(CurlyQuotesMixin, models.Model):
         (UNCATEGORIZED, 'Uncategorized'),
         (READING, 'Reading'),
         (PROJECT, 'Project'),
-        (TUTORIAL, 'Tutorial'),
+        (TUTORIAL, 'Tutorial')
+    ]
+    CATEGORY_CHOICES_PLURAL = [
+        (UNCATEGORIZED, 'Uncategorized'),
+        (READING, 'Readings'),
+        (PROJECT, 'Projects'),
+        (TUTORIAL, 'Tutorials')
     ]
 
     title = models.TextField(max_length=500, null=True)

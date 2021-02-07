@@ -593,3 +593,8 @@ div.dropdown-submenu {
         display: none;
     }
 }
+
+.card-title > p {
+    margin: 0;
+    padding: 0;
+}

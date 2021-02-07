@@ -325,8 +325,8 @@ class Loader():
         # fix frontmatter data sections
         self.frontmatter['estimated_time'] = get_number(self.frontmatter.get('estimated_time'))
         self.frontmatter['contributors'] = ContributorParser(self.frontmatter.get('contributors')).data
-        self.frontmatter['readings'] = [str(_) for _ in as_list(self.frontmatter.get('readings'))]
-        self.frontmatter['projects'] = [str(_) for _ in as_list(self.frontmatter.get('projects'))]
+        self.frontmatter['readings'] = [PARSER.convert(_) for _ in as_list(self.frontmatter.get('readings'))]
+        self.frontmatter['projects'] = [PARSER.convert(_) for _ in as_list(self.frontmatter.get('projects'))]
         self.frontmatter['learning_objectives'] = [PARSER.convert(_) for _ in as_list(self.frontmatter.get('learning_objectives'))] # make into HTML
         self.frontmatter['ethical_considerations'] = [PARSER.convert(_) for _ in as_list(self.frontmatter.get('ethical_considerations'))]
         self.frontmatter['prerequisites'] = [PARSER.convert(_) for _ in as_list(self.frontmatter.get('prerequisites'))]
@@ -334,9 +334,9 @@ class Loader():
         # fix praxis data sections
         self.praxis['discussion_questions'] = [str(_) for _ in as_list(self.praxis.get('discussion_questions'))]
         self.praxis['next_steps'] = [str(_) for _ in as_list(self.praxis.get('next_steps'))]
-        self.praxis['tutorials'] = [str(_) for _ in as_list(self.praxis.get('tutorials'))]
-        self.praxis['further_readings'] = [str(_) for _ in as_list(self.praxis.get('further_readings'))]
-        self.praxis['further_projects'] = [str(_) for _ in as_list(self.praxis.get('further_projects'))]
+        self.praxis['tutorials'] = [PARSER.convert(_) for _ in as_list(self.praxis.get('tutorials'))]
+        self.praxis['further_readings'] = [PARSER.convert(_) for _ in as_list(self.praxis.get('further_readings'))]
+        self.praxis['further_projects'] = [PARSER.convert(_) for _ in as_list(self.praxis.get('further_projects'))]
 
         self.as_html = HTMLParser(self)
 

@@ -4,7 +4,7 @@
 
 {% block hero %}
     <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
-    <h1 class="display-4">Resource Library</h1>
+    <h1 class="display-4"><a href="{% url 'resource:index' %}" class="text-decoration-none">Resource Library</a></h1>
     {% if not category %}
         <h2>Category not found</h2>
     {% else %}
@@ -13,69 +13,52 @@
     </div>
 {% endblock %}
 
-<!-- TODO: #280 -->
-{% block secondary_menu %}
-    <!-- Make dropdown of categories here -->
-{% endblock %}
+{% block secondary_menu %}{% include 'resource/fragments/secondary-menu.html' %}{% endblock %}
 
 
 {% block main %}
 <div class="row grid">
-    {% for obj in object_list %}
-        <div class="col-xl-6 px-3 py-3">
-            <div class="card h-100 bg-light">
-                <div class="card-body">
-                    <h5 class="card-title m-0 bolder">{{ obj.title }}</h5>
-                    {{ obj.annotation }}
-                    {{ obj.frontmatters.all }}
-                </div>
-            </div>
-        </div>
-      <!--
-
-        
-             if workshop.frontmatter.abstract <p class="card-text m-0">{{ workshop.frontmatter.abstract }}</p> endif 
-
-             if workshop.has_terms 
-              <div class="mt-2 pt-1 border-top">
-              <strong class="mr-1">Key terms</strong> for term in workshop.terms 
-                <a tabindex="{{ forloop.counter0 }}" class="btn badge btn-light" data-container="body" data-toggle="popover" data-placement="top" data-title="{{ term }}" data-content="{{ term.explication | striptags }} <strong>Click to read more about {{ term }}</strong>" href=" url 'glossary:term' term.slug ">{{ term }}</a>
-               endfor 
-              </div>
-             endif 
-          </div>
-
-          <div class="card-footer text-right">
-            <a href=" url 'workshop:frontmatter' slug=workshop.slug " class="btn btn-primary">Start &raquo;</a>
-          </div>
-
-        </div>
-      </div>
-    -->
-    {% endfor %}
-
-    <div class="pagination">
-        <span class="step-links">
-            {% if page_obj.has_previous %}
-                <a href="?page=1">&laquo; first</a>
-                <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-            {% endif %}
-    
-            <span class="current">
-                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-            </span>
-    
-            {% if page_obj.has_next %}
-                <a href="?page={{ page_obj.next_page_number }}">next</a>
-                <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-            {% endif %}
-        </span>
-    </div>
-    
+    {% if not category %}
+    {% else %}
+        {% if object_list.count >= 10 %}<!-- Only include if more than 8 objects -->{% include 'resource/fragments/pagination.html' %}{% endif %}
+        {% for obj in object_list %}
+            {% include 'resource/fragments/resource-card.html' %}
+        {% endfor %}
+    {% endif %}
+    {% include 'resource/fragments/pagination.html' %}
 </div>
 {% endblock %}
 
 
 {% block javascript %}
-<!--<script src="{% static 'resource/js/button.js' %}" crossorigin="anonymous"></script>-->
+<script>
+    var next = {% if page_obj.has_next %}{{ page_obj.next_page_number }}{% else %}0{% endif %}
+    var prev = {% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}0{% endif %}
+
+    const go_next = function() {
+        if (next != 0) { location.assign("?page=" + next); } else { console.error('no next page'); }
+    }
+
+    const go_prev = function() {
+        if (prev != 0) { location.assign("?page=" + prev); } else { console.error('no prev page'); }
+    }
+    window.addEventListener("keydown", function (event) {
+        if (event.defaultPrevented) {
+        return; // Do nothing if the event was already processed
+        }
+
+        switch (event.key) {
+            case "Left":
+            case "ArrowLeft":
+                //console.log('left');
+                go_prev();
+                break;
+            case "Right":
+            case "ArrowRight":
+                //console.log('right');
+                go_next();
+                break;
+        }
+    });
+</script>
 {% endblock %}

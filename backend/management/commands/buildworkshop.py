@@ -145,7 +145,7 @@ class Command(LogSaver, BaseCommand):
             }
 
             for annotation in l.projects:
-                p_title, url = process_links(annotation, 'project')
+                p_title, url = process_links(annotation, 'project', True)
                 data['frontmatter']['projects'].append({
                     'annotation': annotation,
                     'title': p_title,
@@ -153,7 +153,7 @@ class Command(LogSaver, BaseCommand):
                 })
 
             for annotation in l.readings:
-                r_title, url = process_links(annotation, 'reading')
+                r_title, url = process_links(annotation, 'reading', True)
                 data['frontmatter']['readings'].append({
                     'annotation': annotation,
                     'title': r_title,
@@ -255,7 +255,7 @@ class Command(LogSaver, BaseCommand):
             }
 
             for annotation in l.tutorials:
-                title, url = process_links(annotation, 'tutorial')
+                title, url = process_links(annotation, 'tutorial', True)
                 data['praxis']['tutorials'].append({
                     'annotation': annotation,
                     'title': title,
@@ -263,7 +263,7 @@ class Command(LogSaver, BaseCommand):
                 })
 
             for annotation in l.further_readings:
-                r_title, url = process_links(annotation, 'reading')
+                r_title, url = process_links(annotation, 'reading', True)
                 data['praxis']['further_readings'].append({
                     'annotation': annotation,
                     'title': r_title,
@@ -271,7 +271,7 @@ class Command(LogSaver, BaseCommand):
                 })
 
             for annotation in l.further_projects:
-                p_title, url = process_links(annotation, 'reading')
+                p_title, url = process_links(annotation, 'reading', True)
                 data['praxis']['further_projects'].append({
                     'annotation': annotation,
                     'title': p_title,

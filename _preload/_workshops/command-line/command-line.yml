@@ -106,39 +106,43 @@ frontmatter:
       command line for this session.
     type: install
   projects:
-  - annotation: Most Python- and R-based projects will require you to have some knowledge
-      of the command line. At a very basic level, you will be invoking a Python script
-      and will be using values of command line arguments when creating and running
-      your scripts.
+  - annotation: <p>Most Python- and R-based projects will require you to have some
+      knowledge of the command line. At a very basic level, you will be invoking a
+      Python script and will be using values of command line arguments when creating
+      and running your scripts.</p>
     title: null
     url: null
-  - annotation: The command line is also useful for setting up installations of server
-      side software like [Omeka](www.omeka.org). The command line will allow you to
-      navigate the file structure of your server. Commands like ls, mkdir, rmdir,
-      cd, etc. are really important. For example, grep could help you find a plugin
-      directory that you might have accidentally placed in the wrong location.
+  - annotation: <p>The command line is also useful for setting up installations of
+      server side software like <a href="www.omeka.org">Omeka</a>. The command line
+      will allow you to navigate the file structure of your server. Commands like
+      ls, mkdir, rmdir, cd, etc. are really important. For example, grep could help
+      you find a plugin directory that you might have accidentally placed in the wrong
+      location.</p>
     title: Omeka
     url: www.omeka.org
-  - annotation: A recent digital capstone project by Christofer Gass runs a Python
-      script on the [command line](https://academicworks.cuny.edu/gc_etds/3786/)
+  - annotation: <p>A recent digital capstone project by Christofer Gass runs a Python
+      script on the <a href="https://academicworks.cuny.edu/gc_etds/3786/" rel="nofollow">command
+      line</a></p>
     title: command line
-    url: https://academicworks.cuny.edu/gc_etds/3786
-  - annotation: '[Awesome Bash](https://github.com/awesome-lists/awesome-bash), "a
-      curated list of delightful Bash scripts and resources."'
+    url: https://academicworks.cuny.edu/gc_etds/3786/
+  - annotation: <p><a href="https://github.com/awesome-lists/awesome-bash">Awesome
+      Bash</a>, "a curated list of delightful Bash scripts and resources."</p>
     title: Awesome Bash
     url: https://github.com/awesome-lists/awesome-bash
   readings:
-  - annotation: '[Neal Stephenson''s "In the Beginning... Was the Command Line"](http://cristal.inria.fr/~weis/info/commandline.html)
-      is a useful piece to grasp the relationship between (and the affordances of)
-      the command line and the GUI.'
+  - annotation: <p><a href="http://cristal.inria.fr/~weis/info/commandline.html" rel="nofollow">Neal
+      Stephenson's "In the Beginning... Was the Command Line"</a> is a useful piece
+      to grasp the relationship between (and the affordances of) the command line
+      and the GUI.</p>
     title: Neal Stephenson's "In the Beginning... Was the Command Line"
     url: http://cristal.inria.fr/~weis/info/commandline.html
-  - annotation: '[Douglas Rushkoff''s *Program or Be Programmed*](https://rushkoff.com/books/program-or-be-programmed/)
-      offers some reflections on how using the command line allows one to communicate
-      in a less mediated way with their machines and the importance of doing so in
-      the current technoscape.'
-    title: Douglas Rushkoff's *Program or Be Programmed*
-    url: https://rushkoff.com/books/program-or-be-programmed
+  - annotation: <p><a href="https://rushkoff.com/books/program-or-be-programmed/"
+      rel="nofollow">Douglas Rushkoff's <em>Program or Be Programmed</em></a> offers
+      some reflections on how using the command line allows one to communicate in
+      a less mediated way with their machines and the importance of doing so in the
+      current technoscape.</p>
+    title: Douglas Rushkoff's Program or Be Programmed
+    url: https://rushkoff.com/books/program-or-be-programmed/
 lessons:
 - challenge: ''
   challenge_title: ''
@@ -1039,47 +1043,49 @@ praxis:
     order: 2
     workshop: command-line
   further_projects:
-  - annotation: Here are some [further command line challenges](sections/15-challenges.md)
-      devised by the GCDI team
+  - annotation: <p>Here are some <a href="sections/15-challenges.md">further command
+      line challenges</a> devised by the GCDI team</p>
     title: further command line challenges
     url: sections/15-challenges.md
-  - annotation: 'When working with digital tools, it''s usually a good idea to familiarize
-      with their documentation. Here''s the [Bash Reference Manual](https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html),
-      where you can find Bash features for beginners and advanced users.  '
+  - annotation: <p>When working with digital tools, it's usually a good idea to familiarize
+      with their documentation. Here's the <a href="https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html"
+      rel="nofollow">Bash Reference Manual</a>, where you can find Bash features for
+      beginners and advanced users.</p>
     title: Bash Reference Manual
     url: https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html
-  - annotation: '[Pandoc](https://programminghistorian.org/en/lessons/sustainable-authorship-in-plain-text-using-pandoc-and-markdown)
-      is an online software that allows users to convert file types through the commandline
-      (from markdown to PDF, for example). '
+  - annotation: <p><a href="https://programminghistorian.org/en/lessons/sustainable-authorship-in-plain-text-using-pandoc-and-markdown"
+      rel="nofollow">Pandoc</a> is an online software that allows users to convert
+      file types through the commandline (from markdown to PDF, for example).</p>
     title: Pandoc
     url: https://programminghistorian.org/en/lessons/sustainable-authorship-in-plain-text-using-pandoc-and-markdown
-  - annotation: '[youtube-dl](https://ytdl-org.github.io/youtube-dl/index.html) is
-      a command-line exercise to download videos from YouTube.com. It requires the
-      Python interpreter.'
+  - annotation: <p><a href="https://ytdl-org.github.io/youtube-dl/index.html" rel="nofollow">youtube-dl</a>
+      is a command-line exercise to download videos from YouTube.com. It requires
+      the Python interpreter.</p>
     title: youtube-dl
     url: https://ytdl-org.github.io/youtube-dl/index.html
-  - annotation: Feeling super brave? You might want to give [MALLET (MAchine Learning
-      for LanguagE Toolkit)](http://mallet.cs.umass.edu/) a shot! MALLETT is a "a
-      Java-based package for statistical natural language processing, document classification,
-      clustering, topic modeling, information extraction, and other machine learning
-      applications to text." It includes tools for document classification, sequence
-      tagging, topic modeling, and numerical optimization.
+  - annotation: <p>Feeling super brave? You might want to give <a href="http://mallet.cs.umass.edu/"
+      rel="nofollow">MALLET (MAchine Learning for LanguagE Toolkit)</a> a shot! MALLETT
+      is a "a Java-based package for statistical natural language processing, document
+      classification, clustering, topic modeling, information extraction, and other
+      machine learning applications to text." It includes tools for document classification,
+      sequence tagging, topic modeling, and numerical optimization.</p>
     title: MALLET (MAchine Learning for LanguagE Toolkit)
-    url: http://mallet.cs.umass.edu
+    url: http://mallet.cs.umass.edu/
   further_readings:
-  - annotation: Are you wondering how (else) the command line can be deployed for
-      your scholarship? [Dennis Tenen and Grant Wythoff's "Sustainable Authorship
-      in Plain Text using Pandoc and Markdown"](https://programminghistorian.org/en/lessons/sustainable-authorship-in-plain-text-using-pandoc-and-markdown)
-      have some answers for you.
+  - annotation: <p>Are you wondering how (else) the command line can be deployed for
+      your scholarship? <a href="https://programminghistorian.org/en/lessons/sustainable-authorship-in-plain-text-using-pandoc-and-markdown"
+      rel="nofollow">Dennis Tenen and Grant Wythoff's "Sustainable Authorship in Plain
+      Text using Pandoc and Markdown"</a> have some answers for you.</p>
     title: Dennis Tenen and Grant Wythoff's "Sustainable Authorship in Plain Text
       using Pandoc and Markdown"
     url: https://programminghistorian.org/en/lessons/sustainable-authorship-in-plain-text-using-pandoc-and-markdown
-  - annotation: 'Stephen Ramsay is a scholar that has thought at length about the
+  - annotation: '<p>Stephen Ramsay is a scholar that has thought at length about the
       way the command line is (or can be!) embedded in a researcher''s praxis. If
-      you''re interested in reading his work, here are two of his finest essays: ["Life
-      on the Command Line"](https://files.zotero.net/eyJleHBpcmVzIjoxNTkyNjY1MDk3LCJoYXNoIjoiODFkNDJmZmU1ZjU3YzRmMDE2YTQ1ZmQwY2YzOTUwYmIiLCJjb250ZW50VHlwZSI6InRleHRcL2h0bWwiLCJjaGFyc2V0IjoidXRmLTgiLCJ6aXAiOjF9/07826342b83ea870f846cfa48f1b0eb8d3d51b78ceb1b05b1e014467d7241904/life-on-the-command-line.html)
-      and ["Programming with Humanists: Reflections on Raising an Army of Hacker-Scholars
-      in the Digital Humanities"](https://www.openbookpublishers.com/htmlreader/DHP/chap09.html)'
+      you''re interested in reading his work, here are two of his finest essays: <a
+      href="https://files.zotero.net/eyJleHBpcmVzIjoxNTkyNjY1MDk3LCJoYXNoIjoiODFkNDJmZmU1ZjU3YzRmMDE2YTQ1ZmQwY2YzOTUwYmIiLCJjb250ZW50VHlwZSI6InRleHRcL2h0bWwiLCJjaGFyc2V0IjoidXRmLTgiLCJ6aXAiOjF9/07826342b83ea870f846cfa48f1b0eb8d3d51b78ceb1b05b1e014467d7241904/life-on-the-command-line.html"
+      rel="nofollow">"Life on the Command Line"</a> and <a href="https://www.openbookpublishers.com/htmlreader/DHP/chap09.html"
+      rel="nofollow">"Programming with Humanists: Reflections on Raising an Army of
+      Hacker-Scholars in the Digital Humanities"</a></p>'
     title: '"Life on the Command Line"'
     url: https://files.zotero.net/eyJleHBpcmVzIjoxNTkyNjY1MDk3LCJoYXNoIjoiODFkNDJmZmU1ZjU3YzRmMDE2YTQ1ZmQwY2YzOTUwYmIiLCJjb250ZW50VHlwZSI6InRleHRcL2h0bWwiLCJjaGFyc2V0IjoidXRmLTgiLCJ6aXAiOjF9/07826342b83ea870f846cfa48f1b0eb8d3d51b78ceb1b05b1e014467d7241904/life-on-the-command-line.html
   intro: <p>You've made it through your introduction to the command line! By now,
@@ -1094,15 +1100,15 @@ praxis:
     you access to tools and communities that will expand your research.</p>
   next_steps: []
   tutorials:
-  - annotation: '[*Data Science at the Command Line*](https://www.datascienceatthecommandline.com/)
-      is an open access e-book by Jeroen Janssens, a hands-on guide that can help
-      you become a more efficient and productive data scientist through the use of
-      the command line.'
-    title: '*Data Science at the Command Line*'
-    url: https://www.datascienceatthecommandline.com
-  - annotation: '[BashGuide](http://mywiki.wooledge.org/BashGuide) offers some good
-      practice techniques for taking your BASH skills to a higher level by teaching
-      you write some simple scripts.'
+  - annotation: <p><a href="https://www.datascienceatthecommandline.com/" rel="nofollow"><em>Data
+      Science at the Command Line</em></a> is an open access e-book by Jeroen Janssens,
+      a hands-on guide that can help you become a more efficient and productive data
+      scientist through the use of the command line.</p>
+    title: Data Science at the Command Line
+    url: https://www.datascienceatthecommandline.com/
+  - annotation: <p><a href="http://mywiki.wooledge.org/BashGuide" rel="nofollow">BashGuide</a>
+      offers some good practice techniques for taking your BASH skills to a higher
+      level by teaching you write some simple scripts.</p>
     title: BashGuide
     url: http://mywiki.wooledge.org/BashGuide
   workshop: command-line

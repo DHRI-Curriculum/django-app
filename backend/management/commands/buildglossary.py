@@ -39,7 +39,9 @@ class Command(LogSaver, BaseCommand):
         for term in loader.all_terms:
             glossary.append({
                 'term': loader.terms[term].term.strip(),
-                'explication': loader.terms[term].explication.strip()
+                'explication': loader.terms[term].explication.strip(),
+                'readings': loader.terms[term].readings,
+                'tutorials': loader.terms[term].tutorials
             })
 
         if not pathlib.Path(SAVE_DIR).exists():

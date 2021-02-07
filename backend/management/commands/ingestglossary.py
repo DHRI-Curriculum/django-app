@@ -1,4 +1,5 @@
 from glossary.models import Term
+from resource.models import Resource
 from django.core.management import BaseCommand
 from django.conf import settings
 from backend.dhri.log import Logger, Input
@@ -31,11 +32,11 @@ class Command(LogSaver, BaseCommand):
 
     def handle(self, *args, **options):
         log = Logger(path=__file__,
-            force_verbose=options.get('verbose'),
-            force_silent=options.get('silent')
-        )
+                     force_verbose=options.get('verbose'),
+                     force_silent=options.get('silent')
+                     )
         input = Input(path=__file__)
-        
+
         test_for_required_files(REQUIRED_PATHS=REQUIRED_PATHS, log=log)
         data = get_yaml(f'{FULL_PATH}')
 
@@ -52,6 +53,28 @@ class Command(LogSaver, BaseCommand):
             Term.objects.filter(term=termdata.get('term')).update(
                 explication=termdata.get('explication')
             )
+
+            term.refresh_from_db()
+
+            for projectdata in termdata.get('projects', []):
+                project, created = Resource.objects.get_or_create(
+                    category=Resource.PROJECT,
+                    annotation=projectdata.get('annotation'),
+                    title=projectdata.get('linked_text'),
+                    url=projectdata.get('url')
+                )
+                term.projects.add(project)
+                term.save()
+
+            for tutorialdata in termdata.get('tutorials', []):
+                tutorial, created = Resource.objects.get_or_create(
+                    category=Resource.TUTORIAL,
+                    annotation=tutorialdata.get('annotation'),
+                    title=tutorialdata.get('linked_text'),
+                    url=tutorialdata.get('url')
+                )
+                term.tutorials.add(tutorial)
+                term.save()
 
         self.LOGS.append(log.log('Added/updated terms: ' +
                                  ', '.join([x.get('term') for x in data])))
