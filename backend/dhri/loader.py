@@ -908,8 +908,60 @@ class LessonParser():
             html_body = string_soup
 
             # 6. Clean up any challenge and solution data (insert any such edits here)
-            html_challenge = html_challenge
-            html_solution = html_solution
+            html_challenge = BeautifulSoup(html_challenge, 'lxml')
+            html_solution = BeautifulSoup(html_solution, 'lxml')
+
+            if html_solution.body:
+                for image in html_solution.find_all("img"):
+                    src = image.get('src')
+                    if not src:
+                        log.warning(f"An image with no src attribute detected in lesson solution: {image}")
+                        continue
+                    filename = image['src'].split('/')[-1]
+                    url = f'https://raw.githubusercontent.com/DHRI-Curriculum/{REPO_CLEAR}/{self.branch}/images/{filename}'
+                    local_file = STATIC_IMAGES['LESSONS'] / Path(REPO_CLEAR) / filename
+
+                    if '//' in url:
+                        url = url.replace('//', '/').replace('https:/', 'https://').replace('http:/', 'http://')
+
+                    download_image(url, local_file)
+                    local_url = settings.STATIC_URL + f'website/images/lessons/{REPO_CLEAR}/{filename}'
+                    image['src'] = local_url
+                    image['class'] = image.get('class', []) + ['img-fluid', 'd-block', 'my-4']
+
+                    if image.parent.name == 'a':
+                        # The image has a link, so let's change that to the local_url too
+                        image.parent['href'] = local_url
+
+                html_solution = "".join([str(x) for x in html_solution.body.children])
+            else:
+                html_solution = ''
+
+            if html_challenge.body:
+                for image in html_challenge.find_all("img"):
+                    src = image.get('src')
+                    if not src:
+                        log.warning(f"An image with no src attribute detected in lesson challenge: {image}")
+                        continue
+                    filename = image['src'].split('/')[-1]
+                    url = f'https://raw.githubusercontent.com/DHRI-Curriculum/{REPO_CLEAR}/{self.branch}/images/{filename}'
+                    local_file = STATIC_IMAGES['LESSONS'] / Path(REPO_CLEAR) / filename
+
+                    if '//' in url:
+                        url = url.replace('//', '/').replace('https:/', 'https://').replace('http:/', 'http://')
+
+                    download_image(url, local_file)
+                    local_url = settings.STATIC_URL + f'website/images/lessons/{REPO_CLEAR}/{filename}'
+                    image['src'] = local_url
+                    image['class'] = image.get('class', []) + ['img-fluid', 'd-block', 'my-4']
+
+                    if image.parent.name == 'a':
+                        # The image has a link, so let's change that to the local_url too
+                        image.parent['href'] = local_url
+
+                html_challenge = "".join([str(x) for x in html_challenge.body.children])
+            else:
+                html_challenge = ''
 
             html_data = {
                     'title': title,

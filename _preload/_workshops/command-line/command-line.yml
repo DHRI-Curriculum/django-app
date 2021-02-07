@@ -154,9 +154,10 @@ lessons:
   text: '<p>The command line is a text-based way of interacting with your computer.
     You may hear it called different names, such as the terminal, the shell, or bash.
     In practice, you can use these terms interchangeably. (If you''re curious, though,
-    you can read more about them <a href="/glossary/">in the glossary</a>.) The shell
-    we use (whether terminal, shell, or bash) is a program that accepts commands as
-    text input and converts commands into appropriate operating system functions.</p>
+    you can read more about them <a href="/glossary/term/command-line/">in the glossary</a>.)
+    The shell we use (whether terminal, shell, or bash) is a program that accepts
+    commands as text input and converts commands into appropriate operating system
+    functions.</p>
 
     <p>The command line (of computers today) receives these commands as text that
     is typed in.</p>
@@ -271,11 +272,11 @@ lessons:
     \ rel=\"nofollow\" target=\"_blank\">Visual Studio Code</a>. Not only is Visual\
     \ Studio Code free and open source, but it is also consistent across macOS, Windows,\
     \ and Linux systems.</p>\n<p>You will have downloaded Visual Studio Code according\
-    \ to the <a href=\"/installations/\">instructions</a> on the installations page.\
-    \ We won't be using the editor a lot in this tutorial, so don't worry about getting\
-    \ to know the editor now. In other workshops we will discuss syntax highlighting\
-    \ and version control, which Visual Studio Code supports. For now we will get\
-    \ back to working in the command line itself.</p>"
+    \ to the <a href=\"/installations/microsoft-visual-studio-code-windows/\">instructions</a>\
+    \ on the installations page. We won't be using the editor a lot in this tutorial,\
+    \ so don't worry about getting to know the editor now. In other workshops we will\
+    \ discuss syntax highlighting and version control, which Visual Studio Code supports.\
+    \ For now we will get back to working in the command line itself.</p>"
   title: Text Editors
   workshop: command-line
 - challenge: ''
@@ -351,35 +352,35 @@ lessons:
     ><span aria-hidden=\"true\" class=\"octicon octicon-link\"></span></a>Windows</h2>\n\
     <p>We won't be using Windows's own non-UNIX version of the command line. Instead,\
     \ we will use Git Bash. If you haven't installed it yet, you can follow <a href=\"\
-    /installations/\">these instructions</a>. The reason we use Git Bash as the command\
-    \ line on Windows is that it makes you able to run the same commands as you would\
-    \ on a computer running macOS or Linux. Git Bash includes core utilities available\
-    \ on Linux that are not available on Windows.</p>\n<ol>\n<li>\n<p>Look for Git\
-    \ Bash in your programs menu and open.</p>\n</li>\n<li>\n<p>If you can't find\
-    \ the git folder, just type <code>git bash</code> in the search box and select\
-    \ <code>git bash</code> when it appears.</p>\n</li>\n<li>\n<p>Open the program.</p>\n\
-    </li>\n<li>\n<p>When the terminal pops up, you will likely see either a window\
-    \ with black text over white background or colored text over a black background.You\
-    \ know you're in the right place when you see the <code>$</code>.</p>\n</li>\n\
-    </ol>\n<p><em>Note that the sign for you being in the right place might also be\
-    \ a <code>%</code> or a <code>#</code> depending on your operating system.</em></p>\n\
-    <p>Bonus points: if you really want to get the groove of just typing instead of\
-    \ pointing and clicking, you can press <kbd>windows</kbd> to open the Start menu,\
-    \ start typing <code>git bash</code> and then hit <kbd>enter</kbd> to open a git\
-    \ bash window. This will pull up a command window without touching your mousepad.</p>\n\
-    <h2>\n<a aria-hidden=\"true\" class=\"anchor\" href=\"#command-prompt-\" id=\"\
-    user-content-command-prompt-\"><span aria-hidden=\"true\" class=\"octicon octicon-link\"\
-    ></span></a>Command Prompt <code>$</code>\n</h2>\n<p><code>$</code>, which we\
-    \ will refer to as the \"command prompt,\" is the place you type commands you\
-    \ wish the computer to execute. We will now learn some of the most common commands.</p>\n\
-    <p>When you see the <code>$</code>, you're in the right place. As noted above,\
-    \ however, the sign varies somewhat between systems, and sometimes the sign is\
-    \ a <code>%</code> or a <code>#</code>. We call the sign the <em>command prompt</em>;\
-    \ it lets us know the computer is ready to receive a command.</p>\n<p>In the following\
-    \ lessons, we will refer to the command prompt using a <code>$</code>. Just make\
-    \ a note now of your sign, if it differs from the dollar sign. You will be able\
-    \ to follow along just fine as long as you understand that they all are different\
-    \ ways of knowing that you are \"at the <em>command prompt</em>.\"</p>"
+    /installations/git-and-git-bash-windows/\">these instructions</a>. The reason\
+    \ we use Git Bash as the command line on Windows is that it makes you able to\
+    \ run the same commands as you would on a computer running macOS or Linux. Git\
+    \ Bash includes core utilities available on Linux that are not available on Windows.</p>\n\
+    <ol>\n<li>\n<p>Look for Git Bash in your programs menu and open.</p>\n</li>\n\
+    <li>\n<p>If you can't find the git folder, just type <code>git bash</code> in\
+    \ the search box and select <code>git bash</code> when it appears.</p>\n</li>\n\
+    <li>\n<p>Open the program.</p>\n</li>\n<li>\n<p>When the terminal pops up, you\
+    \ will likely see either a window with black text over white background or colored\
+    \ text over a black background.You know you're in the right place when you see\
+    \ the <code>$</code>.</p>\n</li>\n</ol>\n<p><em>Note that the sign for you being\
+    \ in the right place might also be a <code>%</code> or a <code>#</code> depending\
+    \ on your operating system.</em></p>\n<p>Bonus points: if you really want to get\
+    \ the groove of just typing instead of pointing and clicking, you can press <kbd>windows</kbd>\
+    \ to open the Start menu, start typing <code>git bash</code> and then hit <kbd>enter</kbd>\
+    \ to open a git bash window. This will pull up a command window without touching\
+    \ your mousepad.</p>\n<h2>\n<a aria-hidden=\"true\" class=\"anchor\" href=\"#command-prompt-\"\
+    \ id=\"user-content-command-prompt-\"><span aria-hidden=\"true\" class=\"octicon\
+    \ octicon-link\"></span></a>Command Prompt <code>$</code>\n</h2>\n<p><code>$</code>,\
+    \ which we will refer to as the \"command prompt,\" is the place you type commands\
+    \ you wish the computer to execute. We will now learn some of the most common\
+    \ commands.</p>\n<p>When you see the <code>$</code>, you're in the right place.\
+    \ As noted above, however, the sign varies somewhat between systems, and sometimes\
+    \ the sign is a <code>%</code> or a <code>#</code>. We call the sign the <em>command\
+    \ prompt</em>; it lets us know the computer is ready to receive a command.</p>\n\
+    <p>In the following lessons, we will refer to the command prompt using a <code>$</code>.\
+    \ Just make a note now of your sign, if it differs from the dollar sign. You will\
+    \ be able to follow along just fine as long as you understand that they all are\
+    \ different ways of knowing that you are \"at the <em>command prompt</em>.\"</p>"
   title: Getting to the Command Line
   workshop: command-line
 - challenge: ''
@@ -750,12 +751,13 @@ lessons:
     user-content-using-a-text-editor\"><span aria-hidden=\"true\" class=\"octicon\
     \ octicon-link\"></span></a>Using a Text Editor</h2>\n<p>The challenge for this\
     \ section will be using a text editor, specifically Visual Studio Code (<a href=\"\
-    /installations/\">install guide here</a>), to add some of the commands that we've\
-    \ learned to the newly created cheat sheet. Text editors are programs that allow\
-    \ you to edit plain text files, such as <code>.txt</code>, <code>.py</code> (Python\
-    \ scripts), and <code>.csv</code> (comma-separated values, also known as spreadsheet\
-    \ files). Remember not to use programs such as Microsoft Word to edit text files,\
-    \ since they add invisible characters that can cause problems.</p>"
+    /installations/microsoft-visual-studio-code-windows/\">install guide here</a>),\
+    \ to add some of the commands that we've learned to the newly created cheat sheet.\
+    \ Text editors are programs that allow you to edit plain text files, such as <code>.txt</code>,\
+    \ <code>.py</code> (Python scripts), and <code>.csv</code> (comma-separated values,\
+    \ also known as spreadsheet files). Remember not to use programs such as Microsoft\
+    \ Word to edit text files, since they add invisible characters that can cause\
+    \ problems.</p>"
   title: Creating a Cheat Sheet
   workshop: command-line
 - challenge: ''
