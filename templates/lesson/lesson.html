@@ -120,7 +120,7 @@
     <div class="markdown-body col-12 py-3" id="lesson-content">
       <h1>{{ lesson.order }}. {{ lesson.title }}</h1>
       <div class="lesson-text py-3">
-        {{ lesson.text | markdown | safe }}
+        {{ lesson.text | safe }}
       </div>
     </div>
     <div class="col-12 py-3" id="lesson-extra-content">

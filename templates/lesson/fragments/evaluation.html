@@ -42,10 +42,9 @@
         {% endfor %}
     {% endif %}
 
-
     {% if lesson.challenge %}
         <h3 class="mt-4">Challenge{% if lesson.challenge.title %}: {{ lesson.challenge.title }}{% endif %}</h3>
-        {{ lesson.challenge.text | markdown | safe }}
+        {{ lesson.challenge.text | safe }}
 
         {% if lesson.challenge.solution %}
         <p>
@@ -55,7 +54,7 @@
         </p>
         <div class="collapse" id="solution">
             <div class="card card-body scrollable">
-                {{ lesson.challenge.solution.text | markdown | safe }}
+                {{ lesson.challenge.solution.text | safe }}
                 <!--<p>Were you <button class="btn btn-success">right</button> or <button class="btn btn-danger">wrong</button>—let us know!</p>-->
             </div>
         </div>
