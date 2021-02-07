@@ -2,6 +2,10 @@
 {% load static markdownify snippet %}
 
 
+{% block extra_head_material %}
+    <link rel="stylesheet" href="{% static 'resource/css/resource.css' %}">
+{% endblock %}
+
 {% block hero %}
     <div class="px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
     <h1 class="display-4">Resource Library</h1>
@@ -50,4 +54,6 @@
 {% endblock %}
 
 
-{% block javascript %}{% endblock %}
+{% block javascript %}
+    <script src="{% static 'resource/js/fix_links.js' %}" crossorigin="anonymous"></script>
+{% endblock %}

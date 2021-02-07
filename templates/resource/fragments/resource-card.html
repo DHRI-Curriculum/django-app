@@ -4,7 +4,7 @@
         <div class="card-header">
             <h5 class="card-title m-0">{{ obj.title | markdown | safe }}</h5>
         </div>
-        <div class="card-body" data-resource-id="{{ obj.id }}">
+        <div class="card-body" data-resource-id="{{ obj.id }}" style="position: relative;"><!-- position: relative required for .stretched-link-->
             {{ obj.annotation | safe }}
         </div>
         <div class="card-footer">
