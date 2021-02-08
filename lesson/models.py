@@ -55,6 +55,7 @@ class Evaluation(CurlyQuotesMixin, models.Model):
 
 class Question(CurlyQuotesMixin, models.Model):
     curly_fields = ['label']
+    unwrap_p = True
 
     evaluation = models.ForeignKey(
         Evaluation, related_name='questions', on_delete=models.CASCADE)

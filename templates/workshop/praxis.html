@@ -2,6 +2,101 @@
 {% load markdownify static snippet %}
 
 
+{% block extra_head_material %}
+  <link rel="stylesheet" href="{% static 'workshop/css/praxis.css' %}">
+<script>
+  Object.prototype.allFalse = function() {
+      for (var i in this) {
+          if (this[i] === true) return false;
+      }
+      return true;
+  }
+
+  function disable_all_elements(elemList) {
+    for (x in elemList) {
+      target_elem = elemList[x]
+      if (typeof target_elem == 'object') {
+        target_elem.classList.add('disabled');
+        target_elem.disabled = true;
+      }
+    }
+  }
+
+  function enable_all_elements(elemList) {
+    for (x in elemList) {
+      target_elem = elemList[x]
+      if (typeof target_elem == 'object') {
+        target_elem.classList.remove('disabled');
+        target_elem.disabled = false;
+      }
+    }
+  }
+
+  function submit_answer_praxis(e) {
+    answers = {};
+
+    let questionID = e.target.dataset.qid;
+    let alertDiv = document.querySelector(`#alert-${questionID}`);
+    let elems = [...e.target.elements]
+
+    elems = elems.filter(e=>{return typeof(e) === 'object' &&
+    e.dataset &&
+    e.dataset.answer_id});
+
+    elems.forEach(e => {
+      answers[e.dataset.answer_id] = e.checked;
+    });
+
+    if (answers.allFalse()) {
+      alertDiv.innerText = "At least one response is true. Choose one!"
+      alertDiv.classList.remove('d-none');
+      return false;
+    }
+
+    // disable all buttons and get all the answers
+    disable_all_elements(elems);
+
+    fetch('/workshops/{{ workshop.slug }}/lessons/check-answer/', {
+        method: "POST",
+        credentials: "same-origin",
+        headers: {
+            "X-CSRFToken": getCookie("csrftoken"),
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Question": questionID,
+            "Answers": JSON.stringify(answers)
+        },
+        body: ''
+    }).then(function(response) { return response.json();
+    }).then(function(data) {
+        if (data.error == null) {
+          if (data.all_correct == true) {
+            alertDiv.classList.add('d-none');
+            e.target.parentElement.parentElement.style = 'background-color: rgba(0, 170, 100, 0.1) !important;'
+            e.target.getElementsByTagName('button')[0].classList.remove('btn-primary')
+            e.target.getElementsByTagName('button')[0].classList.add('btn-success')
+            e.target.getElementsByTagName('button')[0].innerHTML = 'Correct answer!'
+            return true;
+          } else {
+            //console.log('set to try again!')
+            e.target.parentElement.parentElement.style = 'background-color: #3498db63 !important;'
+            alertDiv.innerText = "Unfortunately, that was not the correct answer. Try again!"
+            alertDiv.classList.remove('d-none');
+            enable_all_elements(elems);
+            return false;
+          }
+        } else {
+          console.error(data.error);
+        }
+    }).catch(function(ex) {
+        console.error(ex);
+    });
+
+  }
+</script>
+{% endblock %}
+
+
 {% block secondary_menu %}
     {% include 'workshop/fragments/secondary-menu.html' %}
 {% endblock %}
@@ -21,103 +116,130 @@
 
 {% block admin_edit %}
   <a class="text-decoration-none dropdown-item admin-link-django" target="_blank" href="{% url 'admin:index' %}">Django admin</a>
-  <a class="text-decoration-none dropdown-item admin-link-edit" target="_blank" href="{% url 'admin:workshop_praxis_change' praxis.id  %}">Edit frontmatter</a>
+  <a class="text-decoration-none dropdown-item admin-link-edit" target="_blank" href="{% url 'admin:workshop_praxis_change' praxis.id  %}">Edit theory-to-practice page</a>
   <a class="text-decoration-none dropdown-item admin-link-github" target="_blank" href="https://www.github.com/{{ workshop.parent_repo }}/blob/{{ workshop.parent_branch }}/theory-to-practice.md">See on GitHub</a>
 {% endblock %}
 
 
 {% block main %}
 
-<div class="row pt-5">
+</div>
+<section class="bg-extra-super-light shadow-sm">
+<div class="container-xxl px-3 py-3 px-md-5 py-md-5">
+  <h3 class="mt-4 pb-3 mb-4 border-bottom">Review your knowledge: {{ num_evaluations }} questions from the lessons</h3>
+<div class="row grid">
+{% for evaluation in evaluations %}
+  {% for question in evaluation.questions.all %}
+    <div class="col-lg-6 px-4 py-4 eval-cards">
+      <div class="card h-100">
+        <div class="card-body small">
+          {% include 'lesson/fragments/evaluation-question.html' %}
+        </div>
+        <div class="card-footer small">
+          Revisit lesson <a href="{% url 'workshop:lesson' slug=evaluation.lesson.workshop.slug %}?page={{ evaluation.lesson.order }}">{{ evaluation.lesson }}</a> to learn more.
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+{% endfor %}
+</div>
+</div>
+</section>
+<section class="bg-extra-super-light-green shadow-sm">
+  <div class="container-xxl px-3 py-3 px-md-5 py-md-5">
+  <h3>Deepen your knowledge</h3>
+  
+  <div class="row">
+    {% if praxis.discussion_questions.count %}
+      <div class="col-12 mt-5">
+        <h4>Discussion Questions</h4>
+        <hr />
+        <ul>
+        {% for question in praxis.discussion_questions.all %}
+          <div class="lead mt-4">
+            <li>{{ question.label | markdown | safe }}</li>
+          </div>
+        {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
 
-  {% if praxis.next_steps.count %}
+    {% if praxis.next_steps.count %}
+      <div class="col-12 mt-5">
+        <h4>Next Steps</h4>
+        <hr />
+        {% for step in praxis.next_steps.all %}
+          <div class="lead mt-4">
+            {{ step.label | markdown | safe }}
+          </div>  
+        {% endfor %}  
+      </div>  
+    {% endif %}  
+
+    {% if praxis.tutorials.count %}
     <div class="col-12 mt-5">
-      <h3>Next Steps</h3>
+      <h4>Tutorials</h4>
+      <div>{% snippet 'introduction-tutorials' %}</div>
       <hr />
-      {% for step in praxis.next_steps.all %}
-        <div class="lead mt-4">
-          {{ step.label | markdown | safe }}
-        </div>
-      {% endfor %}
-    </div>
-  {% endif %}
-
-  {% if praxis.discussion_questions.count %}
-    <div class="col-12 mt-5">
-      <h3>Discussion Questions</h3>
-      <hr />
-      {% for question in praxis.discussion_questions.all %}
-        <div class="lead mt-4">
-          {{ question.label | markdown | safe }}
-        </div>
-      {% endfor %}
-    </div>
-  {% endif %}
-
-  {% if praxis.tutorials.count %}
-  <div class="col-12 mt-5">
-    <h3>Tutorials</h3>
-    <div class="font-weight-bold">{% snippet 'introduction-tutorials' %}</div>
-    <hr />
-    <div class="lead mt-4">
-      {% for tutorial in praxis.tutorials.all %}
-        <div class="p-2 my-3 rounded-lg linked-comment">
-          {% if tutorial.url %}
-            <p class="font-weight-bold"><a href="{{ tutorial.url }}" class="stretched-link">{% if tutorial.title %}{{ tutorial.title | as_string | markdown | safe | striptags }}{% else %}Untitled{% endif %}</a></p>
-          {% else %}
-            <p class="font-weight-bold">Untitled</p>
-          {% endif %}
-          {% if tutorial.annotation %}
-            <p class="small">{{ tutorial.annotation | stringformat:"s" | markdown | safe }}</p>
-          {% endif %}
-        </div>
-      {% endfor %}
-    </div>
-  </div>
-  {% endif %}
-
-  {% if praxis.further_readings.count %}
-  <div class="col-12 mt-5">
-    <h3>Further Readings</h3>
-    <div class="font-weight-bold">{% snippet 'introduction-resources' %}</div>
-    <hr />
-    <div class="lead mt-4">
-      {% for reading in praxis.further_readings.all %}
-        <div class="p-2 my-3 rounded-lg linked-comment">
-          {% if reading.url %}
-            <p class="font-weight-bold"><a href="{{ reading.url }}" class="stretched-link">{% if reading.title %}{{ reading.title | as_string | markdown | safe | striptags }}{% else %}Untitled{% endif %}</a></p>
-          {% else %}
-            <p class="font-weight-bold">Untitled</p>
-          {% endif %}
-          {% if reading.annotation %}
-            <p class="small">{{ reading.annotation | stringformat:"s" | markdown | safe }}</p>
-          {% endif %}
-        </div>
-      {% endfor %}
-    </div>
-  </div>
-  {% endif %}
-
-  {% if praxis.further_projects.count %}
-  <div class="col-12 mt-5">
-    <h3>Projects or Challenges to Try</h3>
-    <div class="font-weight-bold">{% snippet 'introduction-further-projects' %}</div>
-    <hr />
-    <div class="lead mt-4">
-      {% for project in praxis.further_projects.all %}
-        <div class="p-2 my-3 rounded-lg linked-comment">
-          {% if project.url %}
-              <p class="font-weight-bold"><a href="{{ project.url }}" class="stretched-link">{% if project.title %}{{ project.title | as_string | markdown | safe | striptags }}{% else %}Untitled{% endif %}</a></p>
+      <div class="lead mt-4">
+        {% for tutorial in praxis.tutorials.all %}
+          <div class="p-2 my-3 rounded-lg linked-comment">
+            {% if tutorial.url %}
+              <p class="font-weight-bold"><a href="{{ tutorial.url }}" class="stretched-link">{% if tutorial.title %}{{ tutorial.title | as_string | markdown | safe | striptags }}{% else %}Untitled{% endif %}</a></p>
             {% else %}
               <p class="font-weight-bold">Untitled</p>
             {% endif %}
-            {% if project.annotation %}
-              <p class="small">{{ project.annotation | stringformat:"s" | markdown | safe }}</p>
+            {% if tutorial.annotation %}
+              <p class="small">{{ tutorial.annotation | stringformat:"s" | markdown | safe }}</p>
             {% endif %}
-        </div>
-      {% endfor %}
+          </div>
+        {% endfor %}
+      </div>
     </div>
-  </div>
+    {% endif %}
+
+    {% if praxis.further_readings.count %}
+    <div class="col-12 mt-5">
+      <h3>Further Readings</h3>
+      <div class="font-weight-bold">{% snippet 'introduction-resources' %}</div>
+      <hr />
+      <div class="lead mt-4">
+        {% for reading in praxis.further_readings.all %}
+          <div class="p-2 my-3 rounded-lg linked-comment">
+            {% if reading.url %}
+              <p class="font-weight-bold"><a href="{{ reading.url }}" class="stretched-link">{% if reading.title %}{{ reading.title | as_string | markdown | safe | striptags }}{% else %}Untitled{% endif %}</a></p>
+            {% else %}
+              <p class="font-weight-bold">Untitled</p>
+            {% endif %}
+            {% if reading.annotation %}
+              <p class="small">{{ reading.annotation | stringformat:"s" | markdown | safe }}</p>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    {% if praxis.further_projects.count %}
+    <div class="col-12 mt-5">
+      <h3>Projects or Challenges to Try</h3>
+      <div class="font-weight-bold">{% snippet 'introduction-further-projects' %}</div>
+      <hr />
+      <div class="lead mt-4">
+        {% for project in praxis.further_projects.all %}
+          <div class="p-2 my-3 rounded-lg linked-comment">
+            {% if project.url %}
+                <p class="font-weight-bold"><a href="{{ project.url }}" class="stretched-link">{% if project.title %}{{ project.title | as_string | markdown | safe | striptags }}{% else %}Untitled{% endif %}</a></p>
+              {% else %}
+                <!--<p class="font-weight-bold">Untitled</p>-->
+              {% endif %}
+              {% if project.annotation %}
+                <p class="small">{{ project.annotation | stringformat:"s" | markdown | safe }}</p>
+              {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+    </div>
   {% endif %}
 
 </div>
@@ -128,4 +250,14 @@
 
 {% block javascript %}
   <script src="{% static 'workshop/js/navbar.js' %}" crossorigin="anonymous"></script>
+  <script>
+    var forms = document.getElementsByClassName('submit-answer');
+    for (let form of forms) {
+        form.addEventListener('submit', function(evt) {
+          evt.preventDefault();
+          submit_answer_praxis(evt);
+          evt.preventDefault();
+        });
+    }
+  </script>
 {% endblock %}

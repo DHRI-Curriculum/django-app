@@ -1,49 +1,8 @@
 {% load markdownify static %}
 
 {% if lesson.terms.all.count or lesson.evaluations.count or lesson.challenge %}
-    <h3 class="mt-4">Test your knowledge<h3>
-
-    {% if lesson.terms.all.count %}
-        <h4>Terms Used in Lesson</h4>
-        <p class="lead">Can you define the terms below? Hover over each of them to read a preview of the definitions.</p>
-            <div class="post-its row d-inline-flex">
-            {% for term in lesson.terms.all %}
-                {% include 'glossary/fragments/postit.html' %}
-            {% endfor %}
-            </div>
-    {% endif %}
-
-    {% if lesson.evaluations.count %}
-        <h4>Questions</h4>
-        {% for eval in lesson.evaluations.all %}
-            {% for question in eval.questions.all %}
-                <div class="bg-super-light rounded-lg mt-2">
-                    <div class="p-4">
-                        <div class="d-none alert alert-primary shadow" id="alert-{{ question.id }}">Try again!</div>
-                        <p class="mt-2"><strong>{{ question.label | safe }}</strong>{% if question.has_answers %}{% if question.has_multiple_answers %} (Select all that apply){% elif question.has_single_answer %} (Select one of the following){% endif %}{% endif %}</p>
-                        {% if question.has_answers %}
-                            <form class="mt-0 submit-answer" data-qid="{{ question.id }}">
-                                {% for answer in question.answers.all %}
-                                    <div class="form-check">
-                                        <input class="form-check-input" {% if question.has_multiple_answers %}type="checkbox" value="" id="answer{{ answer.id }}" data-answer_id="{{ answer.id }}"{% elif question.has_single_answer %}type="radio" data-answer_id="{{ answer.id }}" name="question{{ question.id }}" id="answer{{ answer.id }}"{% endif %}>
-                                        <label class="form-check-label" for="{% if question.has_multiple_answers %}answer{{ answer.id }}{% elif question.has_single_answer %}answer{{ answer.id }}{% endif %}">
-                                            {{ answer.label | safe }}
-                                        </label>
-                                    </div>
-                                {% endfor %}
-                                <div class="mt-2"><button class="btn btn-primary">Check my answer</button></div>
-                            </form>
-                        {% else %}
-                            <em>This question has no answer. It is a reflective question.</em>
-                        {% endif %}
-                    </div>
-                </div>
-            {% endfor %}
-        {% endfor %}
-    {% endif %}
-
     {% if lesson.challenge %}
-        <h3 class="mt-4">Challenge{% if lesson.challenge.title %}: {{ lesson.challenge.title }}{% endif %}</h3>
+        <h3 class="mt-5">Assignment{% if lesson.challenge.title %}: {{ lesson.challenge.title }}{% endif %}</h3>
         {{ lesson.challenge.text | safe }}
 
         {% if lesson.challenge.solution %}
@@ -60,4 +19,28 @@
         </div>
         {% endif %}
     {% endif %}
+
+    {% if lesson.evaluations.count %}
+        <h3 class="mt-5">Questions</h3>
+        {% for eval in lesson.evaluations.all %}
+            {% for question in eval.questions.all %}
+                <div class="bg-super-light rounded-lg mt-2">
+                    <div class="p-4">
+                        {% include 'lesson/fragments/evaluation-question.html' %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
+
+    {% if lesson.terms.all.count %}
+        <h3 class="mt-5">Terms Used in Lesson</h3>
+        <p class="lead">Can you define the terms below? Hover over each of them to read a preview of the definitions.</p>
+            <div class="post-its row d-inline-flex">
+            {% for term in lesson.terms.all %}
+                {% include 'glossary/fragments/postit.html' %}
+            {% endfor %}
+            </div>
+    {% endif %}
+
 {% endif %}

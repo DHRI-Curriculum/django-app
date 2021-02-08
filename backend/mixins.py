@@ -21,18 +21,26 @@ def quote_converter(string):
     return string
 
 
-def convert_html_quotes(html):
+def convert_html_quotes(html, strip_surrounding_body=True, strip_surrounding_p=False):
     if not html:
         return ''
     soup = BeautifulSoup(html, 'lxml')
     for text_node in soup.find_all(string=True): # TODO: this should exclude code, where we don't want to enforce any curly quotes due to accessibility (ease of copying code etc)
         text_node.replaceWith(quote_converter(text_node))
-    html = "".join([str(x) for x in soup.body.children])
+
+    if strip_surrounding_body:
+        html = "".join([str(x) for x in soup.body.children])
+    elif strip_surrounding_p:
+        html = "".join([str(x) for x in soup.p.children])
+    else:
+        html = str(soup)
+
     return html
 
 
 class CurlyQuotesMixin:
     curly_fields = []
+    unwrap_p = False
 
     def save(self, *args, **kwargs):
         for field in self.curly_fields:
@@ -40,7 +48,10 @@ class CurlyQuotesMixin:
             if html == None or html == '' or html == 'NULL':
                 continue
             # print(field, '-->', html)
-            html = convert_html_quotes(html)
+            if self.unwrap_p:
+                html = convert_html_quotes(html, strip_surrounding_body=False, strip_surrounding_p=True)
+            else:
+                html = convert_html_quotes(html)
             setattr(self, field, html)
 
         super().save(*args, **kwargs)

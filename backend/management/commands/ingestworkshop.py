@@ -305,7 +305,7 @@ class Command(LogSaver, BaseCommand):
                     evaluation, created = Evaluation.objects.get_or_create(
                         lesson=lesson)
                     question, created = Question.objects.get_or_create(
-                        evaluation=evaluation, label=convert_html_quotes(questioninfo.get('question')))
+                        evaluation=evaluation, label=convert_html_quotes(questioninfo.get('question'), strip_surrounding_body=False, strip_surrounding_p=True))
                     for answerinfo in questioninfo.get('answers', {}).get('correct'):
                         answer, created = Answer.objects.get_or_create(
                             question=question, label=convert_html_quotes(answerinfo), defaults={'is_correct': True})
