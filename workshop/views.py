@@ -143,9 +143,22 @@ class PraxisView(DetailView):
         context['frontmatter'] = self.get_object().frontmatter
 
         context['is_praxis'] = True
+        context['evaluations'] = self.get_all_evaluations()[:9]
+        context['num_evaluations'] = len(context['evaluations']) + 1
 
         return context
 
+    def get_all_evaluations(self):
+        _ = []
+        for lesson in self.get_object().lessons.order_by('?').all():
+            for eval in lesson.evaluations.all():
+                _.append(eval)
+        return _
+
+        '''
+        for lesson in Lesson.objects.filter(workshop_id=self.id):
+            print(lesson.evaluations.all())
+        '''
 
 class LessonView(DetailView):
     model = Lesson

@@ -1,0 +1,40 @@
+.bg-extra-super-light {
+    background-color: #3241441a !important;
+  }
+  .bg-extra-super-light-green {
+    background-color: #18bc9b10 !important;
+  }
+  .eval-cards > .card {
+        background-color:#ffc;
+      }
+  .eval-cards:nth-child(1) .card {
+    -o-transform:rotate(-1deg);
+    -webkit-transform:rotate(-1deg);
+    -moz-transform:rotate(-1deg);
+    position:relative;
+    top:-1px;
+  }
+  .eval-cards:nth-child(even) .card {
+    -o-transform:rotate(3deg);
+    -webkit-transform:rotate(3deg);
+    -moz-transform:rotate(3deg);
+    position:relative;
+    top:5px;
+  }
+  .eval-cards:nth-child(4n) .card {
+    -o-transform:rotate(-2deg);
+    -webkit-transform:rotate(-2deg);
+    -moz-transform:rotate(-2deg);
+    position:relative;
+    top:-5px;
+  }
+  .eval-cards:nth-child(7n) .card {
+    -o-transform:rotate(4deg);
+    -webkit-transform:rotate(4deg);
+    -moz-transform:rotate(4deg);
+    position:relative;
+    top:-10px;
+  }
+  .submit-answer p {
+    margin-bottom: 0.5rem;
+  }

@@ -738,12 +738,15 @@ class LessonParser():
                 html_solution = PARSER.convert(solution)
 
             for i, d in enumerate(evaluation):
-                evaluation[i]['question'] = PARSER.convert(d.get('question')).strip().replace('<p>', '').replace('</p>', '')
+                evaluation[i]['question'] = BeautifulSoup(PARSER.convert(d.get('question')).strip(), 'lxml')
+                evaluation[i]['question'] = "".join([str(x) for x in evaluation[i]['question'].p.children])
                 for ii, a in enumerate(d['answers']['correct']):
-                    evaluation[i]['answers']['correct'][ii] = PARSER.convert(a).strip().replace('<p>', '').replace('</p>', '')
+                    evaluation[i]['answers']['correct'][ii] = BeautifulSoup(PARSER.convert(a).strip(), 'lxml')
+                    evaluation[i]['answers']['correct'][ii] = "".join([str(x) for x in evaluation[i]['answers']['correct'][ii].p.children])
                 for ii, a in enumerate(d['answers']['incorrect']):
-                    evaluation[i]['answers']['incorrect'][ii] = PARSER.convert(a).strip().replace('<p>', '').replace('</p>', '')
-
+                    evaluation[i]['answers']['incorrect'][ii] = BeautifulSoup(PARSER.convert(a).strip(), 'lxml')
+                    evaluation[i]['answers']['incorrect'][ii] = "".join([str(x) for x in evaluation[i]['answers']['incorrect'][ii].p.children])
+            
             soup = BeautifulSoup(html_body, 'lxml')
 
             # 1. Attempt to download any images

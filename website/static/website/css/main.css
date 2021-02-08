@@ -7,6 +7,14 @@ h6 {
     font-family: "Titillium Web";
 }
 
+.bg-extra-super-light {
+    background-color: #3241441a !important;
+}
+
+.bg-extra-super-light-green {
+    background-color: #18bc9b10 !important;
+}
+
 .bg-super-light {
     background-color: #f7f7f8 !important;
 }

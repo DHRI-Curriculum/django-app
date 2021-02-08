@@ -1,0 +1,17 @@
+<div class="d-none alert alert-primary shadow" id="alert-{{ question.id }}">Try again!</div>
+<p class="mt-2"><strong>{{ question.label | safe }}</strong>{% if question.has_answers %}{% if question.has_multiple_answers %} (Select all that apply){% elif question.has_single_answer %} (Select one of the following){% endif %}{% endif %}</p>
+{% if question.has_answers %}
+    <form class="mt-0 submit-answer" data-qid="{{ question.id }}">
+        {% for answer in question.answers.all %}
+            <div class="form-check">
+                <input class="form-check-input" {% if question.has_multiple_answers %}type="checkbox" value="" id="answer{{ answer.id }}" data-answer_id="{{ answer.id }}"{% elif question.has_single_answer %}type="radio" data-answer_id="{{ answer.id }}" name="question{{ question.id }}" id="answer{{ answer.id }}"{% endif %}>
+                <label class="form-check-label" for="{% if question.has_multiple_answers %}answer{{ answer.id }}{% elif question.has_single_answer %}answer{{ answer.id }}{% endif %}">
+                    {{ answer.label | safe }}
+                </label>
+            </div>
+        {% endfor %}
+        <div class="mt-2"><button class="btn btn-primary">Check my answer</button></div>
+    </form>
+{% else %}
+    <em>This question has no answer. It is a reflective question.</em>
+{% endif %}
