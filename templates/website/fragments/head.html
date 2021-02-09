@@ -23,6 +23,9 @@
     window.CSRF_TOKEN = "{{ csrf_token }}";
 
     window.workshop = {% if workshop %}"{{ workshop.slug }}"{% else %}undefined{% endif %};
+    window.all_workshops_slugs = {
+        {% for workshop in all_workshops %}'{{workshop.slug}}': '{% url 'workshop:frontmatter' workshop.slug %}',{% endfor %}
+    }
 
     function getCookie(name) {
         let cookieValue = null;
