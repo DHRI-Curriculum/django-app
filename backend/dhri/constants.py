@@ -19,8 +19,20 @@ def get_verbose():
     return VERBOSE
 
 def get_terminal_width():
-    from backend.dhri_settings import TERMINAL_WIDTH
+    from backend.dhri_settings import AUTO_TERMINAL_WIDTH, MAX_TERMINAL_WIDTH
+    import os
+
+    try:
+        TERMINAL_WIDTH = os.popen('stty size', 'r').read().split()[1]
+        TERMINAL_WIDTH = int(TERMINAL_WIDTH)
+    except:
+        TERMINAL_WIDTH = AUTO_TERMINAL_WIDTH
+
+    if TERMINAL_WIDTH > MAX_TERMINAL_WIDTH:
+        TERMINAL_WIDTH = MAX_TERMINAL_WIDTH
+
     return TERMINAL_WIDTH
+
 
 def get_saved_prefix():
     from backend.dhri_settings import saved_prefix

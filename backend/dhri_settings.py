@@ -197,14 +197,6 @@ TEST_AGES['INSIGHT'] = timedelta(days=TEST_AGES['INSIGHT'])
 _check_normalizer()
 
 
-try:
-    TERMINAL_WIDTH = os.popen('stty size', 'r').read().split()[1]
-    TERMINAL_WIDTH = int(TERMINAL_WIDTH)
-except:
-    TERMINAL_WIDTH = 70
-
-if TERMINAL_WIDTH > MAX_TERMINAL_WIDTH:
-    TERMINAL_WIDTH = MAX_TERMINAL_WIDTH
 
 
 saved_prefix = '----> '
