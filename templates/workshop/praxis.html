@@ -130,7 +130,7 @@
 <div class="row grid">
 {% for evaluation in evaluations %}
   {% for question in evaluation.questions.all %}
-    <div class="col-lg-6 px-4 py-4 eval-cards">
+    <div class="col-md-6 px-4 py-4 eval-cards">
       <div class="card h-100">
         <div class="card-body small">
           {% include 'lesson/fragments/evaluation-question.html' %}
