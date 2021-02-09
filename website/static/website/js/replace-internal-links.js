@@ -1,6 +1,6 @@
 // all_workshops = [{% for workshop in all_workshops %}'{{workshop.name}}',{% endfor %}]
 document.querySelectorAll("[data-replace-internal-links=true]").forEach((elem) => {
-    console.info('Encountered element and will recplace workshop links.');
+    console.info('Encountered element and will replace workshop links.');
     elem.querySelectorAll("a").forEach((link) => {
         console.info('checking: ' + link);
         if (link.href.includes("github.com/DHRI-Curriculum/")) {
