@@ -29,7 +29,7 @@
         <div class="col-12">
             <div class="pt-3">
                 <h1>{{ term.term }}</h1>
-                <p class="lead">{{ term.explication | markdown | safe }}</p>
+                <p class="lead" data-replace-internal-links="true">{{ term.explication | markdown | safe }}</p>
 
                 <div class="row py-2">
                     {% if term.readings.all.count %}

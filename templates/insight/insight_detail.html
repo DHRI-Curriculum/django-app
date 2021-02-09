@@ -22,7 +22,7 @@
                 <h3>{% if section.title %}{{ section.title | safe }}{% endif %}</h3>
             </div>
             <div class="col-12">
-                <div class="lead">{{ section.text | safe }}</div>
+                <div class="lead" data-replace-internal-links="true">{{ section.text | safe }}</div>
             </div>
             {% for os_section in section.os_specific_sections.all %}
                 <div class="col-12">

@@ -35,7 +35,7 @@
 
     {% if lesson.terms.all.count %}
         <h3 class="mt-5">Terms Used in Lesson</h3>
-        <p class="lead">Can you define the terms below? Hover over each of them to read a preview of the definitions.</p>
+        <p class="lead" data-replace-internal-links="true">Can you define the terms below? Hover over each of them to read a preview of the definitions.</p>
             <div class="post-its row d-inline-flex">
             {% for term in lesson.terms.all %}
                 {% include 'glossary/fragments/postit.html' %}

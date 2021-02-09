@@ -40,7 +40,7 @@
         </div>
         {% if step.screenshots.count %}
             <div class="col-12 col-lg-7">
-                <div class="lead">{{ step.text | safe }}</div>
+                <div class="lead" data-replace-internal-links="true">{{ step.text | safe }}</div>
             </div>
             <div class="col-12 col-lg-5">
                 {% for screenshot in step.screenshots.all %}
@@ -65,7 +65,7 @@
             </div>
         {% else %}
             <div class="col-12">
-                <div class="lead">{{ step.text | safe }}</div>
+                <div class="lead" data-replace-internal-links="true">{{ step.text | safe }}</div>
             </div>
         {% endif %}
     </div>

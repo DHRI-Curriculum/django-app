@@ -61,7 +61,7 @@
 
         <h3 class="mt-5 pt-4 pb-4 border-top-double border-bottom">Before you get started</h3>
         <div class="mt-4">
-            <div class="lead">{% snippet "introduction-before-you-get-started" %}</div>
+            <div class="lead" data-replace-internal-links="true">{% snippet "introduction-before-you-get-started" %}</div>
             {% if prerequisites.external_links|length %}
               <div class="mt-2">
                   <h4>External Links</h4>
@@ -233,7 +233,7 @@
             {% for blurb in blurbs %}
               <div class="col-12">
                 <h4>{% if blurb.user.first_name and blurb.user.last_name %}{{ blurb.user.first_name }} {{ blurb.user.last_name }}'s{% endif %} Reflections on {{ workshop.name }}</h4>
-                <p class="lead">{{ blurb.text | safe }}</p>
+                <p class="lead" data-replace-internal-links="true">{{ blurb.text | safe }}</p>
               </div>
             {% endfor %}
           </div>

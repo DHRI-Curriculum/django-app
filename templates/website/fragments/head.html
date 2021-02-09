@@ -26,6 +26,12 @@
     window.all_workshops_slugs = {
         {% for workshop in all_workshops %}'{{workshop.slug}}': '{% url 'workshop:frontmatter' workshop.slug %}',{% endfor %}
     }
+    window.all_installs_slugs = {
+        {% for instruction in all_installs %}'{{instruction.slug}}': '{% url 'install:installation' instruction.slug %}',{% endfor %}
+    }
+    window.all_insights_slugs = {
+        {% for insight in all_insights %}'{{insight.slug}}': '{% url 'insight:insight' insight.slug %}',{% endfor %}
+    }
 
     function getCookie(name) {
         let cookieValue = null;
