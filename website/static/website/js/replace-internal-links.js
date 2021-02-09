@@ -2,6 +2,7 @@
 document.querySelectorAll("[data-replace-internal-links=true]").forEach((elem) => {
     console.info('Encountered element and will recplace workshop links.');
     elem.querySelectorAll("a").forEach((link) => {
+        console.info('checking: ', link);
         if (link.href.includes("github.com/DHRI-Curriculum/")) {
             finder = link.href.split("/")[link.href.split("/").length - 1];
             console.log(finder);
