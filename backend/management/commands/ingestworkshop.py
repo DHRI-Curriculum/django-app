@@ -1,6 +1,7 @@
+from bs4 import BeautifulSoup
 from glossary.models import Term
 from learner.models import Profile
-from lesson.models import Challenge, Evaluation, Solution, Lesson, Question, Answer
+from lesson.models import Challenge, Evaluation, LessonImage, Solution, Lesson, Question, Answer
 from resource.models import Resource
 from workshop.models import Collaboration, Contributor, DiscussionQuestion, EthicalConsideration, LearningObjective, NextStep, Workshop, Frontmatter, Praxis
 from django.core.management import BaseCommand
@@ -99,10 +100,13 @@ class Command(LogSaver, BaseCommand):
                         workshopdata.get('image'), True)
                     workshop.save_slug()
                 else:
-                    with open(workshopdata.get('image'), 'rb') as f:
-                        workshop.image = File(
-                            f, name=f'{workshopdata.get("slug")}-{os.path.basename(f.name)}')
-                        workshop.save_slug()
+                    try:
+                        with open(workshopdata.get('image'), 'rb') as f:
+                            workshop.image = File(
+                                f, name=f'{workshopdata.get("slug")}-{os.path.basename(f.name)}')
+                            workshop.save_slug()
+                    except FileNotFoundError:
+                        log.error(f'File `{workshopdata.get("image")}` could not be found. Did you run `python manage.py buildworkshop` before you ran this command?')
             else:
                 workshop.image.name = get_default_workshop_image()
                 workshop.save_slug()
@@ -289,6 +293,10 @@ class Command(LogSaver, BaseCommand):
                 )
 
                 lesson.refresh_from_db()
+
+                soup = BeautifulSoup(lesson.text, 'lxml')
+                for img in soup.find_all('img'):
+                    LessonImage.objects.update_or_create(url=img.get('src'), lesson=lesson)
 
                 if not lessoninfo.get('challenge') and lessoninfo.get('solution'):
                     log.error(f'The workshop {workshop}\'s lesson `{lesson.title}` has a solution but no challenge. Correct the files on GitHub and rerun the buildworkshop command and then re-attempt the ingestworkshop command. Alternatively, you can change the datafile content manually.')

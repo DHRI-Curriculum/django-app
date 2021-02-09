@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.fields.related import ForeignKey
 from workshop.models import Workshop
 from glossary.models import Term
 from backend.mixins import CurlyQuotesMixin
@@ -21,6 +22,19 @@ class Lesson(CurlyQuotesMixin, models.Model):
 
     def __str__(self):
         return f'{self.title}'
+
+
+class LessonImage(models.Model):
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name='images')
+    url = models.URLField(unique=True)
+    name = models.TextField()
+
+    def save(self, *args, **kwargs):
+        self.name = self.url.split('/')[-1].split('.')[0].lower()
+        super(LessonImage, self).save()
+
+    def __str__(self):
+        return str(self.name)
 
 
 class Challenge(CurlyQuotesMixin, models.Model):

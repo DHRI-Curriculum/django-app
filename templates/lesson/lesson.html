@@ -10,6 +10,10 @@
   <script>
     var next = {% if page_obj.has_next %}{{ page_obj.next_page_number }}{% else %}0{% endif %}
     var prev = {% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}0{% endif %}
+    window.lesson_images = {
+      {% for image, url in images.items %}'{{ image }}': '{{ url }}',{% endfor %}
+    }
+    console.info('Images found in lesson', window.lesson_images)
   </script>
   <script src="{% static 'lesson/js/setupAnswer.js' %}" crossorigin="anonymous"></script>
   <style>
@@ -36,6 +40,24 @@
 
 {% block main %}
   {% include 'lesson/fragments/next-prev.html' %}
+  {% for img in lesson.images.all %}
+    <div class="modal fade" id="modal_{{ img.name }}" tabindex="-1" aria-labelledby="modal_{{ img.name }}_label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modal_{{ img.name }}_label">Image {{ forloop.counter }} for {{ lesson.title }}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <p class="d-none">{{ img.url }}</p>
+                    <img src="{{ img.url }}" class="img-fluid" />
+                </div>
+            </div>
+        </div>
+    </div>
+  {% endfor %}
   <div class="row">
     <div class="markdown-body col-12 py-3" id="lesson-content">
       <h1>{{ lesson.order }}. {{ lesson.title }}</h1>
@@ -74,5 +96,11 @@
 -->
 <script src="//cdn.jsdelivr.net/npm/velocity-animate@2.0/velocity.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/velocity-animate@2.0/velocity.ui.min.js"></script>
-
+<script>
+    document.querySelector('#lesson-content').querySelectorAll('img').forEach(img=>{
+        name = img.src.substring(img.src.lastIndexOf('/')+1).split('.')[0].toLowerCase();
+        img.parentNode.dataset.toggle = 'modal';
+        img.parentNode.dataset.target = '#modal_'+name;
+    })
+</script>
 {% endblock %}

@@ -7,6 +7,8 @@ from learner.models import Profile, Progress
 from django.conf import settings
 from django.views.generic import View, DetailView, ListView
 from django.contrib import messages
+from bs4 import BeautifulSoup
+import os, json
 
 
 class IndexRedirect(View):
@@ -208,8 +210,7 @@ class LessonView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['workshop'] = get_object_or_404(
-            Workshop, slug=self.kwargs.get('slug'))
+        context['workshop'] = get_object_or_404(Workshop, slug=self.kwargs.get('slug'))
         context['paginator'] = self.paginator
         context['page_obj'] = self.page_obj
         context['percentage'] = self.percentage
