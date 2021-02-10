@@ -22,9 +22,10 @@ from backend.dhri.markdown_parser import PARSER
 from backend.dhri.text import get_number
 from backend.dhri.webcache import WebCache
 
-from backend.dhri_settings import NORMALIZING_SECTIONS, FORCE_DOWNLOAD, BACKEND_AUTO, \
-                                    REPO_AUTO, BRANCH_AUTO, TEST_AGES, CACHE_DIRS, \
-                                    STATIC_IMAGES, LESSON_TRANSPOSITIONS, VERBOSE, CACHE_VERBOSE, TERMINAL_WIDTH
+from backend.dhri.settings import NORMALIZING_SECTIONS, FORCE_DOWNLOAD, BACKEND_AUTO, \
+                                    TEST_AGES, CACHE_DIRS, \
+                                    STATIC_IMAGES, LESSON_TRANSPOSITIONS, VERBOSE, CACHE_VERBOSE
+from backend.dhri.constants import get_terminal_width
 
 from backend.dhri.new_functions import mini_parse_eval, mini_parse_keywords
 
@@ -94,11 +95,11 @@ def process_links(input, obj, is_html=False) -> tuple:
         if is_html:
             url_list = [x['href'] for x in links]
             url_list.insert(0,'*** '+url)
-            link_list = '- ' + "\n    - ".join([x[:TERMINAL_WIDTH-30] for x in url_list])
+            link_list = '- ' + "\n    - ".join([x[:get_terminal_width()-30] for x in url_list])
         else:
             links = [x[1] for x in links]
             links[0] = '*** '+links[0]
-            link_list = '- ' + "\n    - ".join([x[:TERMINAL_WIDTH-30] for x in links])
+            link_list = '- ' + "\n    - ".join([x[:get_terminal_width()-30] for x in links])
         log.warning(f'One project seems to contain more than one URL, but only the first is captured:' + link_list) # TODO: Better handling of this in general....
     if title == None or title == '':
         from backend.dhri.webcache import WebCache
@@ -287,9 +288,15 @@ class Loader():
             msg = f"The repository {self.repo_name} does not have enough required files present. The import of the entire repository will be skipped."
             self.log.error(msg, raise_error=MissingCurriculumFile)
 
-    def __init__(self, repo=REPO_AUTO, branch=BRANCH_AUTO, force_download=FORCE_DOWNLOAD):
+    def __init__(self, repo=None, branch=None, force_download=FORCE_DOWNLOAD):
 
         self.log = Logger(name=f'loader')
+
+        if not repo:
+            log.error('You must provide a repository.')
+
+        if not branch:
+            log.error('You must provide a branch.')
 
         if not repo.startswith('https://github.com/'):
             log.error('Repository URL does not look correct. Needs to start with https://github.com/')
@@ -1050,7 +1057,7 @@ class GlossaryCache():
 
 
 
-from backend.dhri_settings import GLOSSARY_REPO
+from backend.dhri.settings import GLOSSARY_REPO
 
 class GlossaryParser():
     readings = list()

@@ -1,7 +1,7 @@
 # General text tools
 import re
 from django.utils.text import slugify
-from backend.dhri.constants import get_replacements, get_regex
+from backend.dhri.constants import get_regex
 
 
 def get_urls(markdown: str) -> list:
@@ -28,19 +28,6 @@ def get_number(markdown: str) -> int:
         else:
             return g.groups()[0]
     return 0
-
-
-def auto_replace(string: str) -> str:
-    '''
-    try:
-        if not isinstance(REPLACEMENTS, dict):
-            return string
-    except:
-        return string
-    '''
-    for k, v in get_replacements().items():
-        string = string.replace(k, v)
-    return string
 
 
 def dhri_slugify(string: str) -> str:

@@ -11,7 +11,7 @@ from .loader import _is_expired, download_image
 from .markdown import split_into_sections
 from .markdown_parser import PARSER
 
-from backend.dhri_settings import FORCE_DOWNLOAD, TEST_AGES, CACHE_DIRS, STATIC_IMAGES, INSTALL_REPO, IMAGE_CACHE
+from backend.dhri.settings import FORCE_DOWNLOAD, TEST_AGES, CACHE_DIRS, STATIC_IMAGES, INSTALL_REPO, IMAGE_CACHE
 
 
 class InstallCache():

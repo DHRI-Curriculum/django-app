@@ -1,0 +1,48 @@
+VERSION: 0.7
+
+# it is good to keep all of the below in a unique directory on the hard
+# drive and not inside the django-app repo...
+
+CACHE_DIRS:
+    ROOT: /tmp/.loader-cache/
+    PARSER: /tmp/.gh-api-cache/
+    WEB: /tmp/.loader-cache/web/
+    ZOTERO: /tmp/.loader-cache/zotero/
+
+IMAGE_CACHE:
+    INSTALL: /tmp/.loader-cache/images/install/
+
+STATIC_IMAGES:
+    LESSONS: $BASE_DIR/website/static/website/images/lessons/
+    INSTALL: $BASE_DIR/media/installation_screenshots/
+    INSIGHT: $BASE_DIR/insight/static/insight/images/
+    WORKSHOP_HEADERS: $BASE_DIR/website/static/website/images/workshop_headers/
+    SOFTWARE_HEADERS: $BASE_DIR/website/static/website/images/software_headers/
+
+# The following are written as days
+TEST_AGES:
+    ROOT: 14
+    PARSER: 14
+    WEB: 14
+    ZOTERO: 14
+    GLOSSARY: 14
+    INSTALL: 14
+    INSIGHT: 14
+
+# If set to True, the script will override the cache every time
+# (effectively disregarding TEST_AGES above)
+FORCE_DOWNLOAD: False
+
+##### Dev features ##############################
+
+# If VERBOSE is set to True, every output message will display the
+# source module/function (good for troubleshooting)
+VERBOSE: True
+
+# Note: this outputs a message for each cache age check = generates
+# a LOT of output
+CACHE_VERBOSE: False
+
+# A list of URLs that will not be downloaded by the webcache
+DO_NOT_DOWNLOAD:
+    - https://media.githubusercontent.com/media/metmuseum/openaccess/master/MetObjects.csv

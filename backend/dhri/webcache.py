@@ -2,8 +2,8 @@ from django.utils.text import slugify
 from urllib import parse as urlparser
 from backend.dhri.log import Logger
 
-from backend.dhri_settings import FORCE_DOWNLOAD
-from backend.dhri_settings import CACHE_DIRS, TEST_AGES, DO_NOT_DOWNLOAD
+from backend.dhri.settings import FORCE_DOWNLOAD
+from backend.dhri.settings import CACHE_DIRS, TEST_AGES, DO_NOT_DOWNLOAD
 
 import requests
 import json

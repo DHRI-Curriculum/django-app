@@ -5,7 +5,7 @@ import json
 from github import Github
 
 from backend.dhri.log import Logger
-from backend.dhri_settings import CACHE_DIRS, FORCE_DOWNLOAD
+from backend.dhri.settings import CACHE_DIRS, FORCE_DOWNLOAD
 from django.utils.text import slugify
 from django.conf import settings
 
@@ -62,7 +62,7 @@ class GitHubParserCache():
     def _setup_raw_content(self):
         """Queries GitHub for the html text for a given string"""
         if not settings.GITHUB_TOKEN:
-            log.error('GitHub API token is not correctly set up in backend.dhri_settings — correct the error and try again')
+            log.error('GitHub API token is not correctly set up in backend.dhri.settings — correct the error and try again')
 
         string = str(self.string)
         g = Github(settings.GITHUB_TOKEN)

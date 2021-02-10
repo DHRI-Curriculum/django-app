@@ -1,0 +1,47 @@
+Team:
+    Profile:
+        - add
+        - change
+        - delete
+        - view
+    Frontmatter:
+        - add
+        - change
+        - delete
+        - view
+    LearningObjective:
+        - add
+        - change
+        - delete
+        - view
+    EthicalConsideration:
+        - add
+        - change
+        - delete
+        - view
+    Contributor:
+        - add
+        - change
+        - delete
+        - view
+    Resource:
+        - add
+        - change
+        - delete
+        - view
+    Praxis:
+        - add
+        - change
+        - delete
+        - view
+    Workshop:
+        - add
+        - change
+        - delete
+        - view
+Learner:
+    Workshop:
+        - view
+Instructor:
+    Workshop:
+        - view

@@ -1,7 +1,7 @@
 from django.core.management import BaseCommand
 from django.conf import settings
 from backend.dhri.log import Logger
-from backend import dhri_settings
+from backend.dhri import settings as dhri_settings
 from backend.dhri.loader import GlossaryLoader
 from ._shared import LogSaver
 import yaml
@@ -15,7 +15,7 @@ class Command(LogSaver, BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
-    help = 'Build YAML files from glossary repository (provided through dhri_settings.GLOSSARY_REPO)'
+    help = 'Build YAML files from glossary repository (provided through backend.dhri.settings.GLOSSARY_REPO)'
     SAVE_DIR = ''
     WARNINGS, LOGS = [], []
 

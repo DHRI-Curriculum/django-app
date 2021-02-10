@@ -26,7 +26,7 @@ Once you have all the information collected, you can start working in the file `
   bio: <insert bio here and make sure the text block follows YAML linting standard>
   img: backend/setup/profile-pictures/<firstname-lastname.jpg> <Also don't forget to add this file to the directory -- see below>
   groups:
-      - Team <see the dhri_settings.py file and the dictionary AUTO_GROUPS to find the available groups to add here>
+      - Team <see the backend.dhri.settings.py file and the dictionary AUTO_GROUPS to find the available groups to add here>
   blurb:
       workshop: <slug to the workshop>
       text: <blurb for the workshop>

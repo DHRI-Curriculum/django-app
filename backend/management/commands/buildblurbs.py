@@ -1,7 +1,7 @@
 from django.core.management import BaseCommand
 from django.conf import settings
 from backend.dhri.log import Logger
-from backend import dhri_settings
+from backend.dhri import settings as dhri_settings
 from ._shared import LogSaver
 import yaml
 import pathlib
@@ -21,7 +21,7 @@ class Command(LogSaver, BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
-    help = 'Build YAML files from blurbs (provided through AUTO_USERS in backend.dhri_settings)'
+    help = 'Build YAML files from blurbs (provided through AUTO_USERS in backend.dhri.settings)'
     SAVE_DIR = ''
     WARNINGS, LOGS = [], []
 

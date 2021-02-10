@@ -1,0 +1,24 @@
+backend: Github
+meta:
+    glossary:
+        repo: glossary
+        branch: v2.0
+    install:
+        repo: install
+        branch: v2.0
+    insight:
+        repo: insights
+        branch: v2.0
+workshops:
+    - repo: command-line
+      branch: v2.0
+    - repo: data-literacies
+      branch: v2.0
+    - repo: text-analysis
+      branch: v2.0
+    - repo: python
+      branch: v2.0
+    - repo: html-css
+      branch: v2.0
+    - repo: git
+      branch: v2.0

@@ -3,7 +3,7 @@ from colorama import Fore, Back, Style
 
 import textwrap
 
-from backend.dhri.constants import get_verbose, get_terminal_width, get_saved_prefix
+from backend.dhri.constants import get_verbose, get_terminal_width
 
 COLON_SAFE = {
     'http://': 'HTTP///',
@@ -89,7 +89,7 @@ def log_created(created:bool, model='', preview='', id='', log=None):
         from backend.dhri.log import Logger
         log = Logger(name='created')
     if created:
-        log.log(get_saved_prefix() + f'{model} `{preview}` added (ID {id}).')
+        log.log('-->' + f'{model} `{preview}` added (ID {id}).')
     else:
         log.warning(f'{model} `{preview}` was not saved as it already exists (ID {id}).', color='green') # Set to green to not alarm
 
@@ -155,7 +155,7 @@ class Logger():
 
     def created(self, created:bool, model='', preview='', id='', force=False, warning_color='yellow'):
         if created:
-            self.log(get_saved_prefix() + f'{model} `{preview}` added (ID {id}).', force=force)
+            self.log('-->' + f'{model} `{preview}` added (ID {id}).', force=force)
         else:
             self.warning(f'{model} `{preview}` was not saved as it already exists (ID {id}).', color=warning_color)
 
