@@ -47,12 +47,13 @@ class Command(LogSaver, BaseCommand):
         parser.add_argument('--name', nargs='+', type=str)
         parser.add_argument('--silent', action='store_true')
         parser.add_argument('--verbose', action='store_true')
+        parser.add_argument('--no_reminder', action='store_true')
 
     def handle(self, *args, **options):
         log = Logger(path=__file__,
-            force_verbose=options.get('verbose'),
-            force_silent=options.get('silent')
-        )
+                     force_verbose=options.get('verbose'),
+                     force_silent=options.get('silent')
+                     )
         input = Input(path=__file__)
 
         workshops = get_all_existing_workshops()
@@ -106,7 +107,8 @@ class Command(LogSaver, BaseCommand):
                                 f, name=f'{workshopdata.get("slug")}-{os.path.basename(f.name)}')
                             workshop.save_slug()
                     except FileNotFoundError:
-                        log.error(f'File `{workshopdata.get("image")}` could not be found. Did you run `python manage.py buildworkshop` before you ran this command?')
+                        log.error(
+                            f'File `{workshopdata.get("image")}` could not be found. Did you run `python manage.py buildworkshop` before you ran this command?')
             else:
                 workshop.image.name = get_default_workshop_image()
                 workshop.save_slug()
@@ -141,18 +143,18 @@ class Command(LogSaver, BaseCommand):
 
             for projectdata in frontmatterdata.get('projects'):
                 project, created = Resource.objects.update_or_create(
-                    category=Resource.PROJECT, 
-                    title=projectdata.get('title'), 
-                    url=projectdata.get('url'), 
+                    category=Resource.PROJECT,
+                    title=projectdata.get('title'),
+                    url=projectdata.get('url'),
                     defaults={'annotation': projectdata.get('annotation')})
                 frontmatter.projects.add(project)
                 frontmatter.save()
 
             for readingdata in frontmatterdata.get('readings'):
                 reading, created = Resource.objects.update_or_create(
-                    category=Resource.READING, 
-                    title=readingdata.get('title'), 
-                    url=readingdata.get('url'), 
+                    category=Resource.READING,
+                    title=readingdata.get('title'),
+                    url=readingdata.get('url'),
                     defaults={'annotation': readingdata.get('annotation')})
                 frontmatter.readings.add(reading)
                 frontmatter.save()
@@ -234,44 +236,29 @@ class Command(LogSaver, BaseCommand):
                 nextstep.refresh_from_db()
 
             for readingdata in praxisdata.get('further_readings'):
-                '''
-                # TODO: #280 make this into Resource instead + category = Resource.READING
-                reading, created = Reading.objects.get_or_create(title=readingdata.get(
-                    'title'), url=readingdata.get('url'), annotation=readingdata.get('annotation'))
-                '''
                 reading, created = Resource.objects.update_or_create(
                     category=Resource.READING,
                     title=readingdata.get('title'),
                     url=readingdata.get('url'),
-                    defaults={'annotation': readingdata.get('annotation')})
+                    defaults={'annotation': convert_html_quotes(readingdata.get('annotation'))})
                 praxis.further_readings.add(reading)
                 praxis.save()
 
             for projectdata in praxisdata.get('further_projects'):
-                '''
-                # TODO: #280 make this into Resource instead + category = Resource.PROJECT
-                project, created = Project.objects.get_or_create(title=projectdata.get(
-                    'title'), url=projectdata.get('url'), annotation=projectdata.get('annotation'))
-                '''
                 project, created = Resource.objects.update_or_create(
-                    category=Resource.PROJECT, 
-                    title=projectdata.get('title'), 
-                    url=projectdata.get('url'), 
-                    defaults={'annotation': projectdata.get('annotation')})
+                    category=Resource.PROJECT,
+                    title=projectdata.get('title'),
+                    url=projectdata.get('url'),
+                    defaults={'annotation': convert_html_quotes(projectdata.get('annotation'))})
                 praxis.further_projects.add(project)
                 praxis.save()
 
             for tutorialdata in praxisdata.get('tutorials'):
-                '''
-                # TODO: #280 make this into Resource instead + category = Resource.TUTORIAL
-                tutorial, created = Tutorial.objects.get_or_create(label=tutorialdata.get(
-                    'label'), url=tutorialdata.get('url'), annotation=tutorialdata.get('annotation'))
-                '''
                 tutorial, created = Resource.objects.update_or_create(
-                    category=Resource.TUTORIAL, 
-                    title=tutorialdata.get('title'), 
-                    url=tutorialdata.get('url'), 
-                    defaults={'annotation': tutorialdata.get('annotation')})
+                    category=Resource.TUTORIAL,
+                    title=tutorialdata.get('title'),
+                    url=tutorialdata.get('url'),
+                    defaults={'annotation': convert_html_quotes(tutorialdata.get('annotation'))})
                 praxis.tutorials.add(tutorial)
                 praxis.save()
 
@@ -296,7 +283,8 @@ class Command(LogSaver, BaseCommand):
 
                 soup = BeautifulSoup(lesson.text, 'lxml')
                 for img in soup.find_all('img'):
-                    LessonImage.objects.update_or_create(url=img.get('src'), lesson=lesson)
+                    LessonImage.objects.update_or_create(
+                        url=img.get('src'), lesson=lesson)
 
                 if not lessoninfo.get('challenge') and lessoninfo.get('solution'):
                     log.error(f'The workshop {workshop}\'s lesson `{lesson.title}` has a solution but no challenge. Correct the files on GitHub and rerun the buildworkshop command and then re-attempt the ingestworkshop command. Alternatively, you can change the datafile content manually.')
@@ -343,8 +331,10 @@ class Command(LogSaver, BaseCommand):
 
         self.LOGS.append(log.log('Added/updated workshops: ' +
                                  ', '.join([x[0] for x in workshops])))
-        self.LOGS.append(log.log(
-            'Do not forget to run `ingestprerequisites` after running the `ingestworkshop` command (without the --name flag).', color='yellow'))
+
+        if options.get('no_reminder') == False:
+            self.LOGS.append(log.log(
+                'Do not forget to run `ingestprerequisites` after running the `ingestworkshop` command (without the --name flag).', color='yellow'))
 
         self.SAVE_DIR = self.SAVE_DIR = f'{LogSaver.LOG_DIR}/ingestworkshop'
         if self._save(data='ingestworkshop', name='warnings.md', warnings=True) or self._save(data='ingestworkshop', name='logs.md', warnings=False, logs=True):
