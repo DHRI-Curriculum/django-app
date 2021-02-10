@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from django.core.management import BaseCommand
 from django.conf import settings
 from backend.dhri.log import Logger
-from backend import dhri_settings
+from backend.dhri import settings as dhri_settings
 from backend.dhri.loader import Loader, process_links
 from ._shared import LogSaver
 import yaml

@@ -1,7 +1,7 @@
 from website.models import Snippet
 from django.core.management import BaseCommand
 from backend.dhri.log import Logger, Input
-from backend.dhri_settings import AUTO_SNIPPETS
+from backend.dhri.settings import AUTO_SNIPPETS
 from backend.dhri.markdown_parser import PARSER
 from ._shared import LogSaver
 

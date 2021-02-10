@@ -1,0 +1,70 @@
+LESSON_TRANSPOSITIONS:
+    '<!-- context: terminal -->': '<img src="terminal.png" />'
+
+NORMALIZING_SECTIONS:
+    frontmatter:
+        abstract:
+            - Abstract
+        learning_objectives:
+            - Learning Objective
+            - Learning Objectives
+        estimated_time:
+            - Estimated time
+        contributors:
+            - Acknowledgements
+            - Acknowledgement
+            - Collaborator
+            - Collaborators
+        ethical_considerations:
+            - Ethical consideration
+            - Ethical considerations
+            - Ethics
+        readings:
+            - Pre-reading suggestions
+            - Prereading suggestions
+            - Pre reading suggestions
+            - Pre-readings
+            - Pre readings
+            - Prereadings
+            - Pre-reading
+            - Pre reading
+            - Prereading
+        projects:
+            - Project
+            - Projects
+            - Projects that use these skills
+            - Projects which use these skills
+        prerequisites:
+            - Prerequisites
+            - Pre-requisites
+            - Prerequisite
+            - Pre-requisite
+            - Pre requisites
+            - Pre requisite
+    theory-to-practice:
+        intro:
+            - Theory to Practice
+        discussion_questions:
+            - Discussion Questions
+            - Discussion Question
+        tutorials:
+            - Other Tutorials
+            - More Tutorials
+            - Further Tutorials
+        further_projects:
+            - Projects or Challenges to Try
+            - Projects to Try
+            - Challenges to Try
+        further_readings:
+            - Suggested Further Readings
+            - Further Readings
+            - Suggested Further Reading
+            - Further Reading
+        next_steps:
+            - Next Steps
+            - Next Step
+    assessment:
+        qualitative_assessment:
+            - Qualitative Self-Assessment
+        quantitative_assessment:
+            - Quantitative Self-Assessment

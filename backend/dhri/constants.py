@@ -1,8 +1,5 @@
 
 
-def get_replacements():
-    from backend.dhri_settings import REPLACEMENTS
-    return REPLACEMENTS
 
 def get_regex(selector='NUMBERS'):
     from backend.dhri.regex import NUMBERS, MARKDOWN_HREF, COMPLEX_SEARCH_FOR_URLS
@@ -15,11 +12,11 @@ def get_regex(selector='NUMBERS'):
         return COMPLEX_SEARCH_FOR_URLS
 
 def get_verbose():
-    from backend.dhri_settings import VERBOSE
-    return VERBOSE
+    from backend.dhri.settings import get_settings
+    return get_settings()['backend.yml']['VERBOSE']
 
 def get_terminal_width():
-    from backend.dhri_settings import AUTO_TERMINAL_WIDTH, MAX_TERMINAL_WIDTH
+    from backend.dhri.settings import AUTO_TERMINAL_WIDTH, MAX_TERMINAL_WIDTH
     import os
 
     try:
@@ -33,7 +30,3 @@ def get_terminal_width():
 
     return TERMINAL_WIDTH
 
-
-def get_saved_prefix():
-    from backend.dhri_settings import saved_prefix
-    return saved_prefix

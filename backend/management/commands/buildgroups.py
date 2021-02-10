@@ -1,7 +1,7 @@
 from django.core.management import BaseCommand
 from django.conf import settings
 from backend.dhri.log import Logger
-from backend import dhri_settings
+from backend.dhri import settings as dhri_settings
 from ._shared import LogSaver
 import yaml
 import pathlib
@@ -14,7 +14,7 @@ class Command(LogSaver, BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
-    help = 'Build YAML files from groups information (provided through dhri_settings.AUTO_GROUPS)'
+    help = 'Build YAML files from groups information (provided through backend.dhri.settings.AUTO_GROUPS)'
     SAVE_DIR = ''
     WARNINGS, LOGS = [], []
 

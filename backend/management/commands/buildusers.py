@@ -1,7 +1,7 @@
 from django.core.management import BaseCommand
 from django.conf import settings
 from backend.dhri.log import Logger
-from backend import dhri_settings
+from backend.dhri import settings as dhri_settings
 from shutil import copyfile
 from PIL import Image
 from ._shared import LogSaver
