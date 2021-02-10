@@ -1,3 +1,4 @@
+from backend.mixins import convert_html_quotes
 from glossary.models import Term
 from resource.models import Resource
 from django.core.management import BaseCommand
@@ -57,21 +58,21 @@ class Command(LogSaver, BaseCommand):
             term.refresh_from_db()
 
             for projectdata in termdata.get('projects', []):
-                project, created = Resource.objects.get_or_create(
+                project, created = Resource.objects.update_or_create(
                     category=Resource.PROJECT,
-                    annotation=projectdata.get('annotation'),
                     title=projectdata.get('linked_text'),
-                    url=projectdata.get('url')
+                    url=projectdata.get('url'),
+                    defaults={'annotation': convert_html_quotes(projectdata.get('annotation'))},
                 )
                 term.projects.add(project)
                 term.save()
 
             for tutorialdata in termdata.get('tutorials', []):
-                tutorial, created = Resource.objects.get_or_create(
+                tutorial, created = Resource.objects.update_or_create(
                     category=Resource.TUTORIAL,
-                    annotation=tutorialdata.get('annotation'),
                     title=tutorialdata.get('linked_text'),
-                    url=tutorialdata.get('url')
+                    url=tutorialdata.get('url'),
+                    defaults={'annotation': convert_html_quotes(tutorialdata.get('annotation'))},
                 )
                 term.tutorials.add(tutorial)
                 term.save()
