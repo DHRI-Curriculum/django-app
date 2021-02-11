@@ -1,9 +1,8 @@
 from django.dispatch import receiver
 from django.db.models.signals import post_delete, pre_save
 from django.db import models
-from django.utils.text import slugify
 from backend.mixins import CurlyQuotesMixin
-from backend.dhri.text import dhri_slugify
+from backend.dhri_utils import dhri_slugify
 
 
 class Software(models.Model):

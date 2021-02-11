@@ -1,16 +1,15 @@
 from django.core.management import BaseCommand
-from django.conf import settings
-from backend.dhri.log import Logger
-from backend.dhri.insight_parser import InsightLoader
-from ._shared import LogSaver
+from backend.settings import BUILD_DIR, INSIGHT_REPO
+from backend.logger import Logger
+from backend.github import InsightCache
 import yaml
 import pathlib
 
-SAVE_DIR = f'{settings.BASE_DIR}/_preload/_insights'
+SAVE_DIR = f'{BUILD_DIR}_insights'
 DATA_FILE = 'insights.yml'
 
 
-class Command(LogSaver, BaseCommand):
+class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
@@ -35,41 +34,18 @@ class Command(LogSaver, BaseCommand):
         if not pathlib.Path(SAVE_DIR).exists():
             pathlib.Path(SAVE_DIR).mkdir(parents=True)
 
-        loader = InsightLoader(force_download=options.get('forcedownload'))
+        loader = InsightCache(repository=INSIGHT_REPO[0], branch=INSIGHT_REPO[1], log=log)
         insights = list()
 
-        for _, i in loader.insights.items():
-            insight = {
-                'title': i.header.strip(),
-                'image': i.image,
-                'image_alt': i.image_alt,
-                'text': i.introduction.strip(),
-                'sections': [],
-                'specific_operating_systems': {}
-            }
-
-            order = 1
-            for section, text in i.sections.items():
-                insight['sections'].append({
-                    'title': section.strip(),
-                    'text': text.strip(),
-                    'order': order,
-                })
-                order += 1
-
-            for operating_system, d in i.os_specific.items():
-                insight['specific_operating_systems'][operating_system] = d
-
-            insights.append(insight)
+        for insight_data in loader.data:
+            insights.append(insight_data)
 
         # Save all data
         with open(f'{SAVE_DIR}/{DATA_FILE}', 'w+') as file:
             file.write(yaml.dump(insights))
 
-        self.LOGS.append(
-            log.log(f'Saved insights data file: {SAVE_DIR}/{DATA_FILE}'))
+        log.log(f'Saved insights data file: {SAVE_DIR}/{DATA_FILE}')
 
-        self.SAVE_DIR = self.SAVE_DIR = f'{LogSaver.LOG_DIR}/buildinsights'
-        if self._save(data='buildinsights', name='warnings.md', warnings=True) or self._save(data='buildinsights', name='logs.md', warnings=False, logs=True):
+        if log._save(data='buildinsights', name='warnings.md', warnings=True) or log._save(data='buildinsights', name='logs.md', warnings=False, logs=True):
             log.log('Log files with any warnings and logging information is now available in the' +
-                    self.SAVE_DIR, force=True)
+                    log.LOG_DIR, force=True)

@@ -63,8 +63,3 @@ NORMALIZING_SECTIONS:
         next_steps:
             - Next Steps
             - Next Step
-    assessment:
-        qualitative_assessment:
-            - Qualitative Self-Assessment
-        quantitative_assessment:
-            - Quantitative Self-Assessment

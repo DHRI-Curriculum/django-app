@@ -1,9 +1,8 @@
 from django.core.management import BaseCommand
-from django.conf import settings
-from backend.dhri.log import Logger
-from backend.dhri import settings as dhri_settings
-from backend.dhri.loader import GlossaryLoader
-from ._shared import LogSaver
+from backend.logger import Logger
+from backend import settings
+from backend.github import GlossaryCache
+
 import yaml
 import pathlib
 
@@ -11,11 +10,11 @@ SAVE_DIR = f'{settings.BASE_DIR}/_preload/_meta/glossary'
 DATA_FILE = 'glossary.yml'
 
 
-class Command(LogSaver, BaseCommand):
+class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
-    help = 'Build YAML files from glossary repository (provided through backend.dhri.settings.GLOSSARY_REPO)'
+    help = 'Build YAML files from glossary repository (provided through backend.settings.GLOSSARY_REPO)'
     SAVE_DIR = ''
     WARNINGS, LOGS = [], []
 
@@ -31,17 +30,16 @@ class Command(LogSaver, BaseCommand):
         )
         log.log('Building glossary... Please be patient as this can take some time.')
 
-        loader = GlossaryLoader(
-            dhri_settings.GLOSSARY_REPO, force_download=options.get('forcedownload'))
+        loader = GlossaryCache(repository='glossary', branch='v2.0', log=log) # TODO: import from settings here
 
         glossary = list()
 
-        for term in loader.all_terms:
+        for term_data in loader.data:
             glossary.append({
-                'term': loader.terms[term].term.strip(),
-                'explication': loader.terms[term].explication.strip(),
-                'readings': loader.terms[term].readings,
-                'tutorials': loader.terms[term].tutorials
+                'term': term_data['term'],
+                'explication': term_data['explication'],
+                'readings': term_data['readings'],
+                'tutorials': term_data['tutorials']
             })
 
         if not pathlib.Path(SAVE_DIR).exists():
@@ -50,10 +48,8 @@ class Command(LogSaver, BaseCommand):
         with open(f'{SAVE_DIR}/{DATA_FILE}', 'w+') as file:
             file.write(yaml.dump(glossary))
 
-        self.LOGS.append(
-            log.log(f'Saved glossary datafile: {SAVE_DIR}/{DATA_FILE}.'))
+        log.log(f'Saved glossary datafile: {SAVE_DIR}/{DATA_FILE}.')
 
-        self.SAVE_DIR = self.SAVE_DIR = f'{LogSaver.LOG_DIR}/buildglossary'
-        if self._save(data='buildglossary', name='warnings.md', warnings=True) or self._save(data='buildglossary', name='logs.md', warnings=False, logs=True):
+        if log._save(data='buildglossary', name='warnings.md', warnings=True) or log._save(data='buildglossary', name='logs.md', warnings=False, logs=True):
             log.log('Log files with any warnings and logging information is now available in the' +
-                    self.SAVE_DIR, force=True)
+                    log.LOG_DIR, force=True)

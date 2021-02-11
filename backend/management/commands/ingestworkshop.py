@@ -7,9 +7,9 @@ from workshop.models import Collaboration, Contributor, DiscussionQuestion, Ethi
 from django.core.management import BaseCommand
 from django.core.files import File
 from django.conf import settings
-from backend.dhri.log import Logger, Input
-from backend.mixins import convert_html_quotes
-from ._shared import get_yaml, get_all_existing_workshops, GLOSSARY_FILE, LogSaver
+from django.db.utils import IntegrityError
+from backend.logger import Logger, Input
+from ._shared import get_yaml, get_all_existing_workshops, GLOSSARY_FILE
 import os
 
 
@@ -33,7 +33,7 @@ def default_workshop_image_exists():
     return os.path.exists(os.path.join(settings.MEDIA_ROOT, get_default_workshop_image()))
 
 
-class Command(LogSaver, BaseCommand):
+class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
@@ -62,281 +62,273 @@ class Command(LogSaver, BaseCommand):
             workshops = get_all_existing_workshops(options.get('name'))
 
         for _ in workshops:
-            name, path = _
-            DATAFILE = f'{path}/{name}.yml'
+            slug, path = _
+            DATAFILE = f'{path}/{slug}.yml'
 
-            superdata = get_yaml(DATAFILE)
+            d = get_yaml(DATAFILE)
 
             # Separate out data
-            frontmatterdata = superdata.get('frontmatter')
-            praxisdata = superdata.get('praxis')
-            lessondata = superdata.get('lessons')
-            workshopdata = superdata.get('workshop')
+            imagedata = d.get('image')
+            frontmatterdata = d.get('sections').get('frontmatter')
+            praxisdata = d.get('sections').get('theory-to-practice')
+            lessondata = d.get('sections').get('lessons')
+            
+            full_name = d.get('name')
+            parent_backend = d.get('parent_backend')
+            parent_branch = d.get('parent_branch')
+            parent_repo = d.get('parent_repo')
 
             # 1. ENTER WORKSHOP
-            workshop, created = Workshop.objects.get_or_create(
-                name=workshopdata.get('name'))
+            workshop, created = Workshop.objects.update_or_create(
+                name=full_name, defaults={
+                    'parent_backend': parent_backend,
+                    'parent_branch': parent_branch,
+                    'parent_repo': parent_repo,
+                    'image_alt': imagedata['alt']
+                }
+            )
 
-            workshop.slug = workshopdata.get('slug')
-            # Special method for saving the slug in a format that matches the GitHub repositories.
+            def _get_valid_name(filename):
+                return filename.replace('@', '') # TODO: should exist a built-in for django here?
+            
+            def _get_media_path(valid_filename):
+                return settings.MEDIA_ROOT + '/' + Workshop.image.field.upload_to + valid_filename
+
+            def _get_media_url(valid_filename):
+                return Workshop.image.field.upload_to + valid_filename
+
+            def _image_exists(valid_filename):
+                media_path = _get_media_path(valid_filename)
+                return os.path.exists(media_path)
+
+            def _get_default_image():
+                return Workshop.image.field.default
+
+            if imagedata:
+                source_file = imagedata['url']
+                valid_filename = _get_valid_name(slug + '-' + os.path.basename(imagedata['url']))
+                if not _image_exists(valid_filename):
+                    try:
+                        with open(source_file, 'rb') as f:
+                            workshop.image = File(f, name=valid_filename)
+                    except FileNotFoundError:
+                        log.error(f'File `{source_file}` could not be found. Did you run `python manage.py buildworkshop` before you ran this command?')
+                workshop.image.name = _get_media_url(valid_filename)
+                workshop.save()
+            else:
+                log.warning(f'Workshop {workshop.name} does not have an image assigned to it. Add filepaths to an existing file in your datafile ({DATAFILE}) if you want to update the specific workshop. Default workshop image (`{os.path.basename(_get_default_image())}`) will be assigned.')
+                workshop.image.name = get_default_workshop_image()
+                workshop.save()
+                
+                if not _image_exists(_get_valid_name(os.path.basename(_get_default_image()))):
+                    log.warning(f'Default workshop image does not exist. You will want to add it manually to the correct folder: {_get_media_path("")}')
+
+            # Saving the slug in a format that matches the GitHub repositories (special method `save_slug`)
+            workshop.slug = slug
             workshop.save_slug()
 
-            if not created and not options.get('forceupdate'):
-                choice = input.ask(
-                    f'Workshop `{workshopdata.get("name")}` already exists. Update with new content? [y/N]')
-                if choice.lower() != 'y':
-                    continue
-
-            Workshop.objects.filter(name=workshopdata.get('name')).update(
-                parent_backend=workshopdata.get('parent_backend'),
-                parent_branch=workshopdata.get('parent_branch'),
-                parent_repo=workshopdata.get('parent_repo'),
-            )
-
-            workshop.refresh_from_db()
-
-            if workshopdata.get('image'):
-                if workshop_image_exists(workshopdata.get('image')):
-                    workshop.image.name = get_workshop_image_path(
-                        workshopdata.get('image'), True)
-                    workshop.save_slug()
-                else:
-                    try:
-                        with open(workshopdata.get('image'), 'rb') as f:
-                            workshop.image = File(
-                                f, name=f'{workshopdata.get("slug")}-{os.path.basename(f.name)}')
-                            workshop.save_slug()
-                    except FileNotFoundError:
-                        log.error(
-                            f'File `{workshopdata.get("image")}` could not be found. Did you run `python manage.py buildworkshop` before you ran this command?')
-            else:
-                workshop.image.name = get_default_workshop_image()
-                workshop.save_slug()
-                # TODO: Move warning to build stage
-                self.WARNINGS.append(log.warning(
-                    f'Workshop {workshopdata.get("name")} does not have an image assigned to them. Add filepaths to an existing file in your datafile ({DATAFILE}) if you want to update the specific workshop.'))
-
             # 2. ENTER FRONTMATTER
-            frontmatter, created = Frontmatter.objects.get_or_create(
-                workshop=workshop)
+            frontmatter, created = Frontmatter.objects.update_or_create(
+                workshop=workshop, defaults={
+                    'abstract': frontmatterdata.get('abstract'),
+                    'estimated_time': frontmatterdata.get('estimated_time')
+                })
 
-            if not created and not options.get('forceupdate'):
-                choice = input.ask(
-                    f'Frontmatter for workshop `{workshop}` already exists. Update with new content? [y/N]')
-                if choice.lower() != 'y':
-                    continue
+            if frontmatterdata.get('ethical_considerations'):
+                for point in frontmatterdata.get('ethical_considerations'):
+                    _, created = EthicalConsideration.objects.update_or_create(
+                        frontmatter=frontmatter, 
+                        label=point.get('annotation')
+                    )
 
-            Frontmatter.objects.filter(workshop=workshop).update(
-                abstract=convert_html_quotes(frontmatterdata.get('abstract')),
-                estimated_time=frontmatterdata.get('estimated_time')
-            )
+            if frontmatterdata.get('learning_objectives'):
+                for point in frontmatterdata.get('learning_objectives'):
+                    _, created = LearningObjective.objects.update_or_create(
+                        frontmatter=frontmatter, 
+                        label=point.get('annotation')
+                    )
 
-            frontmatter.refresh_from_db()
+            for cat in ['projects', 'readings']:
+                if frontmatterdata.get(cat):
+                    category, add_field = None, None
+                    if cat == 'projects':
+                        category = Resource.PROJECT
+                        add_field = frontmatter.projects
+                    elif cat == 'readings':
+                        category = Resource.READING
+                        add_field = frontmatter.readings
 
-            for label in frontmatterdata.get('ethical_considerations'):
-                _, created = EthicalConsideration.objects.get_or_create(frontmatter=frontmatter, label=convert_html_quotes(
-                    label))  # convert_html_quotes here to make sure the curly quotes are found
+                    for point in frontmatterdata.get(cat):
+                        if not add_field or not category:
+                            log.error('Cannot interpret category `{cat}`. Make sure the script is correct and corresponds with the database structure.')
 
-            for label in frontmatterdata.get('learning_objectives'):
-                _, created = LearningObjective.objects.get_or_create(frontmatter=frontmatter, label=convert_html_quotes(
-                    label))  # convert_html_quotes here to make sure the curly quotes are found
+                        obj, created = Resource.objects.update_or_create(
+                            category=category,
+                            title=point.get('linked_text'),
+                            url=point.get('url'),
+                            annotation=point.get('annotation')
+                        )
+                        add_field.add(obj)
 
-            for projectdata in frontmatterdata.get('projects'):
-                project, created = Resource.objects.update_or_create(
-                    category=Resource.PROJECT,
-                    title=projectdata.get('title'),
-                    url=projectdata.get('url'),
-                    defaults={'annotation': projectdata.get('annotation')})
-                frontmatter.projects.add(project)
-                frontmatter.save()
-
-            for readingdata in frontmatterdata.get('readings'):
-                reading, created = Resource.objects.update_or_create(
-                    category=Resource.READING,
-                    title=readingdata.get('title'),
-                    url=readingdata.get('url'),
-                    defaults={'annotation': readingdata.get('annotation')})
-                frontmatter.readings.add(reading)
-                frontmatter.save()
-
-            for contributordata in frontmatterdata.get('contributors'):
-                profile = Profile.objects.filter(user__first_name=contributordata.get(
-                    'first_name'), user__last_name=contributordata.get('last_name'))
-                if profile.count() == 1:
-                    profile = profile[0]
-                else:
+            if frontmatterdata.get('contributors'):
+                for point in frontmatterdata.get('contributors'):
                     profile = None
+                    try:
+                        profile = Profile.objects.get(user__first_name=point.get('first_name'), user__last_name=point.get('last_name'))
+                    except:
+                        for p in Profile.objects.all():
+                            if f'{p.user.first_name} {p.user.last_name}' == point.get('full_name'):
+                                profile = p
+                                log.info(f'In-depth search revealed a profile matching the full name for `{workshop.name}` contributor `{point.get("first_name")} {point.get("last_name")}`. It may or may not be the correct person, so make sure you verify it manually.')
 
-                contributor, created = Contributor.objects.get_or_create(
-                    first_name=contributordata.get('first_name'), last_name=contributordata.get('last_name'))
+                        if not p:
+                            log.info(f'Could not find user profile on the curriculum website for contributor `{point.get("full_name")}` (searching by first name `{point.get("first_name")}` and last name `{point.get("last_name")}`).')
+                    
+                    contributor, created = Contributor.objects.update_or_create(
+                        first_name=point.get('first_name'),
+                        last_name=point.get('last_name'),
+                        defaults={
+                            'url': point.get('link'),
+                            'profile': profile
+                        }
+                    )
 
-                if not created and not options.get('forceupdate'):
-                    choice = input.ask(
-                        f'Contributor `{contributordata.get("first_name")} {contributordata.get("last_name")}` already exists. Update with new content? [y/N]')
-                    if choice.lower() != 'y':
-                        continue
+                    collaboration, created = Collaboration.objects.update_or_create(
+                        frontmatter=frontmatter,
+                        contributor=contributor,
+                        defaults={
+                            'current': point.get('current'),
+                            'role': point.get('role')
+                        }
+                    )
 
-                Contributor.objects.filter(first_name=contributordata.get('first_name'), last_name=contributordata.get('last_name')).update(
-                    url=contributordata.get('url'),
-                    profile=profile
-                )
-
-                contributor.refresh_from_db()
-
-                collaboration, created = Collaboration.objects.get_or_create(
-                    frontmatter=frontmatter, contributor=contributor)
-
-                if not created and not options.get('forceupdate'):
-                    choice = input.ask(
-                        f'Collaboration between {contributor} and {workshop} already exists. Update with new content? [y/N]')
-                    if choice.lower() != 'y':
-                        continue
-
-                Collaboration.objects.filter(frontmatter=frontmatter, contributor=contributor).update(
-                    current=contributordata.get(
-                        'collaboration').get('current'),
-                    role=contributordata.get('collaboration').get('role')
-                )
-
-                collaboration.refresh_from_db()
 
             # 3. ENTER PRAXIS
-            praxis, created = Praxis.objects.get_or_create(workshop=workshop)
-
-            if not created and not options.get('forceupdate'):
-                choice = input.ask(
-                    f'Theory to Practice for workshop `{workshop}` already exists. Update with new content? [y/N]')
-                if choice.lower() != 'y':
-                    continue
-
-            Praxis.objects.filter(workshop=workshop).update(
-                intro=praxisdata.get('intro'),
+            praxis, created = Praxis.objects.update_or_create(
+                workshop=workshop,
+                defaults={
+                    'intro': praxisdata.get('intro'),
+                }
             )
 
-            praxis.refresh_from_db()
+            for cat in ['discussion_questions', 'next_steps']:
+                if praxisdata.get(cat):
+                    obj = None
+                    if cat == 'discussion_questions':
+                        obj = DiscussionQuestion
+                    elif cat == 'next_steps':
+                        obj = NextStep
 
-            for questiondata in praxisdata.get('discussion_questions'):
-                discussion_question, created = DiscussionQuestion.objects.get_or_create(praxis=praxis, label=convert_html_quotes(questiondata.get(
-                    'label')), defaults={'order': questiondata.get('order')})  # convert_html_quotes here to make sure the curly quotes are found
+                    for order, point in enumerate(praxisdata[cat], start=1): # TODO: Should we pull out order manually here? Not necessary, right?
+                        obj.objects.update_or_create(
+                            praxis=praxis, 
+                            label=point.get('annotation'),
+                            defaults={
+                                'order': order
+                            }
+                        )
 
-                NextStep.objects.filter(praxis=praxis, label=convert_html_quotes(questiondata.get('label'))).update(
-                    order=questiondata.get('order')
-                )
+            for cat in ['further_readings', 'further_projects', 'tutorials']:
+                if praxisdata.get(cat):
+                    category, add_field = None, None
+                    if cat == 'further_readings':
+                        category = Resource.READING
+                        add_field = praxis.further_readings
+                    elif cat == 'further_projects':
+                        category = Resource.PROJECT
+                        add_field = praxis.further_projects
+                    elif cat == 'tutorials':
+                        category = Resource.TUTORIAL
+                        add_field = praxis.tutorials
 
-                discussion_question.refresh_from_db()
+                    for point in praxisdata.get(cat):
+                        if not add_field or not category:
+                            log.error('Cannot interpret category `{cat}`. Make sure the script is correct and corresponds with the database structure.')
 
-            for stepdata in praxisdata.get('next_steps'):
-                nextstep, created = NextStep.objects.get_or_create(praxis=praxis, label=convert_html_quotes(stepdata.get(
-                    'label')), defaults={'order': stepdata.get('order')})  # convert_html_quotes here to make sure the curly quotes are found
-
-                NextStep.objects.filter(praxis=praxis, label=convert_html_quotes(stepdata.get('label'))).update(
-                    order=stepdata.get('order')
-                )
-
-                nextstep.refresh_from_db()
-
-            for readingdata in praxisdata.get('further_readings'):
-                reading, created = Resource.objects.update_or_create(
-                    category=Resource.READING,
-                    title=readingdata.get('title'),
-                    url=readingdata.get('url'),
-                    defaults={'annotation': convert_html_quotes(readingdata.get('annotation'))})
-                praxis.further_readings.add(reading)
-                praxis.save()
-
-            for projectdata in praxisdata.get('further_projects'):
-                project, created = Resource.objects.update_or_create(
-                    category=Resource.PROJECT,
-                    title=projectdata.get('title'),
-                    url=projectdata.get('url'),
-                    defaults={'annotation': convert_html_quotes(projectdata.get('annotation'))})
-                praxis.further_projects.add(project)
-                praxis.save()
-
-            for tutorialdata in praxisdata.get('tutorials'):
-                tutorial, created = Resource.objects.update_or_create(
-                    category=Resource.TUTORIAL,
-                    title=tutorialdata.get('title'),
-                    url=tutorialdata.get('url'),
-                    defaults={'annotation': convert_html_quotes(tutorialdata.get('annotation'))})
-                praxis.tutorials.add(tutorial)
-                praxis.save()
+                        try:
+                            obj, created = Resource.objects.update_or_create(
+                                category=category,
+                                title=point.get('linked_text'),
+                                url=point.get('url'),
+                                annotation=point.get('annotation')
+                            )
+                            add_field.add(obj)
+                        except IntegrityError:
+                            obj = Resource.objects.get(
+                                category=category,
+                                title=point.get('linked_text'),
+                                url=point.get('url'),
+                            )
+                            obj.annotation = point.get('annotation')
+                            log.info(f'Another resource with the same URL, title, and category already existed so updated with a new annotation: **{point.get("linked_text")} (old)**\n{point.get("annotation")}\n-------\n**{obj.title} (new)**\n{obj.annotation}')
 
             # 4. ENTER LESSONS
 
             for lessoninfo in lessondata:
-                lesson, created = Lesson.objects.get_or_create(
-                    workshop=workshop, title=lessoninfo.get('title'))
+                lesson, created = Lesson.objects.update_or_create(
+                    workshop=workshop,
+                    title=lessoninfo.get('header'),
+                    defaults={
+                        'order': lessoninfo.get('order'),
+                        'text': lessoninfo.get('content'),
+                    })
 
-                if not created and not options.get('forceupdate'):
-                    choice = input.ask(
-                        f'Lesson `{lesson.title}` already exists. Update with new content? [y/N]')
-                    if choice.lower() != 'y':
-                        continue
-
-                Lesson.objects.filter(workshop=workshop, title=lessoninfo.get('title')).update(
-                    order=lessoninfo.get('order'),
-                    text=lessoninfo.get('text'),
-                )
-
-                lesson.refresh_from_db()
-
+                # TODO: the following should be moved to the buildworkshop no?
                 soup = BeautifulSoup(lesson.text, 'lxml')
                 for img in soup.find_all('img'):
                     LessonImage.objects.update_or_create(
                         url=img.get('src'), lesson=lesson)
 
                 if not lessoninfo.get('challenge') and lessoninfo.get('solution'):
-                    log.error(f'The workshop {workshop}\'s lesson `{lesson.title}` has a solution but no challenge. Correct the files on GitHub and rerun the buildworkshop command and then re-attempt the ingestworkshop command. Alternatively, you can change the datafile content manually.')
+                    log.error(f'Lesson `{lesson.title}` (in workshop {workshop}) has a solution but no challenge. Correct the files on GitHub and rerun the buildworkshop command and then re-attempt the ingestworkshop command. Alternatively, you can change the datafile content manually.')
 
                 if lessoninfo.get('challenge'):
-                    challenge, created = Challenge.objects.get_or_create(lesson=lesson, title=lessoninfo.get(
-                        'challenge_title'), text=convert_html_quotes(lessoninfo.get('challenge')))
-
+                    challenge, created = Challenge.objects.update_or_create(
+                        lesson=lesson,
+                        title=lessoninfo['challenge'].get('header'),
+                        text=lessoninfo['challenge'].get('content')
+                    )
+                
                     if lessoninfo.get('solution'):
-                        solution, created = Solution.objects.get_or_create(challenge=challenge, title=lessoninfo.get(
-                            'solution_title'), text=convert_html_quotes(lessoninfo.get('solution')))
+                        solution, created = Solution.objects.update_or_create(
+                            challenge=challenge,
+                            title=lessoninfo['solution'].get('header'),
+                            text=lessoninfo['solution'].get('content')
+                        )
 
-                for questioninfo in lessoninfo.get('questions'):
-                    evaluation, created = Evaluation.objects.get_or_create(
-                        lesson=lesson)
-                    question, created = Question.objects.get_or_create(
-                        evaluation=evaluation, label=convert_html_quotes(questioninfo.get('question'), strip_surrounding_body=False, strip_surrounding_p=True))
-                    for answerinfo in questioninfo.get('answers', {}).get('correct'):
-                        answer, created = Answer.objects.get_or_create(
-                            question=question, label=convert_html_quotes(answerinfo), defaults={'is_correct': True})
-                        answer.is_correct = True
-                        answer.save()
-                    for answerinfo in questioninfo.get('answers', {}).get('incorrect'):
-                        answer, created = Answer.objects.get_or_create(
-                            question=question, label=convert_html_quotes(answerinfo), defaults={'is_correct': False})
-                        answer.is_correct = False
-                        answer.save()
+                if lessoninfo.get('evaluation'):
+                    evaluation, created = Evaluation.objects.get_or_create(lesson=lesson)
+                    for point in lessoninfo['evaluation'].get('content'):
+                        question, created = Question.objects.update_or_create(
+                            evaluation=evaluation,
+                            label=point.get('question')
+                        )
+                        for is_correct, answers in point.get('answers').items():
+                            is_correct = is_correct == 'correct'
+                            for answertext in answers:
+                                answer, created = Answer.objects.update_or_create(
+                                    question=question,
+                                    label=answertext,
+                                    defaults={
+                                        'is_correct': is_correct
+                                    }
+                                )
 
-                for keyword in lessoninfo.get('keywords'):
-                    finder = Term.objects.filter(term__iexact=keyword)
-                    if finder.count() == 1:
-                        lesson.terms.add(finder[0])
-                        lesson.save()
-                    elif finder.count() == 0:
-                        self.WARNINGS.append(log.warning(
-                            f'The keyword `{keyword}` used in workshop {workshop.name}\'s lesson {lesson.title} cannot be found in the glossary. Are you sure it is in the glossary and synchronized with the database? Make sure the data file for glossary is available ({GLOSSARY_FILE}) and that the term is defined in the file. Then run python manage.py ingestglossary.'))
-                    else:
-                        log.error(
-                            f'Multiple definitions of `{keyword}` exists in the database. Try resetting the glossary and rerun python manage.py ingestglossary before you run the ingestworkshop command again.')
+                if lessoninfo.get('keywords'):
+                    # lessoninfo['keywords'].get('header') # TODO: not doing anything with keyword header yet
+                    for point in lessoninfo['keywords'].get('content'):
+                        keyword = point.get('linked_text')
+                        terms = Term.objects.filter(term__iexact=keyword)
+                        if terms.count() == 1:
+                            lesson.terms.add(terms[0])
+                        elif terms.count() == 0:
+                            log.warning(f'Keyword `{keyword}` (used in lesson `{lesson.title}`, workshop `{workshop}` cannot be found in the existing glossary. Are you sure it is in the glossary and synchronized with the database? Make sure the data file for glossary is available ({GLOSSARY_FILE}) and that the term is defined in the file. Then run python manage.py ingestglossary.')
+                        else:
+                            log.error(f'Multiple definitions of `{keyword}` exists in the database. Try resetting the glossary and rerun python manage.py ingestglossary before you run the ingestworkshop command again.')
 
-        if default_workshop_image_exists() == False:
-            self.WARNINGS.append(log.warning(
-                f'No default workshop image exists. Make sure the image with the path {get_default_workshop_image()} exists.'))
+        log.log('Added/updated workshops: ' + ', '.join([x[0] for x in workshops]))
+        log.log('Do not forget to run `ingestprerequisites` after running the `ingestworkshop` command (without the --name flag).', color='yellow')
 
-        self.LOGS.append(log.log('Added/updated workshops: ' +
-                                 ', '.join([x[0] for x in workshops])))
-
-        if options.get('no_reminder') == False:
-            self.LOGS.append(log.log(
-                'Do not forget to run `ingestprerequisites` after running the `ingestworkshop` command (without the --name flag).', color='yellow'))
-
-        self.SAVE_DIR = self.SAVE_DIR = f'{LogSaver.LOG_DIR}/ingestworkshop'
-        if self._save(data='ingestworkshop', name='warnings.md', warnings=True) or self._save(data='ingestworkshop', name='logs.md', warnings=False, logs=True):
+        if log._save(data='ingestworkshop', name='warnings.md', warnings=True) or log._save(data='ingestworkshop', name='logs.md', warnings=False, logs=True):
             log.log('Log files with any warnings and logging information is now available in the' +
-                    self.SAVE_DIR, force=True)
+                    log.LOG_DIR, force=True)

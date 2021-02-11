@@ -8,6 +8,10 @@ CACHE_DIRS:
     PARSER: /tmp/.gh-api-cache/
     WEB: /tmp/.loader-cache/web/
     ZOTERO: /tmp/.loader-cache/zotero/
+    GLOSSARY: /tmp/.loader-cache/glossary/
+    WORKSHOPS: /tmp/.loader-cache/workshops/
+    INSTALL: /tmp/.loader-cache/install/
+    INSIGHT: /tmp/.loader-cache/insight/
 
 IMAGE_CACHE:
     INSTALL: /tmp/.loader-cache/images/install/

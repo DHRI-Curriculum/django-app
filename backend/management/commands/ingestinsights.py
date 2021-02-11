@@ -2,9 +2,8 @@ from insight.models import Insight, OperatingSystemSpecificSection, Section
 from django.core.management import BaseCommand
 from django.core.files import File
 from django.conf import settings
-from backend.dhri.log import Logger, Input
-from backend.mixins import convert_html_quotes
-from ._shared import test_for_required_files, get_yaml, LogSaver
+from backend.logger import Logger, Input
+from ._shared import test_for_required_files, get_yaml
 
 import os
 
@@ -33,7 +32,7 @@ def get_default_insight_image():
     return Insight.image.field.default
 
 
-class Command(LogSaver, BaseCommand):
+class Command(BaseCommand):
     import os
 
     def __init__(self, *args, **kwargs):
@@ -60,62 +59,50 @@ class Command(LogSaver, BaseCommand):
         data = get_yaml(f'{FULL_PATH}')
 
         for insightdata in data:
-            insight, created = Insight.objects.get_or_create(title=insightdata.get('title'), defaults={
-                'text': convert_html_quotes(insightdata.get('text'))
-            })
-
-            if not created and not options.get('forceupdate'):
-                choice = input.ask(
-                    f'Insight `{insightdata.get("title")}` already exists. Update with new content? [y/N]')
-                if choice.lower() != 'y':
-                    continue
-
-            Insight.objects.filter(title=insightdata.get('title')).update(
-                text=convert_html_quotes(insightdata.get('text')),
-                image_alt=insightdata.get('image_alt'))
-
-            insight.refresh_from_db()
-
-            original_file = insightdata.get('image')
+            # TODO: Insights and Software are also connected in a database table (insight_insight_software) but this relationship is not developed yet.
+            insight, created = Insight.objects.update_or_create(
+                title=insightdata.get('insight'), defaults={
+                    'text': insightdata.get('introduction'),
+                    'image_alt': insightdata.get('image').get('alt')
+                }
+            )
+            
+            original_file = insightdata.get('image').get('url')
             if original_file:
-                filename = original_file.split('/')[-1]
-                if original_file.startswith('/'):
-                    original_file = original_file[1:]
-                original_file = self.os.path.join(
-                    settings.BASE_DIR, 'insight', original_file)
-
-                if insight_image_exists(filename):
-                    insight.image.name = get_insight_image_path(
-                        filename, True)
+                if insight_image_exists(original_file):
+                    log.log(f'Insight image already exists. Adding path: `{os.path.basename(original_file)}`')
+                    insight.image.name = get_insight_image_path(original_file, True)
                     insight.save()
                 else:
+                    log.info(f'Insight image is being copied to media path: `{os.path.basename(original_file)}`')
                     with open(original_file, 'rb') as f:
                         insight.image = File(
                             f, name=self.os.path.basename(f.name))
                         insight.save()
             else:
+                log.warning(f'An image for `{insight}` does not exist. A default image will be saved instead. If you want a particular image for the installation instructions, follow the documentation.')
                 insight.image.name = get_default_insight_image()
                 insight.save()
-                # TODO: Move warning to build stage
-                self.WARNINGS.append(log.warning(
-                    f'Insight `{insightdata.get("title")}` does not have an image assigned to it. Add filepaths to an existing file in your datafile ({FULL_PATH}) if you want to update the specific insight image.'))
-
+            
             for sectiondata in insightdata.get('sections', []):
-                section, created = Section.objects.get_or_create(insight=insight, title=sectiondata.get(
-                    'title'), defaults={'order': sectiondata.get('order'), 'text': sectiondata.get('text')})
+                title = sectiondata
+                sectiondata = insightdata.get('sections').get(sectiondata)
+                section, created = Section.objects.update_or_create(insight=insight, title=title, defaults={'order': sectiondata.get('order'), 'text': sectiondata.get('content')})
 
-            for os, osdata in insightdata.get('specific_operating_systems').items():
-                related_section = Section.objects.get(
-                    title=osdata.get('section'))
+            for operating_system, osdata in insightdata.get('os_specific').items():
+                related_section = Section.objects.get(title=osdata.get('related_section'))
 
-                OperatingSystemSpecificSection.objects.get_or_create(
+                OperatingSystemSpecificSection.objects.update_or_create(
                     section=related_section,
-                    operating_system=os, defaults={'text': osdata.get('text')})
+                    operating_system=operating_system,
+                    defaults={
+                        'text': osdata.get('content')
+                    }
+                )
 
-        self.LOGS.append(log.log('Added/updated insights: ' +
-                                 ', '.join([x.get("title") for x in data])))
+        log.log('Added/updated insights: ' +
+                                 ', '.join([x.get("insight") for x in data]))
 
-        self.SAVE_DIR = self.SAVE_DIR = f'{LogSaver.LOG_DIR}/ingestinsights'
-        if self._save(data='ingestinsights', name='warnings.md', warnings=True) or self._save(data='ingestinsights', name='logs.md', warnings=False, logs=True):
+        if log._save(data='ingestinsights', name='warnings.md', warnings=True) or log._save(data='ingestinsights', name='logs.md', warnings=False, logs=True):
             log.log('Log files with any warnings and logging information is now available in the' +
-                    self.SAVE_DIR, force=True)
+                    log.LOG_DIR, force=True)

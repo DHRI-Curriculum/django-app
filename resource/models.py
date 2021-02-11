@@ -31,6 +31,6 @@ class Resource(CurlyQuotesMixin, models.Model):
 
     def __str__(self):
         return f'{self.title}'
-    
+
     class Meta:
-        unique_together = ('title', 'url', 'category')
+        unique_together = ['title', 'url', 'category', 'annotation']
