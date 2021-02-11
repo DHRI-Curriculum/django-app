@@ -86,6 +86,8 @@ INSIGHT_REPO = (SETUP['repositories.yml']['meta']['insight']['repo'],
 SETUP['backend.yml']['STATIC_IMAGES'] = {key: value.replace('$BASE_DIR', settings.BASE_DIR)
                  for key, value in SETUP['backend.yml']['STATIC_IMAGES'].items()}
 SETUP['backend.yml']['STATIC_IMAGES'] = {key: pathlib.Path(value) for key, value in SETUP['backend.yml']['STATIC_IMAGES'].items()}
+SETUP['backend.yml']['CACHE_DIRS'] = {key: value.replace('$BASE_DIR', settings.BASE_DIR)
+                 for key, value in SETUP['backend.yml']['CACHE_DIRS'].items()}
 SETUP['backend.yml']['TEST_AGES'] = {key: datetime.timedelta(days=value) for key, value in SETUP['backend.yml']['TEST_AGES'].items()}
 
 _SETUP = {'groups.yml': {}}
