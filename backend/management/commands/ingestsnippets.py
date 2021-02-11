@@ -2,7 +2,7 @@ from website.models import Snippet
 from django.core.management import BaseCommand
 from backend.logger import Logger, Input
 from backend.settings import AUTO_SNIPPETS
-from backend.dhri.markdown_parser import PARSER
+from backend.markdown_parser import PARSER
 
 
 

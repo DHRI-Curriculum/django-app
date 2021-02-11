@@ -4,12 +4,11 @@ import datetime
 import json
 import pathlib
 
-from github import Github
-
 from backend.logger import Logger
 from backend.settings import CACHE_DIRS, FORCE_DOWNLOAD, TEST_AGES, CACHE_VERBOSE, GITHUB_TOKEN
 from django.utils.text import slugify
-from django.conf import settings
+
+from github import Github
 
 log = Logger(name='github-parser')
 
@@ -85,8 +84,7 @@ class GitHubParserCache():
     def _setup_raw_content(self):
         """Queries GitHub for the html text for a given string"""
         if not GITHUB_TOKEN:
-            log.error(
-                'GitHub API token is not correctly set up in backend.settings — correct the error and try again')
+            log.error('GitHub API token is not correctly set up in backend.settings — correct the error and try again')
 
         string = str(self.string)
         g = Github(GITHUB_TOKEN)

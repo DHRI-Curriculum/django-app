@@ -1,11 +1,11 @@
 from django.core.management import BaseCommand
-from django.conf import settings
+from backend.settings import BUILD_DIR, INSIGHT_REPO
 from backend.logger import Logger
 from backend.github import InsightCache
 import yaml
 import pathlib
 
-SAVE_DIR = f'{settings.BASE_DIR}/_preload/_insights'
+SAVE_DIR = f'{BUILD_DIR}_insights'
 DATA_FILE = 'insights.yml'
 
 
@@ -34,7 +34,7 @@ class Command(BaseCommand):
         if not pathlib.Path(SAVE_DIR).exists():
             pathlib.Path(SAVE_DIR).mkdir(parents=True)
 
-        loader = InsightCache(log=log)
+        loader = InsightCache(repository=INSIGHT_REPO[0], branch=INSIGHT_REPO[1], log=log)
         insights = list()
 
         for insight_data in loader.data:

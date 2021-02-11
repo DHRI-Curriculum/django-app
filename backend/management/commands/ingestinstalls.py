@@ -1,11 +1,9 @@
-from backend.mixins import convert_html_quotes
 from install.models import Software, Instruction, Screenshot, Step
 from django.core.management import BaseCommand
 from django.core.files import File
 from django.conf import settings
 from backend.logger import Logger, Input
 from ._shared import test_for_required_files, get_yaml
-from shutil import copyfile
 import os
 
 
@@ -104,7 +102,7 @@ class Command(BaseCommand):
                     order=stepdata.get('step'),
                     defaults={
                         'header': stepdata.get('header'),
-                        'text': convert_html_quotes(stepdata.get('html'))
+                        'text': stepdata.get('html')
                     }
                 )
 

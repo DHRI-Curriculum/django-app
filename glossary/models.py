@@ -6,6 +6,7 @@ from backend.dhri_utils import dhri_slugify
 
 class Term(CurlyQuotesMixin, models.Model):
     curly_fields = ['explication']
+    unwrap_p = True
 
     term = models.TextField()
     slug = models.CharField(max_length=200, blank=True, unique=True)

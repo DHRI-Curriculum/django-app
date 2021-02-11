@@ -91,6 +91,7 @@ class Question(CurlyQuotesMixin, models.Model):
 
 class Answer(CurlyQuotesMixin, models.Model):
     curly_fields = ['label']
+    unwrap_p = True
 
     question = models.ForeignKey(
         Question, related_name='answers', on_delete=models.CASCADE)

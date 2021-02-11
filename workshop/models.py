@@ -18,6 +18,7 @@ class Workshop(models.Model):
     views = models.PositiveSmallIntegerField(default=0)
     image = models.ImageField(
         upload_to='workshop_headers/', default='workshop_headers/default.jpg')
+    image_alt = models.CharField(max_length=200, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -105,6 +106,8 @@ class Frontmatter(CurlyQuotesMixin, models.Model):
 
 class Prerequisite(CurlyQuotesMixin, models.Model):
     curly_fields = ['text']
+    unwrap_p = True
+
     EXTERNAL_LINK = 'external'
     INSTALL = 'install'
     INSIGHT = 'insight'
@@ -116,7 +119,7 @@ class Prerequisite(CurlyQuotesMixin, models.Model):
         (WORKSHOP, 'Workshop'),
     ]
 
-    text = models.TextField()
+    text = models.TextField(blank=True, null=True)
     label = models.TextField(max_length=200, blank=True, null=True)
     url = models.TextField(max_length=200, null=True, blank=True)
     required = models.BooleanField(default=False)
@@ -170,6 +173,7 @@ class Collaboration(models.Model):
 
 class LearningObjective(CurlyQuotesMixin, models.Model):
     curly_fields = ['label']
+    unwrap_p = True
 
     frontmatter = models.ForeignKey(
         Frontmatter, on_delete=models.CASCADE, related_name="learning_objectives")
@@ -184,6 +188,7 @@ class LearningObjective(CurlyQuotesMixin, models.Model):
 
 class EthicalConsideration(CurlyQuotesMixin, models.Model):
     curly_fields = ['label']
+    unwrap_p = True
 
     frontmatter = models.ForeignKey(
         Frontmatter, on_delete=models.CASCADE, related_name="ethical_considerations")
@@ -214,6 +219,7 @@ class Praxis(CurlyQuotesMixin, models.Model):
 
 class Blurb(CurlyQuotesMixin, models.Model):
     curly_fields = ['text']
+    unwrap_p = True
 
     workshop = models.ForeignKey(Workshop, on_delete=models.CASCADE)
     text = models.TextField()
@@ -228,6 +234,7 @@ class Blurb(CurlyQuotesMixin, models.Model):
 
 class NextStep(CurlyQuotesMixin, models.Model):
     curly_fields = ['label']
+    unwrap_p = True
 
     praxis = models.ForeignKey(
         Praxis, on_delete=models.CASCADE, related_name='next_steps')
@@ -241,6 +248,7 @@ class NextStep(CurlyQuotesMixin, models.Model):
 
 class DiscussionQuestion(CurlyQuotesMixin, models.Model):
     curly_fields = ['label']
+    unwrap_p = True
 
     praxis = models.ForeignKey(
         Praxis, on_delete=models.CASCADE, related_name='discussion_questions')

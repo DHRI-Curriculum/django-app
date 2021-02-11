@@ -1,17 +1,14 @@
 from backend.github import InstallCache
 from django.core.management import BaseCommand
-from django.conf import settings
+from backend.settings import BUILD_DIR, INSTALL_REPO
 from backend.logger import Logger
-# from backend.dhri.install_parser import InstallLoader
 
-from shutil import copyfile
-import re
 import pathlib
 import yaml
 
 
-SAVE_DIR = f'{settings.BASE_DIR}/_preload/_install'
-SAVE_DIR_IMAGES = f'{settings.BASE_DIR}/_preload/_install/images'
+SAVE_DIR = f'{BUILD_DIR}_install'
+SAVE_DIR_IMAGES = f'{BUILD_DIR}_install/images'
 DATA_FILE = 'install.yml'
 
 
@@ -34,8 +31,7 @@ class Command(BaseCommand):
             force_silent=options.get('silent')
         )
 
-        log.log(
-            'Building installation instruction files... Please be patient as this can take some time.')
+        log.log('Building installation instruction files... Please be patient as this can take some time.')
 
         if not pathlib.Path(SAVE_DIR).exists():
             pathlib.Path(SAVE_DIR).mkdir(parents=True)
@@ -43,8 +39,7 @@ class Command(BaseCommand):
         if not pathlib.Path(SAVE_DIR_IMAGES).exists():
             pathlib.Path(SAVE_DIR_IMAGES).mkdir(parents=True)
 
-        # loader = InstallLoader(force_download=options.get('forcedownload')) # TODO: #406
-        loader = InstallCache(log=log)
+        loader = InstallCache(repository=INSTALL_REPO[0], branch=INSTALL_REPO[1], log=log)
         installs = list()
 
         for install_data in loader.data:

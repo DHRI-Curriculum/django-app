@@ -3,7 +3,6 @@ from django.core.management import BaseCommand
 from django.core.files import File
 from django.conf import settings
 from backend.logger import Logger, Input
-from backend.mixins import convert_html_quotes
 from ._shared import test_for_required_files, get_yaml
 
 import os
@@ -63,7 +62,7 @@ class Command(BaseCommand):
             # TODO: Insights and Software are also connected in a database table (insight_insight_software) but this relationship is not developed yet.
             insight, created = Insight.objects.update_or_create(
                 title=insightdata.get('insight'), defaults={
-                    'text': convert_html_quotes(insightdata.get('introduction')),
+                    'text': insightdata.get('introduction'),
                     'image_alt': insightdata.get('image').get('alt')
                 }
             )

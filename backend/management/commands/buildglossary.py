@@ -1,7 +1,6 @@
 from django.core.management import BaseCommand
 from backend.logger import Logger
 from backend import settings
-#from backend.dhri.loader import GlossaryLoader
 from backend.github import GlossaryCache
 
 import yaml
@@ -31,7 +30,7 @@ class Command(BaseCommand):
         )
         log.log('Building glossary... Please be patient as this can take some time.')
 
-        loader = GlossaryCache(repository='glossary', branch='v2.0', log=log)
+        loader = GlossaryCache(repository='glossary', branch='v2.0', log=log) # TODO: import from settings here
 
         glossary = list()
 

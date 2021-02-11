@@ -75,7 +75,6 @@ def _is_expired(path, age_checker=TEST_AGES['ROOT'], force_download=FORCE_DOWNLO
 
 
 def process_links(input, obj, is_html=False) -> tuple:
-    """<#TODO: docstr>"""
     title, url = None, None
     if is_html == False:
         links = extract_links(input)
@@ -100,7 +99,7 @@ def process_links(input, obj, is_html=False) -> tuple:
             links = [x[1] for x in links]
             links[0] = '*** '+links[0]
             link_list = '- ' + "\n    - ".join([x[:get_terminal_width()-30] for x in links])
-        log.warning(f'One project seems to contain more than one URL, but only the first is captured:' + link_list) # TODO: Better handling of this in general....
+        log.warning(f'One project seems to contain more than one URL, but only the first is captured:' + link_list)
     if title == None or title == '':
         from backend.dhri.webcache import WebCache
         title = WebCache(url).title
@@ -1090,7 +1089,7 @@ class GlossaryParser():
         self._tutorials = list()
         for tutorial in self.tutorials:
             annotation = PARSER.convert(tutorial)
-            linked_text, url = extract_links(tutorial)[0] # TODO: Only extracting one link here...
+            linked_text, url = extract_links(tutorial)[0] # Only extracting one link here...
             self._tutorials.append({
                 'annotation': annotation,
                 'linked_text': linked_text,
@@ -1101,7 +1100,7 @@ class GlossaryParser():
         self._readings = list()
         for reading in self.readings:
             annotation = PARSER.convert(reading)
-            linked_text, url = extract_links(reading)[0] # TODO: Only extracting one link here...
+            linked_text, url = extract_links(reading)[0] # Only extracting one link here...
             self._readings.append({
                 'annotation': annotation,
                 'linked_text': linked_text,

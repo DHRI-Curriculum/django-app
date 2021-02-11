@@ -18,42 +18,6 @@ def check_for_cancel(SAVE_DIR, workshop):
             exit('User exit.')
 
 
-def process_prereq_text(html, log=None):
-    soup = BeautifulSoup(html, 'lxml')
-    text = ''
-    captured_link = False
-    warnings = []
-    for text_node in soup.find_all(string=True):
-        if text_node.parent.name.lower() == 'a' and not captured_link:  # strip out the first link
-            captured_link = text_node.parent['href']
-            continue
-
-        if text_node.parent.name.lower() == 'a':
-            warnings.append(log.warning(
-                f'Found more than one link in a prerequirement. The first link (`{captured_link}`) will be treated as the requirement, and any following links, such as `{text_node.parent["href"]}`, will be included in the accompanying text for the requirement.'))
-            text += f'<a href="{text_node.parent["href"]}" target="_blank">' + text_node.strip(
-            ).replace('(recommended) ', '').replace('(required) ', '') + '</a> '
-        elif text_node.parent.name.lower() == 'p':
-            text += text_node.strip().replace('(recommended) ', '').replace('(required) ', '')
-        elif not text_node.parent.attrs and not text_node.parent.is_empty_element:
-            text += f' <{text_node.parent.name}>{text_node}</{text_node.parent.name}> '
-        else:
-            log.error(f'The prerequirement contains a HTML tag ({text_node.parent.name}) that cannot be processed. They need to be added to the process_prereq_text function. If you do not know how to do this, try reformulating the provided HTML to only include <a>, <p>, or any _not self-closing tags_ with _no attributes_ (i.e. `<code>...</code>`, `<i>...</i>`, etc.) on the top level of your HTML:' + html, raise_error=NotImplementedError)
-
-    text = text.strip()
-
-    if text == '(required)':
-        text = None
-
-    if text == '(recommended)':
-        text = None
-
-    if text == '':
-        text = None
-
-    return text, warnings
-
-
 class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
@@ -103,9 +67,14 @@ class Command(BaseCommand):
             if not pathlib.Path(SAVE_DIR).exists():
                 pathlib.Path(SAVE_DIR).mkdir(parents=True)
 
-            loader = WorkshopCache(workshop, log=log)
+            branch = 'v2.0' # TODO: fix this...
+            loader = WorkshopCache(repository=workshop, branch=branch, log=log)
             data = loader.data
+            del data['raw']
             data['sections'] = loader.sections
+            data['parent_branch'] = loader.branch
+            data['parent_repo'] = workshop
+            data['parent_backend'] = 'Github'
 
             # Save all data
             with open(f'{SAVE_DIR}/{DATA_FILE}', 'w+') as file:

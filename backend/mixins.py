@@ -25,8 +25,9 @@ def convert_html_quotes(html, strip_surrounding_body=True, strip_surrounding_p=F
     if not html:
         return ''
     soup = BeautifulSoup(html, 'lxml')
-    for text_node in soup.find_all(string=True): # TODO: this should exclude code, where we don't want to enforce any curly quotes due to accessibility (ease of copying code etc)
-        text_node.replaceWith(quote_converter(text_node))
+    for text_node in soup.find_all(string=True):
+        if not text_node.parent.name.lower() == 'code': # TODO: #410 this should exclude code, where we don't want to enforce any curly quotes due to accessibility (ease of copying code etc)
+            text_node.replaceWith(quote_converter(text_node))
 
     if strip_surrounding_body:
         html = "".join([str(x) for x in soup.body.children])

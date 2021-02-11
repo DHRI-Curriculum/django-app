@@ -11,6 +11,7 @@ import pathlib
 import yaml
 
 BASE_DIR = settings.BASE_DIR
+BUILD_DIR = f'{BASE_DIR}/_preload/'
 
 def get_all_models():
     all_apps = [x.split('.')[0] for x in settings.INSTALLED_APPS if not x.startswith(

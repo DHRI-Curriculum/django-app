@@ -69,7 +69,6 @@ class Command(BaseCommand):
 
             if termdata.get('tutorials'):
                 for tutorialdata in termdata.get('tutorials'):
-                    print(tutorialdata)
                     tutorial, created = Resource.objects.get_or_create(
                         category=Resource.TUTORIAL,
                         annotation=tutorialdata.get('annotation'),
