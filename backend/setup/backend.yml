@@ -4,14 +4,14 @@ VERSION: 0.7
 # drive and not inside the django-app repo...
 
 CACHE_DIRS:
-    ROOT: /tmp/.loader-cache/
+    ROOT: .loader-cache/
     PARSER: /tmp/.gh-api-cache/
-    WEB: /tmp/.loader-cache/web/
-    ZOTERO: /tmp/.loader-cache/zotero/
-    GLOSSARY: /tmp/.loader-cache/glossary/
-    WORKSHOPS: /tmp/.loader-cache/workshops/
-    INSTALL: /tmp/.loader-cache/install/
-    INSIGHT: /tmp/.loader-cache/insight/
+    WEB: .loader-cache/web/
+    ZOTERO: .loader-cache/zotero/
+    GLOSSARY: .loader-cache/glossary/
+    WORKSHOPS: .loader-cache/workshops/
+    INSTALL: .loader-cache/install/
+    INSIGHT: .loader-cache/insight/
 
 IMAGE_CACHE:
     INSTALL: /tmp/.loader-cache/images/install/
