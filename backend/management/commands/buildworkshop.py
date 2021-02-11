@@ -105,6 +105,7 @@ class Command(BaseCommand):
 
             loader = WorkshopCache(workshop, log=log)
             data = loader.data
+            data['sections'] = loader.sections
 
             # Save all data
             with open(f'{SAVE_DIR}/{DATA_FILE}', 'w+') as file:

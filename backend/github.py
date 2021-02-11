@@ -530,23 +530,25 @@ class WorkshopCache(Helper, GitCache):
 
         # Set up quick access
         self.name = self.data['name']
-        self.frontmatter = self.data['sections']['frontmatter']
-        self.praxis = self.data['sections']['theory-to-practice']
-        self.lessons = self.data['sections']['lessons']
+        self.frontmatter = self.sections['frontmatter']
+        self.praxis = self.sections['theory-to-practice']
+        self.lessons = self.sections['lessons']
 
     def parse(self):
         data = {}
-        raw = self._get_raw()
-        data['raw'] = raw
-        data['image'] = self._get_image_from_first_line(raw['image'])
-        data['name'] = list(split_into_sections(raw['frontmatter'], level_granularity=1).keys())[0]
-        data['sections'] = {key: split_into_sections(value) for key, value in raw.items()}
-        data['sections'] = self._normalize_sections() # The error is here....
-        data['sections']['frontmatter'] = self._fix_frontmatter()
-        data['sections']['theory-to-practice'] = self._fix_praxis()
-        data['sections']['lessons'] = self._fix_lessons()
+        self.raw = self._get_raw()
+        data['raw'] = self.raw
+        data['image'] = self._get_image_from_first_line(self.raw['image'])
+        data['name'] = list(split_into_sections(
+            self.raw['frontmatter'], level_granularity=1).keys())[0]
+        self.sections = {key: split_into_sections(
+            value) for key, value in self.raw.items()}
+        self.sections = self._normalize_sections()
+        self.sections['frontmatter'] = self._fix_frontmatter()
+        self.sections['theory-to-practice'] = self._fix_praxis()
+        self.sections['lessons'] = self._fix_lessons()
 
-        data['image'] = self._fix_image(data['image'])
+        self.image = self._fix_image(data['image'])
 
         return data
 
@@ -580,18 +582,20 @@ class WorkshopCache(Helper, GitCache):
         return raw
 
     def _normalize_sections(self):
+        if not self.sections:
+            self.parse()
         new_sections = {}
         for file, section_data in NORMALIZING_SECTIONS.items():
             for normalized_section, spellings in section_data.items():
-                for sec, content in self.data['sections'].get(file).items():
+                for sec, content in self.sections.get(file).items():
                     if sec in spellings:
                         if not file in new_sections:
                             new_sections[file] = {}
                         new_sections[file][normalized_section] = content
                         found = True
 
-        #new_sections['lessons'] = self.sections['lessons']
-        #new_sections['image'] = self.sections['image']
+        new_sections['lessons'] = self.sections['lessons']
+        new_sections['image'] = self.sections['image']
 
         return new_sections
 
@@ -672,6 +676,7 @@ class WorkshopCache(Helper, GitCache):
         # Fixing contributors
         fixing['contributors'] = [self._fix_contributor(
             x) for x in as_list(fixing['contributors'])]
+
 
         # Fixing prerequisites
         _ = []
