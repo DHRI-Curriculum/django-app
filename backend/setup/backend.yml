@@ -8,7 +8,7 @@ CACHE_DIRS:
     PARSER: /tmp/.gh-api-cache/
     WEB: $BASE_DIR/.loader-cache/web/
     ZOTERO: $BASE_DIR/.loader-cache/zotero/
-    GLOSSARY: $BASE_DIR/.loader-cache/glossary/
+    GLOSSARY: $BASE_DIR/.loader-cache/
     WORKSHOPS: $BASE_DIR/.loader-cache/
     INSTALL: $BASE_DIR/.loader-cache/
     INSIGHT: $BASE_DIR/.loader-cache/
