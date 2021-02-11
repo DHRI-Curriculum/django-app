@@ -9,9 +9,9 @@ CACHE_DIRS:
     WEB: $BASE_DIR/.loader-cache/web/
     ZOTERO: $BASE_DIR/.loader-cache/zotero/
     GLOSSARY: $BASE_DIR/.loader-cache/glossary/
-    WORKSHOPS: $BASE_DIR/.loader-cache/workshops/
-    INSTALL: $BASE_DIR/.loader-cache/install/
-    INSIGHT: $BASE_DIR/.loader-cache/insight/
+    WORKSHOPS: $BASE_DIR/.loader-cache/
+    INSTALL: $BASE_DIR/.loader-cache/
+    INSIGHT: $BASE_DIR/.loader-cache/
 
 IMAGE_CACHE:
     INSTALL: /tmp/.loader-cache/images/install/
