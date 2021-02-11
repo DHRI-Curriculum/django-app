@@ -1,3 +1,4 @@
+from backend.mixins import convert_html_quotes
 from glossary.models import Term
 from resource.models import Resource
 from django.core.management import BaseCommand

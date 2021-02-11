@@ -80,7 +80,8 @@ class Command(BaseCommand):
         call_command('ingestworkshop',
                      forceupdate=True,
                      silent=options.get('silent'),
-                     verbose=options.get('verbose'))
+                     verbose=options.get('verbose'),
+                     no_reminder=True)
         call_command('ingestsnippets',
                      forceupdate=True,
                      silent=options.get('silent'),

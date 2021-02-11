@@ -47,12 +47,13 @@ class Command(BaseCommand):
         parser.add_argument('--name', nargs='+', type=str)
         parser.add_argument('--silent', action='store_true')
         parser.add_argument('--verbose', action='store_true')
+        parser.add_argument('--no_reminder', action='store_true')
 
     def handle(self, *args, **options):
         log = Logger(path=__file__,
-            force_verbose=options.get('verbose'),
-            force_silent=options.get('silent')
-        )
+                     force_verbose=options.get('verbose'),
+                     force_silent=options.get('silent')
+                     )
         input = Input(path=__file__)
 
         workshops = get_all_existing_workshops()
@@ -275,7 +276,8 @@ class Command(BaseCommand):
                 # TODO: the following should be moved to the buildworkshop no?
                 soup = BeautifulSoup(lesson.text, 'lxml')
                 for img in soup.find_all('img'):
-                    LessonImage.objects.update_or_create(url=img.get('src'), lesson=lesson)
+                    LessonImage.objects.update_or_create(
+                        url=img.get('src'), lesson=lesson)
 
                 if not lessoninfo.get('challenge') and lessoninfo.get('solution'):
                     log.error(f'Lesson `{lesson.title}` (in workshop {workshop}) has a solution but no challenge. Correct the files on GitHub and rerun the buildworkshop command and then re-attempt the ingestworkshop command. Alternatively, you can change the datafile content manually.')
