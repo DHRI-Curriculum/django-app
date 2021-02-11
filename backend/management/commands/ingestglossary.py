@@ -2,8 +2,8 @@ from glossary.models import Term
 from resource.models import Resource
 from django.core.management import BaseCommand
 from django.conf import settings
-from backend.dhri.log import Logger, Input
-from ._shared import test_for_required_files, get_yaml, LogSaver
+from backend.logger import Logger, Input
+from ._shared import test_for_required_files, get_yaml
 
 
 SAVE_DIR = f'{settings.BASE_DIR}/_preload/_meta/glossary'
@@ -16,7 +16,7 @@ REQUIRED_PATHS = [
 ]
 
 
-class Command(LogSaver, BaseCommand):
+class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
@@ -56,30 +56,32 @@ class Command(LogSaver, BaseCommand):
 
             term.refresh_from_db()
 
-            for projectdata in termdata.get('projects', []):
-                project, created = Resource.objects.get_or_create(
-                    category=Resource.PROJECT,
-                    annotation=projectdata.get('annotation'),
-                    title=projectdata.get('linked_text'),
-                    url=projectdata.get('url')
-                )
-                term.projects.add(project)
-                term.save()
+            if termdata.get('projects'):
+                for projectdata in termdata.get('projects'):
+                    project, created = Resource.objects.get_or_create(
+                        category=Resource.PROJECT,
+                        annotation=projectdata.get('annotation'),
+                        title=projectdata.get('linked_text'),
+                        url=projectdata.get('url')
+                    )
+                    term.projects.add(project)
+                    term.save()
 
-            for tutorialdata in termdata.get('tutorials', []):
-                tutorial, created = Resource.objects.get_or_create(
-                    category=Resource.TUTORIAL,
-                    annotation=tutorialdata.get('annotation'),
-                    title=tutorialdata.get('linked_text'),
-                    url=tutorialdata.get('url')
-                )
-                term.tutorials.add(tutorial)
-                term.save()
+            if termdata.get('tutorials'):
+                for tutorialdata in termdata.get('tutorials'):
+                    print(tutorialdata)
+                    tutorial, created = Resource.objects.get_or_create(
+                        category=Resource.TUTORIAL,
+                        annotation=tutorialdata.get('annotation'),
+                        title=tutorialdata.get('linked_text'),
+                        url=tutorialdata.get('url')
+                    )
+                    term.tutorials.add(tutorial)
+                    term.save()
 
-        self.LOGS.append(log.log('Added/updated terms: ' +
-                                 ', '.join([x.get('term') for x in data])))
+        log.log('Added/updated terms: ' +
+                                 ', '.join([x.get('term') for x in data]))
 
-        self.SAVE_DIR = self.SAVE_DIR = f'{LogSaver.LOG_DIR}/buildusers'
-        if self._save(data='buildusers', name='warnings.md', warnings=True) or self._save(data='buildusers', name='logs.md', warnings=False, logs=True):
+        if log._save(data='buildusers', name='warnings.md', warnings=True) or log._save(data='buildusers', name='logs.md', warnings=False, logs=True):
             log.log('Log files with any warnings and logging information is now available in the' +
-                    self.SAVE_DIR, force=True)
+                    log.LOG_DIR, force=True)

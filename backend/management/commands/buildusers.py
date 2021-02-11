@@ -1,10 +1,9 @@
 from django.core.management import BaseCommand
-from django.conf import settings
-from backend.dhri.log import Logger
-from backend.dhri import settings as dhri_settings
+from backend.logger import Logger
+from backend import settings
 from shutil import copyfile
 from PIL import Image
-from ._shared import LogSaver
+
 import yaml
 import pathlib
 
@@ -24,11 +23,11 @@ def crop_center(pil_img, crop_width, crop_height):
                          (img_height + crop_height) // 2))
 
 
-class Command(LogSaver, BaseCommand):
+class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
-    help = 'Build YAML files from user information (provided through dhri_settings.AUTO_USER)'
+    help = 'Build YAML files from user information (provided through backend.settings.AUTO_USER)'
     SAVE_DIR = ''
     WARNINGS, LOGS = [], []
 
@@ -53,8 +52,8 @@ class Command(LogSaver, BaseCommand):
         if not pathlib.Path(SAVE_DIR_IMG).exists():
             pathlib.Path(SAVE_DIR_IMG).mkdir(parents=True)
 
-        for cat in list(dhri_settings.AUTO_USERS.keys()):
-            for u in dhri_settings.AUTO_USERS[cat]:
+        for cat in list(settings.AUTO_USERS.keys()):
+            for u in settings.AUTO_USERS[cat]:
                 is_staff = cat == 'STAFF'
                 is_super = cat == 'SUPER'
 
@@ -97,8 +96,7 @@ class Command(LogSaver, BaseCommand):
                             cropped_img.save(
                                 user['profile']['image'], 'jpeg', quality=50)
                 else:
-                    self.WARNINGS.append(log.warning(
-                        f'User `{u.get("username")}` does not have an image assigned to them and will be assigned the default picture. Add filepaths to an existing file in your datafile (`{SAVE_DIR}/{DATA_FILE}`) or follow the steps in the documentation to add user images if you want to make sure the specific user has a profile picture. Then, rerun `python manage.py buildusers` or `python manage.py build`'))
+                    log.warning(f'User `{u.get("username")}` does not have an image assigned to them and will be assigned the default picture. Add filepaths to an existing file in your datafile (`{SAVE_DIR}/{DATA_FILE}`) or follow the steps in the documentation to add user images if you want to make sure the specific user has a profile picture. Then, rerun `python manage.py buildusers` or `python manage.py build`')
 
                 for link in u.get('links', []):
                     user['profile']['links'].append({
@@ -112,12 +110,10 @@ class Command(LogSaver, BaseCommand):
         # Save all data
         with open(f'{SAVE_DIR}/{DATA_FILE}', 'w+') as file:
             file.write(
-                yaml.dump({'users': users, 'default': dhri_settings.AUTO_USER_DEFAULT}))
+                yaml.dump({'users': users, 'default': settings.AUTO_USER_DEFAULT}))
 
-        self.LOGS.append(
-            log.log(f'Saved user datafile: {SAVE_DIR}/{DATA_FILE}.'))
+        log.log(f'Saved user datafile: {SAVE_DIR}/{DATA_FILE}.')
 
-        self.SAVE_DIR = self.SAVE_DIR = f'{LogSaver.LOG_DIR}/buildusers'
-        if self._save(data='buildusers', name='warnings.md', warnings=True) or self._save(data='buildusers', name='logs.md', warnings=False, logs=True):
+        if log._save(data='buildusers', name='warnings.md', warnings=True) or log._save(data='buildusers', name='logs.md', warnings=False, logs=True):
             log.log('Log files with any warnings and logging information is now available in the' +
-                    self.SAVE_DIR, force=True)
+                    log.LOG_DIR, force=True)

@@ -7,9 +7,9 @@ from workshop.models import Collaboration, Contributor, DiscussionQuestion, Ethi
 from django.core.management import BaseCommand
 from django.core.files import File
 from django.conf import settings
-from backend.dhri.log import Logger, Input
+from backend.logger import Logger, Input
 from backend.mixins import convert_html_quotes
-from ._shared import get_yaml, get_all_existing_workshops, GLOSSARY_FILE, LogSaver
+from ._shared import get_yaml, get_all_existing_workshops, GLOSSARY_FILE
 import os
 
 
@@ -33,7 +33,7 @@ def default_workshop_image_exists():
     return os.path.exists(os.path.join(settings.MEDIA_ROOT, get_default_workshop_image()))
 
 
-class Command(LogSaver, BaseCommand):
+class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
@@ -65,6 +65,9 @@ class Command(LogSaver, BaseCommand):
             DATAFILE = f'{path}/{name}.yml'
 
             superdata = get_yaml(DATAFILE)
+
+            print(superdata)
+            exit()
 
             # Separate out data
             frontmatterdata = superdata.get('frontmatter')
@@ -111,8 +114,7 @@ class Command(LogSaver, BaseCommand):
                 workshop.image.name = get_default_workshop_image()
                 workshop.save_slug()
                 # TODO: Move warning to build stage
-                self.WARNINGS.append(log.warning(
-                    f'Workshop {workshopdata.get("name")} does not have an image assigned to them. Add filepaths to an existing file in your datafile ({DATAFILE}) if you want to update the specific workshop.'))
+                log.warning(f'Workshop {workshopdata.get("name")} does not have an image assigned to them. Add filepaths to an existing file in your datafile ({DATAFILE}) if you want to update the specific workshop.')
 
             # 2. ENTER FRONTMATTER
             frontmatter, created = Frontmatter.objects.get_or_create(
@@ -331,22 +333,19 @@ class Command(LogSaver, BaseCommand):
                         lesson.terms.add(finder[0])
                         lesson.save()
                     elif finder.count() == 0:
-                        self.WARNINGS.append(log.warning(
-                            f'The keyword `{keyword}` used in workshop {workshop.name}\'s lesson {lesson.title} cannot be found in the glossary. Are you sure it is in the glossary and synchronized with the database? Make sure the data file for glossary is available ({GLOSSARY_FILE}) and that the term is defined in the file. Then run python manage.py ingestglossary.'))
+                        log.warning(f'The keyword `{keyword}` used in workshop {workshop.name}\'s lesson {lesson.title} cannot be found in the glossary. Are you sure it is in the glossary and synchronized with the database? Make sure the data file for glossary is available ({GLOSSARY_FILE}) and that the term is defined in the file. Then run python manage.py ingestglossary.')
                     else:
                         log.error(
                             f'Multiple definitions of `{keyword}` exists in the database. Try resetting the glossary and rerun python manage.py ingestglossary before you run the ingestworkshop command again.')
 
         if default_workshop_image_exists() == False:
-            self.WARNINGS.append(log.warning(
-                f'No default workshop image exists. Make sure the image with the path {get_default_workshop_image()} exists.'))
+            log.warning(f'No default workshop image exists. Make sure the image with the path {get_default_workshop_image()} exists.')
 
-        self.LOGS.append(log.log('Added/updated workshops: ' +
-                                 ', '.join([x[0] for x in workshops])))
-        self.LOGS.append(log.log(
-            'Do not forget to run `ingestprerequisites` after running the `ingestworkshop` command (without the --name flag).', color='yellow'))
+        log.log('Added/updated workshops: ' +
+                                 ', '.join([x[0] for x in workshops]))
+        log.log(
+            'Do not forget to run `ingestprerequisites` after running the `ingestworkshop` command (without the --name flag).', color='yellow')
 
-        self.SAVE_DIR = self.SAVE_DIR = f'{LogSaver.LOG_DIR}/ingestworkshop'
-        if self._save(data='ingestworkshop', name='warnings.md', warnings=True) or self._save(data='ingestworkshop', name='logs.md', warnings=False, logs=True):
+        if log._save(data='ingestworkshop', name='warnings.md', warnings=True) or log._save(data='ingestworkshop', name='logs.md', warnings=False, logs=True):
             log.log('Log files with any warnings and logging information is now available in the' +
-                    self.SAVE_DIR, force=True)
+                    log.LOG_DIR, force=True)

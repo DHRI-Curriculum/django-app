@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from backend.mixins import CurlyQuotesMixin
-from backend.dhri.text import dhri_slugify
+from backend.dhri_utils import dhri_slugify
 
 
 class Term(CurlyQuotesMixin, models.Model):

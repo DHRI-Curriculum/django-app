@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.text import slugify
 from install.models import Software
 from backend.mixins import CurlyQuotesMixin
-from backend.dhri.text import dhri_slugify
+from backend.dhri_utils import dhri_slugify
 
 
 class Insight(CurlyQuotesMixin, models.Model):

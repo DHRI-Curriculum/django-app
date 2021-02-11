@@ -3,8 +3,8 @@ from learner.models import Profile, ProfileLink
 from django.core.management import BaseCommand
 from django.core.files import File
 from django.conf import settings
-from backend.dhri.log import Logger, Input
-from ._shared import test_for_required_files, get_yaml, LogSaver
+from backend.logger import Logger, Input
+from ._shared import test_for_required_files, get_yaml
 import os
 
 
@@ -36,7 +36,7 @@ def get_default_profile_picture(full_path=False):
         '/' + Profile.image.field.default
 
 
-class Command(LogSaver, BaseCommand):
+class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
@@ -151,8 +151,7 @@ class Command(LogSaver, BaseCommand):
 
                 copyfile(data.get('default'),
                          get_default_profile_picture(full_path=True))
-                self.LOGS.append(log.log(
-                    'Default profile picture added to the /media/ directory.'))
+                log.log('Default profile picture added to the /media/ directory.')
             elif not data.get('default'):
                 log.error(
                     f'No default profile picture was defined in your datafile (`{FULL_PATH}`). Add the file, and then add the path to the file (relative to the `django-app` directory) in a `default` dictionary in your `users.yml` file, like this:\n' + '`default: backend/setup/profile-pictures/default.jpg`')
@@ -160,10 +159,9 @@ class Command(LogSaver, BaseCommand):
                 log.error(
                     f'The default profile picture (`{data.get("default")}`) in your datafile (`{FULL_PATH}`) does not exist in its expected directory (`{os.path.dirname(data.get("default"))}`). Make sure it is in the directory or update the datafile accordingly, or add the file before running this command.')
 
-        self.LOGS.append(log.log('Added/updated users: ' +
-                                 ', '.join([x.get('username') for x in data.get('users')])))
+        log.log('Added/updated users: ' +
+                                 ', '.join([x.get('username') for x in data.get('users')]))
 
-        self.SAVE_DIR = self.SAVE_DIR = f'{LogSaver.LOG_DIR}/ingestusers'
-        if self._save(data='ingestusers', name='warnings.md', warnings=True) or self._save(data='ingestusers', name='logs.md', warnings=False, logs=True):
+        if log._save(data='ingestusers', name='warnings.md', warnings=True) or log._save(data='ingestusers', name='logs.md', warnings=False, logs=True):
             log.log('Log files with any warnings and logging information is now available in the' +
-                    self.SAVE_DIR, force=True)
+                    log.LOG_DIR, force=True)

@@ -1,14 +1,14 @@
 from website.models import Snippet
 from django.core.management import BaseCommand
-from backend.dhri.log import Logger, Input
-from backend.dhri.settings import AUTO_SNIPPETS
+from backend.logger import Logger, Input
+from backend.settings import AUTO_SNIPPETS
 from backend.dhri.markdown_parser import PARSER
-from ._shared import LogSaver
+
 
 
 # TODO #362: Note that there is no buildsnippets since it comes in straight from a YAML file defined in dhri_settings
 
-class Command(LogSaver, BaseCommand):
+class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
@@ -45,10 +45,9 @@ class Command(LogSaver, BaseCommand):
                 snippet=PARSER.convert(snippetdata)
             )
 
-        self.LOGS.append(log.log('Added/updated snippets: ' +
-                                 ', '.join([x for x in data])))
+        log.log('Added/updated snippets: ' +
+                                 ', '.join([x for x in data]))
 
-        self.SAVE_DIR = self.SAVE_DIR = f'{LogSaver.LOG_DIR}/ingestsnippets'
-        if self._save(data='ingestsnippets', name='warnings.md', warnings=True) or self._save(data='ingestsnippets', name='logs.md', warnings=False, logs=True):
+        if log._save(data='ingestsnippets', name='warnings.md', warnings=True) or log._save(data='ingestsnippets', name='logs.md', warnings=False, logs=True):
             log.log('Log files with any warnings and logging information is now available in the' +
-                    self.SAVE_DIR, force=True)
+                    log.LOG_DIR, force=True)

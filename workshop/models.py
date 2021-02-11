@@ -4,7 +4,7 @@ from install.models import Software
 from insight.models import Insight
 from django.contrib.auth.models import User
 from backend.mixins import CurlyQuotesMixin
-from backend.dhri.text import dhri_slugify
+from backend.dhri_utils import dhri_slugify
 
 
 class Workshop(models.Model):

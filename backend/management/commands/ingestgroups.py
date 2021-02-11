@@ -1,8 +1,8 @@
 from django.contrib.auth.models import Group, Permission
 from django.core.management import BaseCommand
 from django.conf import settings
-from backend.dhri.log import Logger, Input
-from ._shared import test_for_required_files, get_yaml, LogSaver
+from backend.logger import Logger, Input
+from ._shared import test_for_required_files, get_yaml
 
 
 SAVE_DIR = f'{settings.BASE_DIR}/_preload/_meta/users'
@@ -15,7 +15,7 @@ REQUIRED_PATHS = [
 ]
 
 
-class Command(LogSaver, BaseCommand):
+class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
@@ -53,12 +53,10 @@ class Command(LogSaver, BaseCommand):
                     # Find permission object and add to group
                     perm = Permission.objects.get(codename=codename)
                     group.permissions.add(perm)
-                    self.LOGS.append(
-                        log.log(f'Adding {codename} to group {group.__str__()}.'))
+                    log.log(f'Adding {codename} to group {group.__str__()}.')
                 except Permission.DoesNotExist:
                     log.error(f'{codename} not found.')
 
-        self.SAVE_DIR = self.SAVE_DIR = f'{LogSaver.LOG_DIR}/ingestgroups'
-        if self._save(data='ingestgroups', name='warnings.md', warnings=True) or self._save(data='ingestgroups', name='logs.md', warnings=False, logs=True):
+        if log._save(data='ingestgroups', name='warnings.md', warnings=True) or log._save(data='ingestgroups', name='logs.md', warnings=False, logs=True):
             log.log('Log files with any warnings and logging information is now available in the' +
-                    self.SAVE_DIR, force=True)
+                    log.LOG_DIR, force=True)
