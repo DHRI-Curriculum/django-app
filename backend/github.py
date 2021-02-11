@@ -178,9 +178,12 @@ class GitCache():
             self.destination_dir = destination_dir
         
         if not os.path.exists(self.destination_dir):
+            self.log.log(f'Repository directory does not exist so cloning: {self.destination_dir}')
             self.repo = self._clone()
         else:
+            self.log.log(f'Repository directory exists so creating connection to repository: {self.destination_dir}')
             self.repo = git.Repo(self.destination_dir)
+            self.log.log(f'Pulling latest repository updates from remotes origin...')
             self.repo.remotes.origin.pull()
 
         self.log.log(f'Ensuring repository has correct branch checked out: {self.branch} ({self.repository})')
