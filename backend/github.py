@@ -177,6 +177,7 @@ class GitCache():
         else:
             self.destination_dir = destination_dir
         
+        self.reset()
         if not os.path.exists(self.destination_dir):
             self.log.log(f'Repository directory does not exist so cloning: {self.destination_dir}')
             self.repo = self._clone()
