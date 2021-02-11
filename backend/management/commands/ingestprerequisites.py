@@ -2,9 +2,8 @@ from workshop.models import Prerequisite, PrerequisiteSoftware, Workshop, Frontm
 from insight.models import Insight
 from install.models import Software
 from django.core.management import BaseCommand
-from backend.dhri.log import Logger, Input
-from backend.mixins import convert_html_quotes
-from ._shared import get_yaml, get_all_existing_workshops, LogSaver
+from backend.logger import Logger
+from ._shared import get_yaml, get_all_existing_workshops
 
 
 def search_workshop(potential_name, for_workshop=None, log=None, DATAFILE=None):
@@ -98,7 +97,7 @@ def search_insight(potential_name, potential_slug_fragment, for_workshop=None, l
     return False
 
 
-class Command(LogSaver, BaseCommand):
+class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
@@ -125,29 +124,27 @@ class Command(LogSaver, BaseCommand):
             workshops = get_all_existing_workshops(options.get('name'))
 
         for _ in workshops:
-            name, path = _
+            slug, path = _
             workshop, frontmatter = None, None
-            DATAFILE = f'{path}/{name}.yml'
+            DATAFILE = f'{path}/{slug}.yml'
 
             superdata = get_yaml(DATAFILE)
 
             # Separate out data
-            frontmatterdata = superdata.get('frontmatter')
-            workshopdata = superdata.get('workshop')
+            frontmatterdata = superdata.get('sections').get('frontmatter')
+            name = superdata.get('name')
 
             # 1. FIND WORKSHOP
             try:
-                workshop = Workshop.objects.get(name=workshopdata.get('name'))
+                workshop = Workshop.objects.get(name=name)
             except:
-                log.error(
-                    f'The workshop `{workshopdata.get("name")}` could not be found. Make sure you ran python manage.py ingestworkshop --name {workshopdata.get("name")} before running this command.')
+                log.error(f'The workshop `{slug}` could not be found. Make sure you ran python manage.py ingestworkshop --name {slug} before running this command.')
 
             # 2. FIND FRONTMATTER
             try:
                 frontmatter = Frontmatter.objects.get(workshop=workshop)
             except:
-                log.error(
-                    f'Frontmatter for the workshop `{workshopdata.get("name")}` could not be found. Make sure you ran python manage.py ingestworkshop --name {workshopdata.get("name")} before running this command.')
+                log.error(f'Frontmatter for the workshop `{slug}` could not be found. Make sure you ran python manage.py ingestworkshop --name {slug} before running this command.')
 
             for prereqdata in frontmatterdata.get('prerequisites'):
                 linked_workshop, linked_installs, linked_insight = None, None, None
@@ -156,30 +153,37 @@ class Command(LogSaver, BaseCommand):
 
                 if prereqdata.get('type') == 'workshop':
                     linked_workshop = search_workshop(prereqdata.get(
-                        'potential_name'), workshopdata.get("name"), log, DATAFILE)
+                        'potential_name'), name, log, DATAFILE)
                     q = f'Prerequisite workshop `{linked_workshop.name}`'
                     category = Prerequisite.WORKSHOP
-                    self.LOGS.append(log.log(
-                        f'Linking workshop prerequisite for `{workshopdata.get("name")}`: {linked_workshop.name}'))
+                    log.log(
+                        f'Linking workshop prerequisite for `{name}`: {linked_workshop.name}')
                 elif prereqdata.get('type') == 'install':
                     # currently, not using prereqdata.get('potential_slug_fragment') - might be something we want to do in the future
                     linked_installs = search_install(prereqdata.get(
-                        'potential_name'), workshopdata.get("name"), log, DATAFILE)
+                        'potential_name'), name, log, DATAFILE)
                     q = f'Prerequisite installations ' + \
                         ', '.join([f'`{x.software}`' for x in linked_installs])
                     category = Prerequisite.INSTALL
-                    self.LOGS.append(log.log(
-                        f'Linking installation prerequisite for `{workshopdata.get("name")}`: {[x.software for x in linked_installs]}'))
+                    log.log(
+                        f'Linking installation prerequisite for `{name}`: {[x.software for x in linked_installs]}')
                 elif prereqdata.get('type') == 'insight':
                     linked_insight = search_insight(prereqdata.get('potential_name'), prereqdata.get(
-                        'potential_slug_fragment'), workshopdata.get("name"), log, DATAFILE)
+                        'potential_slug_fragment'), name, log, DATAFILE)
                     q = f'Prerequisite insight `{linked_insight.title}`'
                     category = Prerequisite.INSIGHT
-                    self.LOGS.append(log.log(
-                        f'Linking insight prerequisite for `{workshopdata.get("name")}`: {linked_insight.title}'))
+                    log.log(
+                        f'Linking insight prerequisite for `{name}`: {linked_insight.title}')
 
-                prerequisite, created = Prerequisite.objects.get_or_create(category=category, linked_workshop=linked_workshop, linked_insight=linked_insight, url=url, text=convert_html_quotes(
-                    prereqdata.get('text', '')), required=prereqdata.get('required'), recommended=prereqdata.get('recommended'))
+                prerequisite, created = Prerequisite.objects.get_or_create(
+                    category=category, 
+                    linked_workshop=linked_workshop, 
+                    linked_insight=linked_insight, 
+                    url=url, 
+                    text=prereqdata.get('text', ''), 
+                    required=prereqdata.get('required'), 
+                    recommended=prereqdata.get('recommended')
+                )
 
                 if category == Prerequisite.EXTERNAL_LINK:
                     label = prereqdata.get('url_text')
@@ -194,10 +198,9 @@ class Command(LogSaver, BaseCommand):
 
                 frontmatter.prerequisites.add(prerequisite)
 
-        self.LOGS.append(log.log(
-            'Added/updated requirements for workshops: ' + ', '.join([x[0] for x in workshops])))
+        log.log(
+            'Added/updated requirements for workshops: ' + ', '.join([x[0] for x in workshops]))
 
-        self.SAVE_DIR = self.SAVE_DIR = f'{LogSaver.LOG_DIR}/ingestprerequisites'
-        if self._save(data='ingestprerequisites', name='warnings.md', warnings=True) or self._save(data='ingestprerequisites', name='logs.md', warnings=False, logs=True):
+        if log._save(data='ingestprerequisites', name='warnings.md', warnings=True) or log._save(data='ingestprerequisites', name='logs.md', warnings=False, logs=True):
             log.log('Log files with any warnings and logging information is now available in the' +
-                    self.SAVE_DIR, force=True)
+                    log.LOG_DIR, force=True)

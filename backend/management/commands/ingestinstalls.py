@@ -1,11 +1,9 @@
-from backend.mixins import convert_html_quotes
 from install.models import Software, Instruction, Screenshot, Step
 from django.core.management import BaseCommand
 from django.core.files import File
 from django.conf import settings
-from backend.dhri.log import Logger, Input
-from ._shared import test_for_required_files, get_yaml, LogSaver
-from shutil import copyfile
+from backend.logger import Logger, Input
+from ._shared import test_for_required_files, get_yaml
 import os
 
 
@@ -49,7 +47,7 @@ def default_instruction_image_exists():
     return os.path.exists(get_default_instruction_image())
 
 
-class Command(LogSaver, BaseCommand):
+class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
@@ -74,77 +72,49 @@ class Command(LogSaver, BaseCommand):
         data = get_yaml(f'{FULL_PATH}')
 
         for installdata in data:
-            software, created = Software.objects.get_or_create(operating_system=installdata.get(
-                'operating_system'), software=installdata.get('software'))
-            instruction, created = Instruction.objects.get_or_create(
-                software=software)
+            for operating_system in installdata.get('instructions'):
+                software, created = Software.objects.get_or_create(operating_system=operating_system, software=installdata.get('software'))
+                instruction, created = Instruction.objects.update_or_create(software=software, defaults={
+                    'what': installdata.get('what'),
+                    'why': installdata.get('why')
+                })
 
-            if not created and not options.get('forceupdate'):
-                choice = input.ask(
-                    f'Installation instructions for `{installdata.get("software")}` (with OS `{installdata.get("operating_system")}`) already exists. Update with new instructions? [y/N]')
-                if choice.lower() != 'y':
-                    continue
-
-            Instruction.objects.filter(software=software).update(
-                what=installdata.get('instruction', {}).get('what'),
-                why=installdata.get('instruction', {}).get('why')
-            )
-
-            instruction.refresh_from_db()
-
-            original_file = installdata.get('instruction', {}).get('image')
-            if original_file:
-                if instruction_image_exists(original_file):
-                    instruction.image.name = get_instruction_image_path(
-                        original_file, True)
-                    instruction.save()
-                else:
-                    with open(original_file, 'rb') as f:
-                        instruction.image = File(
-                            f, name=os.path.basename(f.name))
+                original_file = installdata.get('image')
+                if original_file:
+                    if instruction_image_exists(original_file):
+                        log.log(f'Instruction image already exists. Adding path: `{os.path.basename(original_file)}`')
+                        instruction.image.name = get_instruction_image_path(
+                            original_file, True)
                         instruction.save()
-            else:
-                instruction.image.name = get_default_instruction_image()
-                instruction.save()
-                # TODO: Move warning to build stage
-                self.WARNINGS.append(log.warning(
-                    f'Installation instruction for {installdata.get("software")} does not have an image assigned to them. Add filepaths to an existing file in your datafile ({FULL_PATH}) if you want to update the specific instruction image.'))
-
-            for stepdata in installdata.get('instruction', {}).get('steps', []):
-                step, created = Step.objects.get_or_create(
-                    instruction=instruction, order=stepdata.get('order'), defaults={'header': stepdata.get('header'), 'text': convert_html_quotes(stepdata.get('text'))})
-
-                if not created and not options.get('forceupdate'):
-                    choice = input.ask(
-                        f'Step {stepdata.get("order")} for installation of `{installdata.get("software")}` (with OS `{installdata.get("operating_system")}`) seems to already exist. Update with new instructions? [y/N]')
-                    if choice.lower() != 'y':
-                        continue
-
-                Step.objects.filter(instruction=instruction, order=stepdata.get('order')).update(
-                    header=stepdata.get('header'), text=stepdata.get('text'),
+                    else:
+                        log.info(f'Instruction image is being copied to media path: `{os.path.basename(original_file)}`')
+                        with open(original_file, 'rb') as f:
+                            instruction.image = File(f, name=os.path.basename(f.name))
+                            instruction.save()
+                else:
+                    log.warning(f'An image for `{software}` does not exist. A default image will be saved instead. If you want a particular image for the installation instructions, follow the documentation.')
+                    instruction.image.name = get_default_instruction_image()
+                    instruction.save()
+                    
+            for stepdata in installdata.get('instructions').get(operating_system):
+                step, created = Step.objects.update_or_create(
+                    instruction=instruction,
+                    order=stepdata.get('step'),
+                    defaults={
+                        'header': stepdata.get('header'),
+                        'text': stepdata.get('html')
+                    }
                 )
 
-                for order, path in enumerate(stepdata.get('screenshots'), start=1):
-                    screenshot = Screenshot.objects.filter(
-                        step=step, image='installation_screenshots/'+os.path.basename(path))
-                    if screenshot.count() == 1:
-                        screenshot = screenshot.last()
-                    elif screenshot.count() == 0:
-                        # print('does not exist')
-                        screenshot = Screenshot.objects.create(
-                            step=step, order=order)
-                        if not screenshot_exists(get_screenshot_path(path, True)):
-                            copyfile(path, get_screenshot_path(path))
-                        screenshot.image.name = get_screenshot_path(path, True)
-                        screenshot.save()
-                    else:
-                        log.error(
-                            'Too many identical screenshots. Try resetting and re-run python manage.py ingestinstalls.')
+                for order, d in enumerate(stepdata.get('screenshots'), start=1):
+                    path = d['path']
+                    alt_text = d['alt']
+                    Screenshot.objects.update_or_create(
+                        image='installation_screenshots/'+os.path.basename(path), defaults={'order': order, 'step': step, 'alt_text': alt_text})
 
-        self.LOGS.append(log.log('Added/updated installation instructions: ' +
-                                 ', '.join([f'{x.get("software")} ({x.get("operating_system")})' for x in data])))
+        log.log('Added/updated installation instructions: ' +
+                                 ', '.join([f'{x["software"]}' for x in data]))
 
-        self.SAVE_DIR = self.SAVE_DIR = f'{LogSaver.LOG_DIR}/ingestinstalls'
-        if self._save(data='ingestinstalls', name='warnings.md', warnings=True) or self._save(data='ingestinstalls', name='logs.md', warnings=False, logs=True):
+        if log._save(data='ingestinstalls', name='warnings.md', warnings=True) or log._save(data='ingestinstalls', name='logs.md', warnings=False, logs=True):
             log.log('Log files with any warnings and logging information is now available in the' +
-                    self.SAVE_DIR, force=True)
+                    log.LOG_DIR, force=True)

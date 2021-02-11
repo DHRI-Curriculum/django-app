@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.core.management import BaseCommand, call_command
 from ._shared import all_models
-from backend.dhri.log import get_or_default, Logger
+from backend.logger import get_or_default, Logger
 
 
 class Command(BaseCommand):
@@ -80,7 +80,8 @@ class Command(BaseCommand):
         call_command('ingestworkshop',
                      forceupdate=True,
                      silent=options.get('silent'),
-                     verbose=options.get('verbose'))
+                     verbose=options.get('verbose'),
+                     no_reminder=True)
         call_command('ingestsnippets',
                      forceupdate=True,
                      silent=options.get('silent'),

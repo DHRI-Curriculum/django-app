@@ -1,5 +1,5 @@
 from django.core.management import BaseCommand
-from backend.dhri.log import Logger
+from backend.logger import Logger
 from django.core.management import execute_from_command_line
 from django.conf import settings
 

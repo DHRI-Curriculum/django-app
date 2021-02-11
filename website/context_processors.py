@@ -3,7 +3,7 @@ from learner.models import Profile
 from workshop.models import Workshop
 from install.models import Instruction
 from insight.models import Insight
-from backend.dhri.settings import VERSION
+from backend.settings import VERSION
 from pathlib import Path
 
 

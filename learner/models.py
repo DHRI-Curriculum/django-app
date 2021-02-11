@@ -1,13 +1,14 @@
+from workshop.models import Workshop
 from django.db import models
 from django.contrib.auth.models import User
 from backend.mixins import CurlyQuotesMixin
 
 
 class Profile(CurlyQuotesMixin, models.Model):
-    from workshop.models import Workshop
 
     curly_fields = ['bio']
-
+    unwrap_p = True
+    
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(default='default.jpg',
                               upload_to='profile_pictures')

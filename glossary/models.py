@@ -1,11 +1,12 @@
 from django.db import models
 from django.urls import reverse
 from backend.mixins import CurlyQuotesMixin
-from backend.dhri.text import dhri_slugify
+from backend.dhri_utils import dhri_slugify
 
 
 class Term(CurlyQuotesMixin, models.Model):
     curly_fields = ['explication']
+    unwrap_p = True
 
     term = models.TextField()
     slug = models.CharField(max_length=200, blank=True, unique=True)
