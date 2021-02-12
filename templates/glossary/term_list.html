@@ -14,47 +14,11 @@
     <div class="row">
         <div class="col-12 col-xl-8">
             <h2>Terms starting with {{ slug }}</h2>
-            <ul>
-                {% for term in object_list %}
-                    <li><a href="#{{ term.slug }}" data-scroll="{{ term.slug }}">{{ term }}</a></li>
+            <div class="row">
+                {% for obj in object_list %}
+                    {% include 'glossary/fragments/term-card.html' with xl='col-xl-12' lg='col-lg-12' md='col-md-12' sm='col-sm-12' %}
                 {% endfor %}
-            </ul>
-
-            {% for term in object_list %}
-                <h3 class="h4 term_header pt-5 pb-2 mb-2 border-bottom"><a class="text-decoration-none text-black ml-1 term_header_link" name="{{ term.slug }}" href="{% url 'glossary:term' term.slug %}">{{ term.term }}</a></h3>
-                <p class="lead small">{{ term.explication | markdown | safe }}</p>
-                {% if term.readings.count or term.tutorials.count %}
-                    <div class="row py-2">
-                        {% if term.readings.count %}
-                            <div class="{% if term.readings.count and term.tutorials.count %}col-6{% else %}col-12{% endif %}">
-                                <h4 class="h5">Readings</h4>
-                                {% for reading in term.readings.all %}
-                                    <div class="p-2 my-3 rounded-lg linked-comment">
-                                        <a class="text-decoration-none stretched-link" target="_blank" href="{{ reading.url }}">
-                                            <i class="bi bi-link pr-1 text-muted"></i>{{ reading.title }}<!-- #285 include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" -->
-                                        </a>
-                                        {% if reading.annotation %}<div class="small"><strong>Annotation:</strong> {{ reading.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-
-                        {% if term.tutorials.count %}
-                            <div class="{% if term.readings.count and term.tutorials.count %}col-6{% else %}col-12{% endif %}">
-                                <h4 class="h5">Tutorials</h4>
-                                {% for tutorial in term.tutorials.all %}
-                                    <div class="p-2 my-3 rounded-lg linked-comment">
-                                        <a class="text-decoration-none stretched-link" target="_blank" href="{{ tutorial.url }}">
-                                            <i class="bi bi-link pr-1 text-muted"></i>{{ tutorial.label }}<!-- #285 include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" -->
-                                        </a>
-                                        {% if tutorial.annotation %}<div class="small"><strong>Annotation:</strong> {{ tutorial.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
-                                    </div>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                    </div>
-                {% endif %}
-            {% endfor %}
+            </div>
         </div>
 
         {% if random_items %}

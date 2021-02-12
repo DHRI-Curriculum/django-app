@@ -1,0 +1,29 @@
+{% load markdownify %}
+<div class="{{ xl|default:"col-xl-6" }} {{ lg|default:"col-lg-6" }} {{ md|default:"col-md-6" }} {{ sm|default:"col-sm-6" }} {{ xs|default:"col-12" }} px-3 py-3">
+    <div class="card h-100 bg-super-light">
+        <div class="card-header">
+            <h5 class="card-title m-0"><a href="{% url 'glossary:term' slug=obj.slug %}" name="{{ obj.slug }}">{{ obj.term | safe }}</a></h5>
+        </div>
+        <div class="card-body" data-resource-id="{{ obj.id }}" style="position: relative;"><!-- position: relative required for .stretched-link-->
+            <p class="m-0">{{ obj.explication | safe }}</p>
+        </div>
+        {% if obj.readings.count or obj.tutorials.count %}
+        <div class="card-footer">
+            <div>
+                {% if obj.readings.count %}
+                    <p class="m-0 small text-uppercase text-muted"><strong>Readings</strong></p>
+                    {% for resource in obj.readings.all %}
+                    <a class="btn btn-secondary btn-sm mr-1" href="{{ resource.url }}">{% if resource.annotation %}{{ resource.annotation | striptags | safe }}{% else %}{{ resource.title | safe }}{% endif %}</a>
+                    {% endfor %}
+                    {% endif %}
+                    {% if obj.tutorials.count %}
+                    <p class="m-0 small text-uppercase text-muted"><strong>Tutorials</strong></p>
+                    {% for resource in obj.tutorials.all %}
+                        <a class="btn btn-secondary btn-sm mr-1" href="{{ resource.url }}">{% if resource.annotation %}{{ resource.annotation | striptags | safe }}{% else %}{{ resource.title | safe }}{% endif %}</a>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>

@@ -1,3 +1,4 @@
+from backend.markdown_parser import PARSER
 from django.core.management import BaseCommand
 from backend.logger import Logger
 from backend import settings
@@ -68,7 +69,7 @@ class Command(BaseCommand):
                     'email': u.get('email', ''),
                     'profile': {
                         'image': '',
-                        'bio': u.get('bio'),
+                        'bio': '',
                         'pronouns': u.get('pronouns'),
                         'links': []
                     },
@@ -76,6 +77,9 @@ class Command(BaseCommand):
                     'staff': is_staff,
                     'groups': u.get('groups', [])
                 }
+
+                if u.get('bio'):
+                    user['profile']['bio'] = PARSER.convert(u.get('bio'))
 
                 if u.get('img'):
                     if options.get('nocrop'):
