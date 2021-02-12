@@ -1,10 +1,8 @@
 from django.db import models
-from backend.mixins import CurlyQuotesMixin
 
 
-class Snippet(CurlyQuotesMixin, models.Model):
-    curly_fields = ['snippet']
 
+class Snippet(models.Model):
     identifier = models.CharField(max_length=50, unique=True)
     snippet = models.TextField()
 

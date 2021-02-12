@@ -1,7 +1,7 @@
 from django.dispatch import receiver
 from django.db.models.signals import post_delete, pre_save
 from django.db import models
-from backend.mixins import CurlyQuotesMixin
+
 from backend.dhri_utils import dhri_slugify
 
 
@@ -33,9 +33,7 @@ class InstructionManager(models.Manager):
         return l
 
 
-class Instruction(CurlyQuotesMixin, models.Model):
-    curly_fields = ['what', 'why']
-
+class Instruction(models.Model):
     slug = models.CharField(max_length=200, blank=True, unique=True)
     software = models.ForeignKey(
         Software, on_delete=models.CASCADE, related_name='instructions')
@@ -53,9 +51,7 @@ class Instruction(CurlyQuotesMixin, models.Model):
         return f'Installation instruction for {self.software.software} ({self.software.operating_system})'
 
 
-class Step(CurlyQuotesMixin, models.Model):
-    curly_fields = ['text']
-
+class Step(models.Model):
     instruction = models.ForeignKey(
         Instruction, on_delete=models.CASCADE, related_name='steps')
     order = models.PositiveSmallIntegerField()

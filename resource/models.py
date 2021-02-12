@@ -1,11 +1,8 @@
 from django.db import models
-from backend.mixins import CurlyQuotesMixin
+
 
 
 class Resource(models.Model):
-    #curly_fields = ['title', 'annotation'] # TODO: we probably want to drop the CurlyFields mixin and add that to the build phase instead - in github.py....
-    #unwrap_p = True
-
     UNCATEGORIZED = 'uncategorized'
     READING = 'reading'
     PROJECT = 'project'

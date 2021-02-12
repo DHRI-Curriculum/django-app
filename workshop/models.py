@@ -3,7 +3,7 @@ from resource.models import Resource
 from install.models import Software
 from insight.models import Insight
 from django.contrib.auth.models import User
-from backend.mixins import CurlyQuotesMixin
+
 from backend.dhri_utils import dhri_slugify
 
 
@@ -85,9 +85,7 @@ class Contributor(models.Model):
         ]
 
 
-class Frontmatter(CurlyQuotesMixin, models.Model):
-    curly_fields = ['abstract']
-
+class Frontmatter(models.Model):
     workshop = models.OneToOneField(
         Workshop, related_name="frontmatter", on_delete=models.CASCADE)
     abstract = models.TextField()
@@ -104,10 +102,7 @@ class Frontmatter(CurlyQuotesMixin, models.Model):
         return f'Frontmatter for {self.workshop.name}'
 
 
-class Prerequisite(CurlyQuotesMixin, models.Model):
-    curly_fields = ['text']
-    unwrap_p = True
-
+class Prerequisite(models.Model):
     EXTERNAL_LINK = 'external'
     INSTALL = 'install'
     INSIGHT = 'insight'
@@ -171,10 +166,7 @@ class Collaboration(models.Model):
         ordering = ('current',)
 
 
-class LearningObjective(CurlyQuotesMixin, models.Model):
-    curly_fields = ['label']
-    unwrap_p = True
-
+class LearningObjective(models.Model):
     frontmatter = models.ForeignKey(
         Frontmatter, on_delete=models.CASCADE, related_name="learning_objectives")
     label = models.TextField(max_length=500)
@@ -186,10 +178,7 @@ class LearningObjective(CurlyQuotesMixin, models.Model):
         unique_together = ('frontmatter', 'label')
 
 
-class EthicalConsideration(CurlyQuotesMixin, models.Model):
-    curly_fields = ['label']
-    unwrap_p = True
-
+class EthicalConsideration(models.Model):
     frontmatter = models.ForeignKey(
         Frontmatter, on_delete=models.CASCADE, related_name="ethical_considerations")
     label = models.TextField(max_length=500)
@@ -201,9 +190,7 @@ class EthicalConsideration(CurlyQuotesMixin, models.Model):
         unique_together = ('frontmatter', 'label')
 
 
-class Praxis(CurlyQuotesMixin, models.Model):
-    curly_fields = ['intro']
-
+class Praxis(models.Model):
     intro = models.TextField(max_length=3000, blank=True, null=True)
     further_readings = models.ManyToManyField(Resource, related_name='praxis_further_readings')
     further_projects = models.ManyToManyField(Resource, related_name='praxis_further_projects')
@@ -217,10 +204,7 @@ class Praxis(CurlyQuotesMixin, models.Model):
         verbose_name_plural = "praxes"
 
 
-class Blurb(CurlyQuotesMixin, models.Model):
-    curly_fields = ['text']
-    unwrap_p = True
-
+class Blurb(models.Model):
     workshop = models.ForeignKey(Workshop, on_delete=models.CASCADE)
     text = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -232,10 +216,7 @@ class Blurb(CurlyQuotesMixin, models.Model):
         unique_together = ('workshop', 'text', 'user')
 
 
-class NextStep(CurlyQuotesMixin, models.Model):
-    curly_fields = ['label']
-    unwrap_p = True
-
+class NextStep(models.Model):
     praxis = models.ForeignKey(
         Praxis, on_delete=models.CASCADE, related_name='next_steps')
     label = models.TextField(max_length=500)
@@ -246,10 +227,7 @@ class NextStep(CurlyQuotesMixin, models.Model):
         unique_together = ('praxis', 'label')
 
 
-class DiscussionQuestion(CurlyQuotesMixin, models.Model):
-    curly_fields = ['label']
-    unwrap_p = True
-
+class DiscussionQuestion(models.Model):
     praxis = models.ForeignKey(
         Praxis, on_delete=models.CASCADE, related_name='discussion_questions')
     label = models.TextField(max_length=500)
