@@ -16,8 +16,27 @@ class TermList(ListView):
         return slug
 
     def get_queryset(self):
-        slug = self.get_slug()
-        return Term.objects.filter(term__istartswith=slug)
+        allowed = [x.lower() for x in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ']
+        letter = self.get_slug()
+        extra = {}
+        for t in Term.objects.all().order_by('term'):
+            if not t.term[0].lower() in allowed:
+                done = False
+                for i in range(2,len(t.term)):
+                    if done: continue
+                    if t.term[i-1:i].lower() in allowed:
+                        if not t.term[i-1:i] in extra:
+                            extra[t.term[i-1:i]] = []
+                        extra[t.term[i-1:i]].append(t.term)
+                        done = True
+        
+        if letter in extra.keys():
+            for term in extra[letter]:
+                objects = Term.objects.filter(term=term)
+        try:
+            return objects | Term.objects.filter(term__istartswith=letter)
+        except:
+            return Term.objects.filter(term__istartswith=letter)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

@@ -3,6 +3,7 @@ from glossary.models import Term
 from resource.models import Resource
 from django.core.management import BaseCommand
 from django.conf import settings
+from django.db.utils import IntegrityError
 from backend.logger import Logger, Input
 from ._shared import test_for_required_files, get_yaml
 
@@ -57,27 +58,39 @@ class Command(BaseCommand):
 
             term.refresh_from_db()
 
-            if termdata.get('projects'):
-                for projectdata in termdata.get('projects'):
-                    project, created = Resource.objects.get_or_create(
-                        category=Resource.PROJECT,
-                        annotation=projectdata.get('annotation'),
-                        title=projectdata.get('linked_text'),
-                        url=projectdata.get('url')
-                    )
-                    term.projects.add(project)
-                    term.save()
+            for cat in ['tutorials', 'readings']:
+                if termdata.get(cat):
+                    category, add_field = None, None
+                    if cat == 'tutorials':
+                        category = Resource.TUTORIAL
+                        add_field = term.tutorials
+                    elif cat == 'readings':
+                        category = Resource.READING
+                        add_field = term.readings
 
-            if termdata.get('tutorials'):
-                for tutorialdata in termdata.get('tutorials'):
-                    tutorial, created = Resource.objects.get_or_create(
-                        category=Resource.TUTORIAL,
-                        annotation=tutorialdata.get('annotation'),
-                        title=tutorialdata.get('linked_text'),
-                        url=tutorialdata.get('url')
-                    )
-                    term.tutorials.add(tutorial)
-                    term.save()
+                    for point in termdata.get(cat):
+                        if not add_field or not category:
+                            log.error('Cannot interpret category `{cat}`. Make sure the script is correct and corresponds with the database structure.')
+
+                        try:
+                            obj, created = Resource.objects.update_or_create(
+                                category=category,
+                                title=point.get('linked_text'),
+                                url=point.get('url'),
+                                annotation=point.get('annotation')
+                            )
+                            if obj not in add_field.all():
+                                add_field.add(obj)
+                        except IntegrityError:
+                            obj = Resource.objects.get(
+                                category=category,
+                                title=point.get('linked_text'),
+                                url=point.get('url'),
+                            )
+                            obj.annotation = point.get('annotation')
+                            if obj not in add_field.all():
+                                add_field.add(obj)
+                            log.info(f'Another resource with the same URL, title, and category already existed so updated with a new annotation: **{point.get("linked_text")} (old)**\n{point.get("annotation")}\n-------\n**{obj.title} (new)**\n{obj.annotation}')
 
         log.log('Added/updated terms: ' +
                                  ', '.join([x.get('term') for x in data]))

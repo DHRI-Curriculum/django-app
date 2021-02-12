@@ -11,20 +11,20 @@ from pathlib import Path
 from nameparser import HumanName
 
 from backend.settings import CACHE_DIRS, IMAGE_CACHE, NORMALIZING_SECTIONS, BACKEND_AUTO
-from backend.markdown_parser import PARSER
-from backend.dhri_utils import extract_links, split_into_sections, as_list, get_terminal_width
+from backend.markdown_parser import MarkdownError, PARSER, split_into_sections, as_list # move here
+from backend.dhri_utils import get_terminal_width
 from backend.mixins import convert_html_quotes
 
-
-class MarkdownError(Exception):
-    pass
 
 
 class Helper():
     IMAGE_REGEX = re.compile(r'(?:!\[(.*?)\]\((.*?)\))')
 
     def _extract_from_p(self, html):
-        return ''.join([str(x) for x in BeautifulSoup(html, 'lxml').p.children])
+        try:
+            return ''.join([str(x) for x in BeautifulSoup(html, 'lxml').p.children])  # TODO: this now crashes....
+        except:
+            return html
 
     def _get_image_from_first_line(self, markdown=''):
         if markdown == '' or markdown == None:
@@ -38,8 +38,7 @@ class Helper():
                 raise MarkdownError(f'Found image but likely misformatted. Try to correct this markdown: `{image}`') from None
         return {'alt': '', 'url': ''}
 
-    @staticmethod
-    def _fix_list_element(markdown):
+    def _fix_list_element(self, markdown):
         html = WorkshopCache.HTML_parser(markdown)
         soup = BeautifulSoup(html, 'lxml')
         link = soup.find('a')
@@ -48,11 +47,33 @@ class Helper():
             url = link['href']
             text = link.text
         _ = {
-            'annotation': convert_html_quotes(''.join([str(x) for x in soup.p.children])),
-            'linked_text': convert_html_quotes(text),
+            'annotation': self._extract_from_p(convert_html_quotes(''.join([str(x) for x in soup.p.children]))),
+            'linked_text': self._extract_from_p(convert_html_quotes(text)),
             'url': url
         }
         return _
+
+    def _fix_image(self, dictionary, additional_parents=[]):
+        if not isinstance(dictionary, dict) and not isinstance(dictionary, tuple):
+            raise NotImplementedError(f'Dictionary passed in was not a dictionary but a {type(dictionary)}: {dictionary}')
+        elif isinstance(dictionary, tuple):
+            _ = {}
+            _['url'], _['alt'] = dictionary
+            dictionary = _
+        url = dictionary.get('url').replace('https://', '').replace('http://', '').replace(f'raw.githubusercontent.com/DHRI-Curriculum/{self.repository}/{self.branch}/', '')
+        parents = [x for x in url.split('/') if not '.' in x]
+        for add_parent in additional_parents:
+            if not add_parent in parents:
+                parents.insert(0, add_parent)
+        local_file = self.destination_dir
+        for parent in parents:
+            local_file = os.path.join(local_file, parent)
+        local_file += '/' + os.path.basename(url).replace('%40', '@')
+        if os.path.exists(local_file):
+            return {'url': local_file, 'alt': dictionary.get('alt')}
+        else:
+            exit('error! fix this!')
+            return {'url': url, 'alt': dictionary.get('alt')}
 
     @staticmethod
     def _get_order(step, log=None):
@@ -103,37 +124,6 @@ class Helper():
         else:
             return True
 
-    '''
-    @staticmethod
-    def process_links(input, obj, is_html=False, allow_no_link=True) -> tuple:
-        """<TODO: docstr>"""
-        title, url, links = None, None, []
-        if is_html == False:
-            links = extract_links(input)
-            if links:
-                title, url = links[0]
-            else:
-                return(None, None, [])
-        elif is_html:
-            soup = BeautifulSoup(input, 'lxml')
-            links = soup.find_all('a')
-            if len(links) == 0 and allow_no_link:
-                return(None, None, [])
-            elif len(links) == 0 and allow_no_link == False:
-                raise MarkdownError(
-                    f'A link was expected in the input but could not be parsed: `{input}`') from None
-            title, url = links[0].text, links[0]['href']
-
-        if title == None or title == '':
-            from backend.webcache import WebCache
-            from backend.logger import get_or_default
-            title = WebCache(url).title
-            title = get_or_default(
-                f'Set a title for the {obj} at {url}: ', title)  # import..?
-
-        return(title, url, links)
-    '''
-
     @staticmethod
     def process_prereq_text(html, log=None):
         soup = BeautifulSoup(html, 'lxml')
@@ -177,7 +167,10 @@ class GitCache():
         else:
             self.destination_dir = destination_dir
         
-        self.reset()
+        if os.path.exists(self.destination_dir) and not '.git' in os.listdir(self.destination_dir):
+            self.log.info(f'Repository directory ({self.destination_dir}) exists but is not an initiated git directory, so it is removed. Contents before removal: {os.listdir(self.destination_dir)}')
+            self.reset()
+
         if not os.path.exists(self.destination_dir):
             self.log.log(f'Repository directory does not exist so cloning: {self.destination_dir}')
             self.repo = self._clone()
@@ -189,6 +182,8 @@ class GitCache():
 
         self.log.log(f'Ensuring repository has correct branch checked out: {self.branch} ({self.repository})')
         self.repo.git.checkout(self.branch, force=True)
+
+        self.parsed_data = self.parse()
 
     def _clone(self):
         if self.backend.lower() == 'github':
@@ -225,13 +220,24 @@ class GitCache():
             import shutil
             shutil.rmtree(self.destination_dir)
 
-    def read_file(self, path):
-        with open(path, 'r') as f:
-            return f.read()
+    def read_file(self, path, skip_directories=True):
+        try:
+            with open(path, 'r') as f:
+                return f.read()
+        except FileNotFoundError:
+            raise FileNotFoundError(f'Warning: File `{path}` could not be found. Run ._clone()')
+        except IsADirectoryError:
+            if skip_directories:
+                return None
+            else:
+                raise IsADirectoryError()
 
     @classmethod
     def get_stem(self, path):
         return os.path.basename(path).split('.')[0]
+
+    def parse(self):
+        self.log.log(f'Parsing data from repository...')
 
     @property
     def data(self):
@@ -256,14 +262,10 @@ class GlossaryCache(Helper, GitCache):
                          branch=self.branch, cache_dir=self.cache_dir, log=log)
 
     def parse(self):
+        super().parse()
         terms = []
         for file in self.contents_of('terms'):
-            try:
-                file_contents = self.read_file(
-                    os.path.join(self.destination_dir, 'terms', file))
-            except FileNotFoundError:
-                raise FileNotFoundError(
-                    f'Warning: File {file} could not be found. Run ._clone()')
+            file_contents = self.read_file(os.path.join(self.destination_dir, 'terms', file))
 
             _ = {
                 'term': None,
@@ -278,16 +280,17 @@ class GlossaryCache(Helper, GitCache):
                 elif section == 'Tutorials':
                     _['tutorials'] = [self._fix_list_element(x) for x in as_list(sections[section])]
                 else:
-                    _['term'] = section
+                    _['term'] = self._extract_from_p(convert_html_quotes(section))
                     _['explication'] = convert_html_quotes(self.HTML_parser(sections[section]))
             terms.append(_)
+
         return terms
 
 
 class InstallCache(Helper, GitCache):
+    cache_dir = 'INSTALL'
 
     def __init__(self, repository='install', branch='v2.0', log=None):
-        self.cache_dir = 'INSTALL'
         self.repository = repository
         self.branch = branch
         self.log = log
@@ -296,15 +299,12 @@ class InstallCache(Helper, GitCache):
         self.image_baseurl = f'https://raw.githubusercontent.com/DHRI-Curriculum/{self.repository}/{self.branch}/guides/images/' # needs to end with /
         
     def parse(self):
+        super().parse()
         instructions = []
         for file in self.contents_of('guides'):
-            try:
-                file_contents = self.read_file(os.path.join(
-                    self.destination_dir, 'guides', file))
-            except FileNotFoundError:
-                raise FileNotFoundError(
-                    f'Warning: File {file} could not be found. Run ._clone()')
-            except IsADirectoryError:
+            file_contents = self.read_file(os.path.join(self.destination_dir, 'guides', file))
+
+            if not file_contents:
                 continue
 
             _ = {
@@ -321,12 +321,16 @@ class InstallCache(Helper, GitCache):
             }
 
             # Get image
-            if self._get_image_from_first_line(file_contents):
-                data = self._get_image_from_first_line(file_contents)
-                data = self._fix_image(data)
-                _['image_alt'], _['image'] = data['alt'], data['url']
+            image_data = self._get_image_from_first_line(file_contents)
+            if image_data:
+                image_data = self._fix_image(image_data)
+                _['image_alt'] = image_data['alt']
+                _['image'] = image_data['url']
                 
-                file_contents = '\n'.join(file_contents.splitlines()[1:])
+                try:
+                    file_contents = '\n'.join(file_contents.splitlines()[1:])
+                except:
+                    self.log.error('An error occurred when interpreting image data for installation instructions: {image_data}')
 
             # Get `software`
             sections = split_into_sections(file_contents, level_granularity=1)
@@ -381,20 +385,6 @@ class InstallCache(Helper, GitCache):
         
         return instructions
 
-    def _fix_image(self, dictionary):
-        url = dictionary.get('url').replace('https://', '').replace('http://', '').replace(
-            f'raw.githubusercontent.com/DHRI-Curriculum/{self.repository}/{self.branch}/', '')
-        parents = [x for x in url.split('/') if not '.' in x]
-        local_file = self.destination_dir
-        for _dir in parents:
-            local_file = os.path.join(local_file, _dir)
-        local_file += '/' + os.path.basename(url).replace('%40', '@')
-        if os.path.exists(local_file):
-            return {'url': local_file, 'alt': dictionary.get('alt')}
-        else:
-            exit('error! fix this!') # TODO: Fix this...
-            return {'url': url, 'alt': dictionary.get('alt')}
-
     def _get_screenshots_from_markdown(self, markdown='', relative_dir=None):
         screenshots = []
 
@@ -424,6 +414,8 @@ class InstallCache(Helper, GitCache):
             if os.path.exists(local_image):
                 pass  # the image already exists
             else:
+                raise NotImplementedError('This script does not yet download images as it should be synced in the repository.')
+                '''
                 filename = os.path.basename(img['src'])
                 local_destination = IMAGE_CACHE['INSTALL'] / filename
                 self.log.warning(
@@ -431,6 +423,7 @@ class InstallCache(Helper, GitCache):
                 url = f'{self.image_baseurl}{filename}'
                 if self.download_image(url, local_destination):
                     local_image = local_destination
+                '''
 
             if local_image:
                 screenshots.append({'path': local_image, 'alt': img['alt']})
@@ -446,25 +439,22 @@ class InstallCache(Helper, GitCache):
 
 
 class InsightCache(Helper, GitCache):
+    cache_dir = 'INSIGHT'
 
     def __init__(self, repository='insights', branch='v2.0', log=None):
         self.repository = repository
         self.branch = branch
-        self.cache_dir = 'INSIGHT'
         self.log = log
         super().__init__(repository=self.repository,
                          branch=self.branch, cache_dir=self.cache_dir, log=log)
 
     def parse(self):
+        super().parse()
         insights = []
         for file in self.contents_of('pages'):
-            try:
-                file_contents = self.read_file(
-                    os.path.join(self.destination_dir, 'pages', file))
-            except FileNotFoundError:
-                raise FileNotFoundError(
-                    f'Warning: File {file} could not be found. Run ._clone()')
-            except IsADirectoryError:
+            file_contents = self.read_file(os.path.join(self.destination_dir, 'pages', file))
+            
+            if not file_contents:
                 continue
 
             _ = {
@@ -475,7 +465,7 @@ class InsightCache(Helper, GitCache):
                 'sections': {}
             }
 
-            _['image'] = self._fix_image(_['image'])
+            _['image'] = self._fix_image(_['image'], additional_parents=['pages'])
 
             sections = split_into_sections(file_contents, level_granularity=2)
             order = 0
@@ -500,33 +490,16 @@ class InsightCache(Helper, GitCache):
             insights.append(_)
         return insights
 
-    def _fix_image(self, dictionary):
-        url = dictionary.get('url').replace('https://', '').replace('http://', '').replace(
-            f'raw.githubusercontent.com/DHRI-Curriculum/{self.repository}/{self.branch}/', '')
-        parents = [x for x in url.split('/') if not '.' in x]
-        local_file = self.destination_dir
-        if not 'pages' in parents:
-            parents.insert(0, 'pages')
-        for _dir in parents:
-            local_file = os.path.join(local_file, _dir)
-        local_file += '/' + os.path.basename(url).replace('%40', '@')
-        if os.path.exists(local_file):
-            return {'url': local_file, 'alt': dictionary.get('alt')}
-        else:
-            exit('error! fix this!')
-            return {'url': url, 'alt': dictionary.get('alt')}
-
 
 class WorkshopCache(Helper, GitCache):
+    cache_dir = 'WORKSHOPS'
 
     def __init__(self, repository='', branch='v2.0', log=None):
         self.repository = repository
         self.branch = branch
-        self.cache_dir = 'WORKSHOPS'
         self.log = log
         super().__init__(repository=self.repository, branch=self.branch, cache_dir=self.cache_dir,
                          destination_dir=f'{self.CACHE_DIRS[self.cache_dir]}/{self.repository}', log=log)
-        self.parse()
 
         # Set up quick access
         self.name = self.data['name']
@@ -536,6 +509,7 @@ class WorkshopCache(Helper, GitCache):
         self.image = self.data['image']
 
     def parse(self):
+        super().parse()
         data = {}
         self.raw = self._get_raw()
         data['raw'] = self.raw
@@ -760,20 +734,6 @@ class WorkshopCache(Helper, GitCache):
 
         return fixing
 
-    def _fix_image(self, dictionary):
-        url = dictionary.get('url').replace('https://', '').replace('http://', '').replace(
-            f'raw.githubusercontent.com/DHRI-Curriculum/{self.repository}/{self.branch}/', '')
-        parents = [x for x in url.split('/') if not '.' in x]
-        local_file = self.destination_dir
-        for _dir in parents:
-            local_file = os.path.join(local_file, _dir)
-        local_file += '/' + os.path.basename(url).replace('%40', '@')
-        if os.path.exists(local_file):
-            return {'url': local_file, 'alt': dictionary.get('alt')}
-        else:
-            exit('error! fix this!') # TODO: Fix this...
-            return {'url': url, 'alt': dictionary.get('alt')}
-
     @staticmethod
     def _check_for_lesson_sections(markdown):
         has_subheaders = len(split_into_sections(
@@ -817,11 +777,13 @@ class WorkshopCache(Helper, GitCache):
                     d['question'] += line + '\n'
                 elif in_q and is_answer:
                     if line.strip().endswith('*'):
-                        d['answers']['correct'].append(
-                            line.strip()[2:-1].strip())
+                        answer = line.strip()[2:-1].strip()
+                        answer = convert_html_quotes(PARSER.convert(answer), strip_surrounding_body=False, strip_surrounding_p=True)
+                        d['answers']['correct'].append(answer)
                     else:
-                        d['answers']['incorrect'].append(
-                            line.strip()[2:].strip())
+                        answer = line.strip()[2:].strip()
+                        answer = convert_html_quotes(PARSER.convert(answer), strip_surrounding_body=False, strip_surrounding_p=True)
+                        d['answers']['incorrect'].append(answer)
                 elif is_empty and in_q:
                     d['question'] = d['question'].strip()
                     dict_collector.append(d)

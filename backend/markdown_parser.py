@@ -1,5 +1,6 @@
 import markdown
 import time
+import re
 import datetime
 import json
 import pathlib
@@ -7,6 +8,7 @@ import pathlib
 from backend.logger import Logger
 from backend.settings import CACHE_DIRS, FORCE_DOWNLOAD, TEST_AGES, CACHE_VERBOSE, GITHUB_TOKEN
 from django.utils.text import slugify
+from collections import OrderedDict
 
 from github import Github
 
@@ -143,3 +145,111 @@ class GitHubParser():
 
 
 PARSER = GitHubParser()
+
+
+class MarkdownError(Exception):
+    pass
+
+
+
+all_list_elements = re.compile(r'- ((?:.*)(?:(?:\n\s{2,4})?(?:.*))*)')
+
+
+def as_list(md):
+    """Returns a string of markdown as a Python list"""
+    if not md:
+        return []
+    return(all_list_elements.findall(md))
+
+
+def extract_links(md: str):
+    forbidden_chars = re.compile(r'^[,.()]*|[.,()/]*$')
+    md_links = re.compile(r'(?:\[(.*?)\]\((.*?)\))')
+    urls_general = re.compile(
+        r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))")
+
+    _ = []
+
+    text = str(md)
+    all_urls = md_links.findall(text)
+    for i, data in enumerate(all_urls):
+        text = data[0]
+        url = forbidden_chars.sub('', data[1])
+        _.append((text, url))
+        text = text.replace(f"[{data[0]}]({data[1]})", "")
+
+    text = text.strip()
+
+    for data in urls_general.findall(text):
+        if data[0] != '':
+            url = forbidden_chars.sub('', data[0])
+            if not url in [x[1] for x in _]:
+                _.append(('', url))
+
+    return(_)
+
+
+def split_into_sections(markdown: str, level_granularity=3, keep_levels=False, clear_empty_lines=True) -> dict:
+    """
+    Splits a markdown file into a dictionary with the headings as keys and the section contents as values, and returns the dictionary.
+    Takes two arguments:
+        - level_granularity that can be set to 1, 2, or 3, determining the depth of search for children
+        - keep_level which maintains the number of octothorps before the header
+    """
+
+    if not isinstance(markdown, str):
+        raise MarkdownError(f'Markdown is not string but {type(markdown)}:', markdown) from None
+    if clear_empty_lines:
+        # cleans out any empty lines
+        lines = [_ for _ in markdown.splitlines() if _]
+    else:
+        lines = markdown.splitlines()
+
+    sections = OrderedDict()
+
+    def is_header(line: str, granularity=level_granularity):
+        if granularity == 1:
+            if line.startswith("# "):
+                return(True)
+        elif granularity == 2:
+            if line.startswith("# ") or line.startswith("## "):
+                return(True)
+        elif granularity == 3:
+            if line.startswith("# ") or line.startswith("## ") or line.startswith("### "):
+                return(True)
+        return(False)
+
+    in_code = False
+    for linenumber, line in enumerate(lines):
+        code = line.startswith('```')
+        if code == True:
+            if in_code == False:
+                in_code = True
+            elif in_code == True:
+                in_code = False
+
+        if is_header(line) and in_code == False:
+            header = ''.join([_ for _ in line.split('#') if _]).strip()
+            if keep_levels:
+                level = line.strip()[:3].count("#")
+                header = f"{'#' * level} {header}"
+
+            if header not in sections:
+                sections[header] = ''
+                skip_ahead = False
+                nextline_in_code = False
+                for nextline in lines[linenumber + 1:]:
+                    nextline_code = nextline.startswith('```')
+                    if nextline_code == True:
+                        if nextline_in_code == False:
+                            nextline_in_code = True
+                        elif nextline_in_code == True:
+                            nextline_in_code = False
+                    if is_header(nextline) and not nextline_in_code:
+                        skip_ahead = True
+                    if skip_ahead:
+                        continue
+                    sections[header] += '\n' + nextline
+                sections[header] = sections[header].strip()
+
+    return(sections)

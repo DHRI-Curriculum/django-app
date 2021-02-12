@@ -10,10 +10,21 @@ register = template.Library()
 def get_letter_nav():
     d = dict()
     letters = [x for x in 'ABCDEFGHIJKLMNOPQRSTUVWXYZ']
+    extra = {}
     for t in Term.objects.all().order_by('term'):
-        if not t.term[:1].upper() in letters: letters.append(t.term[:1].upper())
+        if not t.term[:1].upper() in letters:
+            done = False
+            for i in range(2,len(t.term)):
+                if done: continue
+                if t.term[i-1:i].upper() in letters:
+                    if not t.term[i-1:i] in extra:
+                        extra[t.term[i-1:i]] = []
+                    extra[t.term[i-1:i]].append(t.term)
+                    done = True
     for letter in letters:
         d[letter] = Term.objects.filter(term__startswith=letter).exists()
+        if not d[letter] and letter in extra:
+            d[letter] = True
     return d
 
 @register.simple_tag(takes_context=True)

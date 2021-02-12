@@ -13,26 +13,6 @@ from ._shared import get_yaml, get_all_existing_workshops, GLOSSARY_FILE
 import os
 
 
-def get_workshop_image_path(image_file, relative_to_upload_field=False):
-    workshop = os.path.basename(os.path.dirname(image_file))
-    if not relative_to_upload_field:
-        return settings.MEDIA_ROOT + '/' + Workshop.image.field.upload_to + workshop + '-' + os.path.basename(image_file)
-
-    return Workshop.image.field.upload_to + workshop + '-' + os.path.basename(image_file)
-
-
-def workshop_image_exists(image_file):
-    return os.path.exists(get_workshop_image_path(image_file))
-
-
-def get_default_workshop_image():
-    return Workshop.image.field.default
-
-
-def default_workshop_image_exists():
-    return os.path.exists(os.path.join(settings.MEDIA_ROOT, get_default_workshop_image()))
-
-
 class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
@@ -111,13 +91,14 @@ class Command(BaseCommand):
                     try:
                         with open(source_file, 'rb') as f:
                             workshop.image = File(f, name=valid_filename)
+                            workshop.save()
                     except FileNotFoundError:
                         log.error(f'File `{source_file}` could not be found. Did you run `python manage.py buildworkshop` before you ran this command?')
                 workshop.image.name = _get_media_url(valid_filename)
                 workshop.save()
             else:
                 log.warning(f'Workshop {workshop.name} does not have an image assigned to it. Add filepaths to an existing file in your datafile ({DATAFILE}) if you want to update the specific workshop. Default workshop image (`{os.path.basename(_get_default_image())}`) will be assigned.')
-                workshop.image.name = get_default_workshop_image()
+                workshop.image.name = Workshop.image.field.default
                 workshop.save()
                 
                 if not _image_exists(_get_valid_name(os.path.basename(_get_default_image()))):
@@ -168,7 +149,8 @@ class Command(BaseCommand):
                             url=point.get('url'),
                             annotation=point.get('annotation')
                         )
-                        add_field.add(obj)
+                        if obj not in add_field.all():
+                            add_field.add(obj)
 
             if frontmatterdata.get('contributors'):
                 for point in frontmatterdata.get('contributors'):
@@ -244,7 +226,7 @@ class Command(BaseCommand):
                     for point in praxisdata.get(cat):
                         if not add_field or not category:
                             log.error('Cannot interpret category `{cat}`. Make sure the script is correct and corresponds with the database structure.')
-
+                        
                         try:
                             obj, created = Resource.objects.update_or_create(
                                 category=category,
@@ -252,7 +234,8 @@ class Command(BaseCommand):
                                 url=point.get('url'),
                                 annotation=point.get('annotation')
                             )
-                            add_field.add(obj)
+                            if obj not in add_field.all():
+                                add_field.add(obj)
                         except IntegrityError:
                             obj = Resource.objects.get(
                                 category=category,
@@ -260,6 +243,8 @@ class Command(BaseCommand):
                                 url=point.get('url'),
                             )
                             obj.annotation = point.get('annotation')
+                            if obj not in add_field.all():
+                                add_field.add(obj)
                             log.info(f'Another resource with the same URL, title, and category already existed so updated with a new annotation: **{point.get("linked_text")} (old)**\n{point.get("annotation")}\n-------\n**{obj.title} (new)**\n{obj.annotation}')
 
             # 4. ENTER LESSONS
