@@ -11,6 +11,7 @@ from django.utils.text import slugify
 from collections import OrderedDict
 
 from github import Github
+from bs4 import BeautifulSoup
 
 log = Logger(name='github-parser')
 
@@ -57,7 +58,6 @@ class GitHubParserCache():
                 self.save()
 
         self.data = self.load()
-
         self.data = self.process(self.data)
 
     def process(self, data: dict):
@@ -127,11 +127,11 @@ class GitHubParserCache():
             rendered_str = p.convert(string)
             processor = 'Markdown'
 
-        return({
+        return {
             'original_string': self.string,
             'markdown': rendered_str,
             'processor': processor
-        })
+        }
 
 
 class GitHubParser():
@@ -143,6 +143,72 @@ class GitHubParser():
         c = GitHubParserCache(string=string)
         return(c.data.get('markdown', '').strip())
 
+    def strip_from_p(self, html):
+        soup = BeautifulSoup(html, 'lxml')
+        if soup.p:
+            return ''.join([str(x) for x in soup.p.children])
+        else:
+            return html
+
+    def curly_html(self, text):
+        if not text:
+            return ''
+
+        # Make text into HTML...
+        text = self.convert(text)
+    
+        # Text has curlies so we're going to go ahead
+        soup = BeautifulSoup(text, 'lxml')
+        
+        for tag in soup.body:
+            try:
+                if tag and tag.text:
+                    tag.string = self.quote_converter(tag.text)
+            except AttributeError:
+                try:
+                    if tag and tag.string:
+                        tag.string = self.quote_converter(tag.string)
+                except AttributeError:
+                    print('very wrong')
+                    exit()
+
+        for tag in soup.body:
+            if tag.string and ('‘' in tag.string or '“' in tag.string):
+                real_parents = [x.name for x in tag.parents] #  if x.name not in ['[document]', 'body', 'html']
+                # print(real_parents, tag.name, tag.get('class'), tag.string[:100])
+                if 'code' in real_parents or (tag.name=='div' and 'highlight' in tag.get('class', [])):
+                    tag.string = self.quote_converter(tag.string, reverse=True)
+
+        if len([x for x in soup.body.children]) == 1 and soup.body.p:
+            # We only have one paragraph, so return the _text only_ from the p
+            return ''.join([str(x) for x in soup.body.p.children])
+        else:
+            html_string = ''.join(str(x) for x in soup.body.children)
+            return html_string
+
+
+    def quote_converter(self, string, reverse=False):
+        """Takes a string and returns it with dumb quotes, single and double,
+        replaced by smart quotes. Accounts for the possibility of HTML tags
+        within the string."""
+
+        if reverse:
+            string = string.replace('“', '"').replace('”', '"')
+            string = string.replace('‘', "'").replace("’", "'")
+            return string
+
+        # Find dumb double quotes coming directly after letters or punctuation,
+        # and replace them with right double quotes.
+        string = re.sub(r'([a-zA-Z0-9.,?!;:\'\"])"', r'\1”', string)
+        # Find any remaining dumb double quotes and replace them with
+        # left double quotes.
+        string = string.replace('"', '“')
+
+        # Follow the same process with dumb/smart single quotes
+        string = re.sub(r"([a-zA-Z0-9.,?!;:\"\'])'", r'\1’', string)
+        string = string.replace("'", '‘')
+
+        return string
 
 PARSER = GitHubParser()
 

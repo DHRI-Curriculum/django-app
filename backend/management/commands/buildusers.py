@@ -79,7 +79,7 @@ class Command(BaseCommand):
                 }
 
                 if u.get('bio'):
-                    user['profile']['bio'] = PARSER.convert(u.get('bio'))
+                    user['profile']['bio'] = PARSER.curly_html(u.get('bio'))
 
                 if u.get('img'):
                     if options.get('nocrop'):
