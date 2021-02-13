@@ -1,14 +1,14 @@
-from backend.mixins import convert_html_quotes
 from glossary.models import Term
 from resource.models import Resource
 from django.core.management import BaseCommand
 from django.conf import settings
 from django.db.utils import IntegrityError
+from backend.settings import BUILD_DIR
 from backend.logger import Logger, Input
 from ._shared import test_for_required_files, get_yaml
 
 
-SAVE_DIR = f'{settings.BASE_DIR}/_preload/_meta/glossary'
+SAVE_DIR = f'{BUILD_DIR}_meta/glossary'
 FULL_PATH = f'{SAVE_DIR}/glossary.yml'
 REQUIRED_PATHS = [
     (SAVE_DIR,

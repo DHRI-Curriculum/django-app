@@ -2,12 +2,11 @@ from django.db import models
 from django.db.models.fields.related import ForeignKey
 from workshop.models import Workshop
 from glossary.models import Term
-from backend.mixins import CurlyQuotesMixin
+import os
 
 
-class Lesson(CurlyQuotesMixin, models.Model):
-    curly_fields = ['text']
 
+class Lesson(models.Model):
     title = models.CharField(max_length=200)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -26,20 +25,22 @@ class Lesson(CurlyQuotesMixin, models.Model):
 
 class LessonImage(models.Model):
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name='images')
-    url = models.URLField(unique=True)
+    url = models.URLField(unique=True, blank=False, null=False)
     name = models.TextField()
+    alt = models.TextField()
 
     def save(self, *args, **kwargs):
-        self.name = self.url.split('/')[-1].split('.')[0].lower()
+        if self.url:
+            self.name = os.path.basename(self.url).split('.')[0].lower()
+        else:
+            self.name = ''
         super(LessonImage, self).save()
 
     def __str__(self):
         return str(self.name)
 
 
-class Challenge(CurlyQuotesMixin, models.Model):
-    curly_fields = ['text']
-
+class Challenge(models.Model):
     lesson = models.OneToOneField(Lesson, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     text = models.TextField()
@@ -48,9 +49,7 @@ class Challenge(CurlyQuotesMixin, models.Model):
         return f'{self.title}'
 
 
-class Solution(CurlyQuotesMixin, models.Model):
-    curly_fields = ['text']
-
+class Solution(models.Model):
     challenge = models.OneToOneField(Challenge, on_delete=models.CASCADE)
     title = models.CharField(max_length=200)
     text = models.TextField()
@@ -59,7 +58,7 @@ class Solution(CurlyQuotesMixin, models.Model):
         return f'{self.title}'
 
 
-class Evaluation(CurlyQuotesMixin, models.Model):
+class Evaluation(models.Model):
     lesson = models.ForeignKey(
         Lesson, on_delete=models.CASCADE, related_name='evaluations')
 
@@ -67,12 +66,8 @@ class Evaluation(CurlyQuotesMixin, models.Model):
         return f'Evaluation for lesson {self.lesson.title}'
 
 
-class Question(CurlyQuotesMixin, models.Model):
-    curly_fields = ['label']
-    unwrap_p = True
-
-    evaluation = models.ForeignKey(
-        Evaluation, related_name='questions', on_delete=models.CASCADE)
+class Question(models.Model):
+    evaluation = models.ForeignKey(Evaluation, related_name='questions', on_delete=models.CASCADE)
     label = models.TextField()
     is_required = models.BooleanField(default=False)
 
@@ -89,11 +84,7 @@ class Question(CurlyQuotesMixin, models.Model):
         return self.has_single_answer or self.has_multiple_answers
 
 
-class Answer(CurlyQuotesMixin, models.Model):
-    curly_fields = ['label']
-    unwrap_p = True
-
-    question = models.ForeignKey(
-        Question, related_name='answers', on_delete=models.CASCADE)
+class Answer(models.Model):
+    question = models.ForeignKey(Question, related_name='answers', on_delete=models.CASCADE)
     label = models.TextField()
     is_correct = models.BooleanField(default=False)

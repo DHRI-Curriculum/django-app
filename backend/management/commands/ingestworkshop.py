@@ -1,3 +1,4 @@
+from pathlib import Path
 from bs4 import BeautifulSoup
 from glossary.models import Term
 from learner.models import Profile
@@ -9,8 +10,10 @@ from django.core.files import File
 from django.conf import settings
 from django.db.utils import IntegrityError
 from backend.logger import Logger, Input
+from backend.settings import STATIC_IMAGES
 from ._shared import get_yaml, get_all_existing_workshops, GLOSSARY_FILE
 import os
+from shutil import copyfile
 
 
 class Command(BaseCommand):
@@ -258,11 +261,9 @@ class Command(BaseCommand):
                         'text': lessoninfo.get('content'),
                     })
 
-                # TODO: the following should be moved to the buildworkshop no?
-                soup = BeautifulSoup(lesson.text, 'lxml')
-                for img in soup.find_all('img'):
+                for image in lessoninfo.get('lesson_images'):
                     LessonImage.objects.update_or_create(
-                        url=img.get('src'), lesson=lesson)
+                        url=image.get('path'), lesson=lesson, alt=image.get('alt'))
 
                 if not lessoninfo.get('challenge') and lessoninfo.get('solution'):
                     log.error(f'Lesson `{lesson.title}` (in workshop {workshop}) has a solution but no challenge. Correct the files on GitHub and rerun the buildworkshop command and then re-attempt the ingestworkshop command. Alternatively, you can change the datafile content manually.')

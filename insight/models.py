@@ -1,13 +1,10 @@
 from django.db import models
 from django.utils.text import slugify
 from install.models import Software
-from backend.mixins import CurlyQuotesMixin
 from backend.dhri_utils import dhri_slugify
 
 
-class Insight(CurlyQuotesMixin, models.Model):
-    curly_fields = ['text']
-
+class Insight(models.Model):
     title = models.CharField(max_length=80, unique=True)
     slug = models.CharField(max_length=200, blank=True, unique=True)
     software = models.ManyToManyField(Software)
@@ -27,9 +24,7 @@ class Insight(CurlyQuotesMixin, models.Model):
         ordering = ['title']
 
 
-class Section(CurlyQuotesMixin, models.Model):
-    curly_fields = ['text']
-
+class Section(models.Model):
     insight = models.ForeignKey(
         Insight, on_delete=models.CASCADE, related_name='sections')
     order = models.PositiveSmallIntegerField()
@@ -43,9 +38,7 @@ class Section(CurlyQuotesMixin, models.Model):
         ordering = ['order']
 
 
-class OperatingSystemSpecificSection(CurlyQuotesMixin, models.Model):
-    curly_fields = ['text']
-
+class OperatingSystemSpecificSection(models.Model):
     section = models.ForeignKey(
         Section, on_delete=models.CASCADE, related_name='os_specific_sections')
     operating_system = models.CharField(max_length=80)

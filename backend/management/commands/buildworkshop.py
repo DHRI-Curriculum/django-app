@@ -82,6 +82,6 @@ class Command(BaseCommand):
 
                 log.log(f'Saved workshop datafile: `{SAVE_DIR}/{DATA_FILE}`')
 
-            if log._save(data=workshop, name='warnings.md', warnings=True) or log._save(data=workshop, name='logs.md', warnings=False, logs=True):
+            if log._save(data=workshop, name='warnings.md', warnings=True) or log._save(data=workshop, name='logs.md', warnings=False, logs=True) or log._save(data=workshop, name='info.md', warnings=False, logs=False, info=True):
                 log.log(
                     'Log files with any warnings and logging information is now available in the' + log.LOG_DIR, force=True)

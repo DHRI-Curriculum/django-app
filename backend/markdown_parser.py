@@ -4,13 +4,17 @@ import re
 import datetime
 import json
 import pathlib
+import os
 
 from backend.logger import Logger
-from backend.settings import CACHE_DIRS, FORCE_DOWNLOAD, TEST_AGES, CACHE_VERBOSE, GITHUB_TOKEN
+from backend.settings import AUTO_REPOS, CACHE_DIRS, FORCE_DOWNLOAD, TEST_AGES, CACHE_VERBOSE, GITHUB_TOKEN
 from django.utils.text import slugify
+from django.urls import reverse
+from django.urls.exceptions import NoReverseMatch
 from collections import OrderedDict
 
 from github import Github
+from bs4 import BeautifulSoup
 
 log = Logger(name='github-parser')
 
@@ -45,19 +49,18 @@ class GitHubParserCache():
             (f'{len(self.string)}{slugify(string[:100])}.json')
 
         if not self.path.exists() or force_download == True or _is_expired(self.path, force_download=force_download) == True:
-            print('loading github parser...')
+            # print('loading github parser...')
             self.data = self._setup_raw_content()
             self.save()
         elif self.path.exists():
             self.data = self.load()
             # Checking whether the length of the string cached has changed (``_check_length``) or whether GitHub processed the string in the first place (``_gh_processed``) — if not, run processor again
             if self._gh_processed() == False:  # self._check_length() == False or  (this should be part of the filename now)
-                print('reloading github parser...')
+                # print('reloading github parser...')
                 self.data = self._setup_raw_content()
                 self.save()
 
         self.data = self.load()
-
         self.data = self.process(self.data)
 
     def process(self, data: dict):
@@ -127,22 +130,157 @@ class GitHubParserCache():
             rendered_str = p.convert(string)
             processor = 'Markdown'
 
-        return({
+        return {
             'original_string': self.string,
             'markdown': rendered_str,
             'processor': processor
-        })
+        }
 
 
 class GitHubParser():
 
-    def __init__(self, string: str = None):
-        pass
+    def __init__(self, string: str = None, log=None):
+        if log == None:
+            self.log = Logger(name='github-parser')
+        else:
+            self.log = log
 
     def convert(self, string):
         c = GitHubParserCache(string=string)
         return(c.data.get('markdown', '').strip())
 
+    def strip_from_p(self, html):
+        soup = BeautifulSoup(html, 'lxml')
+        if soup.p:
+            return ''.join([str(x) for x in soup.p.children])
+        else:
+            return html
+
+    def _fix_link(self, tag):
+        def find_workshop(elements):
+            if elements[-1] == 'DHRI-Curriculum':
+                return '{GH_CURRICULUM}'
+            for element in elements:
+                for workshop in [x[0] for x in AUTO_REPOS]:
+                    if workshop == element: return workshop
+            return ''
+
+        elements = tag['href'].split('/')
+
+        if 'http:' in elements or 'https:' in elements:
+            link_type = 'absolute'
+        elif elements[0].startswith('#'):
+            link_type = 'local'
+        else:
+            link_type = 'relative'
+        
+        raw_file = False
+        if link_type == 'absolute':
+            if 'DHRI-Curriculum' in elements:
+                if 'glossary' in elements and 'terms' in elements:
+                    term = elements[-1].replace('.md', '')
+                    self.log.info(f'Found link to an **glossary term** and adding shortcut link to: //curriculum.dhinstitutes.org/shortcuts/term/{term}')
+                    tag['href'] = f'//curriculum.dhinstitutes.org/shortcuts/term/{term}'
+                elif 'insights' in elements and 'pages' in elements:
+                    insight = elements[-1].replace(".md", "")
+                    self.log.info(f'Found link to an **insight** and adding shortcut link to: //curriculum.dhinstitutes.org/shortcuts/insight/{insight}')
+                    tag['href'] = f'//curriculum.dhinstitutes.org/shortcuts/insight/{insight}'
+                elif 'install' in elements and 'guides' in elements:
+                    install = elements[-1].replace(".md", "")
+                    self.log.info(f'Found link to an **installation** and adding shortcut link to: //curriculum.dhinstitutes.org/shortcuts/install/{install}')
+                    tag['href'] = f'//curriculum.dhinstitutes.org/shortcuts/install/{install}'
+                elif 'raw.githubusercontent.com' in elements:
+                    raw_link = '/'.join(elements)
+                    self.log.info(f'Found link to **raw file** and will not change link: {raw_link}')
+                else:
+                    workshop = find_workshop(elements)
+                    if workshop == '{GH_CURRICULUM}':
+                        gh_link = '/'.join(elements)
+                        self.log.info('Link found to **the DHRI Curriculum on GitHub**, linking to it: {gh_link}')
+                    elif workshop == '':
+                        gh_link = '/'.join(elements)
+                        self.log.warning(f'Found link to workshop, which is not currently being loaded into the website, will therefore redirect to **workshop on GitHub**: {gh_link}')
+                    else:
+                        self.log.info(f'Found link to **workshop** which (will) exist(s) on website, so changing to that: //curriculum.dhinstitutes.org/workshops/{workshop}')
+                        tag['href'] = f'//curriculum.dhinstitutes.org/shortcuts/workshop/{workshop}'
+            else:
+                pass # print(tag['href'])
+        return tag
+
+    def fix_html(self, text):
+        if not text:
+            return ''
+        
+        multiline = False
+        if '\n' in text:
+            multiline = True
+
+        # Make text into HTML...
+        text = self.convert(text)
+    
+        # Text has curlies so we're going to go ahead
+        soup = BeautifulSoup(text, 'lxml')
+
+        for element in soup.descendants:
+            if element.name == 'a':
+                # if element.text == None: # TODO: Drop links that have no text
+                self._fix_link(element)
+
+        for tag in soup.body:
+            if tag and tag.string:
+                try:
+                    tag.children
+                    children = [x for x in tag.children]
+                except:
+                    children = False
+                if children:
+                    for tag in tag.children:
+                        tag.string = self.quote_converter(tag.string)
+                else:
+                    tag.string = self.quote_converter(tag.string)
+
+        for tag in soup.body:
+            if tag.string and ('‘' in tag.string or '“' in tag.string):
+                real_parents = [x.name for x in tag.parents] #  if x.name not in ['[document]', 'body', 'html']
+                # print(real_parents, tag.name, tag.get('class'), tag.string[:100])
+                if 'code' in real_parents or (tag.name=='div' and 'highlight' in tag.get('class', [])):
+                    tag.string = self.quote_converter(tag.string, reverse=True)
+
+        if not multiline:
+            if len([x for x in soup.body.children]) == 1 and soup.body.p:
+                # We only have one paragraph, so return the _text only_ from the p
+                return ''.join([str(x) for x in soup.body.p.children])
+            else:
+                # We have multiline
+                html_string = ''.join([str(x) for x in soup.html.body.children])
+        else:
+            html_string = ''.join([str(x) for x in soup.html.body.children])
+
+        return html_string
+
+
+    def quote_converter(self, string, reverse=False):
+        """Takes a string and returns it with dumb quotes, single and double,
+        replaced by smart quotes. Accounts for the possibility of HTML tags
+        within the string."""
+
+        if reverse:
+            string = string.replace('“', '"').replace('”', '"')
+            string = string.replace('‘', "'").replace("’", "'")
+            return string
+
+        # Find dumb double quotes coming directly after letters or punctuation,
+        # and replace them with right double quotes.
+        string = re.sub(r'([a-zA-Z0-9.,?!;:\'\"])"', r'\1”', string)
+        # Find any remaining dumb double quotes and replace them with
+        # left double quotes.
+        string = string.replace('"', '“')
+
+        # Follow the same process with dumb/smart single quotes
+        string = re.sub(r"([a-zA-Z0-9.,?!;:\"\'])'", r'\1’', string)
+        string = string.replace("'", '‘')
+
+        return string
 
 PARSER = GitHubParser()
 

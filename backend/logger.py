@@ -158,15 +158,17 @@ class Logger():
         else:
             print(message)
 
-    def _save(self, lst=[], data={}, name='log.md', warnings=True, logs=False, step='buildworkshop'):
+    def _save(self, lst=[], data={}, name='log.md', warnings=True, logs=False, info=False, step='buildworkshop'):
         ''' Private function to save a list of warnings and logs'''
 
-        if not lst and not warnings and not logs:
+        if not lst and not warnings and not logs and not info:
             return False
         elif not lst and warnings:
             lst = self.WARNINGS
         elif not lst and logs:
             lst = self.LOGS
+        elif not lst and info:
+            lst = self.INFOS
 
         if not lst:
             return False
@@ -185,6 +187,8 @@ class Logger():
                 f.write('## Warnings:\n\n')
             elif logs:
                 f.write('## Logs:\n\n')
+            elif info:
+                f.write('## Information:\n\n')
             else:
                 f.write('## List:\n\n')
             for datapoint in lst:
