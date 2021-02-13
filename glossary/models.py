@@ -11,7 +11,10 @@ class Term(models.Model):
     tutorials = models.ManyToManyField('resource.Resource', related_name='term_tutorials')
 
     def save(self, *args, **kwargs):
-        self.slug = dhri_slugify(self.term)
+        if self.term:
+            self.slug = dhri_slugify(self.term)
+        else:
+            print('no term provided...')
         super(Term, self).save()
 
     def __str__(self):

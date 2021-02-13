@@ -3,7 +3,7 @@ from insight.models import Insight
 from install.models import Software
 from django.core.management import BaseCommand
 from backend.logger import Logger
-from ._shared import get_yaml, get_all_existing_workshops
+from ._shared_functions import get_yaml, get_all_existing_workshops
 
 
 def search_workshop(potential_name, for_workshop=None, log=None, DATAFILE=None):
@@ -128,7 +128,7 @@ class Command(BaseCommand):
             workshop, frontmatter = None, None
             DATAFILE = f'{path}/{slug}.yml'
 
-            superdata = get_yaml(DATAFILE)
+            superdata = get_yaml(DATAFILE, log=log)
 
             # Separate out data
             frontmatterdata = superdata.get('sections').get('frontmatter')

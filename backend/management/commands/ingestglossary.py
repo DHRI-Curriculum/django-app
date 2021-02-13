@@ -1,12 +1,11 @@
 from glossary.models import Term
 from resource.models import Resource
 from django.core.management import BaseCommand
-from django.conf import settings
 from django.db.utils import IntegrityError
 from backend.settings import BUILD_DIR
 from backend.logger import Logger, Input
-from ._shared import test_for_required_files, get_yaml
-
+from backend.dhri_utils import dhri_slugify
+from ._shared_functions import test_for_required_files, get_yaml
 
 SAVE_DIR = f'{BUILD_DIR}_meta/glossary'
 FULL_PATH = f'{SAVE_DIR}/glossary.yml'
@@ -40,11 +39,20 @@ class Command(BaseCommand):
         input = Input(path=__file__)
 
         test_for_required_files(REQUIRED_PATHS=REQUIRED_PATHS, log=log)
-        data = get_yaml(f'{FULL_PATH}')
+        data = get_yaml(FULL_PATH, log=log)
 
         for termdata in data:
-            term, created = Term.objects.get_or_create(
-                term=termdata.get('term'))
+            try:
+                term, created = Term.objects.get_or_create(term=termdata.get('term'))
+            except IntegrityError:
+                try:
+                    term = Term.objects.get(slug=dhri_slugify(termdata.get('term')))
+                except:
+                    log.error('An unknown error occurred. Try')
+
+            term.term = termdata.get('term')
+            term.explication = termdata.get('explication')
+            term.save()
 
             if not created and not options.get('forceupdate'):
                 choice = input.ask(

@@ -2,7 +2,7 @@ from workshop.models import Blurb, Workshop
 from django.core.management import BaseCommand
 from django.contrib.auth.models import User
 from backend.logger import Logger, Input
-from ._shared import get_yaml, get_all_existing_workshops
+from ._shared_functions import get_yaml, get_all_existing_workshops
 from backend.markdown_parser import PARSER
 
 
@@ -38,7 +38,7 @@ class Command(BaseCommand):
             name, path = _
             DATAFILE = f'{path}/blurb.yml'
 
-            data = get_yaml(DATAFILE)
+            data = get_yaml(DATAFILE, log=log)
 
             if not data.get('user'):
                 log.error(

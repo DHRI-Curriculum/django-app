@@ -6,7 +6,7 @@ from backend.github import GlossaryCache
 import yaml
 import pathlib
 
-SAVE_DIR = f'{settings.BASE_DIR}/_preload/_meta/glossary'
+SAVE_DIR = f'{settings.BUILD_DIR}_meta/glossary'
 DATA_FILE = 'glossary.yml'
 
 

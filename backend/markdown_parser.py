@@ -179,16 +179,16 @@ class GitHubParser():
             if 'DHRI-Curriculum' in elements:
                 if 'glossary' in elements and 'terms' in elements:
                     term = elements[-1].replace('.md', '')
-                    self.log.info(f'Found link to an **glossary term** and adding shortcut link to: //curriculum.dhinstitutes.org/shortcuts/term/{term}')
-                    tag['href'] = f'//curriculum.dhinstitutes.org/shortcuts/term/{term}'
+                    self.log.info(f'Found link to an **glossary term** and adding shortcut link to: curriculum.dhinstitutes.org/shortcuts/term/{term}')
+                    tag['href'] = f'https://curriculum.dhinstitutes.org/shortcuts/term/{term}'
                 elif 'insights' in elements and 'pages' in elements:
                     insight = elements[-1].replace(".md", "")
-                    self.log.info(f'Found link to an **insight** and adding shortcut link to: //curriculum.dhinstitutes.org/shortcuts/insight/{insight}')
-                    tag['href'] = f'//curriculum.dhinstitutes.org/shortcuts/insight/{insight}'
+                    self.log.info(f'Found link to an **insight** and adding shortcut link to: curriculum.dhinstitutes.org/shortcuts/insight/{insight}')
+                    tag['href'] = f'https://curriculum.dhinstitutes.org/shortcuts/insight/{insight}'
                 elif 'install' in elements and 'guides' in elements:
                     install = elements[-1].replace(".md", "")
-                    self.log.info(f'Found link to an **installation** and adding shortcut link to: //curriculum.dhinstitutes.org/shortcuts/install/{install}')
-                    tag['href'] = f'//curriculum.dhinstitutes.org/shortcuts/install/{install}'
+                    self.log.info(f'Found link to an **installation** and adding shortcut link to: curriculum.dhinstitutes.org/shortcuts/install/{install}')
+                    tag['href'] = f'https://curriculum.dhinstitutes.org/shortcuts/install/{install}'
                 elif 'raw.githubusercontent.com' in elements:
                     raw_link = '/'.join(elements)
                     self.log.info(f'Found link to **raw file** and will not change link: {raw_link}')
@@ -196,18 +196,29 @@ class GitHubParser():
                     workshop = find_workshop(elements)
                     if workshop == '{GH_CURRICULUM}':
                         gh_link = '/'.join(elements)
-                        self.log.info('Link found to **the DHRI Curriculum on GitHub**, linking to it: {gh_link}')
+                        self.log.info(f'Link found to **the DHRI Curriculum on GitHub**, linking to it: {gh_link}')
                     elif workshop == '':
                         gh_link = '/'.join(elements)
                         self.log.warning(f'Found link to workshop, which is not currently being loaded into the website, will therefore redirect to **workshop on GitHub**: {gh_link}')
                     else:
-                        self.log.info(f'Found link to **workshop** which (will) exist(s) on website, so changing to that: //curriculum.dhinstitutes.org/workshops/{workshop}')
-                        tag['href'] = f'//curriculum.dhinstitutes.org/shortcuts/workshop/{workshop}'
+                        self.log.info(f'Found link to **workshop** which (will) exist(s) on website, so changing to that: curriculum.dhinstitutes.org/workshops/{workshop}')
+                        tag['href'] = f'https://curriculum.dhinstitutes.org/shortcuts/workshop/{workshop}'
             else:
                 pass # print(tag['href'])
         return tag
 
+
     def fix_html(self, text):
+    
+        def has_children(tag):
+            children = []
+            try:
+                tag.children
+                children = [x for x in tag.children]
+            except:
+                pass
+            return children
+
         if not text:
             return ''
         
@@ -226,7 +237,7 @@ class GitHubParser():
                 # if element.text == None: # TODO: Drop links that have no text
                 self._fix_link(element)
 
-        for tag in soup.body:
+        for tag in soup.descendants:
             if tag and tag.string:
                 try:
                     tag.children
@@ -238,6 +249,10 @@ class GitHubParser():
                         tag.string = self.quote_converter(tag.string)
                 else:
                     tag.string = self.quote_converter(tag.string)
+            elif tag:
+                if not has_children(tag) and tag.text:
+                    print(f'This text might need to be converted? {tag.text[:100]}...')
+                    continue
 
         for tag in soup.body:
             if tag.string and ('‘' in tag.string or '“' in tag.string):

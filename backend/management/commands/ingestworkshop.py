@@ -11,7 +11,7 @@ from django.conf import settings
 from django.db.utils import IntegrityError
 from backend.logger import Logger, Input
 from backend.settings import STATIC_IMAGES
-from ._shared import get_yaml, get_all_existing_workshops, GLOSSARY_FILE
+from ._shared_functions import get_yaml, get_all_existing_workshops, GLOSSARY_FILE
 import os
 from shutil import copyfile
 
@@ -48,7 +48,7 @@ class Command(BaseCommand):
             slug, path = _
             DATAFILE = f'{path}/{slug}.yml'
 
-            d = get_yaml(DATAFILE)
+            d = get_yaml(DATAFILE, log=log)
 
             # Separate out data
             imagedata = d.get('image')
@@ -302,8 +302,7 @@ class Command(BaseCommand):
 
                 if lessoninfo.get('keywords'):
                     # lessoninfo['keywords'].get('header') # TODO: not doing anything with keyword header yet
-                    for point in lessoninfo['keywords'].get('content'):
-                        keyword = point.get('linked_text')
+                    for keyword in lessoninfo['keywords'].get('content'):
                         terms = Term.objects.filter(term__iexact=keyword)
                         if terms.count() == 1:
                             lesson.terms.add(terms[0])
@@ -313,7 +312,8 @@ class Command(BaseCommand):
                             log.error(f'Multiple definitions of `{keyword}` exists in the database. Try resetting the glossary and rerun python manage.py ingestglossary before you run the ingestworkshop command again.')
 
         log.log('Added/updated workshops: ' + ', '.join([x[0] for x in workshops]))
-        log.log('Do not forget to run `ingestprerequisites` after running the `ingestworkshop` command (without the --name flag).', color='yellow')
+        if not options.get('no_reminder'):
+            log.log('Do not forget to run `ingestprerequisites` after running the `ingestworkshop` command (without the --name flag).', color='yellow')
 
         if log._save(data='ingestworkshop', name='warnings.md', warnings=True) or log._save(data='ingestworkshop', name='logs.md', warnings=False, logs=True):
             log.log('Log files with any warnings and logging information is now available in the' +

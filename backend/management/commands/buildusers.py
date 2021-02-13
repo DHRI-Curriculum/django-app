@@ -3,25 +3,17 @@ from django.core.management import BaseCommand
 from backend.logger import Logger
 from backend import settings
 from shutil import copyfile
-from PIL import Image
+from ._shared_functions import crop_and_save
 
 import yaml
 import pathlib
 
-SAVE_DIR = f'{settings.BASE_DIR}/_preload/_meta/users'
-SAVE_DIR_IMG = f'{settings.BASE_DIR}/_preload/_meta/users/images'
+SAVE_DIR = f'{settings.BUILD_DIR}_meta/users'
+SAVE_DIR_IMG = f'{SAVE_DIR}/images'
 DATA_FILE = 'users.yml'
 
 MAX_SIZE = 400
 
-
-def crop_center(pil_img, crop_width, crop_height):
-    # https://note.nkmk.me/en/python-pillow-square-circle-thumbnail/
-    img_width, img_height = pil_img.size
-    return pil_img.crop(((img_width - crop_width) // 2,
-                         (img_height - crop_height) // 2,
-                         (img_width + crop_width) // 2,
-                         (img_height + crop_height) // 2))
 
 
 class Command(BaseCommand):
@@ -53,8 +45,16 @@ class Command(BaseCommand):
         if not pathlib.Path(SAVE_DIR_IMG).exists():
             pathlib.Path(SAVE_DIR_IMG).mkdir(parents=True)
 
-        for cat in list(settings.AUTO_USERS.keys()):
-            for u in settings.AUTO_USERS[cat]:
+        all_categories = list(settings.AUTO_USERS.keys())
+
+        for cat in all_categories:
+
+            all_users = settings.AUTO_USERS[cat]
+            
+            log.BAR(all_users, max_value=len(all_users))
+
+            for i, u in enumerate(all_users):
+                log.BAR.update(i)
                 is_staff = cat == 'STAFF'
                 is_super = cat == 'SUPER'
 
@@ -89,16 +89,7 @@ class Command(BaseCommand):
                     else:
                         filename = u['img'].split('/')[-1].split('.')[0]
                         user['profile']['image'] = f'{SAVE_DIR_IMG}/{filename}.jpg'
-                        with open(u['img'], 'rb') as f:
-                            cropped_img = Image.open(f)
-                            w, h = cropped_img.size
-                            if w != h:
-                                cropped_img = crop_center(cropped_img, min(cropped_img.size), min(
-                                    cropped_img.size))  # crop to square from center!
-                            cropped_img = cropped_img.resize(
-                                (MAX_SIZE, MAX_SIZE), Image.LANCZOS)
-                            cropped_img.save(
-                                user['profile']['image'], 'jpeg', quality=50)
+                        crop_and_save(u['img'], user['profile']['image'], MAX_SIZE)
                 else:
                     log.warning(f'User `{u.get("username")}` does not have an image assigned to them and will be assigned the default picture. Add filepaths to an existing file in your datafile (`{SAVE_DIR}/{DATA_FILE}`) or follow the steps in the documentation to add user images if you want to make sure the specific user has a profile picture. Then, rerun `python manage.py buildusers` or `python manage.py build`')
 
@@ -110,6 +101,8 @@ class Command(BaseCommand):
                     })
 
                 users.append(user)
+
+            log.BAR.finish()
 
         # Save all data
         with open(f'{SAVE_DIR}/{DATA_FILE}', 'w+') as file:

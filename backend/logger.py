@@ -6,6 +6,7 @@ from colorama import Style
 import datetime
 import textwrap
 import pathlib
+import progressbar
 
 from backend.dhri_utils import get_verbose, get_terminal_width
 
@@ -89,12 +90,12 @@ def _fix_message(main_message='', following_lines=[], first_line_add='--> ', ind
 
     return(output)
 
-
 class Logger():
 
     INFOS = []
     WARNINGS = []
     LOGS = []
+    BAR = progressbar.ProgressBar(max_value=progressbar.UnknownLength, redirect_stdout=True)
 
     def __init__(self, *args, **kwargs):
         self.name = kwargs.get('name', '')
@@ -109,8 +110,7 @@ class Logger():
         self.force_silent = False
 
         if ('force_verbose' in kwargs and kwargs['force_verbose']) and ('force_silent' in kwargs and kwargs['force_silent']):
-            exit(
-                'Logger can only accept either force_verbose OR force_silent, not both simultaneously.')
+            exit('Logger can only accept either force_verbose OR force_silent, not both simultaneously.')
 
         self.VERBOSE = get_verbose()
 
