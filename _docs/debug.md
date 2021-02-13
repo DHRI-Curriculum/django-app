@@ -16,3 +16,9 @@ This is another super-reset command:
 ```sh
 $ python manage.py build && find . -path "*/migrations/*.py" -not -name "__init__.py" -delete && find . -path "*/migrations/*.pyc"  -delete && rm db.sqlite3 && python manage.py makemigrations && python manage.py migrate && python manage.py ingest
 ```
+
+This might be needed to run during dev time:
+
+```sh
+$ find . -path "*/migrations/*.py" -not -name "__init__.py" -delete && find . -path "*/migrations/*.pyc"  -delete && git pull
+```
