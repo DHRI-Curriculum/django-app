@@ -2,8 +2,8 @@ from workshop.models import Blurb, Workshop
 from django.core.management import BaseCommand
 from django.contrib.auth.models import User
 from backend.logger import Logger, Input
-from backend.mixins import convert_html_quotes
 from ._shared import get_yaml, get_all_existing_workshops
+from backend.markdown_parser import PARSER
 
 
 class Command(BaseCommand):
@@ -66,7 +66,7 @@ class Command(BaseCommand):
                     f'The blurb\'s attached workshop ({data.get("workshop")}) was not found in the database. Did you try running python manage.py ingestworkshop --name {data.get("workshop")} before running ingestblurbs?')
 
             blurb, created = Blurb.objects.get_or_create(user=user, workshop=workshop, defaults={
-                                                         'text': convert_html_quotes(data.get('text'))})
+                                                         'text': PARSER.fix_html(data.get('text'))})
 
             if not created and not options.get('forceupdate'):
                 choice = input.ask(

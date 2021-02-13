@@ -9,7 +9,7 @@ DATA_FILE = 'blurb.yml'
 
 
 def find_dir(workshop):
-    TEST_DIR = f'{settings.BASE_DIR}/_preload/_workshops/{workshop}'
+    TEST_DIR = f'{settings.BUILD_DIR}_workshops/{workshop}'
     if pathlib.Path(TEST_DIR).exists():
         return TEST_DIR
 
@@ -44,7 +44,7 @@ class Command(BaseCommand):
                     workshop = u.get(
                         'blurb', {'text': None, 'workshop': None}).get('workshop')
                     if text and workshop:
-                        SAVE_DIR = f'{settings.BASE_DIR}/_preload/_workshops/{workshop}'
+                        SAVE_DIR = f'{settings.BUILD_DIR}_workshops/{workshop}'
 
                         if find_dir(workshop):
                             with open(f'{SAVE_DIR}/{DATA_FILE}', 'w+') as file:

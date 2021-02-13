@@ -2,6 +2,7 @@ from django.db import models
 from django.db.models.fields.related import ForeignKey
 from workshop.models import Workshop
 from glossary.models import Term
+import os
 
 
 
@@ -24,11 +25,15 @@ class Lesson(models.Model):
 
 class LessonImage(models.Model):
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name='images')
-    url = models.URLField(unique=True)
+    url = models.URLField(unique=True, blank=False, null=False)
     name = models.TextField()
+    alt = models.TextField()
 
     def save(self, *args, **kwargs):
-        self.name = self.url.split('/')[-1].split('.')[0].lower()
+        if self.url:
+            self.name = os.path.basename(self.url).split('.')[0].lower()
+        else:
+            self.name = ''
         super(LessonImage, self).save()
 
     def __str__(self):

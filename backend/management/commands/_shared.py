@@ -1,17 +1,18 @@
-from django.conf import settings
+from django.conf import settings as django_settings
 from django.apps import apps
+from backend.settings import BUILD_DIR
 
 import pathlib
 import yaml
 import os
 
-all_apps = [x.split('.')[0] for x in settings.INSTALLED_APPS if not x.startswith('django') and '.apps.' in x]
+all_apps = [x.split('.')[0] for x in django_settings.INSTALLED_APPS if not x.startswith('django') and '.apps.' in x]
 _ = [apps.all_models[x] for x in all_apps]
 all_models = list()
 [all_models.extend(list(x.values())) for x in _]
 
-WORKSHOPS_DIR = settings.BASE_DIR + '/_preload/_workshops'
-GLOSSARY_FILE = settings.BASE_DIR + '/_preload/_meta/glossary/glossary.yml'
+WORKSHOPS_DIR = BUILD_DIR + '_workshops'
+GLOSSARY_FILE = BUILD_DIR + '_meta/glossary/glossary.yml'
 
 
 def test_for_required_files(REQUIRED_PATHS=[], log=None):

@@ -2,13 +2,14 @@ from django.contrib.auth.models import User
 from learner.models import Profile, ProfileLink
 from django.core.management import BaseCommand
 from django.core.files import File
+from backend.settings import BUILD_DIR
 from django.conf import settings
 from backend.logger import Logger, Input
 from ._shared import test_for_required_files, get_yaml
 import os
 
 
-SAVE_DIR = f'{settings.BASE_DIR}/_preload/_meta/users'
+SAVE_DIR = f'{BUILD_DIR}_meta/users'
 FULL_PATH = f'{SAVE_DIR}/users.yml'
 REQUIRED_PATHS = [
     (SAVE_DIR,

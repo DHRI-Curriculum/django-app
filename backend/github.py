@@ -9,11 +9,11 @@ import requests
 from bs4 import BeautifulSoup
 from pathlib import Path
 from nameparser import HumanName
-
-from backend.settings import CACHE_DIRS, IMAGE_CACHE, NORMALIZING_SECTIONS, BACKEND_AUTO
-from backend.markdown_parser import MarkdownError, PARSER, split_into_sections, as_list # move here
+from shutil import copyfile
+from backend.settings import CACHE_DIRS, IMAGE_CACHE, NORMALIZING_SECTIONS, BACKEND_AUTO, STATIC_IMAGES
+from backend.markdown_parser import GitHubParser, MarkdownError, PARSER, split_into_sections, as_list # move here
 from backend.dhri_utils import get_terminal_width
-
+from django.conf import settings
 
 
 class Helper():
@@ -38,7 +38,7 @@ class Helper():
         return {'alt': '', 'url': ''}
 
     def _fix_list_element(self, markdown):
-        html = WorkshopCache.HTML_parser(markdown)
+        html = self.PARSER.fix_html(markdown)
         soup = BeautifulSoup(html, 'lxml')
         link = soup.find('a')
         text, url = None, None
@@ -46,8 +46,8 @@ class Helper():
             url = link['href']
             text = link.text
         _ = {
-            'annotation': PARSER.curly_html(markdown),
-            'linked_text': PARSER.curly_html(text),
+            'annotation': html,
+            'linked_text': text,
             'url': url
         }
         return _
@@ -153,7 +153,6 @@ class GitCache():
     cache_dir = ''
     destination_dir = ''
     repo = None
-    HTML_parser = PARSER.convert
     parsed_data = {}
 
     def __init__(self, repository=None, branch=None, cache_dir=None, destination_dir=None, log=None):
@@ -257,6 +256,7 @@ class GlossaryCache(Helper, GitCache):
         self.branch = branch
         self.cache_dir = 'GLOSSARY'
         self.log = log
+        self.PARSER = GitHubParser(log=log)
         super().__init__(repository=self.repository,
                          branch=self.branch, cache_dir=self.cache_dir, log=log)
 
@@ -279,8 +279,8 @@ class GlossaryCache(Helper, GitCache):
                 elif section == 'Tutorials':
                     _['tutorials'] = [self._fix_list_element(x) for x in as_list(sections[section])]
                 else:
-                    _['term'] = PARSER.curly_html(section)
-                    _['explication'] = PARSER.curly_html(sections[section])
+                    _['term'] = self.PARSER.fix_html(section)
+                    _['explication'] = self.PARSER.fix_html(sections[section])
             terms.append(_)
 
         return terms
@@ -293,6 +293,7 @@ class InstallCache(Helper, GitCache):
         self.repository = repository
         self.branch = branch
         self.log = log
+        self.PARSER = GitHubParser(log=log)
         super().__init__(repository=self.repository,
                          branch=self.branch, cache_dir=self.cache_dir, log=log)
         self.image_baseurl = f'https://raw.githubusercontent.com/DHRI-Curriculum/{self.repository}/{self.branch}/guides/images/' # needs to end with /
@@ -344,9 +345,9 @@ class InstallCache(Helper, GitCache):
                 if section == _['software'] or content == '':
                     continue
                 if 'what it is' in section.lower():
-                    _['what'] = PARSER.curly_html(content.replace('---', ''))
+                    _['what'] = self.PARSER.fix_html(content.replace('---', ''))
                 elif 'why we use it' in section.lower():
-                    _['why'] = PARSER.curly_html(content.replace('---', ''))
+                    _['why'] = self.PARSER.fix_html(content.replace('---', ''))
                 elif 'installation instructions' in section.lower():
                     if 'mac' in section.lower():
                         _['instructions']['macOS'] = []
@@ -355,7 +356,7 @@ class InstallCache(Helper, GitCache):
                             __ = {}
                             __['step'], __['header'] = self._get_order(section)
                             __['html'], __['screenshots'] = self._get_screenshots_from_markdown(content, relative_dir='guides')
-                            __['html'] = PARSER.curly_html(__['html'])
+                            __['html'] = self.PARSER.fix_html(__['html'])
                             _['instructions']['macOS'].append(__)
                     elif 'windows' in section.lower():
                         _['instructions']['Windows'] = []
@@ -365,13 +366,13 @@ class InstallCache(Helper, GitCache):
                             __['step'], __[
                                 'header'] = self._get_order(section)
                             __['html'], __['screenshots'] = self._get_screenshots_from_markdown(content, relative_dir='guides')
-                            __['html'] = PARSER.curly_html(__['html'])
+                            __['html'] = self.PARSER.fix_html(__['html'])
                             _['instructions']['Windows'].append(__)
                 else:
                     if not section in _['additional_sections']:
                         i += 1
                         _['additional_sections'][section] = {
-                            'content': PARSER.curly_html(content),
+                            'content': self.PARSER.fix_html(content),
                             'order': i
                         }
                     else:
@@ -385,7 +386,7 @@ class InstallCache(Helper, GitCache):
     def _get_screenshots_from_markdown(self, markdown='', relative_dir=None):
         screenshots = []
 
-        html = self.HTML_parser(markdown)
+        html = self.PARSER.convert(markdown)
         soup = BeautifulSoup(html, 'lxml')
         for img_data in soup.find_all('img'):
             img = {}
@@ -442,6 +443,7 @@ class InsightCache(Helper, GitCache):
         self.repository = repository
         self.branch = branch
         self.log = log
+        self.PARSER = GitHubParser(log=log)
         super().__init__(repository=self.repository,
                          branch=self.branch, cache_dir=self.cache_dir, log=log)
 
@@ -468,12 +470,12 @@ class InsightCache(Helper, GitCache):
             order = 0
             for section, content in sections.items():
                 if section == _['insight']:
-                    _['introduction'] = PARSER.curly_html(content)
+                    _['introduction'] = PARSER.fix_html(content)
                 else:
                     order += 1
                     _['sections'][section] = {
                         'order': order,
-                        'content': PARSER.curly_html(content)
+                        'content': PARSER.fix_html(content)
                     }
                     has_os_specific_instruction = '### ' in content
                     if has_os_specific_instruction:
@@ -481,7 +483,7 @@ class InsightCache(Helper, GitCache):
                             if operating_system == 'MacOS':
                                 operating_system = 'macOS'
                             _['os_specific'][operating_system] = {
-                                'content': PARSER.curly_html(os_content),
+                                'content': PARSER.fix_html(os_content),
                                 'related_section': section
                             }
             insights.append(_)
@@ -495,6 +497,7 @@ class WorkshopCache(Helper, GitCache):
         self.repository = repository
         self.branch = branch
         self.log = log
+        self.PARSER = GitHubParser(log=log)
         super().__init__(repository=self.repository, branch=self.branch, cache_dir=self.cache_dir,
                          destination_dir=f'{self.CACHE_DIRS[self.cache_dir]}/{self.repository}', log=log)
 
@@ -650,7 +653,7 @@ class WorkshopCache(Helper, GitCache):
         fixing['estimated_time'] = self._fix_estimated_time(
             fixing['estimated_time'])
 
-        fixing['abstract'] = PARSER.curly_html(fixing['abstract'])
+        fixing['abstract'] = PARSER.fix_html(fixing['abstract'])
 
         # Make lists correct
         for _list in ['readings', 'projects', 'learning_objectives', 'ethical_considerations', 'prerequisites']:
@@ -722,7 +725,7 @@ class WorkshopCache(Helper, GitCache):
     def _fix_praxis(self):
         fixing = self.sections['theory-to-practice']
 
-        fixing['intro'] = PARSER.curly_html(fixing['intro'])
+        fixing['intro'] = PARSER.fix_html(fixing['intro'])
 
         # Make lists correct
         for _list in ['discussion_questions', 'next_steps', 'tutorials', 'further_readings', 'further_projects']:
@@ -775,11 +778,11 @@ class WorkshopCache(Helper, GitCache):
                 elif in_q and is_answer:
                     if line.strip().endswith('*'):
                         answer = line.strip()[2:-1].strip()
-                        answer = PARSER.curly_html(answer)
+                        answer = PARSER.fix_html(answer)
                         d['answers']['correct'].append(answer)
                     else:
                         answer = line.strip()[2:].strip()
-                        answer = PARSER.curly_html(answer)
+                        answer = PARSER.fix_html(answer)
                         d['answers']['incorrect'].append(answer)
                 elif is_empty and in_q:
                     d['question'] = d['question'].strip()
@@ -791,18 +794,18 @@ class WorkshopCache(Helper, GitCache):
                     try:
                         if line.strip().endswith('*'):
                             answer = line.strip()[2:-1].strip()
-                            answer = PARSER.curly_html(answer)
+                            answer = PARSER.fix_html(answer)
                             dict_collector[len(dict_collector)-1]['answers']['correct'].append(answer)
                         else:
                             answer = line.strip()[2:].strip()
-                            answer = PARSER.curly_html(answer)
+                            answer = PARSER.fix_html(answer)
                             dict_collector[len(dict_collector)-1]['answers']['incorrect'].append(answer)
                     except IndexError:
                         self.log.warning(
                             f'Found and skipping a stray answer that cannot be attached to a question: {line.strip()}')
 
             # add final element
-            d['question'] = PARSER.curly_html(d['question'])
+            d['question'] = PARSER.fix_html(d['question'])
             dict_collector.append(d)
 
             # clean up dict_collector
@@ -822,6 +825,7 @@ class WorkshopCache(Helper, GitCache):
                 'header': '',
                 'has_lesson_sections': {},
                 'content': '',
+                'lesson_images': [],
                 'challenge': '',
                 'solution': '',
                 'keywords': '',
@@ -849,12 +853,12 @@ class WorkshopCache(Helper, GitCache):
                 if is_challenge:
                     __['challenge'] = {
                         'header': subheader.split('#')[-1].strip(),
-                        'content': PARSER.curly_html(content)
+                        'content': PARSER.fix_html(content)
                     }
                 if is_solution:
                     __['solution'] = {
                         'header': subheader.split('#')[-1].strip(),
-                        'content': PARSER.curly_html(content)
+                        'content': PARSER.fix_html(content)
                     }
                 if is_keywords:
                     __['keywords'] = {
@@ -872,8 +876,59 @@ class WorkshopCache(Helper, GitCache):
             # Remove raw content
             __.pop('raw_content')
 
-            __['content'] = PARSER.curly_html(__['content'])
-
+            __['content'] = PARSER.fix_html(__['content'])
+            __['content'], __['lesson_images'] = self._get_images_from_html(__['content'])
+            
             _.append(__)
 
         return _
+
+
+    def _get_images_from_html(self, html='', relative_dir=None):
+        lesson_images = []
+
+        soup = BeautifulSoup(html, 'lxml')
+        for img_data in soup.find_all('img'):
+            img = {}
+            img['alt'] = img_data.get('alt')
+            img['src'] = img_data.get('src')
+            if not img['src']:
+                self.log.warning(f"An image with no src attribute detected in installation instruction step: {img}. Skipping...")
+                continue
+
+            if img['src'].startswith('/'):
+                # we have an absolute image, so we should be able to get local_image from this path
+                local_image = (str(self.destination_dir) + '/' + img['src']).replace('//', '/')
+            else:
+                # we have a relative image, so construct its entire path in the repo
+                local_image = self.destination_dir
+                if relative_dir:
+                    local_image = os.path.join(local_image, relative_dir)
+                for _dir in [x for x in img['src'].split('/') if not '.' in x]:
+                    local_image = os.path.join(local_image, _dir)
+                local_image += '/' + os.path.basename(img['src'])
+
+            if os.path.exists(local_image):
+                pathdir = Path(STATIC_IMAGES['LESSONS']) / Path(self.repository)
+                if not pathdir.exists():
+                    pathdir.mkdir(parents=True)
+                new_path = STATIC_IMAGES['LESSONS'] / Path(self.repository + '/' + os.path.basename(local_image))
+                if not os.path.exists(new_path):
+                    copyfile(local_image, new_path)
+            else:
+                raise NotImplementedError('This script does not yet download images as it should be synced in the repository.')
+
+            path = settings.STATIC_URL + f'website/images/lessons/{self.repository}/' + os.path.basename(local_image)
+            img_data['src'] = path
+            if img_data.parent.name == 'a':
+                img_data.parent['href'] = None
+                img_data.parent['target'] = None
+
+            lesson_images.append({'path': path, 'alt': img['alt']})
+
+        html = ''.join([str(x) for x in soup.body.children])
+
+        return html, lesson_images
+
+        
+
