@@ -62,18 +62,19 @@
 
                 </div>
 
-                {% if lessons_with_term %}
+                {% if term.lesson_set %}
                     <div class="row py-2 border-top">
                         <div class="col-12">
-                            <h3>Lessons containing term</h3>
+                            <h3>Lessons referring to this term</h3>
                             <ul>
-                            {% for lesson in lessons_with_term.all %}
-                                <li><a href="{% url "workshop:lesson" lesson.workshop.slug %}?page={{ lesson.order }}">{{ lesson.title }}</a></li>
+                            {% for lesson in term.lesson_set.all %}
+                                <li><a class="text-decoration-none text-dark" href="{% url "workshop:frontmatter" lesson.workshop.slug %}">{{ lesson.workshop }}</a>: <a href="{% url "workshop:lesson" lesson.workshop.slug %}?page={{ lesson.order }}">{{ lesson.title }}</a></li>
                             {% endfor %}
                             </ul>
                         </div>
                     </div>
                 {% endif %}
+
             </div>
         </div>
     </div>
