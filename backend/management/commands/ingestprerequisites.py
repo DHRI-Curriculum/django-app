@@ -2,6 +2,7 @@ from workshop.models import Prerequisite, PrerequisiteSoftware, Workshop, Frontm
 from insight.models import Insight
 from install.models import Software
 from django.core.management import BaseCommand
+from django.core.exceptions import MultipleObjectsReturned
 from backend.logger import Logger
 from ._shared_functions import get_yaml, get_all_existing_workshops
 
@@ -38,6 +39,22 @@ def get_fragments_of_name(name):
         ]
     return []
 
+
+def clean_up(category, linked_workshop, linked_insight, url):
+    # Remove the excess ones, and only keep the last one..
+    all = Prerequisite.objects.filter(category=category, 
+        linked_workshop=linked_workshop, 
+        linked_insight=linked_insight, 
+        url=url)
+    num = all.count()
+    if num > 1:
+        for p in Prerequisite.objects.filter(category=category, 
+            linked_workshop=linked_workshop, 
+            linked_insight=linked_insight, 
+            url=url)[0:num-1]:
+                p.delete()
+    
+    Prerequisite.objects.filter(category=Prerequisite.EXTERNAL_LINK, url__icontains='dhinstitutes.org/shortcuts/').delete()
 
 def search_install(potential_name, for_workshop=None, log=None, DATAFILE=None):
     potential_name = potential_name.lower()
@@ -175,20 +192,24 @@ class Command(BaseCommand):
                     log.log(
                         f'Linking insight prerequisite for `{name}`: {linked_insight.title}')
 
-                prerequisite, created = Prerequisite.objects.get_or_create(
+                if category == Prerequisite.EXTERNAL_LINK:
+                    label = prereqdata.get('url_text')
+                else:
+                    label = 'NA'
+
+                clean_up(category, linked_workshop, linked_insight, url)
+                prerequisite, created = Prerequisite.objects.update_or_create(
                     category=category, 
                     linked_workshop=linked_workshop, 
                     linked_insight=linked_insight, 
-                    url=url, 
-                    text=prereqdata.get('text', ''), 
-                    required=prereqdata.get('required'), 
-                    recommended=prereqdata.get('recommended')
+                    url=url,
+                    defaults={
+                        'text': prereqdata.get('text', ''), 
+                        'required': prereqdata.get('required'), 
+                        'recommended': prereqdata.get('recommended'),
+                        'label': label
+                    }
                 )
-
-                if category == Prerequisite.EXTERNAL_LINK:
-                    label = prereqdata.get('url_text')
-                    prerequisite.label = label
-                    prerequisite.save()
 
                 if linked_installs:
                     for software in linked_installs:

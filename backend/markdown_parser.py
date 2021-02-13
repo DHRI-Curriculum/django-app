@@ -5,6 +5,7 @@ import datetime
 import json
 import pathlib
 import os
+import smartypants
 
 from backend.logger import Logger
 from backend.settings import AUTO_REPOS, CACHE_DIRS, FORCE_DOWNLOAD, TEST_AGES, CACHE_VERBOSE, GITHUB_TOKEN
@@ -45,8 +46,7 @@ class GitHubParserCache():
 
     def __init__(self, string: str = None, force_download=FORCE_DOWNLOAD):
         self.string = string
-        self.path = CACHE_DIRS['PARSER'] / \
-            (f'{len(self.string)}{slugify(string[:100])}.json')
+        self.path = CACHE_DIRS['PARSER'] / f'{len(self.string)}{slugify(string[:100])}.json'
 
         if not self.path.exists() or force_download == True or _is_expired(self.path, force_download=force_download) == True:
             # print('loading github parser...')
@@ -228,38 +228,14 @@ class GitHubParser():
 
         # Make text into HTML...
         text = self.convert(text)
+        text = smartypants.smartypants(text) # curly quote it
     
-        # Text has curlies so we're going to go ahead
         soup = BeautifulSoup(text, 'lxml')
 
-        for element in soup.descendants:
-            if element.name == 'a':
-                # if element.text == None: # TODO: Drop links that have no text
-                self._fix_link(element)
-
         for tag in soup.descendants:
-            if tag and tag.string:
-                try:
-                    tag.children
-                    children = [x for x in tag.children]
-                except:
-                    children = False
-                if children:
-                    for tag in tag.children:
-                        tag.string = self.quote_converter(tag.string)
-                else:
-                    tag.string = self.quote_converter(tag.string)
-            elif tag:
-                if not has_children(tag) and tag.text:
-                    print(f'This text might need to be converted? {tag.text[:100]}...')
-                    continue
-
-        for tag in soup.body:
-            if tag.string and ('‘' in tag.string or '“' in tag.string):
-                real_parents = [x.name for x in tag.parents] #  if x.name not in ['[document]', 'body', 'html']
-                # print(real_parents, tag.name, tag.get('class'), tag.string[:100])
-                if 'code' in real_parents or (tag.name=='div' and 'highlight' in tag.get('class', [])):
-                    tag.string = self.quote_converter(tag.string, reverse=True)
+            if tag.name == 'a':
+                # if element.text == None: # TODO: Drop links that have no text
+                tag = self._fix_link(tag)
 
         if not multiline:
             if len([x for x in soup.body.children]) == 1 and soup.body.p:
@@ -279,7 +255,18 @@ class GitHubParser():
         replaced by smart quotes. Accounts for the possibility of HTML tags
         within the string."""
 
-        if reverse:
+        if string == None:
+            return None
+
+        if not isinstance(string, str):
+            print('Not a string:')
+            print(string)
+            exit()
+        
+        if string == '':
+            return string
+
+        if reverse == True:
             string = string.replace('“', '"').replace('”', '"')
             string = string.replace('‘', "'").replace("’", "'")
             return string

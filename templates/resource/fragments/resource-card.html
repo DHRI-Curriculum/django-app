@@ -5,7 +5,7 @@
             <h5 class="card-title m-0">{{ obj.title | markdown | safe }}</h5>
         </div>
         <div class="card-body" data-resource-id="{{ obj.id }}" style="position: relative;"><!-- position: relative required for .stretched-link-->
-            {{ obj.annotation | safe }}
+            {% if obj.annotation %}{{ obj.annotation | safe }}{% else %}<a href="{{ obj.url }}" target="_blank">{{ obj.title }}</a>{% endif %}
         </div>
         <div class="card-footer">
             {% if obj.frontmatter_projects.count or obj.frontmatter_readings.count or obj.praxis_further_projects.count or obj.praxis_further_readings.count or obj.praxis_tutorials.count or obj.term_readings.count or obj.term_tutorials.count %}
@@ -15,19 +15,19 @@
                 {% if obj.frontmatter_projects.count or obj.frontmatter_readings.count or obj.praxis_further_projects.count or obj.praxis_further_readings.count or obj.praxis_tutorials.count %}
                     <!-- Appears in the following workshops: -->
                     {% for frontmatter in obj.frontmatter_projects.all %}
-                        <a class="btn btn-secondary btn-sm mr-1" href="{% url 'workshop:frontmatter' slug=frontmatter.workshop.slug %}">{{ frontmatter.workshop.name }} (Workshop)</a>
+                        <a class="btn btn-secondary btn-sm mr-1" href="{% url 'workshop:frontmatter' slug=frontmatter.workshop.slug %}">{{ frontmatter.workshop.name }} (Workshop's frontmatter section)</a>
                     {% endfor %}
                     {% for frontmatter in obj.frontmatter_readings.all %}
-                        <a class="btn btn-secondary btn-sm mr-1" href="{% url 'workshop:frontmatter' slug=frontmatter.workshop.slug %}">{{ frontmatter.workshop.name }} (Workshop)</a>
+                        <a class="btn btn-secondary btn-sm mr-1" href="{% url 'workshop:frontmatter' slug=frontmatter.workshop.slug %}">{{ frontmatter.workshop.name }} (Workshop's frontmatter section)</a>
                     {% endfor %}
                     {% for praxis in obj.praxis_further_projects.all %}
-                        <a class="btn btn-secondary btn-sm mr-1" href="{% url 'workshop:praxis' slug=praxis.workshop.slug %}">{{ praxis.workshop.name }} (Workshop)</a>
+                        <a class="btn btn-secondary btn-sm mr-1" href="{% url 'workshop:praxis' slug=praxis.workshop.slug %}">{{ praxis.workshop.name }} (Workshop's theory to practice section)</a>
                     {% endfor %}
                     {% for praxis in obj.praxis_further_readings.all %}
-                        <a class="btn btn-secondary btn-sm mr-1" href="{% url 'workshop:praxis' slug=praxis.workshop.slug %}">{{ praxis.workshop.name }} (Workshop)</a>
+                        <a class="btn btn-secondary btn-sm mr-1" href="{% url 'workshop:praxis' slug=praxis.workshop.slug %}">{{ praxis.workshop.name }} (Workshop's theory to practice section)</a>
                     {% endfor %}
                     {% for praxis in obj.praxis_tutorials.all %}
-                        <a class="btn btn-secondary btn-sm mr-1" href="{% url 'workshop:praxis' slug=praxis.workshop.slug %}">{{ praxis.workshop.name }} (Workshop)</a>
+                        <a class="btn btn-secondary btn-sm mr-1" href="{% url 'workshop:praxis' slug=praxis.workshop.slug %}">{{ praxis.workshop.name }} (Workshop's theory to practice section)</a>
                     {% endfor %}
                 {% endif %}
 

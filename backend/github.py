@@ -37,12 +37,14 @@ class Helper():
         html = self.PARSER.fix_html(markdown)
         soup = BeautifulSoup(html, 'lxml')
         link = soup.find('a')
-        text, url = None, None
+        annotation, text, url = None, None, None
         if link:
             url = link['href']
             text = link.text
+        if not soup.text == text:
+            annotation = html
         _ = {
-            'annotation': html,
+            'annotation': annotation,
             'linked_text': text,
             'url': url
         }
@@ -150,11 +152,11 @@ class GitCache():
             latest_commit = self.repo.head.commit
             msg = f'{latest_commit}'
             if latest_commit.message:
-                msg = latest_commit.message.replace('\n', ' ')
+                msg = latest_commit.message.replace('\n', ' ').strip()
             if latest_commit.author:
-                msg += f'(by {latest_commit.author})'
+                msg += f' (by {latest_commit.author})'
 
-        self.log.log(f'Checked out branch: {self.repository}/{self.branch} -- latest commit {msg}')
+        self.log.info(f'Checked out branch: {self.repository}/{self.branch} latest commit {msg}')
 
         self.parsed_data = self.parse()
 
@@ -628,9 +630,11 @@ class WorkshopCache(Helper, GitCache):
             url = prerequisite_data.get('url')
             url_text = prerequisite_data.get('linked_text')
             html = prerequisite_data.get('annotation')
-            install_link = 'github.com/DHRI-Curriculum/install/' in url
-            insight_link = 'github.com/DHRI-Curriculum/insights/' in url
-            workshop_link = 'github.com/DHRI-Curriculum/' in url and not '/blob/' in url
+
+            install_link = 'shortcuts/install/' in url
+            insight_link = '/shortcuts/insight/' in url
+            workshop_link = '/shortcuts/workshop/' in url
+            
             if install_link or insight_link or workshop_link:
                 text = self.process_prereq_text(html, log=self.log)
             if install_link and not text:
@@ -822,9 +826,7 @@ class WorkshopCache(Helper, GitCache):
                         'content': [self._fix_list_element(x) for x in as_list(content)],
                         #'_content': []
                     }
-                    __['keywords']['content'] = [x.get('annotation') for x in __['keywords']['content']]
-                    #__['keywords']['content'] = __['keywords']['_content']
-                    #del __['keywords']['_content']
+                    __['keywords']['content'] = [x.get('linked_text') for x in __['keywords']['content']]
                 if is_evaluation:
                     __['evaluation'] = {
                         'header': subheader.split('#')[-1].strip(),

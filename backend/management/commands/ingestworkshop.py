@@ -272,14 +272,18 @@ class Command(BaseCommand):
                     challenge, created = Challenge.objects.update_or_create(
                         lesson=lesson,
                         title=lessoninfo['challenge'].get('header'),
-                        text=lessoninfo['challenge'].get('content')
+                        defaults = {
+                            'text': lessoninfo['challenge'].get('content')
+                        }
                     )
                 
                     if lessoninfo.get('solution'):
                         solution, created = Solution.objects.update_or_create(
                             challenge=challenge,
                             title=lessoninfo['solution'].get('header'),
-                            text=lessoninfo['solution'].get('content')
+                            defaults = {
+                                'text': lessoninfo['solution'].get('content')
+                            }
                         )
 
                 if lessoninfo.get('evaluation'):

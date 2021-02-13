@@ -95,6 +95,7 @@ class Logger():
     INFOS = []
     WARNINGS = []
     LOGS = []
+    progressbar.streams.wrap_stderr()
     BAR = progressbar.ProgressBar(max_value=progressbar.UnknownLength, redirect_stdout=True)
 
     def __init__(self, *args, **kwargs):
