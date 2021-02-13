@@ -135,11 +135,11 @@ def _check_normalizer(NORMALIZING_SECTIONS=NORMALIZING_SECTIONS, log=log):
 
     return True
 
-def _check_cache_dirs(CACHE_DIRS=CACHE_DIRS):
-    for DIR in CACHE_DIRS:
-        CACHE_DIRS[DIR] = pathlib.Path(CACHE_DIRS[DIR])
-        if not CACHE_DIRS[DIR].exists():
-            CACHE_DIRS[DIR].mkdir(parents=True)
+def _check_dirs_existence(DIRS=CACHE_DIRS):
+    for DIR in DIRS:
+        DIRS[DIR] = pathlib.Path(DIRS[DIR])
+        if not DIRS[DIR].exists():
+            DIRS[DIR].mkdir(parents=True)
     return True
 
 def _check_users(REQUIRED_IN_USERS=['first_name', 'last_name', 'username', 'password'], AUTO_USERS=AUTO_USERS):
@@ -153,9 +153,11 @@ def _check_users(REQUIRED_IN_USERS=['first_name', 'last_name', 'username', 'pass
 
 if not _check_normalizer():
     log.error('An unknown error occurred while checking for sections in NORMALIZING_SECTIONS.')
-if not _check_cache_dirs():
+if not _check_dirs_existence():
     log.error('An unknown error occurred while ensuring that all cache directories exist.')
-if not _check_cache_dirs(CACHE_DIRS=IMAGE_CACHE):
+if not _check_dirs_existence(DIRS=IMAGE_CACHE):
     log.error('An unknown error occurred while ensuring that all image cache directories exist.')
+if not _check_dirs_existence(DIRS=STATIC_IMAGES):
+    log.error('An unknown error occurred while ensuring that static image directories exist.')
 if not _check_users():
     log.error('An unknown error occurred when ensuring users were correctly created in the settings file.')

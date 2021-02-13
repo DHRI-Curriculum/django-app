@@ -5,7 +5,7 @@ from backend import settings
 import yaml
 import pathlib
 
-SAVE_DIR = f'{settings.BASE_DIR}/_preload/_meta/users'
+SAVE_DIR = f'{settings.BUILD_DIR}_meta/users'
 DATA_FILE = 'groups.yml'
 
 

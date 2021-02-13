@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from django.core.management import BaseCommand, call_command
-from ._shared import all_models
+from ._shared_functions import all_models
 from backend.logger import get_or_default, Logger
 
 

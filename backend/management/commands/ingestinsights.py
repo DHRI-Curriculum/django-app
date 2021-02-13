@@ -3,7 +3,7 @@ from django.core.management import BaseCommand
 from django.core.files import File
 from django.conf import settings
 from backend.logger import Logger, Input
-from ._shared import test_for_required_files, get_yaml
+from ._shared_functions import test_for_required_files, get_yaml
 
 import os
 
@@ -56,7 +56,7 @@ class Command(BaseCommand):
         input = Input(path=__file__)
 
         test_for_required_files(REQUIRED_PATHS=REQUIRED_PATHS, log=log)
-        data = get_yaml(f'{FULL_PATH}')
+        data = get_yaml(FULL_PATH, log=log)
 
         for insightdata in data:
             # TODO: Insights and Software are also connected in a database table (insight_insight_software) but this relationship is not developed yet.

@@ -2,17 +2,15 @@
 This library is used for the `build` commands related to the DHRI Curriculum
 '''
 
-import git
+from git import Repo
 import os
 import re
-import requests
 from bs4 import BeautifulSoup
-from pathlib import Path
 from nameparser import HumanName
+from progressbar import UnknownLength
 from shutil import copyfile
-from backend.settings import CACHE_DIRS, IMAGE_CACHE, NORMALIZING_SECTIONS, BACKEND_AUTO, STATIC_IMAGES
-from backend.markdown_parser import GitHubParser, MarkdownError, PARSER, split_into_sections, as_list # move here
-from backend.dhri_utils import get_terminal_width
+from backend.settings import CACHE_DIRS, NORMALIZING_SECTIONS, BACKEND_AUTO, STATIC_IMAGES
+from backend.markdown_parser import GitHubParser, MarkdownError, PARSER, split_into_sections, as_list
 from django.conf import settings
 
 
@@ -20,10 +18,8 @@ class Helper():
     IMAGE_REGEX = re.compile(r'(?:!\[(.*?)\]\((.*?)\))')
 
     def _extract_from_p(self, html):
-        try:
-            return ''.join([str(x) for x in BeautifulSoup(html, 'lxml').p.children])  # TODO: this now crashes....
-        except:
-            return html
+        extracted = ''.join([str(x) for x in BeautifulSoup(html, 'lxml').p.children])
+        return extracted
 
     def _get_image_from_first_line(self, markdown=''):
         if markdown == '' or markdown == None:
@@ -71,8 +67,8 @@ class Helper():
         if os.path.exists(local_file):
             return {'url': local_file, 'alt': dictionary.get('alt')}
         else:
-            exit('error! fix this!')
-            return {'url': url, 'alt': dictionary.get('alt')}
+            raise NotImplementedError('This is a bug in _fix_image that needs to be fixed after alpha-1 is released.')
+            # This bug occurs when local files are not available in the parent directories
 
     @staticmethod
     def _get_order(step, log=None):
@@ -86,42 +82,12 @@ class Helper():
                 pass
         else:
             order = 0
-            raise MarkdownError(
-                'Found an installation step that does not show the order clearly (see documentation). Cannot determine order: ' + str(step)) from None
+            raise MarkdownError('Found an installation step that does not show the order clearly (see documentation). Cannot determine order: ' + str(step)) from None
         return(order, step)
 
     @staticmethod
-    def download_image(url, local_file):
-        if not isinstance(local_file, Path):
-            local_file = Path(local_file)
-        if not local_file.parent.exists():
-            local_file.parent.mkdir(parents=True)
-        if not local_file.exists():
-            r = requests.get(url)
-            if r.status_code == 200:
-                with open(local_file, 'wb+') as f:
-                    for chunk in r:
-                        f.write(chunk)
-                return True
-            elif r.status_code == 404:
-                url = url.replace('/images/', '/sections/images/')
-                r = requests.get(url)
-                if r.status_code == 200:
-                    with open(local_file, 'wb+') as f:
-                        for chunk in r:
-                            f.write(chunk)
-                    return True
-                elif r.status_code == 404:
-                    exit(
-                        f"Could not download image {local_file.name} (not found): {url}")
-                elif r.status_code == 403:
-                    exit(
-                        f"Could not download image {local_file.name} (not allowed)")
-            elif r.status_code == 403:
-                exit(
-                    f"Could not download image {local_file.name} (not allowed)")
-        else:
-            return True
+    def download_image(url=None, local_file=None):
+        raise NotImplementedError('download_image has been removed in advance of alpha-1.')
 
     @staticmethod
     def process_prereq_text(html, log=None):
@@ -174,12 +140,21 @@ class GitCache():
             self.repo = self._clone()
         else:
             self.log.log(f'Repository directory exists so creating connection to repository: {self.destination_dir}')
-            self.repo = git.Repo(self.destination_dir)
+            self.repo = Repo(self.destination_dir)
             self.log.log(f'Pulling latest repository updates from remotes origin...')
             self.repo.remotes.origin.pull()
 
-        self.log.log(f'Ensuring repository has correct branch checked out: {self.branch} ({self.repository})')
         self.repo.git.checkout(self.branch, force=True)
+
+        if self.repo.head.commit:
+            latest_commit = self.repo.head.commit
+            msg = f'{latest_commit}'
+            if latest_commit.message:
+                msg = latest_commit.message.replace('\n', ' ')
+            if latest_commit.author:
+                msg += f'(by {latest_commit.author})'
+
+        self.log.log(f'Checked out branch: {self.repository}/{self.branch} -- latest commit {msg}')
 
         self.parsed_data = self.parse()
 
@@ -187,10 +162,9 @@ class GitCache():
         if self.backend.lower() == 'github':
             url = f'http://www.github.com/DHRI-Curriculum/{self.repository}'
             self.log.log(f'Cloning repository from GitHub: {url}')
-            self.repo = git.Repo.clone_from(url, self.destination_dir)
+            self.repo = Repo.clone_from(url, self.destination_dir)
         else:
-            raise NotImplementedError(
-                f'Backend `{self.backend}` cannot be used. No implementation for it.')
+            raise NotImplementedError(f'Backend `{self.backend}` cannot be used. No implementation for it.')
         return self.repo
 
     @property
@@ -234,8 +208,11 @@ class GitCache():
     def get_stem(self, path):
         return os.path.basename(path).split('.')[0]
 
-    def parse(self):
-        self.log.log(f'Parsing data from repository...')
+    def parse(self, files=[]):
+        try:
+            self.log.BAR(files, max_value=len(files))
+        except:
+            self.log.log(f'Parsing data from repository...')
 
     @property
     def data(self):
@@ -244,8 +221,7 @@ class GitCache():
                 self.parsed_data = self.parse()
             except AttributeError as e:
                 if 'has no attribute' in str(e) and 'parse' in str(e):
-                    raise AttributeError(
-                        f'The class needs a parse method.') from None
+                    raise AttributeError(f'The class needs a parse method.') from None
         return self.parsed_data
 
 
@@ -261,28 +237,33 @@ class GlossaryCache(Helper, GitCache):
                          branch=self.branch, cache_dir=self.cache_dir, log=log)
 
     def parse(self):
-        super().parse()
+        files = self.contents_of('terms')
+        super().parse(files)
         terms = []
-        for file in self.contents_of('terms'):
+        for i, file in enumerate(files):
+            self.log.BAR.update(i)
             file_contents = self.read_file(os.path.join(self.destination_dir, 'terms', file))
-
             _ = {
                 'term': None,
                 'explication': None,
                 'readings': None,
                 'tutorials': None
             }
+            
             sections = split_into_sections(file_contents)
+            
             for section in sections:
-                if section == 'Readings':
+                if section == 'Readings' or section == 'Reading':
                     _['readings'] = [self._fix_list_element(x) for x in as_list(sections[section])]
-                elif section == 'Tutorials':
+                elif section == 'Tutorials' or section == 'Tutorial':
                     _['tutorials'] = [self._fix_list_element(x) for x in as_list(sections[section])]
                 else:
                     _['term'] = self.PARSER.fix_html(section)
                     _['explication'] = self.PARSER.fix_html(sections[section])
+            
             terms.append(_)
 
+        self.log.BAR.finish()
         return terms
 
 
@@ -299,9 +280,11 @@ class InstallCache(Helper, GitCache):
         self.image_baseurl = f'https://raw.githubusercontent.com/DHRI-Curriculum/{self.repository}/{self.branch}/guides/images/' # needs to end with /
         
     def parse(self):
-        super().parse()
+        files = self.contents_of('guides')
+        super().parse(files)
         instructions = []
-        for file in self.contents_of('guides'):
+        for i, file in enumerate(files):
+            self.log.BAR.update(i)
             file_contents = self.read_file(os.path.join(self.destination_dir, 'guides', file))
 
             if not file_contents:
@@ -381,6 +364,7 @@ class InstallCache(Helper, GitCache):
 
             instructions.append(_)
         
+        self.log.BAR.finish()
         return instructions
 
     def _get_screenshots_from_markdown(self, markdown='', relative_dir=None):
@@ -412,16 +396,7 @@ class InstallCache(Helper, GitCache):
             if os.path.exists(local_image):
                 pass  # the image already exists
             else:
-                raise NotImplementedError('This script does not yet download images as it should be synced in the repository.')
-                '''
-                filename = os.path.basename(img['src'])
-                local_destination = IMAGE_CACHE['INSTALL'] / filename
-                self.log.warning(
-                    f'Expected local path does not exist: `{local_image}`... Downloading to temporary local storage (`{local_destination}`)!')
-                url = f'{self.image_baseurl}{filename}'
-                if self.download_image(url, local_destination):
-                    local_image = local_destination
-                '''
+                self.download_image()
 
             if local_image:
                 screenshots.append({'path': local_image, 'alt': img['alt']})
@@ -448,9 +423,11 @@ class InsightCache(Helper, GitCache):
                          branch=self.branch, cache_dir=self.cache_dir, log=log)
 
     def parse(self):
-        super().parse()
+        files = self.contents_of('pages')
+        super().parse(files)
         insights = []
-        for file in self.contents_of('pages'):
+        for i, file in enumerate(files):
+            self.log.BAR.update(i)
             file_contents = self.read_file(os.path.join(self.destination_dir, 'pages', file))
             
             if not file_contents:
@@ -487,6 +464,8 @@ class InsightCache(Helper, GitCache):
                                 'related_section': section
                             }
             insights.append(_)
+
+        self.log.BAR.finish()
         return insights
 
 
@@ -517,10 +496,8 @@ class WorkshopCache(Helper, GitCache):
         data['image'] = self._get_image_from_first_line(self.raw['image'])
         data['image'] = self._fix_image(data['image'])
         
-        data['name'] = list(split_into_sections(
-            self.raw['frontmatter'], level_granularity=1).keys())[0]
-        self.sections = {key: split_into_sections(
-            value) for key, value in self.raw.items()}
+        data['name'] = list(split_into_sections(self.raw['frontmatter'], level_granularity=1).keys())[0]
+        self.sections = {key: split_into_sections(value) for key, value in self.raw.items()}
         self.sections = self._normalize_sections()
         self.sections['frontmatter'] = self._fix_frontmatter()
         self.sections['theory-to-practice'] = self._fix_praxis()
@@ -624,27 +601,6 @@ class WorkshopCache(Helper, GitCache):
             'past': past,
             'link': link
         }
-
-    @staticmethod
-    def _warning_too_many_links(category, links, url, log):
-        if len(links) > 1:
-            try:
-                url_list = [x['href'] for x in links]
-                url_list[0] = f'*** {url}'
-                link_list = '- ' + \
-                    "\n    - ".join([x[:get_terminal_width()-30]
-                                     for x in url_list])
-            except:
-                try:
-                    links = [x[1] for x in links]
-                    links[0] = '*** '+links[0]
-                    link_list = '- ' + \
-                        "\n    - ".join([x[:get_terminal_width()-30]
-                                         for x in links])
-                except:
-                    link_list = ''
-            log.info(
-                f'One `{category}` seems to contain more than one URL, but only the first is captured:' + link_list)
 
     def _fix_frontmatter(self):
         fixing = self.sections['frontmatter']
@@ -863,10 +819,12 @@ class WorkshopCache(Helper, GitCache):
                 if is_keywords:
                     __['keywords'] = {
                         'header': subheader.split('#')[-1].strip(),
-                        'content': [self._fix_list_element(x) for x in as_list(content)]
+                        'content': [self._fix_list_element(x) for x in as_list(content)],
+                        #'_content': []
                     }
-                    for i, content in enumerate(__['keywords']['content']):
-                        __['keywords']['content'][i]['linked_text'] = ''.join([str(x) for x in BeautifulSoup(content['linked_text'], 'lxml').p.children])
+                    __['keywords']['content'] = [x.get('annotation') for x in __['keywords']['content']]
+                    #__['keywords']['content'] = __['keywords']['_content']
+                    #del __['keywords']['_content']
                 if is_evaluation:
                     __['evaluation'] = {
                         'header': subheader.split('#')[-1].strip(),
@@ -876,6 +834,7 @@ class WorkshopCache(Helper, GitCache):
             # Remove raw content
             __.pop('raw_content')
 
+            __['header'] = PARSER.fix_html(__['header'])
             __['content'] = PARSER.fix_html(__['content'])
             __['content'], __['lesson_images'] = self._get_images_from_html(__['content'])
             
@@ -909,10 +868,10 @@ class WorkshopCache(Helper, GitCache):
                 local_image += '/' + os.path.basename(img['src'])
 
             if os.path.exists(local_image):
-                pathdir = Path(STATIC_IMAGES['LESSONS']) / Path(self.repository)
-                if not pathdir.exists():
-                    pathdir.mkdir(parents=True)
-                new_path = STATIC_IMAGES['LESSONS'] / Path(self.repository + '/' + os.path.basename(local_image))
+                pathdir = os.path.join(STATIC_IMAGES['LESSONS'], self.repository)
+                if not os.path.exists(pathdir):
+                    os.mkdir(pathdir)
+                new_path = os.path.join(STATIC_IMAGES['LESSONS'], self.repository, os.path.basename(local_image))
                 if not os.path.exists(new_path):
                     copyfile(local_image, new_path)
             else:

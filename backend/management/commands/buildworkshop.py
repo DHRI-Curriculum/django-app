@@ -1,21 +1,21 @@
 from backend.github import WorkshopCache
-from bs4 import BeautifulSoup
 from django.core.management import BaseCommand
-from django.conf import settings
 from backend.logger import Logger
 from backend import settings
 
 import yaml
 import pathlib
 
-
-def check_for_cancel(SAVE_DIR, workshop):
+def check_for_cancel(SAVE_DIR, workshop, log=None):
     if pathlib.Path(SAVE_DIR).exists():
         _ = input(f'{workshop} already exists. Replace? [n/Y]')
         if _ == '' or _.lower() == 'y':
             pass
         else:
-            exit('User exit.')
+            if not log:
+                exit('User exit.')
+            else:
+                log.error('User exit.')
 
 
 class Command(BaseCommand):
@@ -32,21 +32,22 @@ class Command(BaseCommand):
         parser.add_argument('--forcedownload', action='store_true',
                             help='Forces the script to re-load all the locally stored data, despite any settings made for expiry dates on caches.')
         parser.add_argument('--save_all', action='store_true')
-        group = parser.add_mutually_exclusive_group(required=False)
-        group.add_argument('--name', nargs='+', type=str,
-                           help='Provide a specific name of a workshop to build.')
-        group.add_argument('--all', action='store_true',
-                           help='Build all workshop datafiles.')
         parser.add_argument('--silent', action='store_true',
                             help='Makes as little output as possible, although still saves all the information in log files (see debugging docs).')
         parser.add_argument('--verbose', action='store_true',
                             help='Provides all output possible, which can be overwhelming. Good for debug purposes, not for the faint of heart.')
 
+        group = parser.add_mutually_exclusive_group(required=False)
+        group.add_argument('--name', nargs='+', type=str,
+                           help='Provide a specific name of a workshop to build.')
+        group.add_argument('--all', action='store_true',
+                           help='Build all workshop datafiles.')
+
     def handle(self, *args, **options):
         log = Logger(path=__file__,
-            force_verbose=options.get('verbose'),
-            force_silent=options.get('silent')
-        )
+                     force_verbose=options.get('verbose'),
+                     force_silent=options.get('silent')
+                     )
 
         if options.get('all'):
             options['name'] = [x[0] for x in settings.AUTO_REPOS]
@@ -59,15 +60,15 @@ class Command(BaseCommand):
             'Building workshop files... Please be patient as this can take some time.')
 
         for workshop in options.get('name'):
-            SAVE_DIR = f'{settings.BASE_DIR}/_preload/_workshops/{workshop}'
+            SAVE_DIR = f'{settings.BUILD_DIR}_workshops/{workshop}'
             DATA_FILE = f'{workshop}.yml'
             if not options.get('force'):
-                check_for_cancel(SAVE_DIR, workshop)
+                check_for_cancel(SAVE_DIR, workshop, log=log)
 
             if not pathlib.Path(SAVE_DIR).exists():
                 pathlib.Path(SAVE_DIR).mkdir(parents=True)
 
-            branch = 'v2.0' # TODO: fix this...
+            branch = 'v2.0'  # TODO: fix this...
             loader = WorkshopCache(repository=workshop, branch=branch, log=log)
             data = loader.data
             del data['raw']

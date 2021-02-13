@@ -5,7 +5,7 @@ from django.core.files import File
 from backend.settings import BUILD_DIR
 from django.conf import settings
 from backend.logger import Logger, Input
-from ._shared import test_for_required_files, get_yaml
+from ._shared_functions import test_for_required_files, get_yaml
 import os
 
 
@@ -59,7 +59,7 @@ class Command(BaseCommand):
         input = Input(path=__file__)
 
         test_for_required_files(REQUIRED_PATHS=REQUIRED_PATHS, log=log)
-        data = get_yaml(f'{FULL_PATH}')
+        data = get_yaml(FULL_PATH, log=log)
 
         for userdata in data.get('users', []):
             if not userdata.get('username'):
