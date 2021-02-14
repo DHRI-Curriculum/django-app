@@ -60,6 +60,5 @@ class Command(BaseCommand):
                             log.error(
                                 f'No directory available for `{workshop}` ({SAVE_DIR}). Did you run `python manage.py build --repo {workshop}` before running this script?', kill=True)
 
-        if log._save(data='buildblurbs', name='warnings.md', warnings=True) or log._save(data='buildblurbs', name='logs.md', warnings=False, logs=True):
-            log.log('Log files with any warnings and logging information is now available in the' +
-                    log.LOG_DIR, force=True)
+        if log._save(data='buildblurbs', name='warnings.md', warnings=True) or log._save(data='buildblurbs', name='logs.md', warnings=False, logs=True) or log._save(data='buildblurbs', name='info.md', warnings=False, logs=False, info=True):
+            log.log(f'Log files with any warnings and logging information is now available in: `{log.LOG_DIR}`', force=True)

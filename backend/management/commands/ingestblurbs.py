@@ -79,6 +79,5 @@ class Command(BaseCommand):
 
         log.log('Added/updated blurbs for workshops: ' + ', '.join([x[0] for x in workshops]))
 
-        if log._save(data='ingestblurbs', name='warnings.md', warnings=True) or log._save(data='ingestblurbs', name='logs.md', warnings=False, logs=True):
-            log.log('Log files with any warnings and logging information is now available in the' +
-                    log.LOG_DIR, force=True)
+        if log._save(data='ingestblurbs', name='warnings.md', warnings=True) or log._save(data='ingestblurbs', name='logs.md', warnings=False, logs=True) or log._save(data='ingestblurbs', name='info.md', warnings=False, logs=False, info=True):
+            log.log(f'Log files with any warnings and logging information is now available in: `{log.LOG_DIR}`', force=True)

@@ -46,6 +46,5 @@ class Command(BaseCommand):
 
         log.log(f'Saved insights data file: {SAVE_DIR}/{DATA_FILE}')
 
-        if log._save(data='buildinsights', name='warnings.md', warnings=True) or log._save(data='buildinsights', name='logs.md', warnings=False, logs=True):
-            log.log('Log files with any warnings and logging information is now available in the' +
-                    log.LOG_DIR, force=True)
+        if log._save(data='buildinsights', name='warnings.md', warnings=True) or log._save(data='buildinsights', name='logs.md', warnings=False, logs=True) or log._save(data='buildinsights', name='info.md', warnings=False, logs=False, info=True):
+            log.log(f'Log files with any warnings and logging information is now available in: `{log.LOG_DIR}`', force=True)

@@ -143,10 +143,11 @@ class GitCache():
         else:
             self.log.log(f'Repository directory exists so creating connection to repository: {self.destination_dir}')
             self.repo = Repo(self.destination_dir)
-            self.log.log(f'Pulling latest repository updates from remotes origin...')
-            self.repo.remotes.origin.pull()
 
         self.repo.git.checkout(self.branch, force=True)
+
+        self.log.log(f'Pulling latest repository updates from remotes origin...')
+        self.repo.remotes.origin.pull()
 
         if self.repo.head.commit:
             latest_commit = self.repo.head.commit
