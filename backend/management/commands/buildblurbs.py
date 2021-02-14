@@ -1,3 +1,4 @@
+from backend.markdown_parser import PARSER
 from django.core.management import BaseCommand
 from backend.logger import Logger
 from backend import settings
@@ -51,7 +52,7 @@ class Command(BaseCommand):
                                 file.write(yaml.dump({
                                     'workshop': workshop,
                                     'user': u.get('username'),
-                                    'text': text
+                                    'text': PARSER.fix_html(text)
                                 }))
 
                                 log.log(f'Saved blurb datafile: {SAVE_DIR}/{DATA_FILE}.')

@@ -232,7 +232,7 @@
           <div class="row">
             {% for blurb in blurbs %}
               <div class="col-12">
-                <h4>{% if blurb.user.first_name and blurb.user.last_name %}{{ blurb.user.first_name }} {{ blurb.user.last_name }}'s{% endif %} Reflections on {{ workshop.name }}</h4>
+                <h4 class="mt-3">{% if blurb.user.first_name and blurb.user.last_name %}{{ blurb.user.first_name }} {{ blurb.user.last_name }}'s{% endif %} Reflections on {{ workshop.name }}</h4>
                 <p class="lead" data-replace-internal-links="true">{{ blurb.text | safe }}</p>
               </div>
             {% endfor %}
