@@ -1,5 +1,4 @@
-from pathlib import Path
-from bs4 import BeautifulSoup
+import filecmp
 from glossary.models import Term
 from learner.models import Profile
 from lesson.models import Challenge, Evaluation, LessonImage, Solution, Lesson, Question, Answer
@@ -10,10 +9,8 @@ from django.core.files import File
 from django.conf import settings
 from django.db.utils import IntegrityError
 from backend.logger import Logger, Input
-from backend.settings import STATIC_IMAGES
 from ._shared_functions import get_yaml, get_all_existing_workshops, GLOSSARY_FILE
 import os
-from shutil import copyfile
 
 
 class Command(BaseCommand):
@@ -90,7 +87,7 @@ class Command(BaseCommand):
             if imagedata:
                 source_file = imagedata['url']
                 valid_filename = _get_valid_name(slug + '-' + os.path.basename(imagedata['url']))
-                if not _image_exists(valid_filename):
+                if not _image_exists(valid_filename) or filecmp.cmp(source_file, _get_media_path(valid_filename), shallow=False) == False:
                     try:
                         with open(source_file, 'rb') as f:
                             workshop.image = File(f, name=valid_filename)
@@ -319,6 +316,5 @@ class Command(BaseCommand):
         if not options.get('no_reminder'):
             log.log('Do not forget to run `ingestprerequisites` after running the `ingestworkshop` command (without the --name flag).', color='yellow')
 
-        if log._save(data='ingestworkshop', name='warnings.md', warnings=True) or log._save(data='ingestworkshop', name='logs.md', warnings=False, logs=True):
-            log.log('Log files with any warnings and logging information is now available in the' +
-                    log.LOG_DIR, force=True)
+        if log._save(data='ingestworkshop', name='warnings.md', warnings=True) or log._save(data='ingestworkshop', name='logs.md', warnings=False, logs=True) or log._save(data='ingestworkshop', name='info.md', warnings=False, logs=False, info=True):
+            log.log(f'Log files with any warnings and logging information is now available in: `{log.LOG_DIR}`', force=True)

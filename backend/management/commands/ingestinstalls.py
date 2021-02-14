@@ -5,6 +5,7 @@ from django.conf import settings
 from backend.logger import Logger, Input
 from ._shared_functions import test_for_required_files, get_yaml
 import os
+import filecmp
 
 
 SAVE_DIR = f'{settings.BASE_DIR}/_preload/_install'
@@ -15,17 +16,6 @@ REQUIRED_PATHS = [
     (FULL_PATH,
      f'The required data file ({FULL_PATH}) does not exist. Did you run `python manage.py buildinstalls` before you ran this command?')
 ]
-
-
-def get_screenshot_path(image_file, relative_to_upload_field=False):
-    if not relative_to_upload_field:
-        return settings.MEDIA_ROOT + '/' + Screenshot.image.field.upload_to + '/' + os.path.basename(image_file)
-
-    return Screenshot.image.field.upload_to + '/' + os.path.basename(image_file)
-
-
-def screenshot_exists(image_file):
-    return os.path.exists(get_screenshot_path(image_file))
 
 
 def get_instruction_image_path(image_file, relative_to_upload_field=False):
@@ -81,16 +71,18 @@ class Command(BaseCommand):
 
                 original_file = installdata.get('image')
                 if original_file:
-                    if instruction_image_exists(original_file):
-                        log.log(f'Instruction image already exists. Adding path: `{os.path.basename(original_file)}`')
-                        instruction.image.name = get_instruction_image_path(
-                            original_file, True)
+                    if instruction_image_exists(original_file) and filecmp.cmp(original_file, get_instruction_image_path(original_file), shallow=False) == True:
+                        log.log(f'Instruction image already exists. Ensuring path is in database: `{get_instruction_image_path(original_file)}`')
+                        instruction.image.name = get_instruction_image_path(original_file, True)
                         instruction.save()
                     else:
-                        log.info(f'Instruction image is being copied to media path: `{os.path.basename(original_file)}`')
                         with open(original_file, 'rb') as f:
                             instruction.image = File(f, name=os.path.basename(f.name))
                             instruction.save()
+                        if filecmp.cmp(original_file, get_instruction_image_path(original_file)):
+                            log.info(f'Instruction image has been updated so being copied to media path: `{get_instruction_image_path(original_file)}`')
+                        else:
+                            log.info(f'Instruction image has been copied to media path: `{get_instruction_image_path(original_file)}`')
                 else:
                     log.warning(f'An image for `{software}` does not exist. A default image will be saved instead. If you want a particular image for the installation instructions, follow the documentation.')
                     instruction.image.name = get_default_instruction_image()
@@ -115,6 +107,5 @@ class Command(BaseCommand):
         log.log('Added/updated installation instructions: ' +
                                  ', '.join([f'{x["software"]}' for x in data]))
 
-        if log._save(data='ingestinstalls', name='warnings.md', warnings=True) or log._save(data='ingestinstalls', name='logs.md', warnings=False, logs=True):
-            log.log('Log files with any warnings and logging information is now available in the' +
-                    log.LOG_DIR, force=True)
+        if log._save(data='ingestinstalls', name='warnings.md', warnings=True) or log._save(data='ingestinstalls', name='logs.md', warnings=False, logs=True) or log._save(data='ingestinstalls', name='info.md', warnings=False, logs=False, info=True):
+            log.log(f'Log files with any warnings and logging information is now available in: `{log.LOG_DIR}`', force=True)

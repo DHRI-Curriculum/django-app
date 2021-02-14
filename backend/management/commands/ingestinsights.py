@@ -6,6 +6,7 @@ from backend.logger import Logger, Input
 from ._shared_functions import test_for_required_files, get_yaml
 
 import os
+import filecmp
 
 SAVE_DIR = f'{settings.BASE_DIR}/_preload/_insights'
 FULL_PATH = f'{SAVE_DIR}/insights.yml'
@@ -69,16 +70,19 @@ class Command(BaseCommand):
             
             original_file = insightdata.get('image').get('url')
             if original_file:
-                if insight_image_exists(original_file):
-                    log.log(f'Insight image already exists. Adding path: `{os.path.basename(original_file)}`')
+                if insight_image_exists(original_file) and filecmp.cmp(original_file, get_insight_image_path(original_file), shallow=False) == True:
+                    log.log(f'Insight image already exists. Connecting existing paths to database: `{get_insight_image_path(original_file)}`')
                     insight.image.name = get_insight_image_path(original_file, True)
                     insight.save()
                 else:
-                    log.info(f'Insight image is being copied to media path: `{os.path.basename(original_file)}`')
                     with open(original_file, 'rb') as f:
-                        insight.image = File(
-                            f, name=self.os.path.basename(f.name))
+                        insight.image = File(f, name=self.os.path.basename(f.name))
                         insight.save()
+
+                    if filecmp.cmp(original_file, get_insight_image_path(original_file), shallow=False):
+                        log.info(f'Insight image has been updated and thus was copied to the media path: `{get_insight_image_path(original_file)}`')
+                    else:
+                        log.info(f'Insight image was not found and is copied to media path: `{get_insight_image_path(original_file)}`')
             else:
                 log.warning(f'An image for `{insight}` does not exist. A default image will be saved instead. If you want a particular image for the installation instructions, follow the documentation.')
                 insight.image.name = get_default_insight_image()
@@ -103,6 +107,5 @@ class Command(BaseCommand):
         log.log('Added/updated insights: ' +
                                  ', '.join([x.get("insight") for x in data]))
 
-        if log._save(data='ingestinsights', name='warnings.md', warnings=True) or log._save(data='ingestinsights', name='logs.md', warnings=False, logs=True):
-            log.log('Log files with any warnings and logging information is now available in the' +
-                    log.LOG_DIR, force=True)
+        if log._save(data='ingestinsights', name='warnings.md', warnings=True) or log._save(data='ingestinsights', name='logs.md', warnings=False, logs=True) or log._save(data='ingestinsights', name='info.md', warnings=False, logs=False, info=True):
+            log.log(f'Log files with any warnings and logging information is now available in: `{log.LOG_DIR}`', force=True)

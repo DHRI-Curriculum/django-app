@@ -103,6 +103,5 @@ class Command(BaseCommand):
         log.log('Added/updated terms: ' +
                                  ', '.join([x.get('term') for x in data]))
 
-        if log._save(data='buildusers', name='warnings.md', warnings=True) or log._save(data='buildusers', name='logs.md', warnings=False, logs=True):
-            log.log('Log files with any warnings and logging information is now available in the' +
-                    log.LOG_DIR, force=True)
+        if log._save(data='ingestglossary', name='warnings.md', warnings=True) or log._save(data='ingestglossary', name='logs.md', warnings=False, logs=True) or log._save(data='ingestglossary', name='info.md', warnings=False, logs=False, info=True):
+            log.log(f'Log files with any warnings and logging information is now available in: `{log.LOG_DIR}`', force=True)

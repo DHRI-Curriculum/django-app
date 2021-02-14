@@ -32,8 +32,7 @@ class ProfileLink(models.Model):
         (PROJECT, 'Project'),
     ]
 
-    profile = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, related_name='links')
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='links', null=True)
     label = models.CharField(max_length=70)
     url = models.URLField()
     cat = models.CharField(max_length=2, choices=CAT_CHOICES, default=PROJECT)

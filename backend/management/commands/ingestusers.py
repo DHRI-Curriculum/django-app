@@ -7,7 +7,7 @@ from django.conf import settings
 from backend.logger import Logger, Input
 from ._shared_functions import test_for_required_files, get_yaml
 import os
-
+import filecmp
 
 SAVE_DIR = f'{BUILD_DIR}_meta/users'
 FULL_PATH = f'{SAVE_DIR}/users.yml'
@@ -98,28 +98,20 @@ class Command(BaseCommand):
             if not userdata.get('profile'):
                 log.error(f'User {userdata.get("username")} does not have profile information (bio, image, links, and/or pronouns) added. Make sure you add all this information for each user in the datafile before running this command ({FULL_PATH}).')
 
-            profile, created = Profile.objects.get_or_create(user=user)
-
-            if not created and not options.get('forceupdate'):
-                choice = input.ask(
-                    f'User `{userdata.get("username")}` already has a profile. Update with new information? [y/N]')
-                if choice.lower() != 'y':
-                    continue
-
-            Profile.objects.filter(user=user).update(
-                bio=userdata.get('profile', {}).get('bio'),
-                pronouns=userdata.get('profile', {}).get('pronouns'),
-            )
-
-            profile.refresh_from_db()
+            profile, created = Profile.objects.update_or_create(
+                user=user,
+                defaults={
+                    'bio': userdata.get('profile', {}).get('bio'),
+                    'pronouns': userdata.get('profile', {}).get('pronouns')
+                })
 
             if userdata.get('profile', {}).get('image'):
-                if profile_picture_exists(userdata.get('profile', {}).get('image')):
-                    profile.image.name = get_profile_picture_path(
-                        userdata.get('profile', {}).get('image'), True)
+                profile_pic = userdata.get('profile', {}).get('image')
+                if profile_picture_exists(profile_pic) and filecmp.cmp(profile_pic, get_profile_picture_path(profile_pic)):
+                    profile.image.name = get_profile_picture_path(profile_pic, True)
                     profile.save()
                 else:
-                    with open(userdata.get('profile', {}).get('image'), 'rb') as f:
+                    with open(profile_pic, 'rb') as f:
                         profile.image = File(f, name=os.path.basename(f.name))
                         profile.save()
             else:
@@ -136,22 +128,16 @@ class Command(BaseCommand):
                         log.error(
                             f'Link {link.get("url")} is assigned a category that has no correspondence in the database model: {link.get("cat")}. Please set the category to either `personal` or `project`.')
 
-                    _, _ = ProfileLink.objects.get_or_create(profile=profile, url=link.get('url'), defaults={
+                    _, _ = ProfileLink.objects.update_or_create(profile=profile, url=link.get('url'), defaults={
                         'cat': link.get('cat'),
                         'label': link.get('label')
                     })
-
-                    ProfileLink.objects.filter(profile=profile, url=link.get('url')).update(
-                        cat=link.get('cat'),
-                        label=link.get('label')
-                    )
 
         if not profile_picture_exists(get_default_profile_picture(full_path=True)):
             if data.get('default', False) and os.path.exists(data.get('default')):
                 from shutil import copyfile
 
-                copyfile(data.get('default'),
-                         get_default_profile_picture(full_path=True))
+                copyfile(data.get('default'), get_default_profile_picture(full_path=True))
                 log.log('Default profile picture added to the /media/ directory.')
             elif not data.get('default'):
                 log.error(
@@ -163,6 +149,5 @@ class Command(BaseCommand):
         log.log('Added/updated users: ' +
                                  ', '.join([x.get('username') for x in data.get('users')]))
 
-        if log._save(data='ingestusers', name='warnings.md', warnings=True) or log._save(data='ingestusers', name='logs.md', warnings=False, logs=True):
-            log.log('Log files with any warnings and logging information is now available in the' +
-                    log.LOG_DIR, force=True)
+        if log._save(data='ingestusers', name='warnings.md', warnings=True) or log._save(data='ingestusers', name='logs.md', warnings=False, logs=True) or log._save(data='ingestusers', name='info.md', warnings=False, logs=False, info=True):
+            log.log(f'Log files with any warnings and logging information is now available in: `{log.LOG_DIR}`', force=True)
