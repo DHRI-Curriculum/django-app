@@ -2,6 +2,7 @@ from django.http.request import HttpRequest
 from django.views import View
 from django.http.response import Http404, HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
 from glossary.models import Term
+from workshop.models import Workshop
 from insight.models import Insight
 from install.models import Instruction, Software
 from django.urls import reverse
@@ -70,5 +71,22 @@ class InstallRedirectView(View):
             for install in installs:
                 url = reverse('install:installation', kwargs={'slug': install.slug})
                 response += f'''<li><a href="{url}">{install.software}</a></li>'''
+            response += '</ul>'
+            return HttpResponse(response)
+
+
+class WorkshopRedirectView(View):
+    def get(self, request, *args, **kwargs):
+        workshops = Workshop.objects.filter(slug__icontains=kwargs.get('slug'))
+        if workshops.count() == 1:
+            url = reverse('workshop:frontmatter', kwargs={'slug': workshops[0].slug})
+            return HttpResponseRedirect(url)
+        elif workshops.count() == 0:
+            return HttpResponseBadRequest('Workshop cannot be found.')
+        else:
+            response = f'''Ambivalent request. Did you mean any of these links (that all contain <em>{ kwargs.get("slug") }</em>):<ul>'''
+            for workshop in workshops:
+                url = reverse('workshop:frontmatter', kwargs={'slug': workshop.slug})
+                response += f'''<li><a href="{url}">{workshop}</a></li>'''
             response += '</ul>'
             return HttpResponse(response)
