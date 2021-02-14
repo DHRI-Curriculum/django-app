@@ -24,6 +24,13 @@ def get_instruction_image_path(image_file, relative_to_upload_field=False):
 
     return Instruction.image.field.upload_to + os.path.basename(image_file).replace('@', '')
 
+def get_screenshot_media_path(image_path, relative_to_upload_field=False):
+    if not relative_to_upload_field:
+        return settings.MEDIA_ROOT + '/' + Screenshot.image.field.upload_to + '/' + os.path.basename(image_path).replace('@', '')
+
+    return Screenshot.image.field.upload_to + '/' + os.path.basename(image_path).replace('@', '')
+
+
 
 def instruction_image_exists(image_file):
     return os.path.exists(get_instruction_image_path(image_file))
@@ -101,8 +108,18 @@ class Command(BaseCommand):
                 for order, d in enumerate(stepdata.get('screenshots'), start=1):
                     path = d['path']
                     alt_text = d['alt']
-                    Screenshot.objects.update_or_create(
-                        image='installation_screenshots/'+os.path.basename(path), defaults={'order': order, 'step': step, 'alt_text': alt_text})
+                    if os.path.exists(get_screenshot_media_path(path)) and filecmp.cmp(path, get_screenshot_media_path(path), shallow=False) == True:
+                        s = Screenshot.objects.get(step=step, alt_text=alt_text, order=order)
+                        log.log(f'Screenshot already exists: `{get_screenshot_media_path(s.image.path)}`')
+                    else:
+                        s, _ = Screenshot.objects.get_or_create(step=step, alt_text=alt_text, order=order)
+                        with open(path, 'rb') as f:
+                            s.image = File(f, name=os.path.basename(f.name))
+                            s.save()
+                        if filecmp.cmp(path, get_screenshot_media_path(path), shallow=False) == False:
+                            log.log(f'Screenshot was updated so re-saved: `{get_screenshot_media_path(path)}`')
+                        else:
+                            log.log(f'New screenshot saved: `{get_screenshot_media_path(path)}`')
 
         log.log('Added/updated installation instructions: ' +
                                  ', '.join([f'{x["software"]}' for x in data]))
