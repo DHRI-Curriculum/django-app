@@ -1,12 +1,6 @@
 install: 
   - "pip install -r requirements.txt"
-  - |-
-      echo 'SECRET_KEY = 'blabla'
-      EMAIL_HOST_USER = 'email_user@host.com'
-      EMAIL_HOST_PASSWORD = 'password'
-      GITHUB_TOKEN = '321abc'
-      ZOTERO_KEY = 'TODO'
-      ' > ./app/secrets.py
+  - "echo \"SECRET_KEY = ''blabla''\nEMAIL_HOST_USER = ''email_user@host.com''\nEMAIL_HOST_PASSWORD = ''password''\nGITHUB_TOKEN = ''321abc''\nZOTERO_KEY = ''TODO''\" > ./app/secrets.py"
 language: python
 python: 
   - "3.8"
