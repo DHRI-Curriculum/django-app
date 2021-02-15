@@ -2,13 +2,17 @@ from django.conf import settings
 from django.apps import apps
 from backend.logger import Logger
 
-from app.secrets import SECRET_KEY, EMAIL_HOST_PASSWORD, EMAIL_HOST_USER, GITHUB_TOKEN, ZOTERO_KEY
-
 import datetime
 import itertools
 import os
 import pathlib
 import yaml
+
+SECRET_KEY = os.environ['SECRET_KEY']
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+GITHUB_TOKEN = os.environ['GITHUB_TOKEN']
+# ZOTERO_KEY = os.environ['ZOTERO_KEY']
 
 BASE_DIR = settings.BASE_DIR
 BUILD_DIR = f'{BASE_DIR}/_preload/'
