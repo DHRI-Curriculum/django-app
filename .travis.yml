@@ -1,12 +1,12 @@
 install: 
   - "pip install -r requirements.txt"
   - |-
-      echo 'django-secret: 'blabla'
-      email-password: 'password'
-      github-token: '321abc'
-      zotero-key: 'TODO'
-      
-      ' > ./secrets.yml
+      echo 'SECRET_KEY = 'blabla'
+      EMAIL_HOST_USER = 'email_user@host.com'
+      EMAIL_HOST_PASSWORD = 'password'
+      GITHUB_TOKEN = '321abc'
+      ZOTERO_KEY = 'TODO'
+      ' > ./app/secrets.py
 language: python
 python: 
   - "3.8"
