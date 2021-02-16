@@ -12,11 +12,18 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
-SECRET_KEY = os.environ.get('SECRET_KEY', 'NO_SECRET_KEY_IS_HERE') #TODO: Not very safe... fix this
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+
+# Set up SECRET_KEY
+SECRET_KEY = os.environ.get('SECRET_KEY')
+
+if SECRET_KEY == None:
+    # Backup solution: read from app/.secrets/key
+    print('Engaging secret key backup solution')
+    with open(os.path.join(BASE_DIR, 'app', '.secrets', 'key')) as f:
+        SECRET_KEY = f.read().strip()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/

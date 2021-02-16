@@ -156,3 +156,4 @@ adminsortable
 media
 !media/profile_pictures/default.jpg
 _logs
+.secrets
