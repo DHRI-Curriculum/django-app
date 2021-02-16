@@ -13,7 +13,7 @@ def glossary_navigation_secondary(context):
     letter_nav = get_letter_nav()
 
     html = '''
-            <a class="text-white d-block d-md-none nav-link dropdown-toggle" href="#" id="GlossaryNavDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Navigate to letter</a>
+            <a class="text-white d-block d-md-none nav-link dropdown-toggle" href="#" id="GlossaryNavDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Navigate to letter</a>
             <div class="dropdown-menu dropdown-menu-special shadow" aria-labelledby="GlossaryNavDropdown">
             '''
 
