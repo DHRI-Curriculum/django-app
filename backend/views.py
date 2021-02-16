@@ -16,12 +16,17 @@ class IndexRedirect(View):
 
 class DebugView(View):
     def get(self, request):
-        import os
-        from django.conf import settings
-        test_secret = os.environ.get('SECRET_KEY')
-        from backend.settings import GITHUB_TOKEN, EMAIL_HOST_PASSWORD, EMAIL_HOST_USER
-        if not test_secret:
-            return_val = '<p>Warning: SECRET_KEY is not set as an environment variable.</p>'
+        from backend.settings import environ_has_key
+        return_val  = ''
+        if not environ_has_key(key="SECRET_KEY"):
+            return_val += '<p>Warning: SECRET_KEY is not set as an environment variable but is read from a file instead.</p>'
+        if not environ_has_key(key="EMAIL_HOST_USER"):
+            return_val += '<p>Warning: EMAIL_HOST_USER is not set as an environment variable but is read from a file instead.</p>'
+        if not environ_has_key(key="EMAIL_HOST_PASSWORD"):
+            return_val += '<p>Warning: EMAIL_HOST_PASSWORD is not set as an environment variable but is read from a file instead.</p>'
+        if not environ_has_key(key="GITHUB_TOKEN"):
+            return_val += '<p>Warning: GITHUB_TOKEN is not set as an environment variable but is read from a file instead.</p>'
+        
         return HttpResponse(return_val)
 
 class TermRedirectView(View):

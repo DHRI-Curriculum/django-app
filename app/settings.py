@@ -20,10 +20,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 if SECRET_KEY == None:
-    # Backup solution: read from app/.secrets/key
-    print('Engaging secret key backup solution')
-    with open(os.path.join(BASE_DIR, 'app', '.secrets', 'key')) as f:
+    # Backup solution: read from app/.secrets/SECRET_KEY
+    with open(os.path.join(BASE_DIR, 'app', '.secrets', 'SECRET_KEY')) as f:
         SECRET_KEY = f.read().strip()
+
+# TODO: Is there a way to raise something other than a server 500 when SECRET_KEY fails here?
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
