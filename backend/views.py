@@ -19,10 +19,10 @@ class DebugView(View):
         from django.conf import settings
         from backend.settings import GITHUB_TOKEN, EMAIL_HOST_PASSWORD, EMAIL_HOST_USER
         return HttpResponse(f'''
-        {{ settings.SECRET_KEY }}\n
-        {{ GITHUB_TOKEN }}\n
-        {{ EMAIL_HOST_PASSWORD }}\n
-        {{ EMAIL_HOST_USER}}\n
+        { settings.SECRET_KEY }<br />
+        { GITHUB_TOKEN }<br />
+        { EMAIL_HOST_PASSWORD }<br />
+        { EMAIL_HOST_USER}<br />
         ''')
 
 class TermRedirectView(View):
