@@ -1,8 +1,8 @@
 # Digital Humanities Research Institute's curriculum website (Django)
 
-[![Build Status](https://travis-ci.com/DHRI-Curriculum/django-app.svg?token=qsoYACcVqJuqMoXfJy84&branch=alpha-7)](https://travis-ci.com/DHRI-Curriculum/django-app)
+[![Build Status](https://travis-ci.com/DHRI-Curriculum/django-app.svg?token=qsoYACcVqJuqMoXfJy84&branch=v1-dev)](https://travis-ci.com/DHRI-Curriculum/django-app)
 
-This is the alpha 7 version of the DHRI's curriculum website (created as a django app).
+This is the version 1.0.0 development branch of the DHRI's Curriculum Website.
 
 ---
 

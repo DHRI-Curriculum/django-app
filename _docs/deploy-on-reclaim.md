@@ -43,10 +43,10 @@ $ cd curriculum.dhinstitutes.org
 $ git pull
 ```
 
-If new/updated branches. For example (here `alpha-7`):
+If new/updated branches. For example (here `v1-dev`):
 
 ```console
-$ git checkout --track origin/alpha-7
+$ git checkout --track origin/v1-dev
 ```
 
 ### Step 5. Collect Static Files

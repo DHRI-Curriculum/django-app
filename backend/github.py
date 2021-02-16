@@ -69,8 +69,8 @@ class Helper():
         if os.path.exists(local_file):
             return {'url': local_file, 'alt': dictionary.get('alt')}
         else:
-            raise NotImplementedError('This is a bug in _fix_image that needs to be fixed after alpha-1 is released.')
-            # This bug occurs when local files are not available in the parent directories
+            # TODO: This bug occurs when local files are not available in the parent directories
+            raise NotImplementedError('This is a bug that needs to be fixed in the beta version of the website.')
 
     @staticmethod
     def _get_order(step, log=None):
@@ -89,7 +89,8 @@ class Helper():
 
     @staticmethod
     def download_image(url=None, local_file=None):
-        raise NotImplementedError('download_image has been removed in advance of alpha-1.')
+        raise DeprecationWarning('`download_image` is deprecated in this version of the website.')
+        # This method should not be used since we are now implementing git cloning.
 
     @staticmethod
     def process_prereq_text(html, log=None):
