@@ -79,4 +79,4 @@ Of course, you can make the same edits with whichever plain text editor you pref
 
 ### Continue install track
 
-[<< Back to repo](https://github.com/DHRI-Curriculum/django-app) | [Next step >>](populate.md)
+[<< Back to documentation](README.md) | [Next step >>](populate.md)

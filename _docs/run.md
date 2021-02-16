@@ -46,4 +46,4 @@ Next time you run `python manage.py localserver` in your command line, the warni
 
 ### Continue install track
 
-[<< Previous step](populate.md) | [Back to repo >>](https://github.com/DHRI-Curriculum/django-app)
+[<< Previous step](populate.md) | [Back to documentation >>](README.md)
