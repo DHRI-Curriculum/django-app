@@ -14,7 +14,7 @@ The app is likely to be a "perpetual beta" app, which means that in its lifespan
 
 ### v1.0-beta1
 
-_The features listed here are all featured with concrete outcomes and clearly defined scopes. If they do not have outcomes and scopes clearly defined, they should be reclassified as `v1.0` features, which should be considered the [backlog](https://www.scrum.org/resources/what-is-a-product-backlog#:~:text=As%20described%20in%20the%20Scrum,in%20a%20Sprint%20Planning%20event.) of version 1.0_
+_The features listed here are all featured with concrete outcomes and clearly defined scopes. If they do not have outcomes and scopes clearly defined, they should be reclassified as `v1.0` features, which should be considered the [backlog](https://www.scrum.org/resources/what-is-a-product-backlog#:~:text=As%20described%20in%20the%20Scrum,in%20a%20Sprint%20Planning%20event.) of the "final" version 1.0_.
 
 [Keep fragile data between ingestion = some form of backup functionality (**#421**)](https://github.com/DHRI-Curriculum/django-app/issues/421)
 
@@ -59,4 +59,3 @@ _Currently in blue skies research mode. The features listed here are all potenti
 [Integrate a Slack feature (**#226**)](https://github.com/DHRI-Curriculum/django-app/issues/226)
 
 [API app enhancement (**#243**)](https://github.com/DHRI-Curriculum/django-app/issues/243)
-#243 opened on Oct 28, 2020 by kallewesterling
