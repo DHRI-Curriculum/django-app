@@ -4,7 +4,7 @@
 
 This is the version 1.0.0 development branch of the DHRI's Curriculum Website.
 
-See [Documentation](docs/README.md) for documentation.
+See [Documentation](_docs/README.md) for documentation.
 
 ---
 
