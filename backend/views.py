@@ -1,3 +1,4 @@
+from backend.settings import SECRET_KEY
 from django.http.request import HttpRequest
 from django.views import View
 from django.http.response import Http404, HttpResponse, HttpResponseBadRequest, HttpResponseRedirect
@@ -12,6 +13,17 @@ class IndexRedirect(View):
     def get(self, request):
         return HttpResponseRedirect('/')
 
+
+class DebugView(View):
+    def get(self, request):
+        from django.conf import settings
+        from backend.settings import GITHUB_TOKEN, EMAIL_HOST_PASSWORD, EMAIL_HOST_USER
+        return HttpResponse(f'''
+        {{ settings.SECRET_KEY }}\n
+        {{ GITHUB_TOKEN }}\n
+        {{ EMAIL_HOST_PASSWORD }}\n
+        {{ EMAIL_HOST_USER}}\n
+        ''')
 
 class TermRedirectView(View):
     def get(self, *args, **kwargs):
