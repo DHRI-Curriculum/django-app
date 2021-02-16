@@ -22,3 +22,9 @@ This might be needed to run during dev time:
 ```sh
 $ find . -path "*/migrations/*.py" -not -name "__init__.py" -delete && find . -path "*/migrations/*.pyc"  -delete && git pull
 ```
+
+## Check whether environment variables are correctly set up
+
+In order to check whether environment variables are correctly set up, you can check out the debug page:
+
+https://curriculum.dhinstitutes.org/shortcuts/debug/
