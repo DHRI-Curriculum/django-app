@@ -8,11 +8,10 @@ import os
 import pathlib
 import yaml
 
-SECRET_KEY = os.environ['SECRET_KEY']
-EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
-EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
-GITHUB_TOKEN = os.environ['GITHUB_TOKEN']
-# ZOTERO_KEY = os.environ['ZOTERO_KEY']
+SECRET_KEY = settings.SECRET_KEY
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'No email user set')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'No auto-password set')
+GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN', 'No github token set...')
 
 BASE_DIR = settings.BASE_DIR
 BUILD_DIR = f'{BASE_DIR}/_preload/'
