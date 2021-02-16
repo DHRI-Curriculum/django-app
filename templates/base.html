@@ -10,7 +10,7 @@
     </head>
     <body>
 
-        {% if version|startswith:"0." %}{% include "website/fragments/warnings/version.html" %}{% endif %}
+        {% if 'alpha' in version or 'beta' in version %}{% include "website/fragments/warnings/version.html" %}{% endif %}
 
         {% main_navigation %}
 
