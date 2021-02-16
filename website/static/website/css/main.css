@@ -569,7 +569,7 @@ div.dropdown-submenu {
     color: #581118 !important;
 }
 
-@media (max-width: 576px) {
+@media (max-width: 767.98px) {
     .version-notice {
         font-size: 0.7rem !important;
         height: 50px !important;
