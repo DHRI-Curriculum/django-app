@@ -1,4 +1,4 @@
-VERSION: 0.7
+VERSION: '1.0.0-alpha1'
 
 # it is good to keep all of the below in a unique directory on the hard
 # drive and not inside the django-app repo...
