@@ -8,10 +8,28 @@ import os
 import pathlib
 import yaml
 
-SECRET_KEY = settings.SECRET_KEY
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'No email user set')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', 'No auto-password set')
-GITHUB_TOKEN = os.environ.get('GITHUB_TOKEN', 'No github token set...')
+def environ_has_key(key='SECRET_KEY'):
+    if os.environ.get(key):
+        return True
+    return False
+
+
+def get_secret(key='SECRET_KEY'):
+    if key == 'SECRET_KEY':
+        return settings.SECRET_KEY
+    else:
+        if os.environ.get(key):
+            return os.environ.get(key)
+        
+        # Backup solution: read from app/.secrets/SECRET_KEY
+        with open(os.path.join(settings.BASE_DIR, 'app', '.secrets', key)) as f:
+            return f.read().strip()
+
+
+SECRET_KEY = get_secret('SECRET_KEY')
+EMAIL_HOST_USER = get_secret('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = get_secret('EMAIL_HOST_PASSWORD')
+GITHUB_TOKEN = get_secret('GITHUB_TOKEN')
 
 BASE_DIR = settings.BASE_DIR
 BUILD_DIR = f'{BASE_DIR}/_preload/'

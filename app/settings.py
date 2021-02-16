@@ -12,11 +12,19 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
-SECRET_KEY = os.environ.get('SECRET_KEY', 'NO_SECRET_KEY_IS_HERE') #TODO: Not very safe... fix this
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+
+# Set up SECRET_KEY
+SECRET_KEY = os.environ.get('SECRET_KEY')
+
+if SECRET_KEY == None:
+    # Backup solution: read from app/.secrets/SECRET_KEY
+    with open(os.path.join(BASE_DIR, 'app', '.secrets', 'SECRET_KEY')) as f:
+        SECRET_KEY = f.read().strip()
+
+# TODO: Is there a way to raise something other than a server 500 when SECRET_KEY fails here?
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
