@@ -25,6 +25,7 @@ def get_secret(key='SECRET_KEY'):
         with open(os.path.join(settings.BASE_DIR, 'app', '.secrets', key)) as f:
             return f.read().strip()
 
+
 SECRET_KEY = get_secret('SECRET_KEY')
 EMAIL_HOST_USER = get_secret('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = get_secret('EMAIL_HOST_PASSWORD')
