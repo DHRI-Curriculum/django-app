@@ -64,7 +64,7 @@
             <div class="col">
               <p><strong>In this workshop, you will learn to:</strong></p>
               <ul>{% for objective in frontmatter.learning_objectives.all %}
-                <li>{{ objective }}</li>
+                <li>{{ objective | markdown | safe }}</li>
               {% endfor %}
               </ul>
             </div>
