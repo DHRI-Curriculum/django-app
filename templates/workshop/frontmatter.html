@@ -59,6 +59,18 @@
 
         </div>
 
+        {% if frontmatter.learning_objectives.count %}
+          <div class="row mt-4">
+            <div class="col">
+              <p><strong>In this workshop, you will learn to:</strong></p>
+              <ul>{% for objective in frontmatter.learning_objectives.all %}
+                <li>{{ objective }}</li>
+              {% endfor %}
+              </ul>
+            </div>
+          </div>
+        {% endif %}
+        
         <h3 class="mt-5 pt-4 pb-4 border-top-double border-bottom">Before you get started</h3>
         <div class="mt-4">
             <div class="lead" data-replace-internal-links="true">{% snippet "introduction-before-you-get-started" %}</div>

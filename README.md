@@ -16,21 +16,29 @@ The app is likely to be a "perpetual beta" app, which means that in its lifespan
 
 _The features listed here are all featured with concrete outcomes and clearly defined scopes. If they do not have outcomes and scopes clearly defined, they should be reclassified as `v1.0` features, which should be considered the [backlog](https://www.scrum.org/resources/what-is-a-product-backlog#:~:text=As%20described%20in%20the%20Scrum,in%20a%20Sprint%20Planning%20event.) of the "final" version 1.0_.
 
-[Keep fragile data between ingestion = some form of backup functionality (**#421**)](https://github.com/DHRI-Curriculum/django-app/issues/421)
+[Intercept and serialize fragile data between ingestions (**#421**)](https://github.com/DHRI-Curriculum/django-app/issues/421)  
+An explanation here
 
-[Add new assessment model: ExitSlip (and related models) enhancement (**#364**)](https://github.com/DHRI-Curriculum/django-app/issues/364)
+[Add new assessment model: ExitSlip (and related models) enhancement (**#364**)](https://github.com/DHRI-Curriculum/django-app/issues/364)  
+An explanation here
 
-[Re-open registration ability **#348**](https://github.com/DHRI-Curriculum/django-app/issues/348)
+[Re-open registration ability **#348**](https://github.com/DHRI-Curriculum/django-app/issues/348)  
+An explanation here
 
-[Revisit how to send comments / updates (**#330**)](https://github.com/DHRI-Curriculum/django-app/issues/330)
+[Revisit how to send comments / updates (**#330**)](https://github.com/DHRI-Curriculum/django-app/issues/330)  
+An explanation here
 
-[Revisit/redesign image saving in ingestion enhancement (**#316**)](https://github.com/DHRI-Curriculum/django-app/issues/316)
+[Revisit/redesign image saving in ingestion enhancement (**#316**)](https://github.com/DHRI-Curriculum/django-app/issues/316)  
+An explanation here
 
-[Finalize documentation (**#362**)](https://github.com/DHRI-Curriculum/django-app/issues/362)
+[Finalize documentation (**#362**)](https://github.com/DHRI-Curriculum/django-app/issues/362)  
+An explanation here
 
-[Set up MySQL database again (**#313**)](https://github.com/DHRI-Curriculum/django-app/issues/313)
+[Set up MySQL database again (**#313**)](https://github.com/DHRI-Curriculum/django-app/issues/313)  
+An explanation here
 
-[Build test cases for all models and views (**#225**)](https://github.com/DHRI-Curriculum/django-app/issues/225)
+[Build test cases for all models and views (**#225**)](https://github.com/DHRI-Curriculum/django-app/issues/225)  
+An explanation here
 
 ### v1.0
 
