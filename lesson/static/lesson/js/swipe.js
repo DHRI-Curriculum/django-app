@@ -3,11 +3,11 @@ var initialX = null;
 var initialY = null;
 
 const go_next = function() {
-    if (next != 0) { location.assign("?page=" + next); } else { flashText(); console.error('no next page'); }
+    if (next != 0) { location.assign("?page=" + next); } else { console.info('no next page'); }
 }
 
 const go_prev = function() {
-    if (prev != 0) { location.assign("?page=" + prev); } else { flashText(); console.error('no prev page'); }
+    if (prev != 0) { location.assign("?page=" + prev); } else { console.info('no prev page'); }
 }
 
 /*
