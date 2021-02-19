@@ -94,6 +94,22 @@
 
   }
 </script>
+<style>
+  .eval-cards .card-body {
+            max-height: 400px;
+            overflow: scroll;
+          }
+          .eval-cards .card-body::-webkit-scrollbar {
+            /* -webkit-appearance: none; */
+            width: 5px;
+          }
+          
+          .eval-cards .card-body::-webkit-scrollbar-thumb {
+            border-radius: 5px;
+            background-color: rgba(0,0,0,.5);
+            -webkit-box-shadow: 0 0 1px rgba(255,255,255,.5);
+          }
+</style>
 {% endblock %}
 
 
@@ -132,7 +148,7 @@
   {% for question in evaluation.questions.all %}
     <div class="col-md-6 px-4 py-4 eval-cards">
       <div class="card h-100">
-        <div class="card-body small">
+        <div class="card-body small">            
           {% include 'lesson/fragments/evaluation-question.html' %}
         </div>
         <div class="card-footer small">

@@ -2,18 +2,12 @@
 var initialX = null;
 var initialY = null;
 
-const flash_text = function() {
-    document.getElementById('lesson-content')
-    .velocity({ opacity: 0 }, 10)
-    .velocity({ opacity: 1 }, 10);
-}
- 
 const go_next = function() {
-    if (next != 0) { location.assign("?page=" + next); } else { flash_text(); console.error('no next page'); }
+    if (next != 0) { location.assign("?page=" + next); } else { flashText(); console.error('no next page'); }
 }
 
 const go_prev = function() {
-    if (prev != 0) { location.assign("?page=" + prev); } else { flash_text(); console.error('no prev page'); }
+    if (prev != 0) { location.assign("?page=" + prev); } else { flashText(); console.error('no prev page'); }
 }
 
 /*

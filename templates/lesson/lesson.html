@@ -40,24 +40,39 @@
 
 {% block main %}
   {% include 'lesson/fragments/next-prev.html' %}
-  {% for img in lesson.images.all %}
-    <div class="modal fade" id="modal_{{ img.name }}" tabindex="-1" aria-labelledby="modal_{{ img.name }}_label" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal_{{ img.name }}_label">{% if img.alt %}{{ img.alt }}{% else %}Image {{ forloop.counter }} for {{ lesson.title }}{% endif %}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body text-center">
-                    <p class="d-none">{{ img.url }}</p>
-                    <img src="{{ img.url }}" class="img-fluid" />
-                </div>
-            </div>
+  <div class="row" id="metaContent">
+    <div class="modal fade" id="reachedEnd" role="alert" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content alert alert-success">
+          <h3 class="mb-2 pb-2 border-bottom">You have reached the end of the lesson.</h3>
+          <p class="mb-1">It's time to go to the <strong>Theory to Practice</strong> page. You can do so by:</p>
+          <ul>
+            <li><a href="{% url "workshop:praxis" slug=workshop.slug %}">Click here</a>.</li>
+            <li><kbd>enter</kbd> on your keyboard.</li>
+            <li>Manually click on "Theory to Practice" in the menu above.</li>
+          </ul>
         </div>
+      </div>
     </div>
-  {% endfor %}
+    {% for img in lesson.images.all %}
+      <div class="modal fade" id="modal_{{ img.name }}" tabindex="-1" aria-labelledby="modal_{{ img.name }}_label" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-xl">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="modal_{{ img.name }}_label">{% if img.alt %}{{ img.alt }}{% else %}Image {{ forloop.counter }} for {{ lesson.title }}{% endif %}</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body text-center">
+                      <p class="d-none">{{ img.url }}</p>
+                      <img src="{{ img.url }}" class="img-fluid" />
+                  </div>
+              </div>
+          </div>
+      </div>
+    {% endfor %}
+  </div>
   <div class="row">
     <div class="markdown-body col-12 py-3" id="lesson-content">
       <h1>{{ lesson.order }}. {{ lesson.title }}</h1>
@@ -121,6 +136,25 @@ document.querySelectorAll("#lesson-content a").forEach((link) => {
 document.querySelectorAll('table').forEach(table=>{
     table.classList.add('table')
 })
+
+
+reachedEnd = new bootstrap.Modal(document.getElementById('reachedEnd'), {})
+
+window.addEventListener("keydown", function (event) {
+    if (event.defaultPrevented) {
+      return; // Do nothing if the event was already processed
+    }
+    
+    switch (event.key) {
+        case "Right":
+        case "ArrowRight":
+            if (next == 0)
+              reachedEnd.show()
+            break;
+        case "Enter":
+          if (next == 0) window.location.href = '{% url "workshop:praxis" slug=workshop.slug %}'
+    }
+});
 </script>
 <script src="{% static 'lesson/js/zen.js' %}" crossorigin="anonymous"></script>
 <script src="{% static 'lesson/js/swipe.js' %}" crossorigin="anonymous"></script>

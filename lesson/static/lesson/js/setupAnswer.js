@@ -73,7 +73,7 @@ function submit_answer(e) {
           return true;
         } else {
           //console.log('set to try again!')
-          e.target.parentElement.style = 'background-color: #3498db63 !important;';
+          e.target.parentElement.style = 'background-color: #db53343b !important;';
           alertDiv.innerText = "Unfortunately, that was not the correct answer. Try again!";
           alertDiv.classList.remove('d-none');
           enable_all_elements(elems);
