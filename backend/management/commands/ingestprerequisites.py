@@ -195,7 +195,7 @@ class Command(BaseCommand):
                 if category == Prerequisite.EXTERNAL_LINK:
                     label = prereqdata.get('url_text')
                 else:
-                    label = 'NA'
+                    label = ''
 
                 clean_up(category, linked_workshop, linked_insight, url)
                 prerequisite, created = Prerequisite.objects.update_or_create(

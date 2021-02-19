@@ -95,9 +95,11 @@ class Helper():
     @staticmethod
     def process_prereq_text(html, log=None):
         soup = BeautifulSoup(html, 'lxml')
-
         captured_link = False
         for node in soup.body.children:
+            if not node.name:
+                continue
+
             is_link = node.name.lower() == 'a'
             if is_link and not captured_link:
                 captured_link = node['href']
@@ -637,8 +639,7 @@ class WorkshopCache(Helper, GitCache):
             insight_link = '/shortcuts/insight/' in url
             workshop_link = '/shortcuts/workshop/' in url
             
-            if install_link or insight_link or workshop_link:
-                text = self.process_prereq_text(html, log=self.log)
+            text = self.process_prereq_text(html, log=self.log)
             if install_link and not text:
                 self.log.warning(f'No clarifying text was found when processing prerequired installation (`{url_text}`) for workshop `{self.name}`. Note that the clarifying text will be replaced by the "why" text from the installation instructions. You may want to change this in the frontmatter\'s requirements for the workshop {self.name} and re-run `buildworkshop --name {self.repository}')
             if insight_link and not text:
