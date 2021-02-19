@@ -789,10 +789,22 @@ class WorkshopCache(Helper, GitCache):
                 'has_lesson_sections': {},
                 'content': '',
                 'lesson_images': [],
-                'challenge': '',
-                'solution': '',
-                'keywords': '',
-                'evaluation': ''
+                'challenge': {
+                    'header': '',
+                    'content': ''
+                },
+                'solution': {
+                    'header': '',
+                    'content': ''
+                },
+                'keywords': {
+                    'header': '',
+                    'content': []
+                },
+                'evaluation': {
+                    'header': '',
+                    'content': ''
+                }
             }
             __['header'], __['raw_content'] = lesson_data
             __['has_lesson_sections'] = WorkshopCache._check_for_lesson_sections(__[
@@ -827,7 +839,6 @@ class WorkshopCache(Helper, GitCache):
                     __['keywords'] = {
                         'header': subheader.split('#')[-1].strip(),
                         'content': [self._fix_list_element(x) for x in as_list(content)],
-                        #'_content': []
                     }
                     __['keywords']['content'] = [x.get('linked_text') for x in __['keywords']['content']]
                 if is_evaluation:
@@ -842,6 +853,22 @@ class WorkshopCache(Helper, GitCache):
             __['header'] = PARSER.fix_html(__['header'])
             __['content'] = PARSER.fix_html(__['content'])
             __['content'], __['lesson_images'] = self._get_images_from_html(__['content'])
+
+            # Make sure we capture images from solution as well
+            add_to_lesson_images = []
+            __['solution']['content'], add_to_lesson_images = self._get_images_from_html(__['solution'].get('content', ''))
+            
+            if add_to_lesson_images:
+                before = len(__['lesson_images'])
+                __['lesson_images'].extend(add_to_lesson_images)
+                after = len(__['lesson_images'])
+                if after - before:
+                    self.log.info('Found additional images in solution, and added them to the built lesson files.')
+
+            # Final clean-up
+            for check_up in ['solution', 'challenge', 'evaluation', 'keywords']:
+                if not __.get(check_up).get('content') and not __.get(check_up).get('header'):
+                    __[check_up] = None
             
             _.append(__)
 
@@ -852,6 +879,7 @@ class WorkshopCache(Helper, GitCache):
         lesson_images = []
 
         soup = BeautifulSoup(html, 'lxml')
+        
         for img_data in soup.find_all('img'):
             img = {}
             img['alt'] = img_data.get('alt')
@@ -890,7 +918,10 @@ class WorkshopCache(Helper, GitCache):
 
             lesson_images.append({'path': path, 'alt': img['alt']})
 
-        html = ''.join([str(x) for x in soup.body.children])
+        if not soup.body:
+            html = ''
+        else:
+            html = ''.join([str(x) for x in soup.body.children])
 
         return html, lesson_images
 

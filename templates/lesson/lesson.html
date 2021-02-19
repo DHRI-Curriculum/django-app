@@ -11,9 +11,9 @@
     var next = {% if page_obj.has_next %}{{ page_obj.next_page_number }}{% else %}0{% endif %}
     var prev = {% if page_obj.has_previous %}{{ page_obj.previous_page_number }}{% else %}0{% endif %}
     window.lesson_images = {
-      {% for image, url in images.items %}'{{ image }}': '{{ url }}',{% endfor %}
+      {% for image in lesson.images.all %}'{{ image.name }}': '{{ image.url }}',{% endfor %}
     }
-    console.info('Images found in lesson', window.lesson_images)
+    console.info('Images found in lesson', window.lesson_images);
   </script>
   <script src="{% static 'lesson/js/setupAnswer.js' %}" crossorigin="anonymous"></script>
   <style>
@@ -66,7 +66,7 @@
       </div>
     </div>
     {% include 'lesson/fragments/report-error.html' %}
-    {% if lesson.terms.all.count or lesson.evaluations.count or lesson.challenge %}
+    {% if lesson.terms.all.count or lesson.evaluations.count %}<!--  or lesson.challenge? -->
   </div>
 </div>
 <section class="bg-extra-super-light shadow-sm" id="lesson-extra-content">
@@ -86,21 +86,46 @@
 
 {% block javascript %}
 <script src="{% static 'lesson/js/submitAnswer.js' %}" crossorigin="anonymous"></script>
-<script src="{% static 'lesson/js/link-search.js' %}" crossorigin="anonymous"></script>
+<script>
+document.querySelectorAll("#lesson-content a").forEach((link) => {
+    if (link.href.includes("#")) {
+        if (link.href.split('#')[0] === document.location.href) {
+            // found a link to the document itself... do nothing
+        } else {
+            // potentially an external file... link it up with a target=_blank
+            link.target = '_blank';
+        }
+    } else {
+        // external link... link it up with a target=_blank
+        link.target = '_blank';
+    }
+});
+{% for img in lesson.images.all %}
+    var modal{{img.name|title }} = new bootstrap.Modal(document.getElementById('modal_{{ img.name }}'), {})
+    console.info('Modal set up:', modal{{img.name|title}})
+    
+    if (document.querySelectorAll('img[src="{{ img.url }}"]').length == 2) {
+        let imageElement = document.querySelectorAll('img[src="{{ img.url }}"]')[1];
+        imageElement.classList.add('my-3')
+
+        let modalLink = imageElement.parentElement;
+        modalLink.removeAttribute('target');
+        modalLink.dataset.bsToggle = 'modal'
+        modalLink.dataset.bsTarget = '#modal_{{img.name }}';
+        modalLink.href = '#modal_{{img.name }}';
+    } else {
+        console.error("Expected two images with the source URL set to `{{ img.url }}` here...")
+    }
+{% endfor %}
+
+document.querySelectorAll('table').forEach(table=>{
+    table.classList.add('table')
+})
+</script>
 <script src="{% static 'lesson/js/zen.js' %}" crossorigin="anonymous"></script>
 <script src="{% static 'lesson/js/swipe.js' %}" crossorigin="anonymous"></script>
 <script src="{% static 'workshop/js/navbar.js' %}" crossorigin="anonymous"></script>
-<!--
-  <script src="{% static 'website/js/velocity.min.js' %}" crossorigin="anonymous"></script>
-  <script src="{% static 'website/js/velocity.ui.js' %}" crossorigin="anonymous"></script>
--->
+<!-- import velocity via CDN -->
 <script src="//cdn.jsdelivr.net/npm/velocity-animate@2.0/velocity.min.js"></script>
 <script src="//cdn.jsdelivr.net/npm/velocity-animate@2.0/velocity.ui.min.js"></script>
-<script>
-    document.querySelector('#lesson-content').querySelectorAll('img').forEach(img=>{
-        name = img.src.substring(img.src.lastIndexOf('/')+1).split('.')[0].toLowerCase();
-        img.parentNode.dataset.toggle = 'modal';
-        img.parentNode.dataset.target = '#modal_'+name;
-    })
-</script>
 {% endblock %}

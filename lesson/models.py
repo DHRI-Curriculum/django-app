@@ -3,7 +3,8 @@ from django.db.models.fields.related import ForeignKey
 from workshop.models import Workshop
 from glossary.models import Term
 import os
-
+import random
+import re
 
 
 class Lesson(models.Model):
@@ -31,9 +32,9 @@ class LessonImage(models.Model):
 
     def save(self, *args, **kwargs):
         if self.url:
-            self.name = os.path.basename(self.url).split('.')[0].lower()
+            self.name = ''.join(re.findall(r'(?:[a-z]+)', os.path.basename(self.url).split('.')[0].lower()))
         else:
-            self.name = ''
+            self.name = ''.join(re.findall(r'(?:[a-z]+)', self.lesson.title.lower())) + 'image' + random.randint(0,255)
         super(LessonImage, self).save()
 
     def __str__(self):
