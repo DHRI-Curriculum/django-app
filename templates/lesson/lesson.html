@@ -40,24 +40,26 @@
 
 {% block main %}
   {% include 'lesson/fragments/next-prev.html' %}
-  {% for img in lesson.images.all %}
-    <div class="modal fade" id="modal_{{ img.name }}" tabindex="-1" aria-labelledby="modal_{{ img.name }}_label" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal_{{ img.name }}_label">{% if img.alt %}{{ img.alt }}{% else %}Image {{ forloop.counter }} for {{ lesson.title }}{% endif %}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body text-center">
-                    <p class="d-none">{{ img.url }}</p>
-                    <img src="{{ img.url }}" class="img-fluid" />
-                </div>
-            </div>
-        </div>
-    </div>
-  {% endfor %}
+  <div class="row" id="metaContent">
+    {% for img in lesson.images.all %}
+      <div class="modal fade" id="modal_{{ img.name }}" tabindex="-1" aria-labelledby="modal_{{ img.name }}_label" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-xl">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="modal_{{ img.name }}_label">{% if img.alt %}{{ img.alt }}{% else %}Image {{ forloop.counter }} for {{ lesson.title }}{% endif %}</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body text-center">
+                      <p class="d-none">{{ img.url }}</p>
+                      <img src="{{ img.url }}" class="img-fluid" />
+                  </div>
+              </div>
+          </div>
+      </div>
+    {% endfor %}
+  </div>
   <div class="row">
     <div class="markdown-body col-12 py-3" id="lesson-content">
       <h1>{{ lesson.order }}. {{ lesson.title }}</h1>
@@ -121,6 +123,11 @@ document.querySelectorAll("#lesson-content a").forEach((link) => {
 document.querySelectorAll('table').forEach(table=>{
     table.classList.add('table')
 })
+
+const flashText = () => {
+    content = document.querySelector('#content');
+    
+}
 </script>
 <script src="{% static 'lesson/js/zen.js' %}" crossorigin="anonymous"></script>
 <script src="{% static 'lesson/js/swipe.js' %}" crossorigin="anonymous"></script>
