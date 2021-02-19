@@ -723,17 +723,35 @@ class WorkshopCache(Helper, GitCache):
 
     def _fix_lessons(self):
 
-        def mini_parse_eval(markdown: str):
-            def reset_dict():
-                return {'question': '', 'answers': {'correct': [], 'incorrect': []}}
+        def reset_eval_dict():
+            return {'question': '', 'answers': {'correct': [], 'incorrect': []}}
 
+        def mini_parse_eval(markdown: str):
+            ''' Set up standards '''
             dict_collector = list()
-            d = reset_dict()
+            d = reset_eval_dict()
             in_q = False
 
-            for line in markdown.splitlines():
+            '''
+            if '```' in markdown:
+                raise NotImplementedError('Cannot parse evaluation questions with codeblocks.') from None # TODO: Build out the parser for evaluations to include code blocks. This won't do.
+            '''
+            
+            in_code = False
+            for current_line_number, line in enumerate(markdown.splitlines()):
                 is_empty = line.strip() == ''
                 is_answer = line.startswith('- ')
+
+                try:
+                    if markdown.splitlines()[current_line_number+1].startswith('```'):
+                        print('next line contains code.. Thus this is not empty')
+                        is_empty = False
+                        if not in_code:
+                            in_code = True
+                        else:
+                            in_code = False
+                except IndexError:
+                    pass
 
                 if not is_answer and not is_empty:
                     in_q = True
@@ -747,11 +765,11 @@ class WorkshopCache(Helper, GitCache):
                         answer = line.strip()[2:].strip()
                         answer = PARSER.fix_html(answer)
                         d['answers']['incorrect'].append(answer)
-                elif is_empty and in_q:
+                elif is_empty and in_q and in_code == False:
                     d['question'] = d['question'].strip()
                     dict_collector.append(d)
                     in_q = False
-                    d = reset_dict()
+                    d = reset_eval_dict()
                 elif is_answer:
                     # stray answer belonging to the latest question so attach it...
                     try:
@@ -770,7 +788,7 @@ class WorkshopCache(Helper, GitCache):
             # add final element
             d['question'] = PARSER.fix_html(d['question'])
             dict_collector.append(d)
-
+            
             # clean up dict_collector
             for i, item in enumerate(dict_collector):
                 if not item.get('question') and not len(item.get('answers').get('correct')) and not len(item.get('answers').get('incorrect')):
