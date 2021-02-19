@@ -613,3 +613,7 @@ a.navbar-toggler.collapsed::before {
     padding-top: 5px;
     display: block;
 }
+
+#challenges .highlight {
+    box-shadow: 1px 1px 5px #00000028 inset;
+}
