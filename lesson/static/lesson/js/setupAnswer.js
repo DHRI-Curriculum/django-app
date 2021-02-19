@@ -65,15 +65,16 @@ function submit_answer(e) {
       if (data.error == null) {
         if (data.all_correct == true) {
           alertDiv.classList.add('d-none');
-          e.target.parentElement.style = 'background-color: rgba(0, 170, 100, 0.1) !important;'
-          e.target.getElementsByTagName('button')[0].classList.remove('btn-primary')
-          e.target.getElementsByTagName('button')[0].classList.add('btn-success')
-          e.target.getElementsByTagName('button')[0].innerHTML = 'Correct answer!'
+          e.target.parentElement.style = 'background-color: rgba(0, 170, 100, 0.1) !important;';
+          e.target.getElementsByTagName('button')[0].classList.remove('btn-primary');
+          e.target.getElementsByTagName('button')[0].classList.add('btn-success');
+          e.target.getElementsByTagName('button')[0].classList.add('disabled');
+          e.target.getElementsByTagName('button')[0].innerHTML = 'Correct answer!';
           return true;
         } else {
           //console.log('set to try again!')
-          e.target.parentElement.style = 'background-color: #3498db63 !important;'
-          alertDiv.innerText = "Unfortunately, that was not the correct answer. Try again!"
+          e.target.parentElement.style = 'background-color: #3498db63 !important;';
+          alertDiv.innerText = "Unfortunately, that was not the correct answer. Try again!";
           alertDiv.classList.remove('d-none');
           enable_all_elements(elems);
           return false;
