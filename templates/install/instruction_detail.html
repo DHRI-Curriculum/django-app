@@ -44,7 +44,7 @@
             </div>
             <div class="col-12 col-lg-5">
                 {% for screenshot in step.screenshots.all %}
-                    <a style="cursor: pointer;" data-toggle="modal" data-target="#modal_{{ forloop.parentloop.counter }}"><img src="{{ screenshot.image.url }}" class="shadow shadow-sm border img-fluid mb-2" alt="{% if screenshot.alt_text == 'No alt text' %}{{ screenshot }}{% else %}{{ screenshot.alt_text }}{% endif %}"></a>
+                    <a style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modal_{{ forloop.parentloop.counter }}"><img src="{{ screenshot.image.url }}" class="shadow shadow-sm border img-fluid mb-2" alt="{% if screenshot.alt_text == 'No alt text' %}{{ screenshot }}{% else %}{{ screenshot.alt_text }}{% endif %}"></a>
                     <div class="modal fade" id="modal_{{ forloop.parentloop.counter }}" tabindex="-1" aria-labelledby="modal_{{ forloop.parentloop.counter }}_label" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-xl">
                             <div class="modal-content">
