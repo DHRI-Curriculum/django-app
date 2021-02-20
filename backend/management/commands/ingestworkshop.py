@@ -129,7 +129,7 @@ class Command(BaseCommand):
                         label=point.get('annotation')
                     )
 
-            for cat in ['projects', 'readings']:
+            for cat in ['projects', 'readings', 'cheat_sheets']:
                 if frontmatterdata.get(cat):
                     category, add_field = None, None
                     if cat == 'projects':

@@ -109,8 +109,8 @@ class Command(BaseCommand):
                     path = d['path']
                     alt_text = d['alt']
                     if os.path.exists(get_screenshot_media_path(path)) and filecmp.cmp(path, get_screenshot_media_path(path), shallow=False) == True:
-                        s = Screenshot.objects.get(step=step, alt_text=alt_text, order=order)
-                        log.log(f'Screenshot already exists: `{get_screenshot_media_path(s.image.path)}`')
+                        s, _ = Screenshot.objects.get_or_create(step=step, alt_text=alt_text, order=order)
+                        log.log(f'Screenshot already exists: `{get_screenshot_media_path(path)}`')
                     else:
                         s, _ = Screenshot.objects.get_or_create(step=step, alt_text=alt_text, order=order)
                         with open(path, 'rb') as f:
