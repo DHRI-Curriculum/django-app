@@ -9,6 +9,7 @@ class Term(models.Model):
     explication = models.TextField()
     readings = models.ManyToManyField('resource.Resource', related_name='term_readings')
     tutorials = models.ManyToManyField('resource.Resource', related_name='term_tutorials')
+    cheat_sheets = models.ManyToManyField('resource.Resource', related_name='term_cheat_sheets')
 
     def save(self, *args, **kwargs):
         if self.term:

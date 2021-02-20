@@ -66,7 +66,7 @@ class Command(BaseCommand):
 
             term.refresh_from_db()
 
-            for cat in ['tutorials', 'readings']:
+            for cat in ['tutorials', 'readings', 'cheat_sheets']:
                 if termdata.get(cat):
                     category, add_field = None, None
                     if cat == 'tutorials':
@@ -75,6 +75,9 @@ class Command(BaseCommand):
                     elif cat == 'readings':
                         category = Resource.READING
                         add_field = term.readings
+                    elif cat == 'cheat_sheets':
+                        category = Resource.CHEATSHEET
+                        add_field = term.cheat_sheets
 
                     for point in termdata.get(cat):
                         if not add_field or not category:

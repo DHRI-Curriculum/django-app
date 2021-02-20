@@ -39,7 +39,8 @@ class Command(BaseCommand):
                 'term': term_data['term'],
                 'explication': term_data['explication'],
                 'readings': term_data['readings'],
-                'tutorials': term_data['tutorials']
+                'tutorials': term_data['tutorials'],
+                'cheat_sheets': term_data['cheat_sheets'],
             })
 
         if not pathlib.Path(SAVE_DIR).exists():

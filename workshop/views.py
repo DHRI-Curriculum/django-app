@@ -1,14 +1,12 @@
 from install.models import Instruction
-from django.shortcuts import render, HttpResponse, get_object_or_404, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, HttpResponseRedirect
 from django.core.paginator import Paginator
 from workshop.models import Prerequisite, Workshop, Collaboration, Blurb
 from lesson.models import Lesson
 from learner.models import Profile, Progress
 from django.conf import settings
-from django.views.generic import View, DetailView, ListView
+from django.views.generic import View, DetailView
 from django.contrib import messages
-from bs4 import BeautifulSoup
-import os, json
 
 
 class IndexRedirect(View):
@@ -106,7 +104,8 @@ class FrontmatterView(DetailView):
             },
             'insights': [],
             'external_links': [],
-        }\
+            'cheat_sheets': [],
+        }
 
         for req in self.get_object().frontmatter.prerequisites.all():
             if req.required: _['required'].append(req)
@@ -115,6 +114,7 @@ class FrontmatterView(DetailView):
             if req.category == Prerequisite.WORKSHOP: _['workshops'].append(req)
             elif req.category == Prerequisite.INSIGHT: _['insights'].append(req)
             elif req.category == Prerequisite.EXTERNAL_LINK: _['external_links'].append(req)
+            elif req.category == Prerequisite.CHEATSHEET: _['cheat_sheets'].append(req)
 
             for software in req.linked_software.all():
                 if not software.software in _['installs']['by_software']:

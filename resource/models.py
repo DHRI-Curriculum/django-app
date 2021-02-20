@@ -7,17 +7,23 @@ class Resource(models.Model):
     READING = 'reading'
     PROJECT = 'project'
     TUTORIAL = 'tutorial'
+    CHEATSHEET = 'cheatsheet'
+    DATASET = 'dataset'
     CATEGORY_CHOICES = [
         (UNCATEGORIZED, 'Uncategorized'),
         (READING, 'Reading'),
         (PROJECT, 'Project'),
-        (TUTORIAL, 'Tutorial')
+        (TUTORIAL, 'Tutorial'),
+        (CHEATSHEET, 'Cheatsheet'),
+        (DATASET, 'Dataset')
     ]
     CATEGORY_CHOICES_PLURAL = [
         (UNCATEGORIZED, 'Uncategorized'),
         (READING, 'Readings'),
         (PROJECT, 'Projects'),
-        (TUTORIAL, 'Tutorials')
+        (TUTORIAL, 'Tutorials'),
+        (CHEATSHEET, 'Cheatsheets'),
+        (DATASET, 'Datasets'),
     ]
 
     title = models.TextField(max_length=500, null=True)

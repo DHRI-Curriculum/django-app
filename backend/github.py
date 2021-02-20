@@ -105,7 +105,7 @@ class Helper():
                 captured_link = node['href']
                 node.decompose()
             elif is_link and captured_link:
-                log.info(f'More than one link in prerequirement. Try to keep the number of links for each prerequirement to one as it may otherwise be confusing.')
+                log.info(f'More than one link in prerequisite. Try to keep the number of links for each prerequisite to one as it may otherwise be confusing.')
         text = ''.join([str(x) for x in soup.body.children])
         text = text.strip()
         text = text.replace('(recommended) ', '').replace('(required) ', '')
@@ -154,11 +154,11 @@ class GitCache():
 
         if self.repo.head.commit:
             latest_commit = self.repo.head.commit
-            msg = f'{latest_commit}'
-            if latest_commit.message:
-                msg = latest_commit.message.replace('\n', ' ').strip()
+            msg = ''
             if latest_commit.author:
-                msg += f' (by {latest_commit.author})'
+                msg += f'by {latest_commit.author}:'
+            if latest_commit.message:
+                msg += '"' + latest_commit.message.replace('\n', ' ').strip().replace('  ', ' ') + '"'
 
         self.log.info(f'Checked out branch: {self.repository}/{self.branch} latest commit {msg}')
 
@@ -252,21 +252,24 @@ class GlossaryCache(Helper, GitCache):
             _ = {
                 'term': None,
                 'explication': None,
-                'readings': None,
-                'tutorials': None
+                'readings': [],
+                'tutorials': [],
+                'cheat_sheets': []
             }
             
             sections = split_into_sections(file_contents)
             
             for section in sections:
-                if section == 'Readings' or section == 'Reading':
+                if section.lower() == 'reading' or section.lower() == 'readings':
                     _['readings'] = [self._fix_list_element(x) for x in as_list(sections[section])]
-                elif section == 'Tutorials' or section == 'Tutorial':
+                elif section.lower() == 'tutorial' or section.lower() == 'tutorials':
                     _['tutorials'] = [self._fix_list_element(x) for x in as_list(sections[section])]
+                elif section.lower() == 'cheat sheet' or section.lower() == 'cheatsheet' or section.lower() == 'cheat sheets' or section.lower() == 'cheatsheets':
+                    _['cheat_sheets'] = [self._fix_list_element(x) for x in as_list(sections[section])]
                 else:
                     _['term'] = self.PARSER.fix_html(section)
                     _['explication'] = self.PARSER.fix_html(sections[section])
-            
+
             terms.append(_)
 
         self.log.BAR.finish()
@@ -618,7 +621,7 @@ class WorkshopCache(Helper, GitCache):
         fixing['abstract'] = PARSER.fix_html(fixing['abstract'])
 
         # Make lists correct
-        for _list in ['readings', 'projects', 'learning_objectives', 'ethical_considerations', 'prerequisites']:
+        for _list in ['readings', 'projects', 'learning_objectives', 'ethical_considerations', 'cheat_sheets', 'datasets', 'prerequisites']:
             if _list in fixing:
                 fixing[_list] = [self._fix_list_element(x) for x in as_list(fixing[_list])]
             else:
@@ -639,6 +642,8 @@ class WorkshopCache(Helper, GitCache):
             insight_link = '/shortcuts/insight/' in url
             workshop_link = '/shortcuts/workshop/' in url
             
+            #TODO #429: Somehow determine what is a cheatsheet and ingest that here...
+
             text = self.process_prereq_text(html, log=self.log)
             if install_link and not text:
                 self.log.warning(f'No clarifying text was found when processing prerequired installation (`{url_text}`) for workshop `{self.name}`. Note that the clarifying text will be replaced by the "why" text from the installation instructions. You may want to change this in the frontmatter\'s requirements for the workshop {self.name} and re-run `buildworkshop --name {self.repository}')
@@ -732,11 +737,6 @@ class WorkshopCache(Helper, GitCache):
             d = reset_eval_dict()
             in_q = False
 
-            '''
-            if '```' in markdown:
-                raise NotImplementedError('Cannot parse evaluation questions with codeblocks.') from None # TODO: Build out the parser for evaluations to include code blocks. This won't do.
-            '''
-            
             in_code = False
             for current_line_number, line in enumerate(markdown.splitlines()):
                 is_empty = line.strip() == ''
@@ -744,7 +744,7 @@ class WorkshopCache(Helper, GitCache):
 
                 try:
                     if markdown.splitlines()[current_line_number+1].startswith('```'):
-                        print('next line contains code.. Thus this is not empty')
+                        # next line contains code.. Thus this is not empty, set is_empty to False
                         is_empty = False
                         if not in_code:
                             in_code = True

@@ -34,6 +34,16 @@ NORMALIZING_SECTIONS:
             - Projects
             - Projects that use these skills
             - Projects which use these skills
+        cheat_sheets:
+            - Cheat Sheet
+            - Cheat Sheets
+            - Cheatsheet
+            - Cheatsheets
+        datasets:
+            - Dataset
+            - Datasets
+            - Data set
+            - Data sets
         prerequisites:
             - Prerequisites
             - Pre-requisites

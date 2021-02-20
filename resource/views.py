@@ -26,27 +26,9 @@ class Index(ListView):
         context['readings'] = Resource.objects.filter(category=Resource.READING).order_by('?')[:3]
         context['tutorials'] = Resource.objects.filter(category=Resource.TUTORIAL).order_by('?')[:3]
         context['projects'] = Resource.objects.filter(category=Resource.PROJECT).order_by('?')[:3]
+        context['cheat_sheets'] = Resource.objects.filter(category=Resource.CHEATSHEET).order_by('?')[:3]
         context['all_categories'] = get_all_categories()
         return context
-
-def lazyload(request, category=Resource.UNCATEGORIZED):
-    print(request.headers)
-    page = request.headers.get('page')
-    resources = Resource.objects.filter(category=category).order_by('title')
-    paginator = Paginator(resources, 3)
-    try:
-        resources = paginator.page(page)
-    except PageNotAnInteger:
-        resources = paginator.page(2)
-    except EmptyPage:
-        resources = paginator.page(paginator.num_pages)
-
-    projects_html = loader.render_to_string(
-        'resource/fragments/resource_objects.html',
-        {'resources': resources}
-    )
-    output_data = {'html': projects_html, 'has_next': resources.has_next()}
-    return JsonResponse(output_data)
 
 
 class Category(ListView):

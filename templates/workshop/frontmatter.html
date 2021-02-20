@@ -88,6 +88,7 @@
                   {% endfor %}
               </div>
             {% endif %}
+
         </div>
         <div class="row">
           <div class="col-12 {% if prerequisites.installs.by_software|length or prerequisites.insights|length %}col-xl-4{% elif not prerequisites.installs.by_software|length and not prerequisites.insights|length %}col-xl-12{% else %}{% endif %} mt-4 mt-md-2 overflow-hidden">
@@ -142,7 +143,7 @@
               </div>
           {% endif %}
           {% if prerequisites.insights|length %}
-              <div class="col-12 col-xl-4 mt-4 mt-md-2 overflow-hidden">
+              <div class="col-12 col-xl-6 mt-4 mt-md-2 overflow-hidden">
                   <h4 class="py-2 border-bottom">Insights</h4>
                   <div class="small mb-3">{% snippet "prerequisite-insights" %}</div>
                   {% for prerequisite in prerequisites.insights %}
@@ -168,7 +169,7 @@
 
         <div class="row">
             {% if frontmatter.ethical_considerations.count %}
-                <div class="col-12 col-xl-4 mt-4 mt-md-2 overflow-hidden">
+                <div class="col-12 col-xl-6 mt-4 mt-md-2 overflow-hidden">
                     <h4 class="py-2 border-bottom">Ethical considerations</h4>
                     <div class="small mb-3 pb-1 border-bottom">{% snippet "introduction-ethical-considerations" %}</div>
                     {% for label in frontmatter.ethical_considerations.all %}
@@ -180,7 +181,7 @@
             {% endif %}
 
             {% if frontmatter.readings.count %}
-                <div class="col-12 col-xl-4 mt-4 mt-md-2 overflow-hidden">
+                <div class="col-12 col-xl-6 mt-4 mt-md-2 overflow-hidden">
                     <h4 class="py-2 border-bottom">Readings before you get started</h4>
                     <div class="small mb-3 pb-1 border-bottom">{% snippet "introduction-readings" %}</div>
                     {% for reading in frontmatter.readings.all %}
@@ -188,14 +189,14 @@
                             <a class="text-decoration-none stretched-link" target="_blank" href="{{ reading.url }}">
                                 <i class="bi bi-link pr-1 text-muted"></i>{% if reading.title %}{{ reading.title | as_string | markdown | safe | striptags }}<!-- #285 include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" -->{% else %}Untitled{% endif %}
                             </a>
-                            {% if reading.annotation %}<div class="small"><strong>Annotation:</strong> {{ reading.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
+                            {% if reading.annotation %}<div class="small">{{ reading.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
                         </div>
                     {% endfor %}
                 </div>
             {% endif %}
 
             {% if frontmatter.projects.count %}
-                <div class="col-12 col-xl-4 mt-4 mt-md-2 overflow-hidden">
+                <div class="col-12 col-xl-6 mt-4 mt-md-2 overflow-hidden">
                     <h4 class="py-2 border-bottom">Projects related to {{ workshop.name }}</h4>
                     <div class="small mb-3 pb-1 border-bottom">{% snippet "introduction-projects" %}</div>
                     {% for project in frontmatter.projects.all %}
@@ -208,7 +209,41 @@
                                 Untitled
                             {% endif %}
                             {% if project.annotation %}
-                                <div class="small"><strong>Annotation:</strong> {{ project.annotation | as_string | markdown | safe | striptags }}</div>
+                                <div class="small">{{ project.annotation | as_string | markdown | safe | striptags }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if frontmatter.cheat_sheets %}
+                <div class="col-12 col-xl-6 mt-4 mt-md-2 overflow-hidden">
+                    <h4 class="py-2 border-bottom">Cheat sheets related to {{ workshop.name }}</h4>
+                    <div class="small mb-3 pb-1 border-bottom">{% snippet "introduction-cheat-sheets" %}</div>
+                    {% for sheet in frontmatter.cheat_sheets.all %}
+                        <div class="p-2 my-3 rounded-lg linked-comment">
+                            <a class="text-decoration-none stretched-link" target="_blank" href="{{ sheet.url }}">
+                                <i class="bi bi-link pr-1 text-muted"></i>{% if sheet.title %}{{ sheet.title | as_string | markdown | safe | striptags }}<!-- #285 include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" -->{% else %}Untitled{% endif %}
+                            </a>
+                            {% if sheet.annotation %}
+                                <div class="small">{{ sheet.annotation | as_string | markdown | safe | striptags }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if frontmatter.datasets %}
+                <div class="col-12 col-xl-6 mt-4 mt-md-2 overflow-hidden">
+                    <h4 class="py-2 border-bottom">Datasets related to {{ workshop.name }}</h4>
+                    <div class="small mb-3 pb-1 border-bottom">{% snippet "introduction-datasets" %}</div>
+                    {% for dataset in frontmatter.datasets.all %}
+                        <div class="p-2 my-3 rounded-lg linked-comment">
+                            <a class="text-decoration-none stretched-link" target="_blank" href="{{ dataset.url }}">
+                                <i class="bi bi-link pr-1 text-muted"></i>{% if dataset.title %}{{ dataset.title | as_string | markdown | safe | striptags }}<!-- #285 include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" -->{% else %}Untitled{% endif %}
+                            </a>
+                            {% if dataset.annotation %}
+                                <div class="small">{{ dataset.annotation | as_string | markdown | safe | striptags }}</div>
                             {% endif %}
                         </div>
                     {% endfor %}
