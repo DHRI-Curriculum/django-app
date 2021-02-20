@@ -1,7 +1,7 @@
-<div class="row pb-5 justify-content-end" style="padding: 1rem 1rem;">
-  <div class="col-12 text-right">
+<div class="row pb-5" style="padding: 1rem 1rem;">
+  <div class="col-12">
     <nav aria-label="Lesson navigation">
-      <ul class="pagination pagination-sm justify-content-end">
+      <ul class="pagination pagination-sm justify-content-center justify-content-lg-end">
         <span><a id="zen" data-toggle="off" class="mr-4">Zen mode</a></span>
         <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
           <a class="zen-add page-link {% if not page_obj.has_previous %}disabled{% endif %}" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}" tabindex="-1" aria-disabled="true" data-toggle="off">Previous</a>

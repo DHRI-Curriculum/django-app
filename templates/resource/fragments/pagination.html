@@ -1,6 +1,6 @@
 {% load page_window %}
 <nav aria-label="Lesson navigation">
-  <ul class="pagination pagination-sm justify-content-center">
+  <ul class="pagination pagination-sm justify-content-center justify-content-lg-end">
     <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
       <a class="page-link {% if not page_obj.has_previous %}disabled{% endif %}" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% endif %}" tabindex="-1" aria-disabled="true">Previous</a>
     </li>
