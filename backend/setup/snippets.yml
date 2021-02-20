@@ -51,4 +51,6 @@ prerequisite-insights: This is a list of recommended and required "insights" tha
 
 prerequisite-external-links: Sometimes, we ask you to complete a short task on an external website before you start the workshop. This can be because we want you to work on a particular dataset that you download here, or because we want you to sign up for a service. Note that these links will take you out of our website, so we will open them in a new tab for you. Once you are done, you can close down the window and easily return here.
 
-introduction-cheat-sheets: An introcution to what cheat sheets are and what they do on our site.
+introduction-cheat-sheets: An introduction to what cheat sheets are and what they do in our frontmatter section (and why we have them on the site altogether).
+
+introduction-datasets: An introduction to what datasets are and what they do in our frontmatter section.
