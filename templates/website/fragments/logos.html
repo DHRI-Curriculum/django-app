@@ -1,4 +1,4 @@
-{% load static startswith %}
+{% load static startswith snippet %}
 
 
 <footer class="container-fluid bg-light pt-5 mt-5{% if 'alpha' in version or 'beta' in version %} pb-5{% endif %}" style="box-shadow: 0 50vh 0 50vh #ecf0f1;">
@@ -21,7 +21,7 @@
         <!-- NEH language -->
         <div class="d-flex flex-row pt-3 px-4 order-first order-sm-last justify-content-center">
             <div class="funding-text">
-                <p>The Digital Humanities Research Institute is funded through a generous grant from the National Endowment for the Humanities and with support from The Graduate Center's Provost's Office.</p>
+                <p>{% snippet 'funding-message' %}</p>
             </div>
         </div>
     </div>
