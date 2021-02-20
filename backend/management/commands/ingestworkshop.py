@@ -129,7 +129,7 @@ class Command(BaseCommand):
                         label=point.get('annotation')
                     )
 
-            for cat in ['projects', 'readings', 'cheat_sheets']:
+            for cat in ['projects', 'readings', 'cheat_sheets', 'datasets']:
                 if frontmatterdata.get(cat):
                     category, add_field = None, None
                     if cat == 'projects':
@@ -141,6 +141,9 @@ class Command(BaseCommand):
                     elif cat == 'cheat_sheets':
                         category = Resource.CHEATSHEET
                         add_field = frontmatter.cheat_sheets
+                    elif cat == 'datasets':
+                        category = Resource.DATASET
+                        add_field = frontmatter.datasets
 
                     for point in frontmatterdata.get(cat):
                         if not add_field or not category:

@@ -12,12 +12,18 @@
                 <p class="m-0 small text-uppercase text-muted"><strong>See in context</strong></p>
             {% endif %}
             <div>
-                {% if obj.frontmatter_projects.count or obj.frontmatter_readings.count or obj.praxis_further_projects.count or obj.praxis_further_readings.count or obj.praxis_tutorials.count %}
+                {% if obj.frontmatter_projects.count or obj.frontmatter_readings.count or obj.praxis_further_projects.count or obj.praxis_further_readings.count or obj.praxis_tutorials.count or obj.frontmatter_cheat_sheets.count or obj.frontmatter_datasets.count %}
                     <!-- Appears in the following workshops: -->
                     {% for frontmatter in obj.frontmatter_projects.all %}
                         <a class="btn btn-secondary btn-sm mr-1" href="{% url 'workshop:frontmatter' slug=frontmatter.workshop.slug %}">{{ frontmatter.workshop.name }} (Workshop's frontmatter section)</a>
                     {% endfor %}
                     {% for frontmatter in obj.frontmatter_readings.all %}
+                        <a class="btn btn-secondary btn-sm mr-1" href="{% url 'workshop:frontmatter' slug=frontmatter.workshop.slug %}">{{ frontmatter.workshop.name }} (Workshop's frontmatter section)</a>
+                    {% endfor %}
+                    {% for frontmatter in obj.frontmatter_cheat_sheets.all %}
+                        <a class="btn btn-secondary btn-sm mr-1" href="{% url 'workshop:frontmatter' slug=frontmatter.workshop.slug %}">{{ frontmatter.workshop.name }} (Workshop's frontmatter section)</a>
+                    {% endfor %}
+                    {% for frontmatter in obj.frontmatter_datasets.all %}
                         <a class="btn btn-secondary btn-sm mr-1" href="{% url 'workshop:frontmatter' slug=frontmatter.workshop.slug %}">{{ frontmatter.workshop.name }} (Workshop's frontmatter section)</a>
                     {% endfor %}
                     {% for praxis in obj.praxis_further_projects.all %}

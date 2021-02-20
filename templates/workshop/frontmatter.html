@@ -232,6 +232,23 @@
                     {% endfor %}
                 </div>
             {% endif %}
+
+            {% if frontmatter.datasets %}
+                <div class="col-12 col-xl-6 mt-4 mt-md-2 overflow-hidden">
+                    <h4 class="py-2 border-bottom">Datasets related to {{ workshop.name }}</h4>
+                    <div class="small mb-3 pb-1 border-bottom">{% snippet "introduction-datasets" %}</div>
+                    {% for dataset in frontmatter.datasets.all %}
+                        <div class="p-2 my-3 rounded-lg linked-comment">
+                            <a class="text-decoration-none stretched-link" target="_blank" href="{{ dataset.url }}">
+                                <i class="bi bi-link pr-1 text-muted"></i>{% if dataset.title %}{{ dataset.title | as_string | markdown | safe | striptags }}<!-- #285 include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" -->{% else %}Untitled{% endif %}
+                            </a>
+                            {% if dataset.annotation %}
+                                <div class="small">{{ dataset.annotation | as_string | markdown | safe | striptags }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
 
         {% if current_authors %}

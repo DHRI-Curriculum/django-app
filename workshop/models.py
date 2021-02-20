@@ -94,6 +94,7 @@ class Frontmatter(models.Model):
     projects = models.ManyToManyField(Resource, related_name="frontmatter_projects", blank=True)
     readings = models.ManyToManyField(Resource, related_name="frontmatter_readings", blank=True)
     cheat_sheets = models.ManyToManyField(Resource, related_name="frontmatter_cheat_sheets", blank=True)
+    datasets = models.ManyToManyField(Resource, related_name="frontmatter_datasets", blank=True)
     contributors = models.ManyToManyField(
         Contributor, related_name="frontmatters", blank=True, through='Collaboration')
 

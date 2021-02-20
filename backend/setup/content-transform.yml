@@ -39,6 +39,11 @@ NORMALIZING_SECTIONS:
             - Cheat Sheets
             - Cheatsheet
             - Cheatsheets
+        datasets:
+            - Dataset
+            - Datasets
+            - Data set
+            - Data sets
         prerequisites:
             - Prerequisites
             - Pre-requisites

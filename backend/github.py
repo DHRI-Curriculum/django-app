@@ -621,7 +621,7 @@ class WorkshopCache(Helper, GitCache):
         fixing['abstract'] = PARSER.fix_html(fixing['abstract'])
 
         # Make lists correct
-        for _list in ['readings', 'projects', 'learning_objectives', 'ethical_considerations', 'cheat_sheets', 'prerequisites']:
+        for _list in ['readings', 'projects', 'learning_objectives', 'ethical_considerations', 'cheat_sheets', 'datasets', 'prerequisites']:
             if _list in fixing:
                 fixing[_list] = [self._fix_list_element(x) for x in as_list(fixing[_list])]
             else:

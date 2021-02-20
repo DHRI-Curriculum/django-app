@@ -1,14 +1,12 @@
 from install.models import Instruction
-from django.shortcuts import render, HttpResponse, get_object_or_404, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, HttpResponseRedirect
 from django.core.paginator import Paginator
 from workshop.models import Prerequisite, Workshop, Collaboration, Blurb
 from lesson.models import Lesson
 from learner.models import Profile, Progress
 from django.conf import settings
-from django.views.generic import View, DetailView, ListView
+from django.views.generic import View, DetailView
 from django.contrib import messages
-from bs4 import BeautifulSoup
-import os, json
 
 
 class IndexRedirect(View):
