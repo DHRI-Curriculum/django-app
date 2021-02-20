@@ -75,6 +75,9 @@ class Command(BaseCommand):
                     elif cat == 'readings':
                         category = Resource.READING
                         add_field = term.readings
+                    elif cat == 'cheat_sheet':
+                        category = Resource.CHEATSHEET
+                        add_field = term.cheat_sheets
 
                     for point in termdata.get(cat):
                         if not add_field or not category:

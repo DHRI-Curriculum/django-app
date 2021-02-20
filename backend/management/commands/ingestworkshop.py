@@ -138,6 +138,9 @@ class Command(BaseCommand):
                     elif cat == 'readings':
                         category = Resource.READING
                         add_field = frontmatter.readings
+                    elif cat == 'cheat_sheets':
+                        category = Resource.CHEATSHEET
+                        add_field = frontmatter.cheat_sheets
 
                     for point in frontmatterdata.get(cat):
                         if not add_field or not category:

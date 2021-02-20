@@ -26,6 +26,7 @@ class Index(ListView):
         context['readings'] = Resource.objects.filter(category=Resource.READING).order_by('?')[:3]
         context['tutorials'] = Resource.objects.filter(category=Resource.TUTORIAL).order_by('?')[:3]
         context['projects'] = Resource.objects.filter(category=Resource.PROJECT).order_by('?')[:3]
+        context['cheat_sheets'] = Resource.objects.filter(category=Resource.CHEATSHEET).order_by('?')[:3]
         context['all_categories'] = get_all_categories()
         return context
 

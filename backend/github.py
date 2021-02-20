@@ -253,16 +253,19 @@ class GlossaryCache(Helper, GitCache):
                 'term': None,
                 'explication': None,
                 'readings': None,
-                'tutorials': None
+                'tutorials': None,
+                'cheat_sheets': None
             }
             
             sections = split_into_sections(file_contents)
             
             for section in sections:
-                if section == 'Readings' or section == 'Reading':
+                if section.lower() == 'readings' or section.lower() == 'reading':
                     _['readings'] = [self._fix_list_element(x) for x in as_list(sections[section])]
-                elif section == 'Tutorials' or section == 'Tutorial':
+                elif section.lower() == 'tutorials' or section.lower() == 'tutorial':
                     _['tutorials'] = [self._fix_list_element(x) for x in as_list(sections[section])]
+                elif section.lower() == 'cheat sheets' or section.lower() == 'cheatsheets':
+                    _['cheat_sheets'] = [self._fix_list_element(x) for x in as_list(sections[section])]
                 else:
                     _['term'] = self.PARSER.fix_html(section)
                     _['explication'] = self.PARSER.fix_html(sections[section])
@@ -618,7 +621,7 @@ class WorkshopCache(Helper, GitCache):
         fixing['abstract'] = PARSER.fix_html(fixing['abstract'])
 
         # Make lists correct
-        for _list in ['readings', 'projects', 'learning_objectives', 'ethical_considerations', 'prerequisites']:
+        for _list in ['readings', 'projects', 'learning_objectives', 'ethical_considerations', 'cheat_sheets', 'prerequisites']:
             if _list in fixing:
                 fixing[_list] = [self._fix_list_element(x) for x in as_list(fixing[_list])]
             else:
@@ -639,6 +642,8 @@ class WorkshopCache(Helper, GitCache):
             insight_link = '/shortcuts/insight/' in url
             workshop_link = '/shortcuts/workshop/' in url
             
+            #TODO #429: Somehow determine what is a cheatsheet and ingest that here...
+
             text = self.process_prereq_text(html, log=self.log)
             if install_link and not text:
                 self.log.warning(f'No clarifying text was found when processing prerequired installation (`{url_text}`) for workshop `{self.name}`. Note that the clarifying text will be replaced by the "why" text from the installation instructions. You may want to change this in the frontmatter\'s requirements for the workshop {self.name} and re-run `buildworkshop --name {self.repository}')

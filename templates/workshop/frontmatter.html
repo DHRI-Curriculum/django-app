@@ -88,6 +88,10 @@
                   {% endfor %}
               </div>
             {% endif %}
+
+            {% if prerequisites.cheat_sheets %}
+                <p class="text-danger">#TODO: Prerequisites need to be inserted here.</p>
+            {% endif %}
         </div>
         <div class="row">
           <div class="col-12 {% if prerequisites.installs.by_software|length or prerequisites.insights|length %}col-xl-4{% elif not prerequisites.installs.by_software|length and not prerequisites.insights|length %}col-xl-12{% else %}{% endif %} mt-4 mt-md-2 overflow-hidden">

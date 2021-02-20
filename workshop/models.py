@@ -91,10 +91,9 @@ class Frontmatter(models.Model):
     abstract = models.TextField()
     estimated_time = models.PositiveSmallIntegerField(
         blank=True, null=True, help_text="assign full minutes")
-    projects = models.ManyToManyField(
-        Resource, related_name="frontmatter_projects", blank=True)
-    readings = models.ManyToManyField(
-        Resource, related_name="frontmatter_readings", blank=True)
+    projects = models.ManyToManyField(Resource, related_name="frontmatter_projects", blank=True)
+    readings = models.ManyToManyField(Resource, related_name="frontmatter_readings", blank=True)
+    cheatsheets = models.ManyToManyField(Resource, related_name="frontmatter_cheat_sheets", blank=True)
     contributors = models.ManyToManyField(
         Contributor, related_name="frontmatters", blank=True, through='Collaboration')
 
@@ -107,11 +106,13 @@ class Prerequisite(models.Model):
     INSTALL = 'install'
     INSIGHT = 'insight'
     WORKSHOP = 'workshop'
+    CHEATSHEET = 'cheatsheet'
     CATEGORY_CHOICES = [
         (EXTERNAL_LINK, 'External link'),
         (INSIGHT, 'Insight'),
         (INSTALL, 'Installation instructions for software'),
         (WORKSHOP, 'Workshop'),
+        (CHEATSHEET, 'Cheat sheet'),
     ]
 
     text = models.TextField(blank=True, null=True)
@@ -123,7 +124,7 @@ class Prerequisite(models.Model):
     linked_workshop = models.ForeignKey(Workshop, related_name="prerequisite_for", on_delete=models.CASCADE, null=True)
     linked_software = models.ManyToManyField(Software, related_name="prerequisite_for", through='PrerequisiteSoftware')
     linked_insight = models.ForeignKey(Insight, related_name="prerequisite_for", on_delete=models.CASCADE, null=True)
-    category = models.CharField(max_length=8, choices=CATEGORY_CHOICES, default=EXTERNAL_LINK)
+    category = models.CharField(max_length=10, choices=CATEGORY_CHOICES, default=EXTERNAL_LINK)
 
 
 class PrerequisiteSoftware(models.Model):

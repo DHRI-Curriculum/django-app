@@ -106,7 +106,8 @@ class FrontmatterView(DetailView):
             },
             'insights': [],
             'external_links': [],
-        }\
+            'cheat_sheets': [],
+        }
 
         for req in self.get_object().frontmatter.prerequisites.all():
             if req.required: _['required'].append(req)
@@ -115,6 +116,7 @@ class FrontmatterView(DetailView):
             if req.category == Prerequisite.WORKSHOP: _['workshops'].append(req)
             elif req.category == Prerequisite.INSIGHT: _['insights'].append(req)
             elif req.category == Prerequisite.EXTERNAL_LINK: _['external_links'].append(req)
+            elif req.category == Prerequisite.CHEATSHEET: _['cheat_sheets'].append(req)
 
             for software in req.linked_software.all():
                 if not software.software in _['installs']['by_software']:
