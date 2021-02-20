@@ -95,31 +95,31 @@ class Command(BaseCommand):
                     instruction.image.name = get_default_instruction_image()
                     instruction.save()
                     
-            for stepdata in installdata.get('instructions').get(operating_system):
-                step, created = Step.objects.update_or_create(
-                    instruction=instruction,
-                    order=stepdata.get('step'),
-                    defaults={
-                        'header': stepdata.get('header'),
-                        'text': stepdata.get('html')
-                    }
-                )
+                for stepdata in installdata.get('instructions').get(operating_system):
+                    step, created = Step.objects.update_or_create(
+                        instruction=instruction,
+                        order=stepdata.get('step'),
+                        defaults={
+                            'header': stepdata.get('header'),
+                            'text': stepdata.get('html')
+                        }
+                    )
 
-                for order, d in enumerate(stepdata.get('screenshots'), start=1):
-                    path = d['path']
-                    alt_text = d['alt']
-                    if os.path.exists(get_screenshot_media_path(path)) and filecmp.cmp(path, get_screenshot_media_path(path), shallow=False) == True:
-                        s = Screenshot.objects.get(step=step, alt_text=alt_text, order=order)
-                        log.log(f'Screenshot already exists: `{get_screenshot_media_path(s.image.path)}`')
-                    else:
-                        s, _ = Screenshot.objects.get_or_create(step=step, alt_text=alt_text, order=order)
-                        with open(path, 'rb') as f:
-                            s.image = File(f, name=os.path.basename(f.name))
-                            s.save()
-                        if filecmp.cmp(path, get_screenshot_media_path(path), shallow=False) == False:
-                            log.log(f'Screenshot was updated so re-saved: `{get_screenshot_media_path(path)}`')
+                    for order, d in enumerate(stepdata.get('screenshots'), start=1):
+                        path = d['path']
+                        alt_text = d['alt']
+                        if os.path.exists(get_screenshot_media_path(path)) and filecmp.cmp(path, get_screenshot_media_path(path), shallow=False) == True:
+                            s = Screenshot.objects.get(step=step, alt_text=alt_text, order=order)
+                            log.log(f'Screenshot already exists: `{get_screenshot_media_path(s.image.path)}`')
                         else:
-                            log.log(f'New screenshot saved: `{get_screenshot_media_path(path)}`')
+                            s, _ = Screenshot.objects.get_or_create(step=step, alt_text=alt_text, order=order)
+                            with open(path, 'rb') as f:
+                                s.image = File(f, name=os.path.basename(f.name))
+                                s.save()
+                            if filecmp.cmp(path, get_screenshot_media_path(path), shallow=False) == False:
+                                log.log(f'Screenshot was updated so re-saved: `{get_screenshot_media_path(path)}`')
+                            else:
+                                log.log(f'New screenshot saved: `{get_screenshot_media_path(path)}`')
 
         log.log('Added/updated installation instructions: ' +
                                  ', '.join([f'{x["software"]}' for x in data]))
