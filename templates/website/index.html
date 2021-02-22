@@ -2,70 +2,73 @@
 {% load markdownify static snippet %}
 
 {% block extra_head_material %}
-  <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
-{% endblock %}
-
-{% block javascript %}
-  <script type="application/javascript">
-    imagesLoaded( document.querySelector('.grid'), function( instance ) {
-      //console.log('all images are loaded -- setting up masonry');
-      //console.log(instance);
-      let m = new Masonry( '.grid', {
-        percentPosition: true
-      });
-    });
-  </script>
+    <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
 {% endblock %}
 
 {% block before_container %}
-  <section class="jumbotron px-4 py-5" style="border-radius: unset; background-image: url({% static 'website/images/bg-pattern.png' %});">
+<section class="jumbotron px-4 py-5" style="border-radius: unset; background-image: url({% static 'website/images/bg-pattern.png' %});">
     <div class="container-xxl">
-      <div class="d-flex align-items-center flex-column flex-sm-row">
-        <img src="{% static 'website/images/logo.png' %}" class="img-fluid mr-4 mb-2 mb-sm-0" style="max-height:150px;" alt="Graphic that depicts: Digital Humanities Research Institute logotype">
-        <div class="text-primary">
-          <h1 class="jumbotron-heading mb-3">Further Expanding Digital Humanities Communities of Practice</h1>
-          <p style="font-size:1.2rem;">The Digital Humanities Research Institute (DHRI) is an intensive, community-oriented, and foundational approach to learning technical skills in service of humanities teaching and learning. You can read more about the project on <a href="//dhinstitutes.org">our main website</a>.</p>
+        <div class="d-flex align-items-center flex-column flex-sm-row">
+            <img src="{% static 'website/images/logo.png' %}" class="img-fluid mr-4 mb-2 mb-sm-0" style="max-height:150px;" alt="Graphic that depicts: Digital Humanities Research Institute logotype">
+            <div class="text-primary">
+                <h1 class="jumbotron-heading mb-3">Further Expanding Digital Humanities Communities of Practice</h1>
+                <p style="font-size:1.2rem;">The Digital Humanities Research Institute (DHRI) is an intensive, community-oriented, and foundational approach to learning technical skills in service of humanities teaching and learning. You can read more about the project on <a href="//dhinstitutes.org">our main website</a>.</p>
+            </div>
         </div>
-      </div>
     </div>
-  </section>
+</section>
+{% endblock %}
+
+{% block hero%}
+<h1 class="h3 dhri-hero">Digital Humanities Research Institute</h1>
+<h1 class="h2 display-4">Curriculum Website</h1>
+{% snippet "introduction-website" %}
+{% snippet "introduction-curriculum" %}
 {% endblock %}
 
 {% block main %}
-<h1 class="h3 dhri-hero">Digital Humanities Research Institute</h1>
-<h1 class="h2 display-4">Curriculum Website</h1>
-  {% snippet "introduction-website" %}
-  {% snippet "introduction-curriculum" %}
-  <h2 class="pt-5">All workshops</h2>
-  <div class="row grid">
-      {% for workshop in object_list %}
-        <div class="col-lg-6 px-3 py-3">
-          <div class="card h-100">
+<section id="workshop-list">
+    <div class="container-xxl">
+        <h2 class="pt-5">All workshops</h2>
+            <div class="row grid">
+            {% for workshop in object_list %}
+                <div class="col-lg-6 px-3 py-3">
+                <div class="card h-100">
+                    {% if workshop.image %}
+                        <a href="{% url 'workshop:frontmatter' slug=workshop.slug %}"><img src="{{ workshop.image.url }}" class="card-img-top" alt="{{ workshop.name }}"></a>
+                    {% endif %}
+                    <div class="card-body">
+                        {% if not workshop.image %}
+                            <h5 class="card-title m-0 bolder">{{ workshop.name }}</h5>
+                        {% endif %}
+                        {% if workshop.frontmatter.abstract %}<p class="card-text m-0">{{ workshop.frontmatter.abstract | markdown | safe }}</p>{% endif %}
 
-            {% if workshop.image %}
-              <a href="{% url 'workshop:frontmatter' slug=workshop.slug %}"><img src="{{ workshop.image.url }}" class="card-img-top" alt="{{ workshop.name }}"></a>
-            {% endif %}
-            <div class="card-body">
-              {% if not workshop.image %}
-                <h5 class="card-title m-0 bolder">{{ workshop.name }}</h5>
-              {% endif %}
-              {% if workshop.frontmatter.abstract %}<p class="card-text m-0">{{ workshop.frontmatter.abstract | markdown | safe }}</p>{% endif %}
+                        {% if workshop.has_terms %}
+                            <div class="mt-2 pt-1 border-top">
+                                <strong class="mr-1">Key terms</strong>{% for term in workshop.terms %}
+                                <a tabindex="{{ forloop.counter0 }}" class="btn badge btn-light" data-container="body" data-toggle="popover" data-placement="top" data-title="{{ term }}" data-content="{{ term.explication | striptags }} <strong>Click to read more about {{ term }}</strong>" href="{% url 'glossary:term' term.slug %}">{{ term }}</a>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
 
-              {% if workshop.has_terms %}
-                <div class="mt-2 pt-1 border-top">
-                <strong class="mr-1">Key terms</strong>{% for term in workshop.terms %}
-                  <a tabindex="{{ forloop.counter0 }}" class="btn badge btn-light" data-container="body" data-toggle="popover" data-placement="top" data-title="{{ term }}" data-content="{{ term.explication | striptags }} <strong>Click to read more about {{ term }}</strong>" href="{% url 'glossary:term' term.slug %}">{{ term }}</a>
-                {% endfor %}
+                    <div class="card-footer text-right">
+                        <a href="{% url 'workshop:frontmatter' slug=workshop.slug %}" class="btn btn-primary">Start &raquo;</a>
+                    </div>
                 </div>
-              {% endif %}
-            </div>
-
-            <div class="card-footer text-right">
-              <a href="{% url 'workshop:frontmatter' slug=workshop.slug %}" class="btn btn-primary">Start &raquo;</a>
-            </div>
-
-          </div>
+                </div>
+            {% endfor %}
         </div>
-      {% endfor %}
-  </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block javascript %}
+    <script type="application/javascript">
+        imagesLoaded( document.querySelector('.grid'), function( instance ) {
+            let m = new Masonry( '.grid', {
+                percentPosition: true
+            });
+        });
+    </script>
 {% endblock %}

@@ -2,6 +2,7 @@
 {% load static crispy_forms_tags %}
 
 {% block main %}
+<div class="container-xxl">
     <div class="row py-4 justify-content-center">
         <div class="col-8 col-md-6 col-lg-4 py-5 my-5">
             {% if request.user.is_authenticated %}
@@ -22,4 +23,5 @@
             {% endif %}
         </div>
     </div>
+</div>
 {% endblock %}

@@ -9,6 +9,7 @@
 
 
 {% block main %}
+<div class="container-xxl">
 <div class="row py-4">
   {% if is_me or request.user.is_staff or user.is_staff %}
     <div class="col-3"><!--left col-->
@@ -97,6 +98,7 @@
       <p class="text-danger font-weight-bold">You cannot view other people's profiles.</p>
     </div>
   {% endif %}
+</div>
 </div>
 {% endblock %}
 
