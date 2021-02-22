@@ -9,31 +9,22 @@
 {% block secondary_menu %}{% glossary_navigation_secondary %}{% endblock %}
 
 {% block main %}
-    {% glossary_navigation %}
-
-    <div class="row">
-        <div class="col-12 col-xl-8">
-            <h2>Terms starting with {{ slug }}</h2>
-            <div class="row">
-                {% for obj in object_list %}
-                    {% include 'glossary/fragments/term-card.html' with xl='col-xl-12' lg='col-lg-12' md='col-md-12' sm='col-sm-12' %}
-                {% endfor %}
-            </div>
-        </div>
-
-        {% if random_items %}
-            <div class="col-12 col-xl-4 pt-5 pt-xl-0 mt-5 mt-xl-0 border-top border-xl-none" data-replace-internal-links="true">
-                <h3 class="border-bottom pb-2 mb-2">Test your knowledge</h3>
-                <p class="lead">Can you define the terms below? Hover over each of them to read a preview of the definitions.</p>
-                <div class="post-its row d-inline-flex">
-                {% for term in random_items %}
-                    {% include 'glossary/fragments/postit.html' %}
-                {% endfor %}
-                </div>
-            </div>
-        {% endif %}
+<section id="glossary-navigation">
+    <div class="container-xxl">
+        {% glossary_navigation %}
     </div>
+</section>
 
+<section id="term-list" class="pt-5 pt-md-0">
+    <div class="container-xxl">
+        <h2>Terms starting with {{ slug }}</h2>
+        <div class="row">
+            {% for obj in object_list %}
+                {% include 'glossary/fragments/term-card.html' with xl='col-xl-6' lg='col-lg-6' md='col-md-12' sm='col-sm-12' %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
 {% endblock %}
 
 {% block javascript %}

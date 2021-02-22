@@ -20,6 +20,7 @@
 {% block secondary_menu %}{% include 'resource/fragments/secondary-menu.html' %}{% endblock %}
 
 {% block main %}
+<div class="container-xxl">
     {% if tutorials %}
         <h3 class="mt-4"><a class="text-decoration-none" href="{% url 'resource:category' category='tutorial' %}">Tutorials</a></h3>
         <div class="row">
@@ -66,7 +67,8 @@
         <div class="d-flex justify-content-end">
             <a href="{% url 'resource:category' category='cheatsheet' %}">See all...</a>
         </div>
-    {% endif %}
+        {% endif %}
+</div>
 {% endblock %}
 
 

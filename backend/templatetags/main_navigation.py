@@ -44,7 +44,7 @@ def main_navigation(context):
         {'request': context.request, 'is_home': context.request.get_full_path() == '/'})
 
     # Start mini menus
-    html += '<div id="mini-menus" class="bg-primary"><div class="container-xxl">'
+    html += '<nav id="mini-menus" class="bg-primary"><div class="container-xxl">'
 
     # Workshops mini menu
     html += get_template('_main-navbar/workshops-mini-menu.html').render(
@@ -59,6 +59,6 @@ def main_navigation(context):
         {'all': obj['insights']})
 
     # End mini menus
-    html += '</div></div>'
+    html += '</div></nav>'
 
     return mark_safe(html)
