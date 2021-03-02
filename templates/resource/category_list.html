@@ -25,15 +25,17 @@
 
 
 {% block main %}
-<div class="row grid">
-    {% if not category %}
-    {% else %}
-        {% if object_list.count >= 10 %}<!-- Only include if more than 8 objects -->{% include 'resource/fragments/pagination.html' %}{% endif %}
-        {% for obj in object_list %}
-            {% include 'resource/fragments/resource-card.html' %}
-        {% endfor %}
-    {% endif %}
-    {% include 'resource/fragments/pagination.html' %}
+<div class="container-xxl">
+    <div class="row grid">
+        {% if not category %}
+        {% else %}
+            {% if object_list.count >= 10 %}<!-- Only include if more than 8 objects -->{% include 'resource/fragments/pagination.html' %}{% endif %}
+            {% for obj in object_list %}
+                {% include 'resource/fragments/resource-card.html' %}
+            {% endfor %}
+        {% endif %}
+        {% include 'resource/fragments/pagination.html' %}
+    </div>
 </div>
 {% endblock %}
 

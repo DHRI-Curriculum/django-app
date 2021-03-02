@@ -1,7 +1,7 @@
 {% load static startswith snippet %}
 
 
-<footer class="container-fluid bg-light pt-5 mt-5{% if 'alpha' in version or 'beta' in version %} pb-5{% endif %}" style="box-shadow: 0 50vh 0 50vh #ecf0f1;">
+<footer class="container-fluid bg-super-light{% if 'alpha' in version or 'beta' in version %} py-5{% else %} pt-5{% endif %}" style="box-shadow: 1px -3px 16px 4px #00000024;">
     <div class="d-flex flex-column">
         <div class="d-flex flex-column flex-sm-row justify-content-center align-items-sm-end text-center order-last order-sm-first">
             <div class="px-0 px-sm-4 py-3 py-sm-0">

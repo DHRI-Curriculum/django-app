@@ -1,19 +1,11 @@
-{% load static startswith %}
-{% load main_navigation %}
+{% load static startswith main_navigation %}
 
 <!doctype html>
 <html lang="en">
-    <head>
-        {% include "website/fragments/head.html" %}
-        <!-- Extra head material -->
-        {% block extra_head_material %}{% endblock %}
-    </head>
+    <head>{% include "website/fragments/head.html" %}{% block extra_head_material %}{% endblock %}</head>
     <body>
-
         {% if 'alpha' in version or 'beta' in version %}{% include "website/fragments/warnings/version.html" %}{% endif %}
-
         {% main_navigation %}
-
         <nav class="sticky-top zen-hideaway shadow" style="background-color:rgb(61 84 108);" id="secondaryMenu">
             <div class="container-xxl d-flex justify-content-between justify-content-end">
                 {% if not is_home %}
@@ -22,8 +14,7 @@
                     </div>
                 {% endif %}
 
-                <!-- Page-specific secondary menu -->
-                {% block secondary_menu %}{% endblock %}
+                <!-- Page-specific secondary menu -->{% block secondary_menu %}{% endblock %}
 
                 <div class="nav ml-auto">
                     {% if request.user.is_authenticated %}
@@ -53,15 +44,30 @@
         {% include "website/fragments/warnings/ie.html" %}
         {% include "website/fragments/instructor_requests.html" %}
 
+        {% include "website/fragments/messages.html" %}
+
         {% block before_container %}{% endblock %}
-        <section id="content">
-            <div class="container-xxl px-3 py-3 px-md-5 py-md-5">{% if not is_home %}{% endif %}
+        
+        <section id="header">
+            <div class="container-xxl">
                 {% block header %}{% endblock %}
-                {% include "website/fragments/messages.html" %}
-                {% block before_content %}{% endblock %}
-                {% block hero %}{% endblock %}
-                {% block main %}{% endblock %}
             </div>
+        </section>
+        
+        <section id="before-content">
+            <div class="container-xxl">
+                {% block before_content %}{% endblock %}
+            </div>
+        </section>
+
+        <section id="hero">
+            <div class="container-xxl">
+                {% block hero %}{% endblock %}
+            </div>
+        </section>
+
+        <section id="main-content" style="margin-bottom: 5rem;">
+            {% block main %}{% endblock %}
         </section>
 
         {% include 'website/fragments/logos.html' %}

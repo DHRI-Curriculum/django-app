@@ -4,8 +4,9 @@
 {% block secondary_menu %}{% install_navigation %}{% endblock %}
 
 {% block main %}
+<div class="container-xxl pt-5">
     <div class="row">
-      {% for software, data in object_list.items %}
+        {% for software, data in object_list.items %}
             {% for operating_system, instruction in data.items %}
                 {% if forloop.first %}
                     <div class="col-md-6 px-3 py-3">
@@ -28,6 +29,7 @@
                     </div>
                 {% endif %}
             {% endfor %}
-      {% endfor %}
+        {% endfor %}
     </div>
+</div>
 {% endblock %}

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% load markdownify static snippet get_item %}
-
+{% block secondary_menu %}{% include 'workshop/fragments/secondary-menu.html' %}{% endblock %}
 
 {% block extra_head_material %}
     <link rel="stylesheet" href="{% static 'website/css/icons.css' %}">
@@ -8,54 +8,49 @@
     <link rel="stylesheet" href="{% static 'workshop/css/frontmatter.css' %}">
 {% endblock %}
 
-
 {% block admin_edit %}
     <a class="text-decoration-none dropdown-item admin-link-django" target="_blank" href="{% url 'admin:index' %}">Django admin</a>
     <a class="text-decoration-none dropdown-item admin-link-edit" target="_blank" href="{% url 'admin:workshop_frontmatter_change' frontmatter.id  %}">Edit frontmatter</a>
     <a class="text-decoration-none dropdown-item admin-link-github" target="_blank" href="https://www.github.com/{{ workshop.parent_repo }}/blob/{{ workshop.parent_branch }}/frontmatter.md">See on GitHub</a>
 {% endblock %}
 
-
-{% block before_content %}
+{% block before_container %}
     {% if not request.user.is_authenticated %}
-        <div class="w-100 py-5">
-            <div class="alert alert-info" id="no-login">Note that you are not logged in. In order to save progress and interact with the workshops, you need to <a href="{% url 'login' %}">login</a> or <a href="{% url 'register' %}">create an account</a>.</div>
-        </div>
+        <section id="warning-before-container" class="container-xxl pt-5">
+            <div class="alert alert-info mb-0" id="no-login">Note that you are not logged in. In order to save progress and interact with the workshops, you need to <a href="{% url 'login' %}">login</a> or <a href="{% url 'register' %}">create an account</a>.</div>
+        </section>
     {% endif %}
 {% endblock %}
 
-
-{% block secondary_menu %}
-    {% include 'workshop/fragments/secondary-menu.html' %}
-{% endblock %}
-
-
-
 {% block hero %}
-<section id="hero">
-    <img src="{{ workshop.image.url }}" class="img-fluid" />
-</section>
+<div class="py-3 pt-md-5 pb-md-4 mx-auto text-center">
+    {% if workshop.image %}
+        <img src="{{ workshop.image.url }}" class="img-fluid" alt="{{ workshop.name }}">
+    {% else %}
+        <h1 class="display-4">{{ workshop.name }}</h1>
+    {% endif %}
+</div>
 {% endblock %}
-
 
 {% block main %}
-<section>
+<section id="workshop-meta" class="border-bottom shadow-sm pb-4">
     <div class="container-xxl">
-        <div class="row mt-4">
-            <div id="workshop-meta" class="col-12 col-12 col-xl-8 lead">
-                {{ workshop.frontmatter.abstract | markdown | safe }}
+        <div class="row pt-3">
+            <div id="abstract" class="col-12 col-xl-8">
+                <div class="lead">
+                    {{ workshop.frontmatter.abstract | markdown | safe }}
+                </div>
                 {% if frontmatter.learning_objectives.count %}
-                  <div class="row mt-4">
-                    <div class="col">
-                      <p><strong>In this workshop, you will learn to:</strong></p>
-                      <ul>{% for objective in frontmatter.learning_objectives.all %}
-                        <li>{{ objective | markdown | safe }}</li>
-                      {% endfor %}
-                      </ul>
-                    </div>
-                  </div>
+                    <p class="mt-4 pt-4 border-top"><strong>In this workshop, you will learn to:</strong></p>
+                    <ul>
+                        {% for objective in frontmatter.learning_objectives.all %}
+                            <li>{{ objective | markdown | safe }}</li>
+                        {% endfor %}
+                    </ul>
                 {% endif %}
+                
             </div>
+
             <div id="meta-menu" class="col-12 col-xl-4">
                 <div class="row">
                     <div class="col-6 col-lg-6 d-flex justify-content-center pb-3">
@@ -71,7 +66,7 @@
                         <div class="col-12">
                             <p class="mt-2 border-top pt-2">These are the terms that you will learn how to define in this workshop.</p>
                             {% for term in all_terms %}
-                                <a class="small text-decoration-none shadow-sm d-inline-block p-2 mb-3 mr-3 rounded-lg text-dark" data-term="true" style="background-color: #ffc;" href="{% url 'glossary:term' slug=term.slug %}">{{ term }}</a>
+                                <a class="text-decoration-none shadow-sm d-inline-block p-2 mb-3 mr-3 rounded-lg text-dark" data-term="true" style="background-color: #ffc;" href="{% url 'glossary:term' slug=term.slug %}">{{ term }}</a>
                             {% endfor %}
                         </div>
                     {% endif %}
@@ -80,15 +75,14 @@
         </div>
     </div>
 </section>
+
+
 <section id="before-you-get-started" class="border-bottom shadow-sm pt-5 pb-4">
-    <div class="container-xxl">
-        <h3 class="pb-4">Required and recommended before you get started</h3>
+  <div class="container-xxl">
+        <h3 class="pb-4">Before you get started</h3>
         <div class="lead" data-replace-internal-links="true">{% snippet "introduction-before-you-get-started" %}</div>
 
-        
-        <h3 class="mt-5 pt-4 pb-4 border-top-double border-bottom">Before you get started</h3>
-        <div class="mt-4">
-            <div class="lead" data-replace-internal-links="true">{% snippet "introduction-before-you-get-started" %}</div>
+        <div class="row">
             {% if prerequisites.external_links|length %}
                 <div id="prerequisite-external-links" class="col-6 mt-2">
                     <h4>External Links</h4>
@@ -96,8 +90,8 @@
                     {% for prerequisite in prerequisites.external_links %}
                         <div class="p-2 my-3 rounded-lg linked-comment {% if prerequisite.required %}linked-required{% elif prerequisite.recommended %}linked-recommended{% endif %}">
                             <div class="small">
-                                <a href="{{ prerequisite.url }}" class="stretched-link" target="_blank"><strong>{% if prerequisite.label %}{{ prerequisite.label }}{% else %}Link{% endif %}</strong></a>{% if prerequisite.required %}<span class="badge badge-required text-white ml-1">Required</span>{% elif prerequisite.recommended %}<span class="badge badge-recommended text-white ml-1">Recommended</span>{% endif %}
-                                {{ prerequisite.text | as_string | markdown | safe }}
+                              <a href="{{ prerequisite.url }}" class="stretched-link" target="_blank"><strong>{% if prerequisite.label %}{{ prerequisite.label }}{% else %}Link{% endif %}</strong></a>{% if prerequisite.required %}<span class="badge badge-required text-white ml-1">Required</span>{% elif prerequisite.recommended %}<span class="badge badge-recommended text-white ml-1">Recommended</span>{% endif %}
+                              {{ prerequisite.text | as_string | markdown | safe }}
                             </div>
                         </div>
                     {% endfor %}
@@ -117,16 +111,16 @@
                     {% endfor %}
                 </div>
             {% endif %}
-
+          
             {% if prerequisites.installs.by_software|length %}
-                <div id="prerequisite-installs" class="col-6">
-                    <h4 class="py-2 border-bottom">Software installations</h4>
-                    <div class="small mb-3">{% snippet "prerequisite-installs" %}</div>
+                  <div id="prerequisite-installs" class="col-6">
+                      <h4 class="py-2 border-bottom">Software installations</h4>
+                      <div class="small mb-3">{% snippet "prerequisite-installs" %}</div>
 
-                    {% for software, d in prerequisites.installs.by_software.items %}
-                        <div class="p-2 my-3 rounded-lg linked-comment {% if d.required %}linked-required{% elif d.recommended %}linked-recommended{% endif %}">
-                            <h5 class="m-0">{{ software }}{% if d.required %}<span class="badge badge-required text-white ml-1">Required</span>{% elif d.recommended %}<span class="badge badge-recommended text-white ml-1">Recommended</span>{% endif %}</h5>
-                            <div class="my-2 small">
+                      {% for software, d in prerequisites.installs.by_software.items %}
+                          <div class="p-2 my-3 rounded-lg linked-comment {% if d.required %}linked-required{% elif d.recommended %}linked-recommended{% endif %}">
+                              <h5 class="m-0">{{ software }}{% if d.required %}<span class="badge badge-required text-white ml-1">Required</span>{% elif d.recommended %}<span class="badge badge-recommended text-white ml-1">Recommended</span>{% endif %}</h5>
+                              <div class="my-2 small">
                                 {% if prerequisite.text %}
                                     {{ prerequisite.text }}
                                 {% else %}
@@ -134,47 +128,52 @@
                                         {% if forloop.first %}{{ instructions.why | as_string | safe }}{% endif %}
                                     {% endfor %}
                                 {% endif %}
-                            </div>
-                            <div class="btn-group btn-group-sm" role="group" aria-label="Links to installation of {{ software }} for different operating systems.">
-                                {% for os, instructions in d.instructions.items %}
-                                    {% if 'macintosh' in request.META.HTTP_USER_AGENT.lower and 'mac' in os.lower %}
-                                        <!-- This is a mac and these are MAC instructions...-->
-                                        <a href="{% url 'install:installation' slug=instructions.slug %}" class="prereq-btn btn btn-warning shadow-sm stretched-link">Install for {{ os }}</a>
-                                    {% elif 'windows' in request.META.HTTP_USER_AGENT.lower and 'windows' in os.lower %}
-                                        <!-- This is a windows machine and these are WINDOWS instructions...-->
-                                        <a href="{% url 'install:installation' slug=instructions.slug %}" class="prereq-btn btn btn-warning shadow-sm stretched-link">Install for {{ os }}</a>
-                                    {% else %}
-                                        <a href="{% url 'install:installation' slug=instructions.slug %}" class="btn btn-outline-warning text-dark">Install for {{ os }}</a>
-                                    {% endif %}
-                                {% endfor %}
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
+                              </div>
+                              <div class="btn-group btn-group-sm" role="group" aria-label="Links to installation of {{ software }} for different operating systems.">
+                                  {% for os, instructions in d.instructions.items %}
+                                      {% if 'macintosh' in request.META.HTTP_USER_AGENT.lower and 'mac' in os.lower %}
+                                          <!-- This is a mac and these are MAC instructions...-->
+                                          <a href="{% url 'install:installation' slug=instructions.slug %}" class="prereq-btn btn btn-warning shadow-sm stretched-link">Install for {{ os }}</a>
+                                      {% elif 'windows' in request.META.HTTP_USER_AGENT.lower and 'windows' in os.lower %}
+                                          <!-- This is a windows machine and these are WINDOWS instructions...-->
+                                          <a href="{% url 'install:installation' slug=instructions.slug %}" class="prereq-btn btn btn-warning shadow-sm stretched-link">Install for {{ os }}</a>
+                                      {% else %}
+                                          <a href="{% url 'install:installation' slug=instructions.slug %}" class="btn btn-outline-warning text-dark">Install for {{ os }}</a>
+                                      {% endif %}
+                                  {% endfor %}
+                              </div>
+                          </div>
+                      {% endfor %}
+                  </div>
+              {% endif %}
 
-            {% if prerequisites.insights|length %}
-                <div class="col-6">
-                    <h4 class="py-2 border-bottom">Insights</h4>
-                    <div class="small mb-3">{% snippet "prerequisite-insights" %}</div>
-                    {% for prerequisite in prerequisites.insights %}
-                        <div class="p-2 my-3 rounded-lg linked-comment {% if prerequisite.required %}linked-required{% elif prerequisite.recommended %}linked-recommended{% endif %}">
-                            <h6><a href="{% url 'insight:insight' slug=prerequisite.linked_insight.slug %}" class="stretched-link">{{ prerequisite.linked_insight.title }}</a></h6>{% if prerequisite.required %}<span class="badge badge-required text-white ml-1">Required</span>{% elif prerequisite.recommended %}<span class="badge badge-recommended text-white ml-1">Recommended</span>{% endif %}
-                            <div class="small">
-                                {% if prerequisite.text %}
-                                    {{ prerequisite.text | as_string | markdown | safe }}
-                                {% else %}
-                                    {{ prerequisite.linked_insight.text | as_string | safe }}
-                                {% endif %}
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-
+              {% if prerequisites.insights|length %}
+                  <div class="col-6">
+                      <h4 class="py-2 border-bottom">Insights</h4>
+                      <div class="small mb-3">{% snippet "prerequisite-insights" %}</div>
+                      {% for prerequisite in prerequisites.insights %}
+                          <div class="p-2 my-3 rounded-lg linked-comment {% if prerequisite.required %}linked-required{% elif prerequisite.recommended %}linked-recommended{% endif %}">
+                              <h6><a href="{% url 'insight:insight' slug=prerequisite.linked_insight.slug %}" class="stretched-link">{{ prerequisite.linked_insight.title }}</a></h6>{% if prerequisite.required %}<span class="badge badge-required text-white ml-1">Required</span>{% elif prerequisite.recommended %}<span class="badge badge-recommended text-white ml-1">Recommended</span>{% endif %}
+                              <div class="small">
+                                  {% if prerequisite.text %}
+                                      {{ prerequisite.text | as_string | markdown | safe }}
+                                  {% else %}
+                                      {{ prerequisite.linked_insight.text | as_string | safe }}
+                                  {% endif %}
+                              </div>
+                          </div>
+                      {% endfor %}
+                  </div>
+              {% endif %}
+    
         </div>
+    </div>
+</section>
 
-        <h3 class="mt-5 pt-4 pb-4 border-top-double border-bottom">Contexts</h3>
+
+<section id="contexts" class="border-bottom shadow-sm pt-5 pb-4">
+    <div class="container-xxl">
+        <h3 class="pb-4">Contexts</h3>
         <div class="lead mt-4">
             {% snippet "introduction-context" %}
         </div>
@@ -220,6 +219,7 @@
                             {% else %}
                                 Untitled
                             {% endif %}
+
                             {% if project.annotation %}
                                 <div class="small">{{ project.annotation | as_string | markdown | safe | striptags }}</div>
                             {% endif %}
@@ -228,7 +228,7 @@
                 </div>
             {% endif %}
 
-            {% if frontmatter.cheat_sheets %}
+            {% if frontmatter.cheat_sheets.count %}
                 <div class="col-12 col-xl-6 mt-4 mt-md-2 overflow-hidden">
                     <h4 class="py-2 border-bottom">Cheat sheets related to {{ workshop.name }}</h4>
                     <div class="small mb-3 pb-1 border-bottom">{% snippet "introduction-cheat-sheets" %}</div>
@@ -245,7 +245,7 @@
                 </div>
             {% endif %}
 
-            {% if frontmatter.datasets %}
+            {% if frontmatter.datasets.count %}
                 <div class="col-12 col-xl-6 mt-4 mt-md-2 overflow-hidden">
                     <h4 class="py-2 border-bottom">Datasets related to {{ workshop.name }}</h4>
                     <div class="small mb-3 pb-1 border-bottom">{% snippet "introduction-datasets" %}</div>
@@ -262,13 +262,15 @@
                 </div>
             {% endif %}
         </div>
+    </div>
+</section>
 
 {% if current_authors %}
 <section id="meet-the-instructor" class="border-bottom shadow-sm pt-5 pb-4">
     <div class="container-xxl">
-        <h3 class="pb-4">Meet your instructor{% if current_authors.count > 1 %}s{% endif %}</h3>
-            <div class="row">
-            {% for c in current_authors %}
+      <h3 class="pb-4">Meet your instructor{% if current_authors.count > 1 %}s{% endif %}</h3>
+          <div class="row">
+          {% for c in current_authors %}
                 <div class="col-sm-9">
                     <h4 class="account-heading">{% if c.contributor.profile %}<a href="{% url 'learner:profile' username=c.contributor.profile.user.username %}">{% endif %}{{ c.contributor }}{% if c.contributor.profile %}</a>{% endif %}</h4>
                     <p class="text-secondary">{{ c.contributor.profile.user.email }}</p>
@@ -287,50 +289,60 @@
             </div>
         {% endif %}
 
-        {% if blurbs %}
-            <div class="row">
-                {% for blurb in blurbs %}
-                    <div class="col-12">
-                        <h4 class="mt-3">{% if blurb.user.first_name and blurb.user.last_name %}{{ blurb.user.first_name }} {{ blurb.user.last_name }}'s{% endif %} Reflections on {{ workshop.name }}</h4>
-                        <p class="lead" data-replace-internal-links="true">{{ blurb.text | safe }}</p>
-                    </div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    </div>
-</div>
 
+    </div>
+
+    </div>
+</section>
 
 <section id="authors" class="bg-light" style="margin-bottom:-5rem;">
-    <div class="container-xxl">
-        <div class="row py-5 rounded-lg">
-            {% if past_authors %}
-                <div class="col-12 col-lg-4">
-                    <div class="border-bottom py-1 my-3"><h4>Contributing Authors</h4></div>
-                    <div class="py-1 my-1"><h6>Past</h6></div>
-                    {% for c in past_authors %}
-                        {% include 'workshop/fragments/frontmatter/collaborator_row.html' %}
-                    {% endfor %}
-                </div>
-            {% endif %}
+  <div class="container-xxl">
+    <div class="row py-5 rounded-lg">
+      {% if past_authors %}
+        <div class="col-12 col-lg-4">
+          <div class="border-bottom py-1 my-3"><h4>Contributing Authors</h4></div>
+          <div class="py-1 my-1"><h6>Past</h6></div>
+          {% for c in past_authors %}
+            {% include 'workshop/fragments/frontmatter/collaborator_row.html' %}
+          {% endfor %}
+        </div>
+      {% endif %}
 
-            {% if current_reviewers or past_reviewers %}
-                <div class="col-12 col-lg-4">
-                    <div class="border-bottom py-1 my-3"><h4>Reviewers</h4></div>
-                    {% if current_reviewers %}
-                        <div class="py-1 my-1"><h6>Current</h6></div>
-                        {% for c in current_reviewers %}
-                            {% include 'workshop/fragments/frontmatter/collaborator_row.html' %}
-                        {% endfor %}
-                    {% endif %}
-                    {% if past_reviewers %}
-                        <div class="py-1 my-1"><h6>Past</h6></div>
-                        {% for c in past_reviewers %}
-                            {% include 'workshop/fragments/frontmatter/collaborator_row.html' %}
-                        {% endfor %}
-                    {% endif %}
-                </div>
-            {% endif %}
+      {% if current_reviewers or past_reviewers %}
+        <div class="col-12 col-lg-4">
+          <div class="border-bottom py-1 my-3"><h4>Reviewers</h4></div>
+          {% if current_reviewers %}
+            <div class="py-1 my-1"><h6>Current</h6></div>
+            {% for c in current_reviewers %}
+              {% include 'workshop/fragments/frontmatter/collaborator_row.html' %}
+            {% endfor %}
+          {% endif %}
+          {% if past_reviewers %}
+            <div class="py-1 my-1"><h6>Past</h6></div>
+            {% for c in past_reviewers %}
+              {% include 'workshop/fragments/frontmatter/collaborator_row.html' %}
+            {% endfor %}
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if current_editors or past_editors %}
+        <div class="col-12 col-lg-4">
+          <div class="border-bottom py-1 my-3"><h4>Editors</h4></div>
+          {% if current_editors %}
+            <div class="py-1 my-1"><h6>Current</h6></div>
+            {% for c in current_editors %}
+              {% include 'workshop/fragments/frontmatter/collaborator_row.html' %}
+            {% endfor %}
+          {% endif %}
+          {% if past_editors %}
+            <div class="py-1 my-1"><h6>Past</h6></div>
+            {% for c in past_editors %}
+              {% include 'workshop/fragments/frontmatter/collaborator_row.html' %}
+            {% endfor %}
+          {% endif %}
+        </div>
+      {% endif %}
 
             {% if current_editors or past_editors %}
                 <div class="col-12 col-lg-4">
@@ -351,11 +363,12 @@
             {% endif %}
         </div>
     </div>
+  </div>
 </section>
 {% endblock %}
 
 
 {% block javascript %}
-<script src="{% static 'workshop/js/navbar.js' %}" crossorigin="anonymous"></script>
-<script src="{% static 'workshop/js/favorite.js' %}" crossorigin="anonymous"></script>
+  <script src="{% static 'workshop/js/navbar.js' %}" crossorigin="anonymous"></script>
+  <script src="{% static 'workshop/js/favorite.js' %}" crossorigin="anonymous"></script>
 {% endblock %}

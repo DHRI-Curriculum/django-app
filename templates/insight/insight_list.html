@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block main %}
+<div class="container-xxl">
     <div class="row">
         {% for insight in object_list.all %}
             <div class="col-lg-6 px-3 py-3">
@@ -15,4 +16,5 @@
             </div>
         {% endfor %}
     </div>
+</div>
 {% endblock %}

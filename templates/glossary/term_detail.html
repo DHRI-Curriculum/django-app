@@ -19,76 +19,78 @@
 
 
 {% block main %}
-    {% glossary_navigation %}
-
-    <div class="row py-4">
-
-        <div class="col-12 border-bottom mb-2 pb-2">
+<section id="glossary-navigation">
+    <div class="container-xxl">
+        {% glossary_navigation %}
+        <div class="col-12 mb-2 pb-2">
             <p class="small">&laquo; <a href="{% url 'glossary:letter' back_slug %}">Back to all terms starting with {{ back_slug }}</a></p>
         </div>
-        <div class="col-12">
-            <div class="pt-3">
-                <h1>{{ term.term }}</h1>
-                <p class="lead" data-replace-internal-links="true">{{ term.explication | markdown | safe }}</p>
+    </div>
+</section>
 
-                <div class="row">
+<section id="term-definition">
+    <div class="container-xxl border-top">
+        <h1 class="pt-4">{{ term.term }}</h1>
+        <p class="lead" data-replace-internal-links="true">{{ term.explication | markdown | safe }}</p>
+    </div>
+</section>
 
-                    {% if term.readings.all.count %}
-                        <div class="col-12 col-md-6 mt-4">
-                            <h3>Readings</h3>
-                            {% for reading in term.readings.all %}
-                                <div class="p-2 my-3 rounded-lg linked-comment">
-                                    <a class="text-decoration-none stretched-link" target="_blank" href="{{ reading.url }}">
-                                        <i class="bi bi-link pr-1 text-muted"></i>{{ reading.title|default:'Reading' }}<!--#285 include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" -->
-                                    </a>
-                                    {% if reading.annotation %}<div class="small">{{ reading.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
-                                </div>
-                            {% endfor %}
+<section id="term-context" class="pt-4">
+    <div class="container-xxl">
+        <div class="row">
+            {% if term.readings.all.count %}
+                <div class="col-12 col-md-6 mb-4">
+                    <h3>Readings</h3>
+                    {% for reading in term.readings.all %}
+                        <div class="p-2 my-3 rounded-lg linked-comment">
+                            <a class="text-decoration-none stretched-link" target="_blank" href="{{ reading.url }}">
+                                <i class="bi bi-link pr-1 text-muted"></i>{{ reading.title|default:'Reading' }}<!--#285 include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" -->
+                            </a>
+                            {% if reading.annotation %}<div class="small">{{ reading.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
                         </div>
-                    {% endif %}
-
-                    {% if term.tutorials.all.count %}
-                        <div class="col-12 col-md-6 mt-4">
-                            <h3>Tutorials</h3>
-                            {% for tutorial in term.tutorials.all %}
-                                <div class="p-2 my-3 rounded-lg linked-comment">
-                                    <a class="text-decoration-none stretched-link" target="_blank" href="{{ tutorial.url }}">
-                                        <i class="bi bi-link pr-1 text-muted"></i>{{ tutorial.label|default:'Tutorial' }}<!--#285 include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" -->
-                                    </a>
-                                    {% if tutorial.annotation %}<div class="small">{{ tutorial.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-
-                    {% if term.cheat_sheets.all.count %}
-                        <div class="col-12 col-md-6 mt-4">
-                            <h3>Cheat Sheets</h3>
-                            {% for sheet in term.cheat_sheets.all %}
-                                <div class="p-2 my-3 rounded-lg linked-comment">
-                                    <a class="text-decoration-none stretched-link" target="_blank" href="{{ sheet.url }}">
-                                        <i class="bi bi-link pr-1 text-muted"></i>{{ sheet.label|default:'Cheat Sheet' }}<!--#285 include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" -->
-                                    </a>
-                                    {% if sheet.annotation %}<div class="small">{{ sheet.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
-                                </div>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-
-                    {% if term.lesson_set %}
-                        <div class="col-12 col-md-6 mt-4">
-                            <h3>Lessons referring to this term</h3>
-                            <ul>
-                                {% for lesson in term.lesson_set.all %}
-                                    <li><a class="text-decoration-none text-dark" href="{% url "workshop:frontmatter" lesson.workshop.slug %}">{{ lesson.workshop }}</a>: <a href="{% url "workshop:lesson" lesson.workshop.slug %}?page={{ lesson.order }}">{{ lesson.title }}</a></li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                    {% endif %}
-
+                    {% endfor %}
                 </div>
+            {% endif %}
 
-            </div>
+            {% if term.tutorials.all.count %}
+                <div class="col-12 col-md-6 mb-4">
+                    <h3>Tutorials</h3>
+                    {% for tutorial in term.tutorials.all %}
+                        <div class="p-2 my-3 rounded-lg linked-comment">
+                            <a class="text-decoration-none stretched-link" target="_blank" href="{{ tutorial.url }}">
+                                <i class="bi bi-link pr-1 text-muted"></i>{{ tutorial.label|default:'Tutorial' }}<!--#285 include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" -->
+                            </a>
+                            {% if tutorial.annotation %}<div class="small">{{ tutorial.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if term.cheat_sheets.all.count %}
+                <div class="col-12 col-md-6 mb-4">
+                    <h3>Cheat Sheets</h3>
+                    {% for sheet in term.cheat_sheets.all %}
+                        <div class="p-2 my-3 rounded-lg linked-comment">
+                            <a class="text-decoration-none stretched-link" target="_blank" href="{{ sheet.url }}">
+                                <i class="bi bi-link pr-1 text-muted"></i>{{ sheet.label|default:'Cheat Sheet' }}<!--#285 include 'website/fragments/bootstrap-icon.html' with icon="arrow-up-right-circle" -->
+                            </a>
+                            {% if sheet.annotation %}<div class="small">{{ sheet.annotation | as_string | markdown | safe | striptags }}</div>{% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if term.lesson_set.count %}
+                <div class="col-12 col-md-6 mb-4">
+                    <h3>Lessons referring to this term</h3>
+                    <ul>
+                        {% for lesson in term.lesson_set.all %}
+                            <li><a class="text-decoration-none text-dark" href="{% url "workshop:frontmatter" lesson.workshop.slug %}">{{ lesson.workshop }}</a>: <a href="{% url "workshop:lesson" lesson.workshop.slug %}?page={{ lesson.order }}">{{ lesson.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
         </div>
     </div>
+</section>
 {% endblock %}
