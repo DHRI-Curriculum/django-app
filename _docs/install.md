@@ -53,27 +53,35 @@ That should show you the progress of the installation of all the python dependen
 
 # Step 4: Add your secrets
 
-In a file inside the `app/secrets.py` directory, put the following information:
-
-```py
-SECRET_KEY = '<create a django secret key here>'
-EMAIL_HOST_USER = '<insert your email user here>'
-EMAIL_HOST_PASSWORD = '<insert your email password here>'
-GITHUB_TOKEN = '<insert your GitHub token here>'
-ZOTERO_KEY = '<this can be left empty for now>'
-```
-
-If you have Visual Studio Code installed, you can just type the following command and copy and paste the structure from above into the window that opens, change your information, and then close and save the file:
+Set up all your secrets as environment variables:
 
 ```sh
-code app/secrets.py
+$ SECRET_KEY="<create a django secret key here>"
 ```
 
-![Animated GIF showing the `code app/secrets.py` command](images/05-create-secrets.gif)
+```sh
+$ EMAIL_HOST_USER="<insert your email user here>"
+$ EMAIL_HOST_PASSWORD="<insert your email password here>"
+$ GITHUB_TOKEN="<insert your GitHub token here>"
+```
 
-![Animated GIF showing the `code app/secrets.py` command](images/06-secrets.gif)
+## Optional step: Backup solution
 
-Of course, you can make the same edits with whichever plain text editor you prefer to use.
+If you want to create a backup solution for the secret keys, put the values (with no surrounding quotation marks) of them into a text file with the name for the variable into the `./app/.secrets/` directory. Thus, the directory should look as follows:
+
+```
+django-app
+|
+|--- app
+   |
+   |---- .secrets
+      |
+      |--- SECRET_KEY
+      |--- EMAIL_HOST_USER
+      |--- EMAIL_HOST_PASSWORD
+      |--- GITHUB_TOKEN
+      |
+```
 
 ---
 
