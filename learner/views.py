@@ -4,7 +4,7 @@ from django.contrib import messages
 from .tokens import account_activation_token
 from .models import Profile
 from django.http import JsonResponse, HttpResponseForbidden
-from workshop.models import Workshop, Collaboration, Contributor
+from workshop.models import Workshop, Contributor
 from django.views.decorators.csrf import csrf_protect
 from django.views.generic.detail import DetailView
 from django.views.generic import View
@@ -57,7 +57,6 @@ class Detail(DetailView):
 from .forms import LearnerRegisterForm
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.http import urlsafe_base64_encode
-from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 from django.utils.encoding import force_bytes
 
@@ -66,13 +65,11 @@ class Register(View):
     form = LearnerRegisterForm()
 
     def get(self, request):
-        return HttpResponseForbidden("This function is currently unavailable")
         if request.user.is_authenticated:
             return redirect('website:index')
         return render(request, 'learner/register.html', {'form': self.form})
 
     def post(self, request):
-        return HttpResponseForbidden("This function is currently unavailable")
         self.form = LearnerRegisterForm(request.POST)
 
         if self.form.is_valid():
@@ -101,7 +98,6 @@ class Register(View):
 
 
 def activate(request, uidb64='', token=''):
-    return HttpResponseForbidden("This function is currently unavailable")
     from django.utils.http import urlsafe_base64_decode
     from django.contrib.auth import login
     from django.utils.encoding import force_text
