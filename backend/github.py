@@ -507,7 +507,41 @@ class WorkshopCache(Helper, GitCache):
         
         data['name'] = list(split_into_sections(self.raw['frontmatter'], level_granularity=1).keys())[0]
         self.sections = {key: split_into_sections(value) for key, value in self.raw.items()}
+        
+        further_readings, tutorials, further_projects = '', '', ''
+
+        # TODO: #450 Should add this for other listed sections too... Perhaps iterate over a list of them all...?
+        for s, text in split_into_sections(self.raw['theory-to-practice'], level_granularity=2).items():
+            if 'further readings' in s.lower() or 'other tutorials' in s.lower() or 'projects or challenges to try' in s.lower():
+                subsections = split_into_sections(text, level_granularity=3)
+                if len(subsections):
+                    new_content = ''
+                    for header, content in subsections.items():
+                        new_content += re.sub('(^|\n?)- ', f'\n- ({header}) ', content).strip()
+                    
+                    if 'further readings' in s.lower():
+                        concerns = 'further readings'
+                        further_readings = new_content
+                    elif 'other tutorials' in s.lower():
+                        concerns = 'other tutorials'
+                        tutorials = new_content
+                    elif 'projects or challenges to try' in s.lower():
+                        concerns = 'projects or challenges to try'
+                        further_projects = new_content
+                    
+                    self.log.warning(f'Found {len(subsections)} subsections of the one of the sections in the theory-to-practice page ({concerns}). Adding the readings to the section but will not keep the meta information from the header.')
+
         self.sections = self._normalize_sections()
+
+        if further_readings:
+            self.sections['theory-to-practice']['further_readings'] = further_readings
+
+        if tutorials:
+            self.sections['theory-to-practice']['tutorials'] = tutorials
+
+        if further_projects:
+            self.sections['theory-to-practice']['further_projects'] = further_projects
+
         self.sections['frontmatter'] = self._fix_frontmatter()
         self.sections['theory-to-practice'] = self._fix_praxis()
         self.sections['lessons'] = self._fix_lessons()
