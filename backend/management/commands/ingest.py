@@ -94,3 +94,7 @@ class Command(BaseCommand):
                      forceupdate=True,
                      silent=options.get('silent'),
                      verbose=options.get('verbose'))
+        call_command('ingestfragile',
+                     forceupdate=True,
+                     silent=options.get('silent'),
+                     verbose=options.get('verbose'))
