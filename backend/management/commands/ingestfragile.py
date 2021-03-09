@@ -1,4 +1,5 @@
 import pathlib
+import os
 from feedback.models import Issue
 from learner.models import Profile, Progress
 from workshop.models import Workshop
@@ -28,7 +29,7 @@ class Command(BaseCommand):
         log = Logger(path=__file__, force_verbose=options.get('verbose'), force_silent=options.get('silent'))
         input = Input(path=__file__)
 
-        files = {x: y['data_file'] for x, y in built_data.items()}
+        files = {x: y['data_file'] for x, y in built_data.items() if os.path.exists(y['data_file'])}
         raw = get_settings(files)
 
         for cat, data in raw.items():
@@ -58,4 +59,4 @@ class Command(BaseCommand):
         # Delete all files with fragile data
         [file.unlink() for file in files.values()]
 
-        log.log('Ingested all the fragile data back into the database.')
+        log.log(f'Ingested all the fragile data back into the database. ({len(files)} files processed.)')
