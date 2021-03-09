@@ -73,7 +73,7 @@ SETUP_FILES = {
 }
 for path in SETUP_FILES.values():
     if not os.path.exists(path):
-        exit('Required settings file does not exist: ' + path)
+        exit(f'Required settings file does not exist: ' + path)
 
 def get_settings(SETUP_FILES=SETUP_FILES):
     SETUP = {}
@@ -83,7 +83,7 @@ def get_settings(SETUP_FILES=SETUP_FILES):
                 SETUP[file] = yaml.safe_load(f)
         except FileNotFoundError:
             exit(
-                'Required settings file {file} could not be found in the correct path ({path}). Before the script can run, the correct settings must be in the right place.')
+                f'Required settings file {file} could not be found in the correct path ({path}). Before the script can run, the correct settings must be in the right place.')
     return SETUP
 
 SETUP = get_settings()
