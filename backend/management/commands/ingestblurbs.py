@@ -16,7 +16,7 @@ class Command(BaseCommand):
     WARNINGS, LOGS = [], []
 
     def add_arguments(self, parser):
-        parser.add_argument('--forceupdate', action='store_true')
+        parser.add_argument('--force', action='store_true')
         parser.add_argument('--name', nargs='+', type=str)
         parser.add_argument('--silent', action='store_true')
         parser.add_argument('--verbose', action='store_true')
@@ -68,7 +68,7 @@ class Command(BaseCommand):
             blurb, created = Blurb.objects.get_or_create(user=user, workshop=workshop, defaults={
                                                          'text': PARSER.fix_html(data.get('text'))})
 
-            if not created and not options.get('forceupdate'):
+            if not created and not options.get('force'):
                 choice = input.ask(
                     f'Frontmatter for workshop `{workshop}` already exists. Update with new content? [y/N]')
                 if choice.lower() != 'y':

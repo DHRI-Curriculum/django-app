@@ -19,7 +19,6 @@ class Command(BaseCommand):
     WARNINGS, LOGS = [], []
 
     def add_arguments(self, parser):
-        parser.add_argument('--forcedownload', action='store_true')
         parser.add_argument('--silent', action='store_true')
         parser.add_argument('--verbose', action='store_true')
 

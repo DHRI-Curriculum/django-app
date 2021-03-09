@@ -27,7 +27,7 @@ class Command(BaseCommand):
     WARNINGS, LOGS = [], []
 
     def add_arguments(self, parser):
-        parser.add_argument('--forceupdate', action='store_true')
+        parser.add_argument('--force', action='store_true')
         parser.add_argument('--silent', action='store_true')
         parser.add_argument('--verbose', action='store_true')
 
@@ -54,7 +54,7 @@ class Command(BaseCommand):
             term.explication = termdata.get('explication')
             term.save()
 
-            if not created and not options.get('forceupdate'):
+            if not created and not options.get('force'):
                 choice = input.ask(
                     f'Term `{termdata.get("term")}` already exists. Update with new definition? [y/N]')
                 if choice.lower() != 'y':
