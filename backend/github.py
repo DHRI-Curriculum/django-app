@@ -509,6 +509,8 @@ class WorkshopCache(Helper, GitCache):
         self.sections = {key: split_into_sections(value) for key, value in self.raw.items()}
         
         further_readings, tutorials, further_projects = '', '', ''
+
+        # TODO: #450 Should add this for other listed sections too... Perhaps iterate over a list of them all...?
         for s, text in split_into_sections(self.raw['theory-to-practice'], level_granularity=2).items():
             if 'further readings' in s.lower() or 'other tutorials' in s.lower() or 'projects or challenges to try' in s.lower():
                 subsections = split_into_sections(text, level_granularity=3)
