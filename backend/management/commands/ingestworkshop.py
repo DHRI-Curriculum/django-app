@@ -23,7 +23,7 @@ class Command(BaseCommand):
     WARNINGS, LOGS = [], []
 
     def add_arguments(self, parser):
-        parser.add_argument('--forceupdate', action='store_true')
+        parser.add_argument('--force', action='store_true')
         parser.add_argument('--name', nargs='+', type=str)
         parser.add_argument('--silent', action='store_true')
         parser.add_argument('--verbose', action='store_true')

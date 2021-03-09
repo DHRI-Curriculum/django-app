@@ -8,7 +8,7 @@ class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
-    help = 'Shortcut to run through all the ingest commands in the correct order and with the --forceupdate flag automatically turned on'
+    help = 'Shortcut to run through all the ingest commands in the correct order and with the --force flag automatically turned on'
     requires_migrations_checks = True
 
     def add_arguments(self, parser):
@@ -58,43 +58,43 @@ class Command(BaseCommand):
             log.log(f'Removed all users.')
 
         call_command('ingestgroups',
-                     forceupdate=True,
+                     force=True,
                      silent=options.get('silent'),
                      verbose=options.get('verbose'))
         call_command('ingestusers',
-                     forceupdate=True,
+                     force=True,
                      silent=options.get('silent'),
                      verbose=options.get('verbose'))
         call_command('ingestglossary',
-                     forceupdate=True,
+                     force=True,
                      silent=options.get('silent'),
                      verbose=options.get('verbose'))
         call_command('ingestinstalls',
-                     forceupdate=True,
+                     force=True,
                      silent=options.get('silent'),
                      verbose=options.get('verbose'))
         call_command('ingestinsights',
-                     forceupdate=True,
+                     force=True,
                      silent=options.get('silent'),
                      verbose=options.get('verbose'))
         call_command('ingestworkshop',
-                     forceupdate=True,
+                     force=True,
                      silent=options.get('silent'),
                      verbose=options.get('verbose'),
                      no_reminder=True)
         call_command('ingestsnippets',
-                     forceupdate=True,
+                     force=True,
                      silent=options.get('silent'),
                      verbose=options.get('verbose'))
         call_command('ingestblurbs',
-                     forceupdate=True,
+                     force=True,
                      silent=options.get('silent'),
                      verbose=options.get('verbose'))
         call_command('ingestprerequisites',
-                     forceupdate=True,
+                     force=True,
                      silent=options.get('silent'),
                      verbose=options.get('verbose'))
         call_command('ingestfragile',
-                     forceupdate=True,
+                     force=True,
                      silent=options.get('silent'),
                      verbose=options.get('verbose'))

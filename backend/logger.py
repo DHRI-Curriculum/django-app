@@ -198,7 +198,7 @@ class Logger():
             f.write(f'\n\n---\n\nWarnings do not need to be resolved in order for the data to be correctly ingested but there may be issues that you want to resolve.\n\n')
             if step == 'buildworkshop' and type(data) == dict and data.get("name") and data.get("slug"):
                 f.write(
-                    f'If you have finished resolving the warnings above (or if you do not wish to resolve the warnings), rerun the `buildworkshop` command, and then proceed with the ingestion of the workshop. You ingest the workshop by running either of the following two commands:\n- `python manage.py ingestworkshop --name {data.get("slug")}`\n- `python manage.py ingestworkshop --all`\n\nAdd the `--forceupdate` flag to any of them if you do not want to confirm all edits.')
+                    f'If you have finished resolving the warnings above (or if you do not wish to resolve the warnings), rerun the `buildworkshop` command, and then proceed with the ingestion of the workshop. You ingest the workshop by running either of the following two commands:\n- `python manage.py ingestworkshop --name {data.get("slug")}`\n- `python manage.py ingestworkshop --all`\n\nAdd the `--force` flag to any of them if you do not want to confirm all edits.')
 
         return True
 

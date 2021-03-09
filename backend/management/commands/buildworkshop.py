@@ -29,8 +29,6 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--force', action='store_true',
                             help='Automatically approves any requests to replace/update existing local data.')
-        parser.add_argument('--forcedownload', action='store_true',
-                            help='Forces the script to re-load all the locally stored data, despite any settings made for expiry dates on caches.')
         parser.add_argument('--save_all', action='store_true')
         parser.add_argument('--silent', action='store_true',
                             help='Makes as little output as possible, although still saves all the information in log files (see debugging docs).')

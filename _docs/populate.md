@@ -34,7 +34,7 @@ Running migrations:
 Next, we want to make a mirrored copy of all of the data that lives in the GitHub repositories related to the DHRI curriculum. We can do so with the `build` shortcut command:
 
 ```sh
-$ python manage.py build --forcedownload
+$ python manage.py build
 ```
 
 ![Animated GIF showing the process following entering the `build` command.](images/08-build.gif)
@@ -57,7 +57,6 @@ The `build` command can also be called using flags that modify its function:
 | ----------------- | --------------------------------------------------------------------------------------------------------------- |
 | `--silent`        | Makes as little output as possible, although still saves all the information in log files (see [debugging docs](debug.md)).          |
 | `--verbose`       | Provides _all_ output possible, which can be overwhelming. Good for debug purposes, not for the faint of heart. |
-| `--forcedownload` | Forces the script to re-load all the locally stored data, despite any settings made for expiry dates on caches. |
 
 #### Behind the scenes
 
