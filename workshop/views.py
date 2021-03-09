@@ -145,16 +145,17 @@ class PraxisView(DetailView):
         context['frontmatter'] = self.get_object().frontmatter
 
         context['is_praxis'] = True
-        context['evaluations'] = self.get_all_evaluations()[:10]
-        context['num_evaluations'] = len(context['evaluations'])
+        context['evals'] = self.get_evaluations()
+        context['num_evaluations'] = len(context['evals'])
 
         return context
 
-    def get_all_evaluations(self):
+    def get_evaluations(self):
         _ = []
         for lesson in self.get_object().lessons.order_by('?').all():
             for eval in lesson.evaluations.all():
-                _.append(eval)
+                if not (len(_) >= 10):
+                    _.append(eval)
         return _
 
 
