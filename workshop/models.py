@@ -7,6 +7,10 @@ from django.contrib.auth.models import User
 from backend.dhri_utils import dhri_slugify
 
 
+class WorkshopManager(models.Manager):
+    def get_by_natural_key(self, name):
+        return self.get(name=name)
+
 class Workshop(models.Model):
     name = models.CharField(max_length=200)
     slug = models.CharField(max_length=200, blank=True, unique=True)
@@ -19,6 +23,11 @@ class Workshop(models.Model):
     image = models.ImageField(
         upload_to='workshop_headers/', default='workshop_headers/default.jpg')
     image_alt = models.CharField(max_length=200, blank=True, null=True)
+
+    objects = WorkshopManager()
+
+    def natural_key(self):
+        return self.name
 
     def save(self, *args, **kwargs):
         if not self.id:

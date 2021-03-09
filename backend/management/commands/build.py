@@ -39,3 +39,6 @@ class Command(BaseCommand):
         call_command('buildblurbs',
                      silent=options.get('silent'),
                      verbose=options.get('verbose'))
+        call_command('buildfragile',
+                     silent=options.get('silent'),
+                     verbose=options.get('verbose'))

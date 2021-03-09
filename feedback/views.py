@@ -41,6 +41,7 @@ class Feedback(LoginRequiredMixin, View):
         else:
             return HttpResponse('''The requested feedback type (''' + feedback_type + ''') does not exist.''')
         payload['form'] = self.form
+        print(payload)
         return render(request, 'feedback/feedback_popup.html', payload)
 
     def post(self, request, feedback_type, pk=None):
@@ -50,6 +51,13 @@ class Feedback(LoginRequiredMixin, View):
             feedback = self.form.save(commit=False)
             feedback.user = request.user
             feedback.open = True
+
+            if feedback_type == "lesson":
+                lesson = get_object_or_404(Lesson, pk=pk)
+            elif feedback_type == "website":
+                pass
+            else:
+                return HttpResponse('''The requested feedback type (''' + feedback_type + ''') does not exist.''')
 
             if feedback_type == "lesson":
                 feedback.lesson = lesson
