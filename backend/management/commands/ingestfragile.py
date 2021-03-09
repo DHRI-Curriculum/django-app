@@ -1,4 +1,3 @@
-import pathlib
 import os
 from feedback.models import Issue
 from learner.models import Profile, Progress
@@ -6,7 +5,7 @@ from workshop.models import Workshop
 from lesson.models import Lesson
 from django.contrib.auth.models import User
 from django.core.management import BaseCommand
-from backend.logger import Logger, Input
+from backend.logger import Logger
 from .buildfragile import data as built_data
 from backend.settings import get_settings
 
@@ -27,7 +26,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         log = Logger(path=__file__, force_verbose=options.get('verbose'), force_silent=options.get('silent'))
-        input = Input(path=__file__)
 
         files = {x: y['data_file'] for x, y in built_data.items() if os.path.exists(y['data_file'])}
         raw = get_settings(files)
@@ -40,7 +38,7 @@ class Command(BaseCommand):
                 log.log(f'Loaded Workshop fragile data ({len(data)} objects).')
             elif model == Progress:
                 for obj in data:
-                    profile, updated = Profile.objects.get_or_create(user__first_name=obj['fields']['profile'][0], user__last_name=obj['fields']['profile'][1])
+                    profile, created = Profile.objects.get_or_create(user__first_name=obj['fields']['profile'][0], user__last_name=obj['fields']['profile'][1])
                     workshop = Workshop.objects.get_by_natural_key(obj['fields']['workshop'])
                     Progress.objects.update_or_create(profile=profile, workshop=workshop, defaults={
                         'page': obj['fields']['page'],
