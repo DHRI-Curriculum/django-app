@@ -1,8 +1,8 @@
-Django==3.0.7
+Django==3.1.6
 django-admin-sortable==2.2.3
 mistune==0.8.4
 pygments==2.6.1
-Pillow==7.1.2
+Pillow==8.1.1
 requests==2.23.0
 nameparser==1.0.6
 colorama==0.4.3
@@ -13,7 +13,7 @@ crispy-bootstrap5==0.2
 six==1.15.0
 markdown==3.2.2
 PyGithub==1.51
-mysqlclient==2.0.1
+# mysqlclient==2.0.1 # TODO: #313
 pyyaml==5.3.1
 GitPython==3.1.13
 progressbar2==3.53.1
