@@ -117,6 +117,7 @@ class FrontmatterView(DetailView):
             elif req.category == Prerequisite.CHEATSHEET: _['cheat_sheets'].append(req)
 
             for software in req.linked_software.all():
+                #print(software)
                 if not software.software in _['installs']['by_software']:
                     _['installs']['by_software'][software.software] = {
                         'required': req.required,
@@ -131,6 +132,11 @@ class FrontmatterView(DetailView):
                         'instructions': Instruction.objects.by_os()[software.operating_system]
                     }
 
+        # TODO: #454 Since I don't have time to fix this now, I am just going to drop all installation instruction from the Frontmatter for the time being.
+        _['installs'] = {
+                            'by_software': {},
+                            'by_os': {},
+                        }
         return _
 
 
