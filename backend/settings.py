@@ -79,7 +79,7 @@ def get_settings(SETUP_FILES=SETUP_FILES):
     SETUP = {}
     for file, path in SETUP_FILES.items():
         try:
-            with open(path, 'r') as f:
+            with open(path, 'r', encoding='utf-8') as f:
                 SETUP[file] = yaml.safe_load(f)
         except FileNotFoundError:
             exit(
