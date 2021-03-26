@@ -14,7 +14,7 @@ six==1.15.0
 markdown==3.2.2
 PyGithub==1.51
 # mysqlclient==2.0.1 # TODO: #313
-pyyaml==5.3.1
+pyyaml==5.4
 GitPython==3.1.13
 progressbar2==3.53.1
 smartypants==2.0.1
