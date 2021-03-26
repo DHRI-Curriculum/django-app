@@ -84,6 +84,9 @@ def get_settings(SETUP_FILES=SETUP_FILES):
         except FileNotFoundError:
             exit(
                 f'Required settings file {file} could not be found in the correct path ({path}). Before the script can run, the correct settings must be in the right place.')
+        except UnicodeDecodeError:
+            SETUP[file] = {}
+            raise RuntimeError(f'ASCII codec could not decode the data in {path}.')
     return SETUP
 
 SETUP = get_settings()
