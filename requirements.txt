@@ -7,7 +7,7 @@ requests==2.23.0
 nameparser==1.0.6
 colorama==0.4.3
 beautifulsoup4==4.9.1
-lxml==4.6.2
+lxml==4.6.3
 django-crispy-forms==1.9.2
 crispy-bootstrap5==0.2
 six==1.15.0
