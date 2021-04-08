@@ -1,4 +1,4 @@
-Django==3.1.6
+Django==3.1.8
 django-admin-sortable==2.2.3
 mistune==0.8.4
 pygments==2.7.4
