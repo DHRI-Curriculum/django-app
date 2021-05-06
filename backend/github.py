@@ -569,19 +569,19 @@ class WorkshopCache(Helper, GitCache):
                 os.path.join(self.destination_dir, 'lessons.md'))
         except FileNotFoundError:
             raise FileNotFoundError(
-                f'The workshop repository {self.repository} is not correctly set up. It needs a `frontmatter.md` file.') from None
+                f'The workshop repository {self.repository} is not correctly set up. It needs a `lessons.md` file.') from None
         try:
             raw['theory-to-practice'] = self.read_file(
                 os.path.join(self.destination_dir, 'theory-to-practice.md'))
         except FileNotFoundError:
             raise FileNotFoundError(
-                f'The workshop repository {self.repository} is not correctly set up. It needs a `frontmatter.md` file.') from None
+                f'The workshop repository {self.repository} is not correctly set up. It needs a `theory-to-practice.md` file.') from None
         try:
             raw['image'] = self.read_file(
                 os.path.join(self.destination_dir, 'image.md'))
         except FileNotFoundError:
             raise FileNotFoundError(
-                f'The workshop repository {self.repository} is not correctly set up. It needs a `frontmatter.md` file.') from None
+                f'The workshop repository {self.repository} is not correctly set up. It needs an `image.md` file.') from None
 
         return raw
 
