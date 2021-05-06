@@ -71,7 +71,7 @@ class Helper():
             return {'url': local_file, 'alt': dictionary.get('alt')}
         else:
             # TODO: This bug occurs when local files are not available in the parent directories
-            raise NotImplementedError('This is a bug that needs to be fixed in the beta version of the website.')
+            raise NotImplementedError(f'Cannot find local file {local_file}. This is a bug that needs to be fixed in the beta version of the website.')
 
     @staticmethod
     def _get_order(step, log=None):
@@ -620,6 +620,8 @@ class WorkshopCache(Helper, GitCache):
                 return 'Re'
             if 'editor' in string.lower():
                 return 'Ed'
+            
+            raise RuntimeError(f'Could not get correct role from `{string}`. Roles can be `author`, `contributor`, `reviewer`, or `editor`. Please correct the markdown file.')
 
         def split_names(full_name: str) -> tuple:
             """Uses the `nameparser` library to interpret names."""
