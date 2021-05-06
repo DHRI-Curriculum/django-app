@@ -38,7 +38,11 @@ class Command(BaseCommand):
             name, path = _
             DATAFILE = f'{path}/blurb.yml'
 
-            data = get_yaml(DATAFILE, log=log)
+            try:
+                data = get_yaml(DATAFILE, log=log, catch_error=True)
+            except Exception as e:
+                log.warning(f'Found no blurb for workshop `{name}`. Skipping and moving ahead...')
+                continue
 
             if not data.get('user'):
                 log.error(
