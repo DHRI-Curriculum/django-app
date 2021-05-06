@@ -3,6 +3,7 @@ This library is used for the `build` commands related to the DHRI Curriculum
 '''
 
 from git import Repo
+from git.exc import GitCommandError
 import os
 import re
 from bs4 import BeautifulSoup
@@ -147,7 +148,14 @@ class GitCache():
             self.log.log(f'Repository directory exists so creating connection to repository: {self.destination_dir}')
             self.repo = Repo(self.destination_dir)
 
-        self.repo.git.checkout(self.branch, force=True)
+        try:
+            self.repo.git.checkout(self.branch, force=True)
+        except GitCommandError as e:
+            if 'did not match any file(s) known to git' in str(e):
+                raise RuntimeError(f'Could not find branch `{self.branch}` for repository `{self.repository}`. Make sure your --name and --branch settings are correct.')
+            else:
+                print(e)
+                raise RuntimeError('An uncaught error occurred with the git repository. Make sure your --name and --branch settings are correct.')
 
         self.log.log(f'Pulling latest repository updates from remotes origin...')
         self.repo.remotes.origin.pull()
