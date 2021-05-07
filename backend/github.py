@@ -59,7 +59,7 @@ class Helper():
             _['url'], _['alt'] = dictionary
             dictionary = _
         url = dictionary.get('url').replace('https://', '').replace('http://', '').replace(f'raw.githubusercontent.com/DHRI-Curriculum/{self.repository}/{self.branch}/', '')
-        parents = [x for x in url.split('/') if not '.' in x]
+        parents = [x for x in url.split('/') if not '.' in x and not x in ['DHRI-Curriculum', self.repository]]
         for add_parent in additional_parents:
             if not add_parent in parents:
                 parents.insert(0, add_parent)
