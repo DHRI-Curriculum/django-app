@@ -85,8 +85,8 @@
         {% include 'lesson/fragments/report-error.html' %}
     </div>
 </section>
-    
-{% if lesson.terms.all.count or lesson.evaluations.count %}<!--  or lesson.challenge? -->
+
+{% if lesson.terms.all.count or lesson.evaluations.count or lesson.challenge %}
 <section id="lesson-extra-content" class="bg-extra-super-light shadow-sm py-5 mt-5">
     <div id="challenges" class="container-xxl">
         <h2 class="mb-5 border-bottom border-dark pb-3">Challenges for lesson {{ lesson.order }}<h2>
