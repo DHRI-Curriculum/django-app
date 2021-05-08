@@ -633,7 +633,12 @@ class WorkshopCache(Helper, GitCache):
             return((first_name, last_name))
 
         soup = BeautifulSoup(PARSER.convert(string), 'lxml')
-        link = soup.find('a')['href']
+        link = soup.find('a')
+        if link:
+            href = link['href']
+        else:
+            href = None
+
         current = 'current' in string.lower()
         past = 'past' in string.lower()
         full_name, first_name, last_name = None, None, None
@@ -652,7 +657,7 @@ class WorkshopCache(Helper, GitCache):
             'role': get_correct_role(string),
             'current': current,
             'past': past,
-            'link': link
+            'link': href
         }
 
     def _fix_frontmatter(self):
@@ -755,9 +760,9 @@ class WorkshopCache(Helper, GitCache):
         for subheader, content in split_into_sections(markdown, level_granularity=2).items():
             if subheader.lower() == 'evaluation' or subheader.lower() == 'evaluations':
                 has_evaluation = True
-            if subheader.lower() == 'challenge' or subheader.lower() == 'challenges':
+            if subheader.lower() == 'challenge' or subheader.lower() == 'challenges' or subheader.lower().startswith('challenge: ') or subheader.lower().startswith('challenges: '):
                 has_challenge = True
-            if subheader.lower() == 'solution' or subheader.lower() == 'solutions':
+            if subheader.lower() == 'solution' or subheader.lower() == 'solutions' or subheader.lower().startswith('solution') or subheader.lower().startswith('solutions'):
                 has_solution = True
             if subheader.lower() == 'keyword' or subheader.lower() == 'keywords':
                 has_keywords = True

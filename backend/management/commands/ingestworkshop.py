@@ -1,3 +1,4 @@
+from backend.dhri_utils import dhri_slugify
 import filecmp
 from glossary.models import Term
 from learner.models import Profile
@@ -60,7 +61,9 @@ class Command(BaseCommand):
 
             # 1. ENTER WORKSHOP
             workshop, created = Workshop.objects.update_or_create(
-                name=full_name, defaults={
+                name=full_name,
+                slug=dhri_slugify(full_name),
+                defaults={
                     'parent_backend': parent_backend,
                     'parent_branch': parent_branch,
                     'parent_repo': parent_repo,
@@ -263,8 +266,10 @@ class Command(BaseCommand):
                         'order': lessoninfo.get('order'),
                         'text': lessoninfo.get('content'),
                     })
-
+                
+                #print(lesson)
                 for image in lessoninfo.get('lesson_images'):
+                    #print('image time!')
                     LessonImage.objects.update_or_create(
                         url=image.get('path'), lesson=lesson, alt=image.get('alt'))
 
