@@ -4,7 +4,7 @@
 
 This is the version 1.0.0 development branch of the DHRI's Curriculum Website.
 
-See [Documentation](_docs/README.md) for documentation.
+See [Documentation](https://github.com/kallewesterling/django-app-documentation) for documentation.
 
 ---
 
