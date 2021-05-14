@@ -166,7 +166,7 @@ def _check_dirs_existence(DIRS=CACHE_DIRS):
             DIRS[DIR].mkdir(parents=True)
     return True
 
-def _check_users(REQUIRED_IN_USERS=['first_name', 'last_name', 'username', 'password'], AUTO_USERS=AUTO_USERS):
+def _check_users(REQUIRED_IN_USERS=['first_name', 'last_name', 'username'], AUTO_USERS=AUTO_USERS):
     for cat, userlist in AUTO_USERS.items():
         for u in userlist:
             for section in REQUIRED_IN_USERS:
