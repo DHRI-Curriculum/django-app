@@ -50,6 +50,7 @@ class Command(BaseCommand):
         parser.add_argument('--force', action='store_true')
         parser.add_argument('--silent', action='store_true')
         parser.add_argument('--verbose', action='store_true')
+        parser.add_argument('--nopass', action='store_true')
 
     def handle(self, *args, **options):
         log = Logger(path=__file__,
@@ -92,7 +93,14 @@ class Command(BaseCommand):
                 user.refresh_from_db()
 
             # if None, sets to unusable password, see https://docs.djangoproject.com/en/3.1/ref/contrib/auth/#django.contrib.auth.models.User.set_password
-            user.set_password(userdata.get('password'))
+            if userdata.get('password'):
+                user.set_password(userdata['password'])
+            else:
+                if options.get('nopass'):
+                    user.set_unusable_password()
+                else:
+                    _password = input.ask(f'Password for `{userdata.get("username")}`?')
+                    user.set_password(_password)
             user.save()
 
             if not userdata.get('profile'):
