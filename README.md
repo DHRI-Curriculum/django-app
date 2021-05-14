@@ -12,7 +12,7 @@ See [Documentation](https://github.com/kallewesterling/django-app-documentation/
 
 The app is likely to be a "perpetual beta" app, which means that in its lifespan, it will feed into the public branch.
 
-### [Current backlog](https://github.com/DHRI-Curriculum/django-app/milestone/11): v1.0-dev
+### [Current backlog: v1.0-dev](https://github.com/DHRI-Curriculum/django-app/milestone/11)
 
 _The features listed here are all being actively worked on right now._
 
