@@ -16,7 +16,17 @@ The app is likely to be a "perpetual beta" app, which means that in its lifespan
 
 _The features listed here are all being actively worked on right now._
 
-—
+**[Bug: Wrong installation modules pulling into command line workshop landing page (**#454**)](https://github.com/DHRI-Curriculum/django-app/issues/454)**  
+This is a high-priority issue as we currently have the installation requirements _turned off_. It seems that the bug has to do with the way that the `Prerequisite` -> `PrerequisiteSoftware` models are set up. Needs resolve soon.
+
+**[Bug: Editors show up twice in frontmatter's collaborator section (**#463**)](https://github.com/DHRI-Curriculum/django-app/issues/463)**  
+Should be an easy fix, likely related to the frontend/template end of things.
+
+**["Forgot my password" feature (**#457**)](https://github.com/DHRI-Curriculum/django-app/issues/457)**  
+The feature has already been build in a very rudimentary way but needs to be built out frontend-wise and included with links in the login screen, etc.
+
+**[Potential future major issue: Dependency on GitHub API token might become a problem (**#469**)](https://github.com/DHRI-Curriculum/django-app/issues/469)**  
+Beginning August 13, 2021, GitHub will no longer accept account passwords when authenticating Git operations on GitHub.com. I want to make sure that we will not run into future issues with the GitHub backend, although we can work our way through the summer on the current system. Better to have this on the "horizon" (i.e. the backlog) right now.
 
 ### Product backlog: [v1.0-beta1](https://github.com/DHRI-Curriculum/django-app/milestone/10)
 
