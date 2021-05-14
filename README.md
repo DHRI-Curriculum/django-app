@@ -31,9 +31,6 @@ An explanation here
 [Revisit/redesign image saving in ingestion enhancement (**#316**)](https://github.com/DHRI-Curriculum/django-app/issues/316)  
 An explanation here
 
-[Finalize documentation (**#362**)](https://github.com/DHRI-Curriculum/django-app/issues/362)  
-An explanation here
-
 [Set up MySQL database again (**#313**)](https://github.com/DHRI-Curriculum/django-app/issues/313)  
 An explanation here
 
