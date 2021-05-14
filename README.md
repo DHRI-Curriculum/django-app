@@ -56,7 +56,7 @@ For a finished product, v1.0, we would like to have models and views running thr
 
 ### Product backlog: [v2.0](https://github.com/DHRI-Curriculum/django-app/milestone/7)
 
-_Currently in blue skies research mode. The features listed here are all potential future modules and/or wishlist items._
+_Currently in blue skies research mode. The features listed here are all potential future modules and/or wishlist items. This work is being done in [a laboratory branch `blue-sky`](https://github.com/kallewesterling/django-app/tree/blue-sky) under [kallewesterling](https://github.com/kallewesterling)'s user._
 
 **[Build code-runner app (**#89**)](https://github.com/DHRI-Curriculum/django-app/issues/89)**  
 We have discussed that, at some point, the Curriculum website should have a "code runner" (like [REPL.it](https://repl.it/)) and perhaps inspired by [Sphinx Thebelab](https://sphinx-thebelab.readthedocs.io). This is a long build process ahead.
@@ -69,7 +69,6 @@ A part of the interface that made sure certain workshops were connected in a "tr
 
 **[Humanities Commons integration (**#128**)](https://github.com/DHRI-Curriculum/django-app/issues/128)**  
 Started groundwork, but a lot of future development to be done here, to integrate Humanities Commons into our project and our site. A potential way to do so is using the website's integration of `wp-json` which has already been experimented as a collaborating agent with Django. See the issue for more detail.
-
 
 **[Build admin interface (**#222**)](https://github.com/DHRI-Curriculum/django-app/issues/222)**  
 As of v1.0, the admin interface of the Curriculum website uses Django's built-in administration interface. In the future, we likely want to build out our own administrative interface, that allows for different users with different views/access (learners, institute organizers/community leaders, their collaborators, teaching fellows, super admins, etc.).
