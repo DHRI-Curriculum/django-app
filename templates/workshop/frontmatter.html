@@ -343,24 +343,6 @@
           {% endif %}
         </div>
       {% endif %}
-
-            {% if current_editors or past_editors %}
-                <div class="col-12 col-lg-4">
-                    <div class="border-bottom py-1 my-3"><h4>Editors</h4></div>
-                    {% if current_editors %}
-                        <div class="py-1 my-1"><h6>Current</h6></div>
-                        {% for c in current_editors %}
-                            {% include 'workshop/fragments/frontmatter/collaborator_row.html' %}
-                        {% endfor %}
-                    {% endif %}
-                    {% if past_editors %}
-                        <div class="py-1 my-1"><h6>Past</h6></div>
-                        {% for c in past_editors %}
-                            {% include 'workshop/fragments/frontmatter/collaborator_row.html' %}
-                        {% endfor %}
-                    {% endif %}
-                </div>
-            {% endif %}
         </div>
     </div>
   </div>
