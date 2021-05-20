@@ -1,8 +1,8 @@
 <!-- # TODO #480: Reopen the ability for users to login/register
-<a class="nav-link text-white px-0 ml-4" href="{% url 'login' %}{% if not request.get_full_path == '/logout/' %}?next={{ request.get_full_path|urlencode }}{% endif %}" id="meta-btn">
+<a class="nav-link text-white px-0 ml-4" href="{ url 'login' }{% if not request.get_full_path == '/logout/' %}?next={{ request.get_full_path|urlencode }}{% endif %}" id="meta-btn">
     Login
 </a>
-<a class="nav-link text-white px-0 ml-4" href="{% url 'register' %}" id="meta-btn">
+<a class="nav-link text-white px-0 ml-4" href="{ url 'register' }" id="meta-btn">
     Register
 </a>
 -->

@@ -15,8 +15,8 @@
 {% include "website/fragments/head/favicons.html" %}
 
 <script type="text/javascript">
-    window.LOGIN_URL = "{% url 'login' %}";
-    window.REGISTER_URL = "{% url 'register' %}";
+    window.LOGIN_URL = "{ url 'login' }";
+    window.REGISTER_URL = "{ url 'register' }";
 
     // A CSRF token is required when making post requests in Django
     // To be used for making AJAX requests
