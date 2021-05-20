@@ -99,7 +99,7 @@ class Command(BaseCommand):
                 if options.get('nopass'):
                     user.set_unusable_password()
                 else:
-                    _password = input.ask(f'Password for `{userdata.get("username")}`?')
+                    _password = input.ask(f'Set a password for the automatically created user `{userdata.get("username")}`?')
                     user.set_password(_password)
             user.save()
 
