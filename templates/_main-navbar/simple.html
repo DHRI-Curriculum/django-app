@@ -6,9 +6,9 @@
   <!-- # TODO #480: Reopen the ability for users to login/register
   <span class="text-light">
     {% if user.is_authenticated %}
-      <a href="{% url 'learner:profile' user.username %}" id="meta-btn">{% if user.first_name and user.last_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user.username }}{% endif %}</a> | <a href="{% url 'logout' %}" id="meta-btn">Log out</a>
+      <a href="{% url 'learner:profile' user.username %}" id="meta-btn">{% if user.first_name and user.last_name %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ user.username }}{% endif %}</a> | <a href="{ url 'logout' }" id="meta-btn">Log out</a>
     {% else %}
-        <a href="{% url 'login' %}{% if not request.get_full_path == '/logout/' %}?next={{ request.get_full_path|urlencode }}{% endif %}" id="meta-btn">Login</a> | <a href="{% url 'register' %}" id="meta-btn">Register</a>
+        <a href="{ url 'login' }{% if not request.get_full_path == '/logout/' %}?next={{ request.get_full_path|urlencode }}{% endif %}" id="meta-btn">Login</a> | <a href="{ url 'register' }" id="meta-btn">Register</a>
     {% endif %}
   </span>
   -->
