@@ -16,9 +16,11 @@
 
 {% block before_container %}
     {% if not request.user.is_authenticated %}
+        <!-- TODO: #480 Remove the commented out section here.
         <section id="warning-before-container" class="container-xxl pt-5">
             <div class="alert alert-info mb-0" id="no-login">Note that you are not logged in. In order to save progress and interact with the workshops, you need to <a href="{ url 'login' }">login</a> or <a href="{ url 'register' }">create an account</a>.</div>
         </section>
+        -->
     {% endif %}
 {% endblock %}
 
