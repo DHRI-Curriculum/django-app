@@ -15,11 +15,11 @@ urlpatterns = [
     path('assessment/', include('assessment.urls')),
     path('learner/', include('learner.urls')),
     path('glossary/', include('glossary.urls')),
-    path('feedback/', include('feedback.urls')),
+    # path('feedback/', include('feedback.urls')), # TODO #480: Reopen the ability for users to login/register (uncomment this line)
     path('installations/', include('install.urls')),
     path('insights/', include('insight.urls')),
     path('shortcuts/', include('backend.urls')),
-    # TODO #480: Reopen the ability for users to login/register
+    # TODO #480: Reopen the ability for users to login/register (uncomment this line)
     # path('register/', learner_views.Register.as_view(), name='register'),
     # path('login/', auth_views.LoginView.as_view(template_name='learner/login.html'), name='login'),
     # path('logout/', auth_views.LogoutView.as_view(template_name='learner/logout.html'), name='logout'),
