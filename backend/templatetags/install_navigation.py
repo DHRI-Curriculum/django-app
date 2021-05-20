@@ -33,7 +33,7 @@ def install_navigation(context):
     # The end
     html += '</nav>'
 
-    html = '<div class="navbar p-0 ml-2 d-flex flex-column align-items-start">'
+    html = '<div class="navbar p-0 ml-2 my-1 d-flex flex-column align-items-start">'
     html += f'<a class="mr-0 mr-sm-3 text-white btn btn-sm" href="{reverse("install:index")}"><strong>Installations</strong></a>'
 
     # By software

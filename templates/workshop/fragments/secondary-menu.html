@@ -1,4 +1,4 @@
-<div class="navbar p-0 ml-2">
+<div class="navbar p-0 ml-2 my-1">
     {% if is_frontmatter %}
         {% if has_progress %}
             <a href="{% url 'workshop:frontmatter' workshop.slug %}lessons/?page={{ has_progress }}" class="btn btn-sm btn-info mr-0 mr-sm-3" id="frontmatterMenuButton">Resume</a>
