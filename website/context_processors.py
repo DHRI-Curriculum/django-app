@@ -44,6 +44,8 @@ def add_to_all_contexts(request):
     context_data['website'] = dict()
     context_data['version'] = VERSION
     context_data['standard_os_slug'] = get_standard_os_slug(request)
+    context_data['is_mac'] = context_data['standard_os_slug'] == 'macos'
+    context_data['is_windows'] = context_data['standard_os_slug'] == 'windows'
     if request.user.is_staff:
         context_data['website']['instructor_requests'] = get_pending_requests()
 

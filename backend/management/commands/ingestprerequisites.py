@@ -1,9 +1,9 @@
-from workshop.models import Prerequisite, PrerequisiteSoftware, Workshop, Frontmatter
+from workshop.models import Prerequisite, URL, Workshop, Frontmatter
 from insight.models import Insight
 from install.models import Software
 from django.core.management import BaseCommand
-from django.core.exceptions import MultipleObjectsReturned
 from backend.logger import Logger
+from django.core.exceptions import FieldError
 from ._shared_functions import get_yaml, get_all_existing_workshops
 
 
@@ -64,8 +64,7 @@ def search_install(potential_name, for_workshop=None, log=None, DATAFILE=None):
         potential_name.replace('install', ''),
     ]
     searches.extend(get_fragments_of_name(potential_name))
-    finders = [Software.objects.filter(
-        software__icontains=x) for x in searches]
+    finders = [Software.objects.filter(name__icontains=x) for x in searches]
     if [x for x in finders if x.count() > 0]:
         # we have at least one software installation that matches the searches above
         if [x for x in finders if x.count() >= 1]:
@@ -114,11 +113,37 @@ def search_insight(potential_name, potential_slug_fragment, for_workshop=None, l
     return False
 
 
+def clean_name(name):
+    name = name.lower()
+    for s, r in {'installing': '', 'short introduction to': '', 'introduction': '', 'intro': '', ' to ': ''}.items():
+        name = name.replace(s, r)
+    return name.strip()
+
+
+def search(obj, name, log=None):
+    for field_name in ['name', 'title']:
+        if field_name in [field.name for field in obj._meta.get_fields()]:
+            if obj.objects.filter(**{f'{field_name}__iexact': name}).count() == 1:
+                return obj.objects.get(**{f'{field_name}__iexact': name})
+
+            if obj.objects.filter(**{f'{field_name}__iexact': clean_name(name)}).count() == 1:
+                return obj.objects.get(**{f'{field_name}__iexact': clean_name(name)})
+            
+            # search whether there are objects obj that contain the field_name in their title
+            if obj.objects.filter(**{f'{field_name}__icontains': clean_name(name)}).count() == 1:
+                return obj.objects.get(**{f'{field_name}__icontains': clean_name(name)})
+            elif obj.objects.filter(**{f'{field_name}__icontains': clean_name(name)}).count() > 1:
+                print(obj.objects.filter(**{f'{field_name}__icontains': clean_name(name)}))
+                log.error(f'Searching for {obj.__name__} with the name `{name}` (cleaned version `{clean_name(name)}`) turns up multiple results. Please write a more specific name for the prerequired {obj.__name__} in the markdown on GitHub and rerun the build and ingest commands for the prerequisites.')
+
+    log.error(f'Searching for {obj.__name__} with the name `{name}` (cleaned version `{clean_name(name)}`) cannot be found. Please write a more specific name for the prerequired {obj.__name__} in the markdown on GitHub and rerun the build and ingest commands for the prerequisites.')
+
+
 class Command(BaseCommand):
     def __init__(self, *args, **kwargs):
         super(Command, self).__init__(*args, **kwargs)
 
-    help = 'Ingests internal DHRI YAML files with information about all the existing workshops into the database'
+    help = 'Ingests internal DHRI YAML files with information about all the existing prerequisites into the database'
     requires_migrations_checks = True
     SAVE_DIR = ''
     WARNINGS, LOGS = [], []
@@ -164,60 +189,44 @@ class Command(BaseCommand):
                 log.error(f'Frontmatter for the workshop `{slug}` could not be found. Make sure you ran python manage.py ingestworkshop --name {slug} before running this command.')
 
             for prereqdata in frontmatterdata.get('prerequisites'):
-                linked_workshop, linked_installs, linked_insight = None, None, None
+
+                linked_workshop, linked_software, linked_insight, linked_external = None, None, None, None
                 url = prereqdata.get('url')
+                type = prereqdata.get('type')
+                text = prereqdata.get('text')
+                label = prereqdata.get('url_text')
+                recommended = prereqdata.get('recommended')
+                required = prereqdata.get('required')
+                
+                # Set category
                 category = Prerequisite.EXTERNAL_LINK
-
-                if prereqdata.get('type') == 'workshop':
-                    linked_workshop = search_workshop(prereqdata.get(
-                        'potential_name'), name, log, DATAFILE)
-                    q = f'Prerequisite workshop `{linked_workshop.name}`'
+                if type == 'workshop':
                     category = Prerequisite.WORKSHOP
-                    log.log(
-                        f'Linking workshop prerequisite for `{name}`: {linked_workshop.name}')
-                elif prereqdata.get('type') == 'install':
-                    # currently, not using prereqdata.get('potential_slug_fragment') - might be something we want to do in the future
-                    linked_installs = search_install(prereqdata.get(
-                        'potential_name'), name, log, DATAFILE)
-                    q = f'Prerequisite installations ' + \
-                        ', '.join([f'`{x.software}`' for x in linked_installs])
-                    category = Prerequisite.INSTALL
-                    log.log(
-                        f'Linking installation prerequisite for `{name}`: {[x.software for x in linked_installs]}')
-                elif prereqdata.get('type') == 'insight':
-                    linked_insight = search_insight(prereqdata.get('potential_name'), prereqdata.get(
-                        'potential_slug_fragment'), name, log, DATAFILE)
-                    q = f'Prerequisite insight `{linked_insight.title}`'
+                    linked_workshop = search(Workshop, prereqdata.get('potential_name'), log)
+                    log.log(f'Success: Found a prerequired workshop for `{name}` in the database ({linked_workshop}).')
+                elif type == 'software':
+                    category = Prerequisite.SOFTWARE
+                    linked_software = search(Software, prereqdata.get('potential_name'), log)
+                    log.log(f'Success: Found a prerequired software for `{name}` in the database ({linked_software}).')
+                elif type == 'insight':
                     category = Prerequisite.INSIGHT
-                    log.log(
-                        f'Linking insight prerequisite for `{name}`: {linked_insight.title}')
-
+                    linked_insight = search(Insight, prereqdata.get('potential_name'), log)
+                    log.log(f'Success: Found a prerequired insight for `{name}` in the database ({linked_insight}).')
+                
                 if category == Prerequisite.EXTERNAL_LINK:
-                    label = prereqdata.get('url_text')
-                else:
-                    label = ''
-
-                clean_up(category, linked_workshop, linked_insight, url)
+                    linked_external, created = URL.objects.get_or_create(url=url, label=label)
+                
                 prerequisite, created = Prerequisite.objects.update_or_create(
-                    category=category, 
-                    linked_workshop=linked_workshop, 
-                    linked_insight=linked_insight, 
-                    url=url,
-                    defaults={
-                        'text': prereqdata.get('text', ''), 
-                        'required': prereqdata.get('required'), 
-                        'recommended': prereqdata.get('recommended'),
-                        'label': label
-                    }
+                    linked_workshop=linked_workshop,
+                    linked_software=linked_software,
+                    linked_insight=linked_insight,
+                    linked_external=linked_external,
+                    text=text,
+                    category=category,
+                    frontmatter=frontmatter,
+                    recommended=recommended,
+                    required=required
                 )
-
-                if linked_installs:
-                    for software in linked_installs:
-                        through = PrerequisiteSoftware(prerequisite=prerequisite, software=software, required=prereqdata.get(
-                            'required'), recommended=prereqdata.get('recommended'))
-                        through.save()
-
-                frontmatter.prerequisites.add(prerequisite)
 
         log.log(
             'Added/updated requirements for workshops: ' + ', '.join([x[0] for x in workshops]))

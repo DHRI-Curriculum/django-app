@@ -703,7 +703,7 @@ class WorkshopCache(Helper, GitCache):
 
             if install_link:
                 _.append({
-                    'type': 'install',
+                    'type': 'software',
                     'potential_name': self._extract_from_p(url_text),
                     'text': text,
                     'potential_slug_fragment': os.path.basename(url).replace('.md', ''),

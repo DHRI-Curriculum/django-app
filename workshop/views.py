@@ -32,7 +32,8 @@ class FrontmatterView(DetailView):
         context['user_favorited'] = self.has_favorited()
         context['num_terms'], context['all_terms'] = self.get_all_terms()
         context['frontmatter'] = self.get_object().frontmatter
-        context['prerequisites'] = self.get_prerequisites()
+        context['prerequisites'] = self.get_object().frontmatter.prerequisites
+        # context['prerequisites'] = self.get_prerequisites()
 
         context['learning_objectives'] = [x.label.replace('<p>', '').replace(
             '</p>', '') for x in context['frontmatter'].learning_objectives.all()]
@@ -98,10 +99,9 @@ class FrontmatterView(DetailView):
             'required': [],
             'recommended': [],
             'workshops': [],
-            'installs': {
-                'by_software': {},
-                'by_os': {},
-            },
+            'required_installs': [],
+            'recommended_installs': [],
+            'installs': [],
             'insights': [],
             'external_links': [],
             'cheat_sheets': [],
@@ -117,26 +117,20 @@ class FrontmatterView(DetailView):
             elif req.category == Prerequisite.CHEATSHEET: _['cheat_sheets'].append(req)
 
             for software in req.linked_software.all():
-                #print(software)
-                if not software.name in _['installs']['by_software']:
-                    _['installs']['by_software'][software.name] = {
-                        'required': req.required,
-                        'recommended': req.recommended,
-                        #'instructions': Instructions.objects.by_software()[software.name]
-                    }
+                if not req.required and not req.recommended:
+                    if not (req, software) in _['installs']:
+                        _['installs'].append((req, software))
+                elif req.required:
+                    if not (req, software) in _['required_installs']:
+                        _['required_installs'].append((req, software))
+                elif req.recommended:
+                    if not (req, software) in _['recommended_installs']:
+                        _['recommended_installs'].append((req, software))
+        
+        print(_['installs'])
+        print(_['required_installs'])
+        print(_['recommended_installs'])
 
-                if not software.operating_system in _['installs']['by_os']:
-                    _['installs']['by_os'][software.operating_system] = {
-                        'required': req.required,
-                        'recommended': req.recommended,
-                        #'instructions': Instructions.objects.by_os()[software.operating_system]
-                    }
-
-        # TODO: #454 Since I don't have time to fix this now, I am just going to drop all installation instruction from the Frontmatter for the time being.
-        _['installs'] = {
-                            'by_software': {},
-                            'by_os': {},
-                        }
         return _
 
 

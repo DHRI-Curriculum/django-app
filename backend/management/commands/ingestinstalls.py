@@ -85,7 +85,7 @@ class Command(BaseCommand):
                     operating_system_str = 'macos'
                 else:
                     raise NotImplementedError(f'There is no way to import instructions for operating system {operating_system_str} currently. Add parsing in `ingestinstalls.py` if you want to build this operating system into the Curriculum website.')
-                if OperatingSystem.objects.get(slug=dhri_slugify(operating_system_str)):
+                if OperatingSystem.objects.filter(slug=dhri_slugify(operating_system_str)):
                     operating_system = OperatingSystem.objects.get(slug=dhri_slugify(operating_system_str))
                 else:
                     operating_system = OperatingSystem.objects.create(name=operating_system_str)
