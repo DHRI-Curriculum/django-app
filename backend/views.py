@@ -5,7 +5,7 @@ from django.http.response import Http404, HttpResponse, HttpResponseBadRequest, 
 from glossary.models import Term
 from workshop.models import Workshop
 from insight.models import Insight
-from install.models import Instruction, Software
+from install.models import Instructions, Software
 from django.urls import reverse
 
 
@@ -69,7 +69,7 @@ class InstallRedirectView(View):
         is_mac = 'mac' in self.request.META.get('HTTP_USER_AGENT', '').lower()
         is_windows = 'mac' in self.request.META.get('HTTP_USER_AGENT', '').lower()
 
-        installs = Instruction.objects.filter(slug__icontains=kwargs.get('slug').lower())
+        installs = Instructions.objects.filter(slug__icontains=kwargs.get('slug').lower())
         if installs.count() == 2:
             if is_mac:
                 obj = installs.filter(software__operating_system='macOS')

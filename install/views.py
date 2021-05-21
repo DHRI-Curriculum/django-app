@@ -1,30 +1,37 @@
-from django.shortcuts import render, HttpResponse, get_object_or_404
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from .models import Instruction, Software
-from django.urls import reverse
+from .models import Instructions, Software
+from django.shortcuts import get_object_or_404
 
 
-class Index(ListView):
-    model = Instruction
-    template_name = 'install/instruction_list.html'
-
-    def get_queryset(self):
-        return self.model.objects.by_software()
+class SoftwareIndexView(ListView):
+    model = Software
 
 
-class Detail(DetailView):
-    model = Instruction
+class SoftwareView(DetailView):
+    model = Software
+
+    context_object_name = 'software'
+
+
+class OSView(DetailView):
+    model = Instructions
+
+    context_object_name = 'instructions'
+
+    def get_object(self):
+        return get_object_or_404(
+            self.model,
+            software__slug=self.kwargs['software_slug'],
+            operating_system__slug=self.kwargs['os_slug'],
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
-        other_os, context['other_os_slug'] = None, None
-        if 'macos' in context['instruction'].software.operating_system.lower(): other_os = 'Windows'
-        elif 'windows' in context['instruction'].software.operating_system.lower(): other_os = 'macOS'
-
-        if other_os:
-            current_software = context['instruction'].software.software
-            context['other_os_slug'] = Software.objects.get(software=current_software, operating_system=other_os).instructions.all().last().slug
-
+        context['software_slug'] = self.kwargs['software_slug']
+        context['os_slug'] = self.kwargs['os_slug']
+        if 'mac' in context['os_slug']:
+            context['other_os_slug'] = 'windows'
+        elif 'windows' in context['os_slug']:
+            context['other_os_slug'] = 'macos'
         return context

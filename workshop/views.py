@@ -1,4 +1,4 @@
-from install.models import Instruction
+from install.models import Instructions
 from django.shortcuts import get_object_or_404, HttpResponseRedirect
 from django.core.paginator import Paginator
 from workshop.models import Prerequisite, Workshop, Collaboration, Blurb
@@ -118,18 +118,18 @@ class FrontmatterView(DetailView):
 
             for software in req.linked_software.all():
                 #print(software)
-                if not software.software in _['installs']['by_software']:
-                    _['installs']['by_software'][software.software] = {
+                if not software.name in _['installs']['by_software']:
+                    _['installs']['by_software'][software.name] = {
                         'required': req.required,
                         'recommended': req.recommended,
-                        'instructions': Instruction.objects.by_software()[software.software]
+                        #'instructions': Instructions.objects.by_software()[software.name]
                     }
 
                 if not software.operating_system in _['installs']['by_os']:
                     _['installs']['by_os'][software.operating_system] = {
                         'required': req.required,
                         'recommended': req.recommended,
-                        'instructions': Instruction.objects.by_os()[software.operating_system]
+                        #'instructions': Instructions.objects.by_os()[software.operating_system]
                     }
 
         # TODO: #454 Since I don't have time to fix this now, I am just going to drop all installation instruction from the Frontmatter for the time being.

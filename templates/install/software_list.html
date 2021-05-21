@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load markdownify install_navigation %}
+
+{% block extra_head_material %}
+    <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.min.js"></script>
+{% endblock %}
+
+{% block secondary_menu %}
+    {% install_navigation %}
+{% endblock %}
+
+{% block main %}
+<section id="software-list">
+    <div class="container-xxl">
+        <h2 class="pt-5">All Installation Instructions</h2>
+            <div class="row grid">
+            {% for software in object_list %}
+                <div class="col-lg-6 px-3 py-3">
+                    <div class="card h-100">
+                        {% if software.image %}
+                            <a href="{% if standard_os_slug %}{% url 'install:instructions' software_slug=software.slug os_slug=standard_os_slug %}{% else %}{% url 'install:software' slug=software.slug %}{% endif %}"><img src="{{ software.image.url }}" class="card-img-top" alt="{{ software.name }}"></a>
+                        {% endif %}
+                        <div class="card-body">
+                            {% if not software.image %}
+                                <h5 class="card-title m-0 bolder">{{ software.name }}</h5>
+                            {% endif %}
+                            {% if software.what %}
+                                <p class="card-text m-0 {% if software.why %}pb-2{% endif %}">{{ software.what | markdown | safe }}</p>
+                            {% endif %}
+                            {% if software.why %}
+                                <p class="card-text m-0">{{ software.why | markdown | safe }}</p>
+                            {% endif %}
+                        </div>
+
+                        <div class="card-footer text-right">
+                            {% for instruction in software.software_instructions.all %}<a class="btn {% if standard_os_slug == instruction.operating_system.slug %}btn-warning shadow-sm{% else %}btn-dark{% endif %} mr-2" href="{% url 'install:instructions' software_slug=instruction.software.slug os_slug=instruction.operating_system.slug %}">Install for {{ instruction.operating_system.name }}</a>{% endfor %}
+                        </div>
+                    </div>
+                    </div>    
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block javascript %}
+    <script type="application/javascript">
+        imagesLoaded( document.querySelector('.grid'), function( instance ) {
+            let m = new Masonry( '.grid', {
+                percentPosition: true
+            });
+        });
+    </script>
+{% endblock %}

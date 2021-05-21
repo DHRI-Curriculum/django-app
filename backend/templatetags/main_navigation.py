@@ -1,5 +1,4 @@
 from django import template
-from django.urls import reverse
 from django.utils.safestring import mark_safe
 from django.conf import settings
 from django.template.loader import get_template
@@ -7,7 +6,7 @@ from django.template.loader import get_template
 from insight.models import Insight
 from workshop.models import Workshop
 from learner.models import Progress
-from install.models import Instruction
+from install.models import Software
 
 
 register = template.Library()
@@ -27,12 +26,21 @@ def get_all_objects(context):
             'all': Workshop.objects.all().order_by('name'),
             'with_progress': [],
         },
-        'installations': Instruction.objects.by_software()
+        'software': Software.objects.all()
     }
     if context.request.user.is_authenticated:
         d['workshops']['with_progress'] = get_workshops_with_progress(
             context.get('user').profile)
     return d
+
+
+def get_standard_os_slug(request):
+    if 'mac' in request.META.get('HTTP_USER_AGENT', '').lower():
+        return 'macos'
+    elif 'windows' in request.META.get('HTTP_USER_AGENT', '').lower():
+        return 'windows'
+    
+    return ''
 
 
 @register.simple_tag(takes_context=True)
@@ -52,7 +60,11 @@ def main_navigation(context):
 
     # Installations mini menu
     html += get_template('_main-navbar/installations-mini-menu.html').render(
-        {'all': obj['installations'], 'request': context.request})
+        {
+            'software': obj['software'],
+            'request': context.request,
+            'standard_os_slug': get_standard_os_slug(context.request)
+        })
 
     # Insights mini menu
     html += get_template('_main-navbar/insights-mini-menu.html').render(
