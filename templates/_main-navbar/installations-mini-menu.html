@@ -1,3 +1,8 @@
+{% comment %}
+
+This is the template for the section of "installation boxes" in the main menu at the top of each page.
+
+{% endcomment %}
 <div class="collapse pt-0 pb-5 px-4 bg-primary" id="allInstallations">
     <div class="row">
         <!--
@@ -5,9 +10,8 @@
             <h5 class="text-white h4">Installations</h5>
         </div>
         -->
-
-        {% for software, data in all.items %}
-            {% include '_main-navbar/fragments/installation.html' %}
+        {% for software in software %}
+            {% include '_main-navbar/fragments/installation.html' with standard_os_slug=standard_os_slug %}
         {% endfor %}
     </div>
 </div>

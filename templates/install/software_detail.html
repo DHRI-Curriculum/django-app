@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load markdownify install_navigation %}
+
+{% block secondary_menu %}
+    {% install_navigation %}
+{% endblock %}
+
+{% block main %}
+    <h1>{{ software }}</h1>
+    <p class="lead">Instructions available for:</p>
+    {% for instruction in software.software_instructions.all %}
+        {{ instruction.operating_system }}
+    {% endfor %}
+{% endblock %}

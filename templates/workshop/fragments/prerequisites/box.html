@@ -1,0 +1,25 @@
+{% load markdownify %}
+
+<div class="p-2 my-3 rounded-lg linked-comment {% if required %}linked-required{% elif recommended %}linked-recommended{% endif %}">
+    <h5 class="m-0">{{ req.linked_software.name }}{% if req.required %}<span class="badge badge-required text-white ml-1">Required</span>{% elif recommended %}<span class="badge badge-recommended text-white ml-1">Recommended</span>{% endif %}</h5>
+    <div class="my-2 small">
+        {% if req.text %}
+            {{ req.text }}
+        {% else %}
+            {{ req.linked_software.why }}
+        {% endif %}
+    </div>
+    <div class="btn-group btn-group-sm" role="group" aria-label="Links to installation of {{ req.linked_software.name }} for different operating systems.">
+        {% for instruction in req.linked_software.software_instructions.all %}
+            {% if is_mac and instruction.operating_system.slug == 'macos' %}
+                <!-- This is a mac and these are MAC instructions...-->
+                <a href="{% url 'install:instructions' software_slug=instruction.software.slug os_slug='macos' %}" class="prereq-btn btn btn-warning shadow-sm stretched-link">Install for macOS</a>
+            {% elif is_windows and instruction.operating_system.slug == 'windows' %}
+                <!-- This is a windows machine and these are WINDOWS instructions...-->
+                <a href="{% url 'install:instructions' software_slug=instruction.software.slug os_slug='windows' %}" class="prereq-btn btn btn-warning shadow-sm stretched-link">Install for Windows</a>
+            {% else %}
+                <a href="{% url 'install:software' slug=instruction.software.slug %}" class="btn btn-outline-warning text-dark">Install</a>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>

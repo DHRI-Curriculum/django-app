@@ -489,30 +489,16 @@ div.dropdown-submenu {
     transition: all 0.3s ease;
     opacity: 1;
 }
-.card:hover .card-img,
-.card:focus .card-img {
-    opacity: 0.05;
-}
 .card:hover {
+    opacity: 0.9;
     -webkit-box-shadow: 0 1rem 3rem rgba(0,0,0,0.5) !important;
     box-shadow: 0 1rem 3rem rgba(0,0,0,0.5) !important;
 }
-
-.card-img-overlay > h5,
-.card-img-overlay > .btn-group,
-.card-img-overlay > .w-75 {
-    visibility: hidden;
-}
-
-.card-img-overlay:hover h5,
-.card-img-overlay:hover .btn-group,
-.card-img-overlay:hover .w-75 {
-    visibility: visible;
-}
+/*
 .nav-scroller {
-    /* cursor: pointer; */
+    cursor: pointer;
 }
-
+*/
 .admin-menu-part:not(:empty) {
     border-top: 1px solid #ddd;
     border-bottom: 1px solid #ddd;

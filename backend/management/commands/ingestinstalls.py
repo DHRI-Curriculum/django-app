@@ -1,4 +1,5 @@
-from install.models import Software, Instruction, Screenshot, Step
+from backend.dhri_utils import dhri_slugify
+from install.models import OperatingSystem, Software, Instructions, Screenshot, Step
 from django.core.management import BaseCommand
 from django.core.files import File
 from django.conf import settings
@@ -18,11 +19,11 @@ REQUIRED_PATHS = [
 ]
 
 
-def get_instruction_image_path(image_file, relative_to_upload_field=False):
+def get_software_image_path(image_file, relative_to_upload_field=False):
     if not relative_to_upload_field:
-        return settings.MEDIA_ROOT + '/' + Instruction.image.field.upload_to + os.path.basename(image_file).replace('@', '')
+        return settings.MEDIA_ROOT + '/' + Software.image.field.upload_to + os.path.basename(image_file).replace('@', '')
 
-    return Instruction.image.field.upload_to + os.path.basename(image_file).replace('@', '')
+    return Software.image.field.upload_to + os.path.basename(image_file).replace('@', '')
 
 def get_screenshot_media_path(image_path, relative_to_upload_field=False):
     if not relative_to_upload_field:
@@ -32,16 +33,16 @@ def get_screenshot_media_path(image_path, relative_to_upload_field=False):
 
 
 
-def instruction_image_exists(image_file):
-    return os.path.exists(get_instruction_image_path(image_file))
+def software_image_exists(image_file):
+    return os.path.exists(get_software_image_path(image_file))
 
 
-def get_default_instruction_image():
-    return Instruction.image.field.default
+def get_default_software_image():
+    return Software.image.field.default
 
 
-def default_instruction_image_exists():
-    return os.path.exists(get_default_instruction_image())
+def default_software_image_exists():
+    return os.path.exists(get_default_software_image())
 
 
 class Command(BaseCommand):
@@ -69,41 +70,72 @@ class Command(BaseCommand):
         data = get_yaml(FULL_PATH, log=log)
 
         for installdata in data:
-            for operating_system in installdata.get('instructions'):
-                software, created = Software.objects.get_or_create(operating_system=operating_system, software=installdata.get('software'))
-                instruction, created = Instruction.objects.update_or_create(software=software, defaults={
+            for operating_system_str in installdata.get('instructions'):
+                
+                # 0. Pre-process
+                steps = installdata.get('instructions').get(operating_system_str)
+
+
+                # 1. Create OperationSystem object
+                
+                # Standardize the operating systems (in `operating_system_str`)
+                if 'windows' in operating_system_str.lower():
+                    operating_system_str = 'windows'
+                elif 'mac' in operating_system_str.lower():
+                    operating_system_str = 'macos'
+                else:
+                    raise NotImplementedError(f'There is no way to import instructions for operating system {operating_system_str} currently. Add parsing in `ingestinstalls.py` if you want to build this operating system into the Curriculum website.')
+                if OperatingSystem.objects.filter(slug=dhri_slugify(operating_system_str)):
+                    operating_system = OperatingSystem.objects.get(slug=dhri_slugify(operating_system_str))
+                else:
+                    operating_system = OperatingSystem.objects.create(name=operating_system_str)
+                
+
+                # 2. Create Software object
+
+                software, created = Software.objects.get_or_create(name=installdata.get('software'), defaults={
                     'what': installdata.get('what'),
                     'why': installdata.get('why')
                 })
 
                 original_file = installdata.get('image')
                 if original_file:
-                    if instruction_image_exists(original_file) and filecmp.cmp(original_file, get_instruction_image_path(original_file), shallow=False) == True:
-                        log.log(f'Instruction image already exists. Ensuring path is in database: `{get_instruction_image_path(original_file)}`')
-                        instruction.image.name = get_instruction_image_path(original_file, True)
-                        instruction.save()
+                    if software_image_exists(original_file) and filecmp.cmp(original_file, get_software_image_path(original_file), shallow=False) == True:
+                        log.log(f'Software image already exists. Ensuring path is in database: `{get_software_image_path(original_file)}`')
+                        software.image.name = get_software_image_path(original_file, True)
+                        software.save()
                     else:
                         with open(original_file, 'rb') as f:
-                            instruction.image = File(f, name=os.path.basename(f.name))
-                            instruction.save()
-                        if filecmp.cmp(original_file, get_instruction_image_path(original_file)):
-                            log.info(f'Instruction image has been updated so being copied to media path: `{get_instruction_image_path(original_file)}`')
+                            software.image = File(f, name=os.path.basename(f.name))
+                            software.save()
+                        if filecmp.cmp(original_file, get_software_image_path(original_file)):
+                            log.info(f'Software image has been updated so being copied to media path: `{get_software_image_path(original_file)}`')
                         else:
-                            log.info(f'Instruction image has been copied to media path: `{get_instruction_image_path(original_file)}`')
+                            log.info(f'Software image has been copied to media path: `{get_software_image_path(original_file)}`')
                 else:
-                    log.warning(f'An image for `{software}` does not exist. A default image will be saved instead. If you want a particular image for the installation instructions, follow the documentation.')
-                    instruction.image.name = get_default_instruction_image()
-                    instruction.save()
-                    
-                for stepdata in installdata.get('instructions').get(operating_system):
+                    log.warning(f'An image for `{software}` does not exist. A default image will be saved instead. If you want a particular image for the software, follow the documentation.')
+                    software.image.name = get_default_software_image()
+                    software.save()
+
+
+                # 3. Create Instruction object
+
+                instructions, created = Instructions.objects.get_or_create(operating_system=operating_system, software=software)
+
+
+                # 4. Add Step objects
+
+                for stepdata in steps:
                     step, created = Step.objects.update_or_create(
-                        instruction=instruction,
+                        instructions=instructions,
                         order=stepdata.get('step'),
                         defaults={
                             'header': stepdata.get('header'),
                             'text': stepdata.get('html')
                         }
                     )
+
+                    # 4b. Add screenshots for Step
 
                     for order, d in enumerate(stepdata.get('screenshots'), start=1):
                         path = d['path']
