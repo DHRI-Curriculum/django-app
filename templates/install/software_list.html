@@ -33,7 +33,7 @@
                         </div>
 
                         <div class="card-footer text-right">
-                            {% for instruction in software.software_instructions.all %}<a class="btn {% if standard_os_slug == instruction.operating_system.slug %}btn-warning shadow-sm{% else %}btn-dark{% endif %} mr-2" href="{% url 'install:instructions' software_slug=instruction.software.slug os_slug=instruction.operating_system.slug %}">Install for {{ instruction.operating_system.name }}</a>{% endfor %}
+                            {% for instruction in software.software_instructions.all %}<a class="btn {% if standard_os_slug == instruction.operating_system.slug %}btn-warning shadow-sm{% else %}btn-dark{% endif %} mr-2" href="{% url 'install:instructions' software_slug=instruction.software.slug os_slug=instruction.operating_system.slug %}">Install{% if instruction.operating_system.name == 'macos' %} for macOS{% elif instruction.operating_system.name == 'windows' %} for Windows{% endif %}</a>{% endfor %}
                         </div>
                     </div>
                     </div>    
