@@ -122,6 +122,7 @@ by_groups:
       last_name: Ildefonso
       username: oliviaildefonso
       bio: "Olivia Ildefonso is a Ph.D. Student in Earth and Environmental Sciences with a specialization in Human Geography at the Graduate Center (CUNY). She studies the political economy of school segregation. Her research focuses on Long Island, New York. Olivia is a Long Island native and has worked as a racial justice activist on Long Island for the past ten years. She has worked for civil rights organization, ERASE Racism since 2010 and she has served on the board of directors for STRONG Youth since 2013. Olivia is currently a GC Digital Fellow. She specializes in GIS Mapping, website management, and multi-media storytelling. Before becoming a GC Digital Fellow, Olivia was an Adjunct Lecturer at Queens College and a Writing Across the Curriculum (WAC) fellow at John Jay College."
+      img: backend/setup/profile-pictures/olivia-ildefonso.jpg
       groups:
         - Team
       pronouns: 'she/her'
@@ -169,6 +170,7 @@ by_groups:
       last_name: Karlin
       username: jojokarlin
       bio: Jojo Karlin researches transmissions of memory after periods of rapid technological transformation. Coming from a theater background, Jojo loves the intersection of disciplines, multiple media, and diverse expertises she finds in Digital Humanities. For her first big DH project, she did outreach for TANDEM, a web tool that gathers text and image data, and she now proudly coordinates outreach for DH Box, the GC's NEH-funded DH cloud laboratory. She is a freelance editor for the Tow Center for Digital Journalism at Columbia, and is developing a digital interface for a collection of historical letters. Jojo is deeply interested in digital editions preserving past materiality while exploring new materials.
+      img: backend/setup/profile-pictures/jojo-karlin.jpg
       groups:
         - Team
       pronouns: 'she/her'
@@ -188,6 +190,7 @@ by_groups:
       username: patricksmyth
       bio: >
           Patrick Smyth's research focuses on Utopian thought and the history of science in 18th and 19th century British literature. As a digital humanist, Patrick is concerned with digital platforms for research and pedagogy. He is currently a developer on the NEH-funded DH Box, a cloud-based platform for accessing digital humanities tools, and has received a Provost's Digital Innovation grant for an online archive of science fiction works. His most recent publication is "Ebooks and the Digital Paratext: Emerging Trends in the Interpretation of Digital Media" in Examining Paratextual Theory and Its Applications in Digital Culture. Patrick was a 2010 Fulbright Teaching Fellow in Berlin, Germany, and teaches composition and literature at Queens College.
+      img: backend/setup/profile-pictures/patrick-smyth.jpg
       groups:
         - Team
       pronouns: 'he/him'
@@ -203,6 +206,7 @@ by_groups:
       last_name: Otero Peña
       username: javioteropena
       bio: "Javier Otero Peña is a GC Digital Fellow since 2016 and a member of the Public Space Research Group, and currently works as a research assistant for the PARCS study in the CUNY School for Public Health. His dissertation will study the contextual impacts of park renovations in New York City, and will involve a map analysis using GIS technologies, a mini-ethnography using Qualitative Data Analysis (QDA) software, and natural language analysis of social media posts. Javier's field research paper studied the politicization of public spaces through a participatory mural in East Harlem. In 2016, he took part in the CUNY-Humboldt University Summer School in Berlin, and in 2017 he participated in the Digital Humanities Research Institute in Victoria University, Canada. He also received the 2017 Provost's Digital Innovation Grant. Javier holds a Master in Environmental Policies and Sustainable Development, and taught a class on Sustainable Development in Latin America and the Caribbean at the Paris Catholic University. He also studied Urban Planning and Management at UCV, and Sustainable Urban Mobility in Developing Countries (UNITAR). Javier worked as a consultant for the United Nations Environment Programme for three years."
+      img: backend/setup/profile-pictures/javier-otero-pena.jpg
       groups:
         - Team
       pronouns: 'he/him'
