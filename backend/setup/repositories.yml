@@ -22,3 +22,5 @@ workshops:
       branch: v2.0
     - repo: git
       branch: v2.0
+    - repo: mapping
+      branch: v2.0
