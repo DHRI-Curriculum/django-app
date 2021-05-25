@@ -206,7 +206,7 @@ by_groups:
       last_name: Otero Peña
       username: javioteropena
       bio: "Javier Otero Peña is a GC Digital Fellow since 2016 and a member of the Public Space Research Group, and currently works as a research assistant for the PARCS study in the CUNY School for Public Health. His dissertation will study the contextual impacts of park renovations in New York City, and will involve a map analysis using GIS technologies, a mini-ethnography using Qualitative Data Analysis (QDA) software, and natural language analysis of social media posts. Javier's field research paper studied the politicization of public spaces through a participatory mural in East Harlem. In 2016, he took part in the CUNY-Humboldt University Summer School in Berlin, and in 2017 he participated in the Digital Humanities Research Institute in Victoria University, Canada. He also received the 2017 Provost's Digital Innovation Grant. Javier holds a Master in Environmental Policies and Sustainable Development, and taught a class on Sustainable Development in Latin America and the Caribbean at the Paris Catholic University. He also studied Urban Planning and Management at UCV, and Sustainable Urban Mobility in Developing Countries (UNITAR). Javier worked as a consultant for the United Nations Environment Programme for three years."
-      img: backend/setup/profile-pictures/javier-otero-pena.jpg
+      img: backend/setup/profile-pictures/javier-otero-pena.png
       groups:
         - Team
       pronouns: 'he/him'
