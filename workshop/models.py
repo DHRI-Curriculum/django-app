@@ -93,6 +93,13 @@ class Contributor(models.Model):
                 role='Ed', current=False)},
         ]
 
+    def get_image_from_github(self):
+        if 'github.com/' in self.url:
+            gh_username = [x for x in self.url.split('/') if x][2]
+            return f'https://www.github.com/{gh_username}.png'
+        else:
+            return ''
+
 
 class Frontmatter(models.Model):
     workshop = models.OneToOneField(

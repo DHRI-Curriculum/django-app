@@ -60,16 +60,20 @@ class Command(BaseCommand):
             parent_repo = d.get('parent_repo')
 
             # 1. ENTER WORKSHOP
-            workshop, created = Workshop.objects.update_or_create(
-                name=full_name,
-                slug=dhri_slugify(full_name),
-                defaults={
-                    'parent_backend': parent_backend,
-                    'parent_branch': parent_branch,
-                    'parent_repo': parent_repo,
-                    'image_alt': imagedata['alt']
-                }
-            )
+            if Workshop.objects.filter(slug=dhri_slugify(full_name)).count():
+                workshop = Workshop.objects.get(slug=dhri_slugify(full_name))
+                created = False
+            else:
+                workshop, created = Workshop.objects.update_or_create(
+                    name=full_name,
+                    slug=dhri_slugify(full_name),
+                    defaults={
+                        'parent_backend': parent_backend,
+                        'parent_branch': parent_branch,
+                        'parent_repo': parent_repo,
+                        'image_alt': imagedata['alt']
+                    }
+                )
 
             def _get_valid_name(filename):
                 return filename.replace('@', '') # TODO: should exist a built-in for django here?
@@ -108,8 +112,9 @@ class Command(BaseCommand):
                     log.warning(f'Default workshop image does not exist. You will want to add it manually to the correct folder: {_get_media_path("")}')
 
             # Saving the slug in a format that matches the GitHub repositories (special method `save_slug`)
-            workshop.slug = slug
-            workshop.save_slug()
+            if created == True:
+                workshop.slug = slug
+                workshop.save_slug()
 
             # 2. ENTER FRONTMATTER
             frontmatter, created = Frontmatter.objects.update_or_create(
@@ -172,7 +177,7 @@ class Command(BaseCommand):
                                 profile = p
                                 log.info(f'In-depth search revealed a profile matching the full name for `{workshop.name}` contributor `{point.get("first_name")} {point.get("last_name")}`. It may or may not be the correct person, so make sure you verify it manually.')
 
-                        if not p:
+                        if not profile:
                             log.info(f'Could not find user profile on the curriculum website for contributor `{point.get("full_name")}` (searching by first name `{point.get("first_name")}` and last name `{point.get("last_name")}`).')
                     
                     contributor, created = Contributor.objects.update_or_create(

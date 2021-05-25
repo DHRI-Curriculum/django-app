@@ -10,10 +10,12 @@ by_groups:
         - Team
       bio: Kalle Westerling is a Ph.D. Candidate in Theatre and Performance at The Graduate Center, CUNY, where he works on _The Roots and Routes of Boylesque_ a dissertation about the history and aesthetics of male-identified bodies in 20th-century burlesque and 21st-century boylesque. He is also the project manager for the NEH-funded project "Expanding Communities of Practice," aimed at helping to create infrastructure for digital humanities across several higher education institutions across the U.S.
       pronouns: 'he/him'
-      img: "backend/setup/profile-pictures/kalle-westerling.png"
       links:
         - text: Personal website
           url: http://www.westerling.nu
+          cat: personal
+        - text: GitHub profile
+          url: https://www.github.com/kallewesterling/
           cat: personal
 
     - first_name: Lisa
@@ -202,7 +204,7 @@ by_groups:
           url: http://www.github.com/smythp
           cat: personal
 
-    - first_name: Javier 
+    - first_name: Javier
       last_name: Otero Peña
       username: javioteropena
       bio: "Javier Otero Peña is a GC Digital Fellow since 2016 and a member of the Public Space Research Group, and currently works as a research assistant for the PARCS study in the CUNY School for Public Health. His dissertation will study the contextual impacts of park renovations in New York City, and will involve a map analysis using GIS technologies, a mini-ethnography using Qualitative Data Analysis (QDA) software, and natural language analysis of social media posts. Javier's field research paper studied the politicization of public spaces through a participatory mural in East Harlem. In 2016, he took part in the CUNY-Humboldt University Summer School in Berlin, and in 2017 he participated in the Digital Humanities Research Institute in Victoria University, Canada. He also received the 2017 Provost's Digital Innovation Grant. Javier holds a Master in Environmental Policies and Sustainable Development, and taught a class on Sustainable Development in Latin America and the Caribbean at the Paris Catholic University. He also studied Urban Planning and Management at UCV, and Sustainable Urban Mobility in Developing Countries (UNITAR). Javier worked as a consultant for the United Nations Environment Programme for three years."
@@ -218,5 +220,12 @@ by_groups:
           url: http://www.github.com/javo0101
           cat: personal
 
+    - first_name: Patrick
+      last_name: Sweeney
+      username: patricksweeney
+      links:
+        - text: GitHub
+          url: http://www.github.com/pswee001
+          cat: personal
 
 default: backend/setup/profile-pictures/default.jpg

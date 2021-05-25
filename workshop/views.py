@@ -41,6 +41,7 @@ class FrontmatterView(DetailView):
 
         context['all_collaborators'] = Collaboration.objects.filter(
             frontmatter=context['frontmatter']).order_by('contributor__last_name')
+
         context['current_collaborators'] = context['all_collaborators'].filter(
             current=True).order_by('contributor__last_name')
         context['past_collaborators'] = context['all_collaborators'].filter(
