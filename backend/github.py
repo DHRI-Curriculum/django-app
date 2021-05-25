@@ -688,8 +688,8 @@ class WorkshopCache(Helper, GitCache):
             html = prerequisite_data.get('annotation')
 
             install_link = 'shortcuts/install/' in url
-            insight_link = '/shortcuts/insight/' in url
-            workshop_link = '/shortcuts/workshop/' in url
+            insight_link = 'shortcuts/insight/' in url
+            workshop_link = 'shortcuts/workshop/' in url
             
             #TODO #429: Somehow determine what is a cheatsheet and ingest that here...
 

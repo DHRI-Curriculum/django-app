@@ -90,9 +90,10 @@
                     <h4>External Links</h4>
                     <div class="small mb-3 pb-1 border-bottom">{% snippet "prerequisite-external-links" %}</div>
                     {% for prerequisite in prerequisites.external_links %}
+                    {{ prerequisite.linked_external.label }}
                         <div class="p-2 my-3 rounded-lg linked-comment {% if prerequisite.required %}linked-required{% elif prerequisite.recommended %}linked-recommended{% endif %}">
                             <div class="small">
-                                <a href="{{ prerequisite.url }}" class="stretched-link" target="_blank"><strong>{% if prerequisite.label %}{{ prerequisite.label }}{% else %}Link{% endif %}</strong></a>{% if prerequisite.required %}<span class="badge badge-required text-white ml-1">Required</span>{% elif prerequisite.recommended %}<span class="badge badge-recommended text-white ml-1">Recommended</span>{% endif %}
+                                <a href="{{ prerequisite.url }}" class="stretched-link" target="_blank"><strong>{% if prerequisite.linked_external.label %}{{ prerequisite.linked_external.label }}{% else %}Link{% endif %}</strong></a>{% if prerequisite.required %}<span class="badge badge-required text-white ml-1">Required</span>{% elif prerequisite.recommended %}<span class="badge badge-recommended text-white ml-1">Recommended</span>{% endif %}
                                 {{ prerequisite.text | as_string | markdown | safe }}
                             </div>
                         </div>
