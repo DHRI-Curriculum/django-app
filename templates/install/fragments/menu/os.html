@@ -1,6 +1,6 @@
 <li><div class="dropdown-submenu">
     <a class="dropdown-item text-white dropdown-toggle" data-bs-toggle="dropdown" href="#">
-        {{ os.name }}
+        {% if os.name == 'macos' %}macOS{% elif os.name == 'windows' %}Windows{% else %}{{ os.name }}{% endif %}
     </a>
     <div class="dropdown-menu dropdown-menu-special shadow-sm">
         {% for instruction in os.os_instructions.all %}

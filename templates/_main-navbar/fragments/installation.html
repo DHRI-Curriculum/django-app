@@ -5,13 +5,13 @@ This is the template for each of the "installation boxes" in the main menu at th
 {% endcomment %}
 <div class="col-12 col-sm-6 col-xl-4 mb-3">
     <div class="card h-100 shadow-sm">
-        {% if software.image %}
+        {% if software.image and software.default_image != software.image %}
             <div class="card-img">
                 <a href="{% if standard_os_slug %}{% url 'install:instructions' software_slug=software.slug os_slug=standard_os_slug %}{% else %}{% url 'install:software' slug=software.slug %}{% endif %}" class="stretched-link text-decoration-none"><img src="{{ software.image.url }}" class="card-img-top" alt="{{ instruction.software.name }}"></a>
             </div>
         {% else %}
             <div class="card-body">
-                <a href="{% if standard_os_slug %}{% url 'install:instructions' software_slug=software.slug os_slug=standard_os_slug %}{% else %}{% url 'install:software' slug=software.slug %}{% endif %}" class="stretched-link text-decoration-none">{{ software.name }}</a>
+                <h3 class="text-center"><a href="{% if standard_os_slug %}{% url 'install:instructions' software_slug=software.slug os_slug=standard_os_slug %}{% else %}{% url 'install:software' slug=software.slug %}{% endif %}" class="stretched-link text-decoration-none">{{ software.name }}</a></h3>
             </div>
         {% endif %}
     </div>

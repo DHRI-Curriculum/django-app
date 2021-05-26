@@ -332,6 +332,10 @@ class InstallCache(Helper, GitCache):
                 except:
                     self.log.error('An error occurred when interpreting image data for installation instructions: {image_data}')
 
+            if _['image'].endswith('/'):
+                self.log.warning(f'An error occurred when interpreting image data for installation instructions. Does the image exist for the installation instructions ({self.repository}/{self.branch})?')
+                _['image'] = None
+
             # Get `software`
             sections = split_into_sections(file_contents, level_granularity=1)
             if len(sections) == 1:

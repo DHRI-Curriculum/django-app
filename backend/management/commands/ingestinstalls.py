@@ -99,6 +99,9 @@ class Command(BaseCommand):
                 })
 
                 original_file = installdata.get('image')
+
+                print(original_file)
+                
                 if original_file:
                     if software_image_exists(original_file) and filecmp.cmp(original_file, get_software_image_path(original_file), shallow=False) == True:
                         log.log(f'Software image already exists. Ensuring path is in database: `{get_software_image_path(original_file)}`')
