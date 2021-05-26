@@ -5,9 +5,11 @@ from backend.dhri_utils import dhri_slugify
 
 
 class Software(models.Model):
+    default_image_path = 'software_headers/default.jpg'
+
     slug = models.CharField(max_length=200, blank=False, unique=True)
     name = models.CharField(max_length=250)
-    image = models.ImageField(upload_to='software_headers/', default='software_headers/default.jpg')
+    image = models.ImageField(upload_to='software_headers/', default=default_image_path)
     what = models.TextField(blank=True)
     why = models.TextField(blank=True)
     # software_instructions ——> Instructions
@@ -18,6 +20,10 @@ class Software(models.Model):
     def save(self, *args, **kwargs):
         self.slug = dhri_slugify(self.name)
         super(Software, self).save()
+
+    @property
+    def default_image(self):
+        return self.default_image_path
 
 
 class OperatingSystem(models.Model):
