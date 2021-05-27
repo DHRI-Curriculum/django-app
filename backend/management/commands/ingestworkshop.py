@@ -60,20 +60,17 @@ class Command(BaseCommand):
             parent_repo = d.get('parent_repo')
 
             # 1. ENTER WORKSHOP
-            if Workshop.objects.filter(slug=dhri_slugify(full_name)).count():
-                workshop = Workshop.objects.get(slug=dhri_slugify(full_name))
-                created = False
-            else:
-                workshop, created = Workshop.objects.update_or_create(
-                    name=full_name,
-                    slug=dhri_slugify(full_name),
-                    defaults={
-                        'parent_backend': parent_backend,
-                        'parent_branch': parent_branch,
-                        'parent_repo': parent_repo,
-                        'image_alt': imagedata['alt']
-                    }
-                )
+
+            workshop, created = Workshop.objects.update_or_create(
+                name=full_name,
+                defaults={
+                    'slug': slug,
+                    'parent_backend': parent_backend,
+                    'parent_branch': parent_branch,
+                    'parent_repo': parent_repo,
+                    'image_alt': imagedata['alt']
+                }
+            )
 
             def _get_valid_name(filename):
                 return filename.replace('@', '') # TODO: should exist a built-in for django here?
@@ -274,9 +271,7 @@ class Command(BaseCommand):
                 
                 #print(lesson)
                 for image in lessoninfo.get('lesson_images'):
-                    #print('image time!')
-                    LessonImage.objects.update_or_create(
-                        url=image.get('path'), lesson=lesson, alt=image.get('alt'))
+                    LessonImage.objects.update_or_create(url=image.get('path'), lesson=lesson, defaults={'alt': image.get('alt')})
 
                 if not lessoninfo.get('challenge') and lessoninfo.get('solution'):
                     log.error(f'Lesson `{lesson.title}` (in workshop {workshop}) has a solution but no challenge. Correct the files on GitHub and rerun the buildworkshop command and then re-attempt the ingestworkshop command. Alternatively, you can change the datafile content manually.')
