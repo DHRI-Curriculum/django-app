@@ -133,7 +133,7 @@ def search(obj, name, log=None):
             if obj.objects.filter(**{f'{field_name}__icontains': clean_name(name)}).count() == 1:
                 return obj.objects.get(**{f'{field_name}__icontains': clean_name(name)})
             elif obj.objects.filter(**{f'{field_name}__icontains': clean_name(name)}).count() > 1:
-                print(obj.objects.filter(**{f'{field_name}__icontains': clean_name(name)}))
+                # print(obj.objects.filter(**{f'{field_name}__icontains': clean_name(name)}))
                 log.error(f'Searching for {obj.__name__} with the name `{name}` (cleaned version `{clean_name(name)}`) turns up multiple results. Please write a more specific name for the prerequired {obj.__name__} in the markdown on GitHub and rerun the build and ingest commands for the prerequisites.')
 
     log.error(f'Searching for {obj.__name__} with the name `{name}` (cleaned version `{clean_name(name)}`) cannot be found. Please write a more specific name for the prerequired {obj.__name__} in the markdown on GitHub and rerun the build and ingest commands for the prerequisites.')

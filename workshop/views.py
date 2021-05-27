@@ -128,10 +128,6 @@ class FrontmatterView(DetailView):
                     if not (req, software) in _['recommended_installs']:
                         _['recommended_installs'].append((req, software))
         
-        print(_['installs'])
-        print(_['required_installs'])
-        print(_['recommended_installs'])
-
         return _
 
 

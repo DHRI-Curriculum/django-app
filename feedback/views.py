@@ -32,17 +32,16 @@ class Feedback(LoginRequiredMixin, View):
     form = IssueForm()
 
     def get(self, request, feedback_type, pk=None):
-        payload = {'feedback_type': feedback_type}
+        context = {'feedback_type': feedback_type}
         if feedback_type == "lesson":
             lesson = get_object_or_404(Lesson, pk=pk)
-            payload['lesson'] = lesson
+            context['lesson'] = lesson
         elif feedback_type == "website":
             pass
         else:
             return HttpResponse('''The requested feedback type (''' + feedback_type + ''') does not exist.''')
-        payload['form'] = self.form
-        print(payload)
-        return render(request, 'feedback/feedback_popup.html', payload)
+        context['form'] = self.form
+        return render(request, 'feedback/feedback_popup.html', context)
 
     def post(self, request, feedback_type, pk=None):
         self.form = IssueForm(request.POST)

@@ -269,7 +269,6 @@ class Command(BaseCommand):
                         'text': lessoninfo.get('content'),
                     })
                 
-                #print(lesson)
                 for image in lessoninfo.get('lesson_images'):
                     LessonImage.objects.update_or_create(url=image.get('path'), lesson=lesson, defaults={'alt': image.get('alt')})
 
