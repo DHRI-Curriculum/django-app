@@ -49,14 +49,12 @@ class GitHubParserCache():
         self.path = CACHE_DIRS['PARSER'] / f'{len(self.string)}{slugify(string[:100])}.json'
 
         if not self.path.exists() or force_download == True or _is_expired(self.path, force_download=force_download) == True:
-            # print('loading github parser...')
             self.data = self._setup_raw_content()
             self.save()
         elif self.path.exists():
             self.data = self.load()
             # Checking whether the length of the string cached has changed (``_check_length``) or whether GitHub processed the string in the first place (``_gh_processed``) — if not, run processor again
             if self._gh_processed() == False:  # self._check_length() == False or  (this should be part of the filename now)
-                # print('reloading github parser...')
                 self.data = self._setup_raw_content()
                 self.save()
 
@@ -259,10 +257,8 @@ class GitHubParser():
             return None
 
         if not isinstance(string, str):
-            print('Not a string:')
-            print(string)
-            exit()
-        
+            self.log.error(f'String provided to `quote_converter` was not a string: {string}')
+            
         if string == '':
             return string
 
