@@ -2,7 +2,7 @@ Django==3.1.12
 django-admin-sortable==2.2.3
 mistune==0.8.4
 pygments==2.7.4
-Pillow==8.1.1
+Pillow==8.2.0
 requests==2.23.0
 nameparser==1.0.6
 colorama==0.4.3
