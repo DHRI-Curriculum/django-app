@@ -227,5 +227,24 @@ by_groups:
         - text: GitHub
           url: http://www.github.com/pswee001
           cat: personal
+    
+    - first_name: Connor
+      last_name: French
+      username: connorfrench
+      bio: Connor French is a Ph.D. candidate in the Biology department. He studies the impact of historical climate change on the spatial distribution of animals, with a focus on reptiles and amphibians in the Brazilian Atlantic Forest. As a GC Digital Fellow, Connor specialized in proselytizing the R programming language, especially in contexts outside of his narrow academic field.
+      img: backend/setup/profile-pictures/jojo-karlin.jpg
+      groups:
+        - Team
+      pronouns: 'he/him'
+      links:
+        - text: Twitter
+          url: http://www.twitter.com/frog_phylo
+          cat: personal
+        - text: Personal website
+          url: http://www.connor-french.com/
+          cat: personal
+        - text: GitHub
+          url: http://www.github.com/connor-french
+          cat: personal
 
 default: backend/setup/profile-pictures/default.jpg
