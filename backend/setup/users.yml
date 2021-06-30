@@ -138,6 +138,25 @@ by_groups:
         - text: Personal website
           url: http://www.cuny.is/oildefon
           cat: personal
+          
+    - first_name: Connor
+      last_name: French
+      username: connorfrench
+      bio: Connor French is a Ph.D. candidate in the Biology department. He studies the impact of historical climate change on the spatial distribution of animals, with a focus on reptiles and amphibians in the Brazilian Atlantic Forest. As a GC Digital Fellow, Connor specialized in proselytizing the R programming language, especially in contexts outside of his narrow academic field.
+      img: backend/setup/profile-pictures/jojo-karlin.jpg
+      groups:
+        - Team
+      pronouns: 'he/him'
+      links:
+        - text: Twitter
+          url: http://www.twitter.com/frog_phylo
+          cat: personal
+        - text: Personal website
+          url: http://www.connor-french.com/
+          cat: personal
+        - text: GitHub
+          url: http://www.github.com/connor-french
+          cat: personal
 
   USER:
 
@@ -147,7 +166,7 @@ by_groups:
       groups:
         - Team
       bio: 'Kristen Hackett is an activist, scholar, and educator working toward decolonized, anti-racist and just urban futures in New York City. She is a member of the Queens-based Justice for All Coalition and a doctoral candidate and former fellow at The Graduate Center, City University of New York. Her dissertation work titled "Recalibrating Queens" is a digital history and activist scholarship project that publicly excavates the history of development and change in the borough over time with an eye towards reframing the contemporary moment (https://recalibratingqueens.nyc). Relatedly, she has taught courses on urban studies, urban research methods, social movements, and environmental psychology. As a GC Digital Fellow with GCDI, a co-coordinator of OpenCUNY, and fellow with The OpenLab she has led workshops, supported colleagues, and written about using digital tools and methods for web-based projects related to teaching, learning, community-building and more. For more information: https://kristenhackett.info/.'
-      img: backend/setup/profile-pictures/kristen-hackett.jpg
+      img: backend/setup/profile-pictures/connor-french.jpg
       blurb:
         text: "I slowly got into building websites and web-based projects. It started with using WordPress to build a public profile to share my work and research interests. Over time, it has melded into a critical component of my approach to public scholarship and education. A critical step in this evolution was attending the DRI where I gained a foundational understanding of the larger ecosystem of digital tools of which WordPress was one small part. Critical for me was understanding the different affordances and relationships between different digital tools and environments. I now understand a lot more of what I'm doing, technically, when I'm working with those tools. This helps me in understanding what tools I need for a specific task and how they could be integrated to best support my ambitions for a project, and what work-arounds I might explore if needed. Sometimes it can still be a headache, but definitely less so with time, and I've learned to reframe the frustration as an opportunity to reach out to colleagues and/or learn a new tool or technique. And the rewards of doing this work over time are evident today: my dissertation includes a web-based project that integrates a few different tools already, with plans for expansion (https://recalibratingqueens.nyc) and I work as a consultant on multiple web-based projects."
         workshop: git
@@ -228,23 +247,5 @@ by_groups:
           url: http://www.github.com/pswee001
           cat: personal
     
-    - first_name: Connor
-      last_name: French
-      username: connorfrench
-      bio: Connor French is a Ph.D. candidate in the Biology department. He studies the impact of historical climate change on the spatial distribution of animals, with a focus on reptiles and amphibians in the Brazilian Atlantic Forest. As a GC Digital Fellow, Connor specialized in proselytizing the R programming language, especially in contexts outside of his narrow academic field.
-      img: backend/setup/profile-pictures/jojo-karlin.jpg
-      groups:
-        - Team
-      pronouns: 'he/him'
-      links:
-        - text: Twitter
-          url: http://www.twitter.com/frog_phylo
-          cat: personal
-        - text: Personal website
-          url: http://www.connor-french.com/
-          cat: personal
-        - text: GitHub
-          url: http://www.github.com/connor-french
-          cat: personal
 
 default: backend/setup/profile-pictures/default.jpg
