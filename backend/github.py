@@ -979,7 +979,7 @@ class WorkshopCache(Helper, GitCache):
                 if not os.path.exists(new_path):
                     copyfile(local_image, new_path)
             else:
-                raise NotImplementedError('This script does not yet download images as it should be synced in the repository.')
+                raise NotImplementedError(f'Ran into an error while trying to copy into the static directory. This script does not yet download images as it should be synced in the repository. The following is the path for troubleshooting:\n\n{local_image}\n\n')
 
             path = settings.STATIC_URL + f'website/images/lessons/{self.repository}/' + os.path.basename(local_image)
             img_data['src'] = path
