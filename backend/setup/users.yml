@@ -147,7 +147,7 @@ by_groups:
       last_name: French
       username: connorfrench
       bio: Connor French is a Ph.D. candidate in the Biology department. He studies the impact of historical climate change on the spatial distribution of animals, with a focus on reptiles and amphibians in the Brazilian Atlantic Forest. As a GC Digital Fellow, Connor specialized in proselytizing the R programming language, especially in contexts outside of his narrow academic field.
-      img: backend/setup/profile-pictures/jojo-karlin.jpg
+      img: backend/setup/profile-pictures/connor-french.jpeg
       groups:
         - Team
       pronouns: 'he/him'
