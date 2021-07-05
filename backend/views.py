@@ -113,7 +113,11 @@ class WorkshopRedirectView(View):
     def get(self, request, *args, **kwargs):
         workshops = Workshop.objects.filter(slug__icontains=kwargs.get("slug"))
         if workshops.count() == 1:
-            url = reverse("workshop:frontmatter", kwargs={"slug": workshops[0].slug})
+            if kwargs.get("praxis") == "theory-to-practice":
+                pattern = "workshop:praxis"
+            else:
+                pattern = "workshop:frontmatter"
+            url = reverse(pattern, kwargs={"slug": workshops[0].slug})
             return HttpResponseRedirect(url)
         elif workshops.count() == 0:
             raise Http404(f"Cannot find workshop matching {kwargs.get('slug')}.")
