@@ -4,15 +4,20 @@ from django.contrib.auth.models import User
 
 
 
+class ProfileManager(models.Manager):
+    def get_by_natural_key(self, first_name, last_name):
+        return self.get(user__first_name=first_name, user__last_name=last_name)
+
 class Profile(models.Model):    
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(default='default.jpg',
-                              upload_to='profile_pictures')
+    image = models.ImageField(default='default.jpg', upload_to='profile_pictures')
     email_confirmed = models.BooleanField(default=False)
     favorites = models.ManyToManyField(Workshop, blank=True)
     instructor_requested = models.BooleanField(default=False)
     bio = models.TextField(null=True, blank=True)
     pronouns = models.TextField(null=True, blank=True)
+
+    objects = ProfileManager()
 
     def __str__(self):
         return f'{self.user.username}\'s Profile'
@@ -22,6 +27,9 @@ class Profile(models.Model):
 
     def project_links(self):
         return self.links.filter(cat='PR')
+
+    def natural_key(self):
+        return (self.user.first_name, self.user.last_name)
 
 
 class ProfileLink(models.Model):

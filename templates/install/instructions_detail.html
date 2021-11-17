@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load markdownify install_navigation %}
+
+{% block secondary_menu %}
+    {% install_navigation %}
+{% endblock %}
+
+{% block before_content %}
+        {% if 'macintosh' in request.META.HTTP_USER_AGENT.lower and not 'mac' in instructions.operating_system.name.lower %}
+            <div class="w-100 py-5">
+                <div class="alert alert-info" id="no-login">
+                    Note that you are viewing instructions for {{ instructions.operating_system.name }} but you are on a macOS computer. <strong><a href="{% url 'install:instructions' software_slug=software_slug os_slug=other_os_slug %}">Click here to visit the installation instructions for your computer.</a></strong>
+                </div>
+            </div>
+        {% elif 'windows' in request.META.HTTP_USER_AGENT.lower and not 'windows' in instructions.operating_system.name.lower %}
+            <div class="w-100 py-5">
+                <div class="alert alert-info" id="no-login">
+                    Note that you are viewing instructions for {{ instructions.operating_system.name }} but you are on a Windows computer. <strong><a href="{% url 'install:instructions' software_slug=software_slug os_slug=other_os_slug %}">Click here to visit the installation instructions for your computer.</a></strong>
+                </div>
+            </div>
+        {% endif %}
+{% endblock %}
+
+{% block hero %}
+<div class="pt-5 pb-4 border-bottom">
+    <h2 class="py-2">How to install {{ instructions.software.name }} for {{ instructions.operating_system.name }}</h2>
+    <div class="lead">
+        <p>{{ instructions.software.what | markdown | safe }}</p>
+        <p>{{ instructions.software.why | markdown | safe }}</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block main %}
+<section id="installation-steps">
+    <div class="container-xxl">
+        {% for step in instructions.steps.all %}
+        <div class="row py-2 my-4">
+            <div class="col-12">
+                <h3 class="mb-3">Step {{ step.order }}{% if step.header %}: {{ step.header | markdown | striptags | safe }}{% endif %}</h3>
+            </div>
+            {% if step.screenshots.count %}
+                <div class="col-12 col-lg-7">
+                    <div class="lead" data-replace-internal-links="true">{{ step.text | safe }}</div>
+                </div>
+                <div class="col-12 col-lg-5">
+                    {% for screenshot in step.screenshots.all %}
+                        <a style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modal_{{ forloop.parentloop.counter }}"><img src="{{ screenshot.image.url }}" class="shadow shadow-sm border img-fluid mb-2" alt="{% if screenshot.alt_text == 'No alt text' %}{{ screenshot }}{% else %}{{ screenshot.alt_text }}{% endif %}"></a>
+                        <div class="modal fade" id="modal_{{ forloop.parentloop.counter }}" tabindex="-1" aria-labelledby="modal_{{ forloop.parentloop.counter }}_label" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="modal_{{ forloop.parentloop.counter }}_label">Screenshot</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body text-center">
+                                        <p class="d-none">{{ screenshot.image.url }}</p>
+                                        <img src="{{ screenshot.image.url }}" class="img-fluid" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="col-12">
+                    <div class="lead" data-replace-internal-links="true">{{ step.text | safe }}</div>
+                </div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

@@ -1,25 +1,18 @@
+{% comment %}
+
+This is the template for each of the "installation boxes" in the main menu at the top of each page.
+
+{% endcomment %}
 <div class="col-12 col-sm-6 col-xl-4 mb-3">
     <div class="card h-100 shadow-sm">
-            {% for os, instruction in data.items %}
-                {% if forloop.first %}
-                    {% if instruction.image %}
-                        <div class="card-img">
-                            <a href="{% url 'install:installation' slug=instruction.slug %}" class="stretched-link text-decoration-none"><img src="{{ instruction.image.url }}" class="card-img-top" alt="{{ instruction.software.software }}"></a>
-                        </div>
-                    {% else %}
-                    {% endif %}
-                    <div class="card-img-overlay d-flex flex-column justify-content-center align-items-center">
-                        <h5 class="card-title m-0 bolder"></h5>
-                        <div class="w-75 mb-1 font-weight-bolder text-center">
-                            Install {{ instruction.software.software }} for
-                        </div>
-                        <div class="btn-group" role="group" aria-label="Choose installation for an operating system">
-                {% endif %}
-                            <a class="btn {% if 'macintosh' in request.META.HTTP_USER_AGENT.lower and 'mac' in instruction.software.operating_system.lower %}btn-primary{% elif 'windows' in request.META.HTTP_USER_AGENT.lower and 'windows' in instruction.software.operating_system.lower %}btn-primary{% else %}btn-outline-primary{% endif %} btn-sm" href="{% url 'install:installation' slug=instruction.slug %}" style="min-width:100px;" alt="Installation instructions for {{ instruction.software.operating_system }}">{{ instruction.software.operating_system }}</a>
-                {% if forloop.last %}
-                        </div>
-                    </div>
-                {% endif %}
-            {% endfor %}
+        {% if software.image and software.default_image != software.image %}
+            <div class="card-img">
+                <a href="{% if standard_os_slug %}{% url 'install:instructions' software_slug=software.slug os_slug=standard_os_slug %}{% else %}{% url 'install:software' slug=software.slug %}{% endif %}" class="stretched-link text-decoration-none"><img src="{{ software.image.url }}" class="card-img-top" alt="{{ instruction.software.name }}"></a>
+            </div>
+        {% else %}
+            <div class="card-body">
+                <h3 class="text-center"><a href="{% if standard_os_slug %}{% url 'install:instructions' software_slug=software.slug os_slug=standard_os_slug %}{% else %}{% url 'install:software' slug=software.slug %}{% endif %}" class="stretched-link text-decoration-none">{{ software.name }}</a></h3>
+            </div>
+        {% endif %}
     </div>
 </div>

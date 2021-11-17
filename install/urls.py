@@ -1,12 +1,11 @@
 from django.urls import path
-from django.conf import settings
-from django.conf.urls.static import static
 
-from .views import Index, Detail
+from .views import *
 
 app_name = 'install'
 
 urlpatterns = [
-  path('', Index.as_view(), name='index'),
-  path('<str:slug>/', Detail.as_view(), name='installation')
+    path('', SoftwareIndexView.as_view(), name='index'),
+    path('<str:slug>/', SoftwareView.as_view(), name='software'),
+    path('<str:software_slug>/<str:os_slug>/', OSView.as_view(), name='instructions')
 ]

@@ -7,6 +7,10 @@ from django.contrib.auth.models import User
 from backend.dhri_utils import dhri_slugify
 
 
+class WorkshopManager(models.Manager):
+    def get_by_natural_key(self, name):
+        return self.get(name=name)
+
 class Workshop(models.Model):
     name = models.CharField(max_length=200)
     slug = models.CharField(max_length=200, blank=True, unique=True)
@@ -19,6 +23,11 @@ class Workshop(models.Model):
     image = models.ImageField(
         upload_to='workshop_headers/', default='workshop_headers/default.jpg')
     image_alt = models.CharField(max_length=200, blank=True, null=True)
+
+    objects = WorkshopManager()
+
+    def natural_key(self):
+        return self.name
 
     def save(self, *args, **kwargs):
         if not self.id:
@@ -84,6 +93,13 @@ class Contributor(models.Model):
                 role='Ed', current=False)},
         ]
 
+    def get_image_from_github(self):
+        if self.url and 'github.com/' in self.url:
+            gh_username = [x for x in self.url.split('/') if x][2]
+            return f'https://www.github.com/{gh_username}.png'
+        else:
+            return None
+
 
 class Frontmatter(models.Model):
     workshop = models.OneToOneField(
@@ -102,37 +118,70 @@ class Frontmatter(models.Model):
         return f'Frontmatter for {self.workshop.name}'
 
 
+class URL(models.Model):
+    label = models.TextField(max_length=200, blank=True, null=True)
+    url = models.TextField(max_length=200, null=True, blank=True)
+
+    class Meta:
+        unique_together = ('label', 'url')
+
+
+class PrerequisiteManager(models.Manager):
+    def workshops(self):
+        return self.filter(category=Prerequisite.WORKSHOP)
+    
+    def external_links(self):
+        return self.filter(category=Prerequisite.EXTERNAL_LINK)
+    
+    def recommended_installs(self):
+        return self.filter(category=Prerequisite.SOFTWARE, recommended=True)
+    
+    def required_installs(self):
+        return self.filter(category=Prerequisite.SOFTWARE, required=True)
+    
+    def installs(self):
+        return self.filter(category=Prerequisite.SOFTWARE, recommended=False, required=False)
+
+    def softwares(self):
+        return self.filter(category=Prerequisite.SOFTWARE)
+
+    def insights(self):
+        return self.filter(category=Prerequisite.INSIGHT)
+
+
+
+
 class Prerequisite(models.Model):
     EXTERNAL_LINK = 'external'
-    INSTALL = 'install'
+    SOFTWARE = 'software'
     INSIGHT = 'insight'
     WORKSHOP = 'workshop'
     CHEATSHEET = 'cheatsheet'
     CATEGORY_CHOICES = [
         (EXTERNAL_LINK, 'External link'),
         (INSIGHT, 'Insight'),
-        (INSTALL, 'Installation instructions for software'),
+        (SOFTWARE, 'Installation instructions for software'),
         (WORKSHOP, 'Workshop'),
         (CHEATSHEET, 'Cheat sheet'),
     ]
-
-    text = models.TextField(blank=True, null=True)
-    label = models.TextField(max_length=200, blank=True, null=True)
-    url = models.TextField(max_length=200, null=True, blank=True)
-    required = models.BooleanField(default=False)
-    recommended = models.BooleanField(default=False)
-    frontmatter = models.ManyToManyField(Frontmatter, related_name="prerequisites")
-    linked_workshop = models.ForeignKey(Workshop, related_name="prerequisite_for", on_delete=models.CASCADE, null=True)
-    linked_software = models.ManyToManyField(Software, related_name="prerequisite_for", through='PrerequisiteSoftware')
-    linked_insight = models.ForeignKey(Insight, related_name="prerequisite_for", on_delete=models.CASCADE, null=True)
     category = models.CharField(max_length=10, choices=CATEGORY_CHOICES, default=EXTERNAL_LINK)
 
-
-class PrerequisiteSoftware(models.Model):
-    prerequisite = models.ForeignKey(Prerequisite, on_delete=models.CASCADE)
-    software = models.ForeignKey(Software, on_delete=models.CASCADE)
+    text = models.TextField(blank=True, null=True)
     required = models.BooleanField(default=False)
     recommended = models.BooleanField(default=False)
+    
+    frontmatter = models.ForeignKey(Frontmatter, related_name="prerequisites", on_delete=models.CASCADE, null=False)
+    
+    linked_workshop = models.ForeignKey(Workshop, on_delete=models.CASCADE, null=True) # related_name="prerequisite_for", 
+    linked_software = models.ForeignKey(Software, on_delete=models.CASCADE, null=True) # related_name="prerequisite_for", 
+    linked_insight = models.ForeignKey(Insight, on_delete=models.CASCADE, null=True) # related_name="prerequisite_for", 
+    linked_external = models.ForeignKey(URL, on_delete=models.CASCADE, null=True) # related_name="prerequisite_for", 
+
+    def __str__(self):
+        return f'{self.text}'
+
+    objects = PrerequisiteManager()
+
 
 
 

@@ -29,7 +29,7 @@
 
 {% block hero %}
 <div class="pt-5 pb-4 border-bottom">
-    <h2 class="py-2">How to install {{ instruction.software.software }} for {{ instruction.software.operating_system }}</h2>
+    <h2 class="py-2">How to install {{ instruction.software.name }} for {{ instruction.software.operating_system }}</h2>
     <div class="lead">
         <p>{{ instruction.what | markdown | safe }}</p>
         <p>{{ instruction.why | markdown | safe }}</p>

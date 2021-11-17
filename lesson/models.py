@@ -7,18 +7,29 @@ import random
 import re
 
 
+class LessonManager(models.Manager):
+    def get_by_natural_key(self, title, workshop_name=None):
+        if isinstance(title, tuple) or isinstance(title, list):
+            title, workshop_name = title
+        
+        return self.get(title=title, workshop__name = workshop_name)
+
 class Lesson(models.Model):
     title = models.CharField(max_length=200)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    workshop = models.ForeignKey(
-        Workshop, on_delete=models.CASCADE, related_name='lessons')
+    workshop = models.ForeignKey(Workshop, on_delete=models.CASCADE, related_name='lessons')
     text = models.TextField()
     terms = models.ManyToManyField(Term, blank=True)
     order = models.PositiveSmallIntegerField(default=0)
 
+    objects = LessonManager()
+
     class Meta:
         ordering = ['order']
+
+    def natural_key(self):
+        return (self.title, self.workshop.name)
 
     def __str__(self):
         return f'{self.title}'

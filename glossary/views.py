@@ -2,12 +2,14 @@ from django.http.response import HttpResponseRedirect
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.urls import reverse
+from django.shortcuts import render
 import random
 from .models import Term
 
 
 class TermList(ListView):
     model = Term
+    no_term_template = 'glossary/no_terms.html'
 
     def get(self, request, *args, **kwargs):
         self.slug = self.kwargs.get('slug')
@@ -22,11 +24,13 @@ class TermList(ListView):
             else:
                 slug = self.slug[:1].upper()
                 url = reverse('glossary:letter', kwargs={'slug': slug})
-            print(url)
             return HttpResponseRedirect(url)
 
         if self.get_queryset().count() == 0:
+            if not Term.objects.all().count():
+                return render(request, self.no_term_template)
             return HttpResponseRedirect(reverse('glossary:index'))
+
         return super().get(request, *args, **kwargs)
 
     def get_queryset(self):

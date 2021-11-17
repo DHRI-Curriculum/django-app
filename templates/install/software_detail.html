@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load markdownify install_navigation %}
+
+{% block secondary_menu %}
+    {% install_navigation %}
+{% endblock %}
+
+{% block hero %}
+<div class="pt-5 pb-4 border-bottom">
+    <h2 class="py-2">How to install {{ software.name }}</h2>
+    <div class="lead">
+        <p>{{ software.what | markdown | safe }}</p>
+        <p>{{ software.why | markdown | safe }}</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block main %}
+<section id="software-list">
+    <div class="container-xxl">
+        <div class="row">
+            <div class="col-12 pt-4">
+                <h3 class="pb-2">Select Operating System</h3>
+                {% for instruction in software.software_instructions.all %}
+                    <a href="{% url 'install:instructions' software_slug=software.slug os_slug=instruction.operating_system.slug %}" class="btn btn-lg mr-3 {% if instruction.operating_system.name == 'macos' and is_mac %}btn-warning shadow-sm{% elif instruction.operating_system.name == 'windows' and is_windows %}btn-warning shadow-sm{% else%}btn-dark{% endif %}">{% if instruction.operating_system.name == 'windows' %}Windows{% elif instruction.operating_system.name == 'macos' %}macOS{% endif %}</a>
+                    {% endfor %}
+                </div>
+            </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,59 +1,56 @@
 from django.dispatch import receiver
 from django.db.models.signals import post_delete, pre_save
 from django.db import models
-
 from backend.dhri_utils import dhri_slugify
 
 
 class Software(models.Model):
-    software = models.CharField(max_length=250)
-    operating_system = models.CharField(max_length=250)
+    default_image_path = 'software_headers/default.jpg'
 
-    def __str__(self):
-        return f'{self.software} ({self.operating_system})'
-
-
-class InstructionManager(models.Manager):
-    def by_software(self):
-        l = dict()
-        for s in Software.objects.all().order_by('software'):
-            if not s.software in l:
-                l[s.software] = dict()
-            l[s.software][s.operating_system] = Instruction.objects.get(
-                software=s)
-        return l
-
-    def by_os(self):
-        l = dict()
-        for s in Software.objects.all().order_by('software'):
-            if not s.operating_system in l:
-                l[s.operating_system] = dict()
-            l[s.operating_system][s.software] = Instruction.objects.get(
-                software=s)
-        return l
-
-
-class Instruction(models.Model):
-    slug = models.CharField(max_length=200, blank=True, unique=True)
-    software = models.ForeignKey(
-        Software, on_delete=models.CASCADE, related_name='instructions')
+    slug = models.CharField(max_length=200, blank=False, unique=True)
+    name = models.CharField(max_length=250)
+    image = models.ImageField(upload_to='software_headers/', default=default_image_path)
     what = models.TextField(blank=True)
     why = models.TextField(blank=True)
-    image = models.ImageField(
-        upload_to='software_headers/', default='software_headers/default.jpg')
-    objects = InstructionManager()
-
-    def save(self, *args, **kwargs):
-        self.slug = dhri_slugify(f'{self.software.software}-{self.software.operating_system}')
-        super(Instruction, self).save()
+    # software_instructions ——> Instructions
 
     def __str__(self):
-        return f'Installation instruction for {self.software.software} ({self.software.operating_system})'
+        return f'{self.name}'
+
+    def save(self, *args, **kwargs):
+        self.slug = dhri_slugify(self.name)
+        super(Software, self).save()
+
+    @property
+    def default_image(self):
+        return self.default_image_path
+
+
+class OperatingSystem(models.Model):
+    name = models.CharField(max_length=250, blank=False, unique=True)
+    slug = models.CharField(max_length=200, blank=False, unique=True)
+    # os_instructions ——> Instructions
+
+    def __str__(self):
+        return f'{self.name}'
+
+    def save(self, *args, **kwargs):
+        self.slug = dhri_slugify(self.name)
+        super(OperatingSystem, self).save()
+
+
+class Instructions(models.Model):
+    software = models.ForeignKey(Software, on_delete=models.CASCADE, related_name='software_instructions')
+    operating_system = models.ForeignKey(OperatingSystem, on_delete=models.CASCADE, related_name='os_instructions')
+
+    def __str__(self):
+        return f'Installation instructions for {self.software.name} running on {self.operating_system.name}'
+
 
 
 class Step(models.Model):
-    instruction = models.ForeignKey(
-        Instruction, on_delete=models.CASCADE, related_name='steps')
+    instructions = models.ForeignKey(
+        Instructions, on_delete=models.CASCADE, related_name='steps')
     order = models.PositiveSmallIntegerField()
     text = models.TextField(blank=False)
     header = models.TextField(blank=True)
@@ -62,22 +59,20 @@ class Step(models.Model):
         ordering = ('order',)
 
     def __str__(self):
-        return f'Instruction step {self.order} for {self.instruction.software.software} ({self.instruction.software.operating_system})'
+        return f'Instructions step {self.order} for {self.instructions.software.name} ({self.instructions.operating_system.name})'
 
 
 class Screenshot(models.Model):
-    step = models.ForeignKey(
-        Step, on_delete=models.CASCADE, related_name='screenshots')
+    step = models.ForeignKey(Step, on_delete=models.CASCADE, related_name='screenshots')
     order = models.PositiveSmallIntegerField()
     image = models.ImageField(upload_to='installation_screenshots')
-    # gh_name = models.CharField(max_length=255, blank=False, unique=True)
     alt_text = models.TextField(blank=False, default="No alt text")
 
     class Meta:
         ordering = ('order',)
 
     def __str__(self):
-        return f'Screenshot {self.order} for step {self.step.order} ({self.step.instruction.software.software}/{self.step.instruction.software.operating_system})'
+        return f'Screenshot {self.order} for step {self.step.order} ({self.step.instruction.software.name}/{self.step.instruction.software.operating_system})'
 
 
 ####### Below, see https://cmljnelson.blog/2020/06/22/delete-files-when-deleting-models-in-django/ ######

@@ -7,6 +7,7 @@ from ._shared_functions import crop_and_save
 
 import yaml
 import pathlib
+import requests
 
 SAVE_DIR = f'{settings.BUILD_DIR}_meta/users'
 SAVE_DIR_IMG = f'{SAVE_DIR}/images'
@@ -78,6 +79,13 @@ class Command(BaseCommand):
                     'groups': u.get('groups', [])
                 }
 
+                for link in u.get('links', []):
+                    user['profile']['links'].append({
+                        'label': link.get('text'),
+                        'url': link.get('url'),
+                        'cat': link.get('cat')
+                    })
+
                 if u.get('bio'):
                     user['profile']['bio'] = PARSER.fix_html(u.get('bio'))
 
@@ -91,14 +99,23 @@ class Command(BaseCommand):
                         user['profile']['image'] = f'{SAVE_DIR_IMG}/{filename}.jpg'
                         crop_and_save(u['img'], user['profile']['image'], MAX_SIZE)
                 else:
-                    log.warning(f'User `{u.get("username")}` does not have an image assigned to them and will be assigned the default picture. Add filepaths to an existing file in your datafile (`{SAVE_DIR}/{DATA_FILE}`) or follow the steps in the documentation to add user images if you want to make sure the specific user has a profile picture. Then, rerun `python manage.py buildusers` or `python manage.py build`')
+                    # Ask user if they want to get image from GitHub instead? (force: auto-try)
 
-                for link in u.get('links', []):
-                    user['profile']['links'].append({
-                        'label': link.get('text'),
-                        'url': link.get('url'),
-                        'cat': link.get('cat')
-                    })
+                    # Then, try to get image from GitHub.
+                    fixed = False
+                    if len([x for x in user['profile']['links'] if 'github.com/' in x['url']]):
+                        url = [x for x in user['profile']['links'] if 'github.com/' in x['url']][0]['url']
+                        gh_username = [x for x in url.split('/') if x][2]
+                        
+                        r = requests.get(f'https://www.github.com/{gh_username}.png')
+                        if r.status_code == 200:
+                            user['profile']['image'] = f'{SAVE_DIR_IMG}/{gh_username}.png'
+                            with open(user['profile']['image'], 'wb+') as f:
+                                f.write(r.content)
+                            fixed = True
+                            
+                    if not fixed:
+                        log.warning(f'User `{u.get("username")}` does not have an image assigned to them and will be assigned the default picture. Add filepaths to an existing file in your datafile (`{SAVE_DIR}/{DATA_FILE}`) or follow the steps in the documentation to add user images if you want to make sure the specific user has a profile picture. Then, rerun `python manage.py buildusers` or `python manage.py build`')
 
                 users.append(user)
 

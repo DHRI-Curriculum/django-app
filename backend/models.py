@@ -39,7 +39,7 @@ ALL_MODELS = [
     Term,
 
     ### app: install
-    Software, Instruction, Step, Screenshot,
+    Software, Instructions, Step, Screenshot,
 
     ### app: insight
     Insight, Section, OperatingSystemSpecificSection,

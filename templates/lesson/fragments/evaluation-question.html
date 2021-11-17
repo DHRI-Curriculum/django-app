@@ -1,7 +1,8 @@
 {% load markdownify static %}
 
 <div class="d-none alert alert-primary shadow" id="alert-{{ question.id }}">Try again!</div>
-<p class="mt-2"><strong>{{ question.label | markdown | safe }}</strong>{% if question.has_answers %}{% if question.has_multiple_answers %} (Select all that apply){% elif question.has_single_answer %} (Select one of the following){% endif %}{% endif %}</p>
+
+<p class="mt-2"><strong>{{ question.label | markdown | safe }}</strong>{% if question.has_answers %}{% if question.has_multiple_answers and not "which one of the following best describes" in question.label|lower and not "select all that apply" in question.label|lower and not "select the correct" in question.label|lower and not "select the following" in question.label|lower and not "select from the following" in question.label|lower and not "choose the correct" in question.label|lower and not "choose the following" in question.label|lower %} (Select all that apply){% elif question.has_single_answer %} (Select one of the following){% endif %}{% endif %}</p>
 {% if question.has_answers %}
     <form class="mt-0 submit-answer" data-qid="{{ question.id }}">
         {% for answer in question.answers.all %}

@@ -29,13 +29,14 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--force', action='store_true',
                             help='Automatically approves any requests to replace/update existing local data.')
-        parser.add_argument('--forcedownload', action='store_true',
-                            help='Forces the script to re-load all the locally stored data, despite any settings made for expiry dates on caches.')
         parser.add_argument('--save_all', action='store_true')
         parser.add_argument('--silent', action='store_true',
                             help='Makes as little output as possible, although still saves all the information in log files (see debugging docs).')
         parser.add_argument('--verbose', action='store_true',
                             help='Provides all output possible, which can be overwhelming. Good for debug purposes, not for the faint of heart.')
+
+        parser.add_argument('--branch', nargs='+', type=str,
+                           help='Provide a specific branch of the workshop repository to build.')
 
         group = parser.add_mutually_exclusive_group(required=False)
         group.add_argument('--name', nargs='+', type=str,
@@ -56,6 +57,11 @@ class Command(BaseCommand):
             log.error(
                 'No workshop names provided. Use any of the following settings:\n    --name [repository name]\n    --all')
 
+        if not options.get('branch'):
+            branch = 'v2.0'
+        else:
+            branch = options.get('branch')
+
         log.log(
             'Building workshop files... Please be patient as this can take some time.')
 
@@ -68,7 +74,7 @@ class Command(BaseCommand):
             if not pathlib.Path(SAVE_DIR).exists():
                 pathlib.Path(SAVE_DIR).mkdir(parents=True)
 
-            branch = 'v2.0'  # TODO: fix this...
+            # branch = 'v2.0'  # TODO: #467 fix this...
             loader = WorkshopCache(repository=workshop, branch=branch, log=log)
             data = loader.data
             del data['raw']

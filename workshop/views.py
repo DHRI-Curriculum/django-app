@@ -1,4 +1,4 @@
-from install.models import Instruction
+from install.models import Instructions
 from django.shortcuts import get_object_or_404, HttpResponseRedirect
 from django.core.paginator import Paginator
 from workshop.models import Prerequisite, Workshop, Collaboration, Blurb
@@ -32,7 +32,8 @@ class FrontmatterView(DetailView):
         context['user_favorited'] = self.has_favorited()
         context['num_terms'], context['all_terms'] = self.get_all_terms()
         context['frontmatter'] = self.get_object().frontmatter
-        context['prerequisites'] = self.get_prerequisites()
+        context['prerequisites'] = self.get_object().frontmatter.prerequisites
+        # context['prerequisites'] = self.get_prerequisites()
 
         context['learning_objectives'] = [x.label.replace('<p>', '').replace(
             '</p>', '') for x in context['frontmatter'].learning_objectives.all()]
@@ -40,6 +41,7 @@ class FrontmatterView(DetailView):
 
         context['all_collaborators'] = Collaboration.objects.filter(
             frontmatter=context['frontmatter']).order_by('contributor__last_name')
+
         context['current_collaborators'] = context['all_collaborators'].filter(
             current=True).order_by('contributor__last_name')
         context['past_collaborators'] = context['all_collaborators'].filter(
@@ -98,10 +100,9 @@ class FrontmatterView(DetailView):
             'required': [],
             'recommended': [],
             'workshops': [],
-            'installs': {
-                'by_software': {},
-                'by_os': {},
-            },
+            'required_installs': [],
+            'recommended_installs': [],
+            'installs': [],
             'insights': [],
             'external_links': [],
             'cheat_sheets': [],
@@ -117,20 +118,16 @@ class FrontmatterView(DetailView):
             elif req.category == Prerequisite.CHEATSHEET: _['cheat_sheets'].append(req)
 
             for software in req.linked_software.all():
-                if not software.software in _['installs']['by_software']:
-                    _['installs']['by_software'][software.software] = {
-                        'required': req.required,
-                        'recommended': req.recommended,
-                        'instructions': Instruction.objects.by_software()[software.software]
-                    }
-
-                if not software.operating_system in _['installs']['by_os']:
-                    _['installs']['by_os'][software.operating_system] = {
-                        'required': req.required,
-                        'recommended': req.recommended,
-                        'instructions': Instruction.objects.by_os()[software.operating_system]
-                    }
-
+                if not req.required and not req.recommended:
+                    if not (req, software) in _['installs']:
+                        _['installs'].append((req, software))
+                elif req.required:
+                    if not (req, software) in _['required_installs']:
+                        _['required_installs'].append((req, software))
+                elif req.recommended:
+                    if not (req, software) in _['recommended_installs']:
+                        _['recommended_installs'].append((req, software))
+        
         return _
 
 
@@ -145,16 +142,17 @@ class PraxisView(DetailView):
         context['frontmatter'] = self.get_object().frontmatter
 
         context['is_praxis'] = True
-        context['evaluations'] = self.get_all_evaluations()[:10]
-        context['num_evaluations'] = len(context['evaluations'])
+        context['evals'] = self.get_evaluations()
+        context['num_evaluations'] = len(context['evals'])
 
         return context
 
-    def get_all_evaluations(self):
+    def get_evaluations(self):
         _ = []
         for lesson in self.get_object().lessons.order_by('?').all():
             for eval in lesson.evaluations.all():
-                _.append(eval)
+                if not (len(_) >= 10):
+                    _.append(eval)
         return _
 
 

@@ -22,6 +22,8 @@ favorite = function(evt) {
                 setTimeout(() => { elem.style.backgroundColor = ''; }, 3000);
                 setTimeout(() => { evt.target.style.backgroundColor = ''; }, 3000);
                 elem.dataset.favorite = false;
+                document.querySelector('.favorited i').classList.add('bi-heart');
+                document.querySelector('.favorited i').classList.remove('bi-heart-fill');
             })
         } else if (data.added === true) {
             // console.log("Favorite " + data.workshop + "added.");
@@ -31,11 +33,14 @@ favorite = function(evt) {
                 setTimeout(() => { elem.style.backgroundColor = ''; }, 3000);
                 setTimeout(() => { evt.target.style.backgroundColor = ''; }, 3000);
                 elem.dataset.favorite = true;
+                document.querySelector('.favorited i').classList.add('bi-heart-fill');
+                document.querySelector('.favorited i').classList.remove('bi-heart');
             })
         } else if (data.error === 'user is not authenticated') {
             document.querySelector('#no-login').classList.remove('alert-warning');
             document.querySelector('#no-login').classList.add('alert-danger');
-            document.querySelector('#no-login').innerHTML = `Note that you must be logged in to favorite workshops. Click to <a href="${window.LOGIN_URL}">login</a> or <a href="${window.REGISTER_URL}">create an account</a>.`;
+            // document.querySelector('#no-login').innerHTML = `Note that you must be logged in to favorite workshops. Click to <a href="${window.LOGIN_URL}">login</a> or <a href="${window.REGISTER_URL}">create an account</a>.`; //switch back to this in #480
+            document.querySelector('#no-login').innerHTML = `Note that you must be logged in to favorite workshops. This feature is unable in the current version of the website.`;
         } else {
             console.error('Cannot interpret response data');
             console.error(data);

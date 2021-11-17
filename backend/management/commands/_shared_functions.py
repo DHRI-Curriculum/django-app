@@ -28,7 +28,7 @@ def test_for_required_files(REQUIRED_PATHS=[], log=None):
     return True
 
 
-def get_yaml(file, log=None):
+def get_yaml(file, log=None, catch_error=False):
     ''' Returns the contents of any given YAML file as a dictionary '''
     try:
         with open(file, 'r+') as f:
@@ -36,9 +36,15 @@ def get_yaml(file, log=None):
     except FileNotFoundError:
         error_msg = f'A required datafile was not found ({file}). Try running python manage.py build before you run this command. If it does not work, consult the documentation.'
         if not log:
-            exit(error_msg)
+            if catch_error:
+                raise FileNotFoundError(error_msg)
+            else:
+                exit(error_msg)
         else:
-            log.error(error_msg)
+            if catch_error:
+                raise FileNotFoundError(error_msg)
+            else:
+                log.error(error_msg)
 
 
 def get_all_existing_workshops(specific_names=None, log=None):

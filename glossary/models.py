@@ -15,7 +15,7 @@ class Term(models.Model):
         if self.term:
             self.slug = dhri_slugify(self.term)
         else:
-            print('no term provided...')
+            pass # no term provided...
         super(Term, self).save()
 
     def __str__(self):

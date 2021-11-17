@@ -73,17 +73,20 @@ SETUP_FILES = {
 }
 for path in SETUP_FILES.values():
     if not os.path.exists(path):
-        exit('Required settings file does not exist: ' + path)
+        exit(f'Required settings file does not exist: ' + path)
 
 def get_settings(SETUP_FILES=SETUP_FILES):
     SETUP = {}
     for file, path in SETUP_FILES.items():
         try:
-            with open(path, 'r') as f:
+            with open(path, 'r', encoding='utf-8') as f:
                 SETUP[file] = yaml.safe_load(f)
         except FileNotFoundError:
             exit(
-                'Required settings file {file} could not be found in the correct path ({path}). Before the script can run, the correct settings must be in the right place.')
+                f'Required settings file {file} could not be found in the correct path ({path}). Before the script can run, the correct settings must be in the right place.')
+        except UnicodeDecodeError as e:
+            SETUP[file] = {}
+            raise RuntimeError(f'ASCII codec could not decode the data in {path}: {e}')
     return SETUP
 
 SETUP = get_settings()
@@ -163,7 +166,7 @@ def _check_dirs_existence(DIRS=CACHE_DIRS):
             DIRS[DIR].mkdir(parents=True)
     return True
 
-def _check_users(REQUIRED_IN_USERS=['first_name', 'last_name', 'username', 'password'], AUTO_USERS=AUTO_USERS):
+def _check_users(REQUIRED_IN_USERS=['first_name', 'last_name', 'username'], AUTO_USERS=AUTO_USERS):
     for cat, userlist in AUTO_USERS.items():
         for u in userlist:
             for section in REQUIRED_IN_USERS:

@@ -4,10 +4,10 @@
 {% block main %}
 <div class="container-xxl">
     <div class="row py-4 justify-content-center">
-        <div class="col-4 py-5 my-5">
+        <div class="col-12 col-md-4 py-5 my-5">
             {% if request.user.is_authenticated %}
             <div class="border-top pt-3 mt-3">
-                <p>It looks like you are already logged in. <a href="{% url 'logout' %}">Log out before you try to register as another user.</p>
+                <p>It looks like you are already logged in. <a href="{ url 'logout' }">Log out before you try to register as another user.</p>
             </div>
             {% else %}
             <form method="POST">{% csrf_token %}

@@ -6,21 +6,21 @@ by_groups:
       last_name: Westerling
       email: kwesterling1@gradcenter.cuny.edu
       username: kallewesterling
-      password: admin
       groups:
         - Team
       bio: Kalle Westerling is a Ph.D. Candidate in Theatre and Performance at The Graduate Center, CUNY, where he works on _The Roots and Routes of Boylesque_ a dissertation about the history and aesthetics of male-identified bodies in 20th-century burlesque and 21st-century boylesque. He is also the project manager for the NEH-funded project "Expanding Communities of Practice," aimed at helping to create infrastructure for digital humanities across several higher education institutions across the U.S.
       pronouns: 'he/him'
-      img: "backend/setup/profile-pictures/kalle-westerling.png"
       links:
         - text: Personal website
           url: http://www.westerling.nu
+          cat: personal
+        - text: GitHub profile
+          url: https://www.github.com/kallewesterling/
           cat: personal
 
     - first_name: Lisa
       last_name: Rhody
       username: lisarhody
-      password: admin
       groups:
         - Team
       bio: "As Director of Digital Fellowship Programs, she leads 3 cohorts of graduate students: the GC Digital Fellows, Program Social Media Fellows, and Videography Fellows who work to extend and improve the critical use of digital technologies in research and teaching. Lisa is on the faculties of the M.A. in Liberal Studies, M.A. in Digital Humanities, and M.S. in Data Analytics and Visualization programs, and serves as Director of Research Projects for the CUNY Academic Commons, an academic social network designed to support faculty initiatives and build community through the use of technology in teaching and learning. Previously, she was Associate Director of Research Projects at the Roy Rosenzweig Center for History and New Media. Lisa holds a Ph.D in English from the University of Maryland, College Park. Her research, which uses computational methods such as text mining and machine learning to explore 21st century poetry, has appeared in the Journal of Digital Humanities, Debates in the Digital Humanities 2016, and PMLA."
@@ -30,7 +30,6 @@ by_groups:
     - first_name: Stephen
       last_name: Zweibel
       username: stevezweibel
-      password: admin
       groups:
         - Team
       bio: Stephen Zweibel supports digital project creation by GC researchers across the disciplines, helps preserve those projects, and supports faculty and students with their data-based research and data management needs. He also coordinates the library's growing series of workshops on research skills and tools. Steve earned his master's degree in library and information science from Long Island University in 2010, and received a master's degree in the Digital Humanities track of the GC's MALS program. As a MALS student, he built DH Box, a cloud-based computer lab for digital humanities research (including the tools Omeka, NLTK, IPython, R Studio, and Mallet). DH Box won a National Endowment for the Humanities Start-Up grant. Before coming to the Graduate Center, Steve was a visiting lecturer at Hunter College, where he built several useful library tools, including Augur, a web application to track reference question data; a mobile app for the CUNY library catalog; and Know Thy Shelf, a radio frequency identification (RFID)-based library inventory system.
@@ -45,7 +44,6 @@ by_groups:
     - first_name: Administrator
       last_name: General
       username: admin
-      password: admin
       groups:
         - Team
       pronouns: 'they'
@@ -53,7 +51,6 @@ by_groups:
     - first_name: Param
       last_name: Ajmera
       username: paramajmera
-      password: admin
       groups:
         - Team
       bio: Param Ajmera is an English PhD candidate and Digital Fellow at the CUNY Graduate Center. He received his BA in English Literature and Economics from Denison University, and his MA in English as well as a Graduate Certificate in Digital Humanities from Northeastern University. His research interests include Race and Ethnicity Studies, American Studies, and Digital Humanities. Param's dissertation project is an archival study of the early history of Indian international students in the United States. His research theorizes the experiences of these students to discuss ways of building transnational solidarities against colonialism, racism, and patriarchy. Alongside his dissertation, Param is also developing a website titled Indian Students Abroad that exhibits his archival findings. Param has previously worked on the Women Writers Project, the CERES Exhibit Toolkit, and the Graduate Center Digital Research Institute. He currently serves on the Editorial Collective of The Journal of Interactive Technology and Pedagogy.
@@ -81,10 +78,9 @@ by_groups:
     - first_name: Di
       last_name: Yoong
       username: diyoong
-      password: admin
       groups:
         - Team
-      bio: Di is currently a PhD student at CUNY, The Graduate Center (GC). They are also a GC Digital Initiatives Digital Fellow. Broadly, their work is on understanding the relationality between systems of oppression and the individual. They are interested in identities as discourses, and the ties between transnationalism and diasporas. Currently, they are working on several projects that is exploring identities as discourses, including in alt-right spaces, K-pop/Hallyu, and the experiences of queer and trans Asian (American) in the US.<br /><br />As a GC Digital Initiatives Digital Fellow, they are also interested in understanding what ethics is within computational social science, digital humanities, and public humanities projects. They are also invested in bridging the gaps of technology literacy, especially within underserved communities.
+      bio: Di is currently a PhD candidate in Critical Social/Personality Psychology at CUNY, The Graduate Center (GC). They are also a GC Digital Initiatives Digital Fellow. Broadly, their work is on understanding the relationality between systems of oppression and the individual. They are interested in identities as discourses, and the ties between transnationalism and diasporas. Currently, they are working on several projects that is exploring identities as discourses, including in alt-right spaces, K-pop/Hallyu, and the experiences of queer and trans Asian (American) in the US.<br /><br />As a GC Digital Initiatives Digital Fellow, they are also interested in understanding what ethics is within computational social science, digital humanities, and public humanities projects. They are also invested in bridging the gaps of technology literacy, especially within underserved communities.
       img: backend/setup/profile-pictures/di-yoong.jpg
       blurb:
         text: My first foray into data literacies began when I was considering the ethics of conducting a digital oral history archival project. Concerned with how my oral history interviews with queer and trans Asians may be manipulated or remixed without consent, I began to actively look for answers to my questions on doing digital projects with marginalized communities. This led to no easy answers, and I found myself at the beginning of a very complex but necessary journey through data literacies and ethics. What did become clear is that ethical considerations cannot stop at an IRB but has to be negotiated at every step of the way. Important questions that emerged in my process are:<br />a) Am I comfortable with the unintentional use of my data/results/analyses?<br />b) Who is benefiting from my project?, and<br />c) Who is left out in my analysis?<br />As we are living in a data saturated world, these questions also help in keeping me grounded and accountable. These questions also reflect the complexities of ethics in a digital project; there is no universal fit or easy answers. Drawing on my experiences, the workshop on data literacies will begin with exploring some of these concerns."
@@ -94,11 +90,10 @@ by_groups:
     - first_name: Filipa
       last_name: Calado
       username: filipa
-      password: admin
       groups:
         - Team
       bio: Filipa Calado is a Ph.D. candidate in English at the Graduate Center, CUNY. She is interested in digital tools that change the way we read and study 20th century queer literatures. Her dissertation takes a critical look at a variety of digital tools to analyze manuscripts, diaries, journals, and memoirs by queer writers. Here, she explores how digital methods can disrupt expectations about reading and analytical practices. She is a Digital Fellow for the GC Digital Initiatives, where she leads workshops on Python and Text Encoding with TEI, and works with the Digital Archive Research Collective. She teaches Latinx Literature at Hunter College, CUNY.
-      img: backend/setup/profile-pictures/filipa-calado.jpg
+      img: backend/setup/profile-pictures/filipa_calado.jpg
       blurb:
         text: "As someone from a humanities and literary background, programming languages were not something I had interest in learning, let alone teaching. My entry into digital humanities began with an unexpected experience on a classroom project with TEI (a markup language similar to HTML), where I encoded a heavily revised manuscript into electronic format. With time and effort, I marked up each detail of the manuscript, and to my surprise, I was totally immersed in this close and careful work and in the production of a concrete piece of textual scholarship. I looked into more digital humanities tools, and eventually, I inherited this Python workshop from a former digital fellow. In learning Python, I rediscovered the satisfaction that comes with the slow progress of building toward something, of making a concrete thing, like a program that scrapes the web or cleans text. For someone who spends a lot of time discussing and writing about (and often getting carried away with) theory and criticism, learning languages like Python has been a nice reorientation toward the matter of my research, reminding me to focus on the text and my engagement with it as the ground for scholarship."
         workshop: python
@@ -106,7 +101,6 @@ by_groups:
     - first_name: Rafael
       last_name: Davis Portela
       username: rafadavisportela
-      password: admin
       groups:
         - Team
       bio: I am a Ph.D. student in the History department, specializing in the History of Capitalism and history of Latin America. I research the role of transnational capital in Latin American urban development. As a Digital Fellow on the Graduate Center Digital Initiatives, I support member of the GC community to find the right computing tools for their research. I lead the Python Users' Group, and write and lead workshops on Python, Markdown, Network Analysis, among others. I am interested in programming, video games, digital tools, teaching research computing, Emacs, running, board games, among other things.
@@ -118,7 +112,6 @@ by_groups:
     - first_name: Stefano
       last_name: Morello
       username: stefanomorello
-      password: admin
       groups:
         - Team
       bio: Stefano Morello is a doctoral candidate in English with a certificate in American Studies at The Graduate Center, CUNY. His academic interests include American Studies, pop culture, poetics, and digital humanities. His dissertation, "Let's Make a Scene! East Bay Punk and Subcultural Worlding," explores the heterotopic space of the East Bay punk scene, its modes of resistance and (dis-)association, and the clashes between its politics and aesthetics. He serves as co-chair of the Graduate Forum of the Italian Association for American Studies (AISNA) and is a founding editor of its journal, JAm It! (Journal of American Studies in Italy). As a digital humanist, Stefano focuses on archival practices with a knack for archival pedagogy and public-facing initiatives. He created the East Bay Punk Digital Archive, an open access archive of East Bay punk-zines, and worked as a curator and consultant for Lawrence Livermore's archive at Cornell University. He was a Wellcome Trust Transdisciplinary Fellow in 2019-2020.
@@ -126,11 +119,54 @@ by_groups:
       blurb:
         text: "My first memories of using the command line date back to 1994, when my older brother first introduced me to a Windows computer. I was seven years old and beside learning a few commands to run some maintenance utilities, my relationship with the command line didn't progress very much at all until my days as a graduate student. In January 2018, I refreshed my memory through a workshop at the GCDI Digital Research Institute, before having the opportunity (and the need) to apply my newly learned skills to interact with a web server to install Omeka for the East Bay Punk Digital Archive. I now regularly use the command line to manage the installation of server-side software applications, plugins, and tools."
         workshop: command-line
+      links:
+        - text: Personal website
+          url: http://stefanomorello.com/
+          cat: personal 
+
+    - first_name: Olivia 
+      last_name: Ildefonso
+      username: oliviaildefonso
+      bio: "Olivia Ildefonso is a Ph.D. Student in Earth and Environmental Sciences with a specialization in Human Geography at the Graduate Center (CUNY). She studies the political economy of school segregation. Her research focuses on Long Island, New York. Olivia is a Long Island native and has worked as a racial justice activist on Long Island for the past ten years. She has worked for civil rights organization, ERASE Racism since 2010 and she has served on the board of directors for STRONG Youth since 2013. Olivia is currently a GC Digital Fellow. She specializes in GIS Mapping, website management, and multi-media storytelling. Before becoming a GC Digital Fellow, Olivia was an Adjunct Lecturer at Queens College and a Writing Across the Curriculum (WAC) fellow at John Jay College."
+      img: backend/setup/profile-pictures/olivia-ildefonso.jpg
+      groups:
+        - Team
+      pronouns: 'she/her'
+      links:
+        - text: Twitter
+          url: http://www.twitter.com/oildefon
+          cat: personal
+        - text: GitHub
+          url: http://www.github.com/oildefon
+          cat: personal
+        - text: Personal website
+          url: http://www.cuny.is/oildefon
+          cat: personal
+          
+    - first_name: Connor
+      last_name: French
+      username: connorfrench
+      bio: Connor French is a Ph.D. candidate in the Biology department. He studies the impact of historical climate change on the spatial distribution of animals, with a focus on reptiles and amphibians in the Brazilian Atlantic Forest. As a GC Digital Fellow, Connor specialized in proselytizing the R programming language, especially in contexts outside of his narrow academic field.
+      img: backend/setup/profile-pictures/connor-french.jpeg
+      groups:
+        - Team
+      pronouns: 'he/him'
+      links:
+        - text: Twitter
+          url: http://www.twitter.com/frog_phylo
+          cat: personal
+        - text: Personal website
+          url: http://www.connor-french.com/
+          cat: personal
+        - text: GitHub
+          url: http://www.github.com/connor-french
+          cat: personal
+
+  USER:
 
     - first_name: Kristen
       last_name: Hackett
       username: kristenhackett
-      password: admin
       groups:
         - Team
       bio: 'Kristen Hackett is an activist, scholar, and educator working toward decolonized, anti-racist and just urban futures in New York City. She is a member of the Queens-based Justice for All Coalition and a doctoral candidate and former fellow at The Graduate Center, City University of New York. Her dissertation work titled "Recalibrating Queens" is a digital history and activist scholarship project that publicly excavates the history of development and change in the borough over time with an eye towards reframing the contemporary moment (https://recalibratingqueens.nyc). Relatedly, she has taught courses on urban studies, urban research methods, social movements, and environmental psychology. As a GC Digital Fellow with GCDI, a co-coordinator of OpenCUNY, and fellow with The OpenLab she has led workshops, supported colleagues, and written about using digital tools and methods for web-based projects related to teaching, learning, community-building and more. For more information: https://kristenhackett.info/.'
@@ -158,8 +194,8 @@ by_groups:
     - first_name: Jojo
       last_name: Karlin
       username: jojokarlin
-      password: nopassword
       bio: Jojo Karlin researches transmissions of memory after periods of rapid technological transformation. Coming from a theater background, Jojo loves the intersection of disciplines, multiple media, and diverse expertises she finds in Digital Humanities. For her first big DH project, she did outreach for TANDEM, a web tool that gathers text and image data, and she now proudly coordinates outreach for DH Box, the GC's NEH-funded DH cloud laboratory. She is a freelance editor for the Tow Center for Digital Journalism at Columbia, and is developing a digital interface for a collection of historical letters. Jojo is deeply interested in digital editions preserving past materiality while exploring new materials.
+      img: backend/setup/profile-pictures/jojo-karlin.jpg
       groups:
         - Team
       pronouns: 'she/her'
@@ -177,9 +213,9 @@ by_groups:
     - first_name: Patrick
       last_name: Smyth
       username: patricksmyth
-      password: nopassword
       bio: >
           Patrick Smyth's research focuses on Utopian thought and the history of science in 18th and 19th century British literature. As a digital humanist, Patrick is concerned with digital platforms for research and pedagogy. He is currently a developer on the NEH-funded DH Box, a cloud-based platform for accessing digital humanities tools, and has received a Provost's Digital Innovation grant for an online archive of science fiction works. His most recent publication is "Ebooks and the Digital Paratext: Emerging Trends in the Interpretation of Digital Media" in Examining Paratextual Theory and Its Applications in Digital Culture. Patrick was a 2010 Fulbright Teaching Fellow in Berlin, Germany, and teaches composition and literature at Queens College.
+      img: backend/setup/profile-pictures/patrick-smyth.jpg
       groups:
         - Team
       pronouns: 'he/him'
@@ -191,11 +227,11 @@ by_groups:
           url: http://www.github.com/smythp
           cat: personal
 
-    - first_name: Javier 
+    - first_name: Javier
       last_name: Otero Peña
       username: javioteropena
-      password: nopassword
       bio: "Javier Otero Peña is a GC Digital Fellow since 2016 and a member of the Public Space Research Group, and currently works as a research assistant for the PARCS study in the CUNY School for Public Health. His dissertation will study the contextual impacts of park renovations in New York City, and will involve a map analysis using GIS technologies, a mini-ethnography using Qualitative Data Analysis (QDA) software, and natural language analysis of social media posts. Javier's field research paper studied the politicization of public spaces through a participatory mural in East Harlem. In 2016, he took part in the CUNY-Humboldt University Summer School in Berlin, and in 2017 he participated in the Digital Humanities Research Institute in Victoria University, Canada. He also received the 2017 Provost's Digital Innovation Grant. Javier holds a Master in Environmental Policies and Sustainable Development, and taught a class on Sustainable Development in Latin America and the Caribbean at the Paris Catholic University. He also studied Urban Planning and Management at UCV, and Sustainable Urban Mobility in Developing Countries (UNITAR). Javier worked as a consultant for the United Nations Environment Programme for three years."
+      img: backend/setup/profile-pictures/javier-otero-pena.png
       groups:
         - Team
       pronouns: 'he/him'
@@ -207,33 +243,13 @@ by_groups:
           url: http://www.github.com/javo0101
           cat: personal
 
-    - first_name: Olivia 
-      last_name: Ildefonso
-      username: oliviaildefonso
-      password: nopassword
-      bio: "Olivia Ildefonso is a Ph.D. Student in Earth and Environmental Sciences with a specialization in Human Geography at the Graduate Center (CUNY). She studies the political economy of school segregation. Her research focuses on Long Island, New York. Olivia is a Long Island native and has worked as a racial justice activist on Long Island for the past ten years. She has worked for civil rights organization, ERASE Racism since 2010 and she has served on the board of directors for STRONG Youth since 2013. Olivia is currently a GC Digital Fellow. She specializes in GIS Mapping, website management, and multi-media storytelling. Before becoming a GC Digital Fellow, Olivia was an Adjunct Lecturer at Queens College and a Writing Across the Curriculum (WAC) fellow at John Jay College."
-      groups:
-        - Team
-      pronouns: 'she/her'
+    - first_name: Patrick
+      last_name: Sweeney
+      username: patricksweeney
       links:
-        - text: Twitter
-          url: http://www.twitter.com/oildefon
-          cat: personal
         - text: GitHub
-          url: http://www.github.com/oildefon
+          url: http://www.github.com/pswee001
           cat: personal
-        - text: Personal website
-          url: http://www.cuny.is/oildefon
-          cat: personal
-
-  USER:
-
-    - first_name: Test
-      last_name: User
-      username: test
-      password: test
-      groups:
-        - Learner
-      pronouns: 'they'
+    
 
 default: backend/setup/profile-pictures/default.jpg

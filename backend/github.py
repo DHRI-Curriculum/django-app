@@ -3,6 +3,7 @@ This library is used for the `build` commands related to the DHRI Curriculum
 '''
 
 from git import Repo
+from git.exc import GitCommandError
 import os
 import re
 from bs4 import BeautifulSoup
@@ -58,7 +59,7 @@ class Helper():
             _['url'], _['alt'] = dictionary
             dictionary = _
         url = dictionary.get('url').replace('https://', '').replace('http://', '').replace(f'raw.githubusercontent.com/DHRI-Curriculum/{self.repository}/{self.branch}/', '')
-        parents = [x for x in url.split('/') if not '.' in x]
+        parents = [x for x in url.split('/') if not '.' in x and not x in ['DHRI-Curriculum', self.repository]]
         for add_parent in additional_parents:
             if not add_parent in parents:
                 parents.insert(0, add_parent)
@@ -70,7 +71,7 @@ class Helper():
             return {'url': local_file, 'alt': dictionary.get('alt')}
         else:
             # TODO: This bug occurs when local files are not available in the parent directories
-            raise NotImplementedError('This is a bug that needs to be fixed in the beta version of the website.')
+            raise NotImplementedError(f'Cannot find local file {local_file}. This is a bug that needs to be fixed in the beta version of the website.')
 
     @staticmethod
     def _get_order(step, log=None):
@@ -147,7 +148,14 @@ class GitCache():
             self.log.log(f'Repository directory exists so creating connection to repository: {self.destination_dir}')
             self.repo = Repo(self.destination_dir)
 
-        self.repo.git.checkout(self.branch, force=True)
+        try:
+            self.repo.git.checkout(self.branch, force=True)
+        except GitCommandError as e:
+            if 'did not match any file(s) known to git' in str(e):
+                raise RuntimeError(f'Could not find branch `{self.branch}` for repository `{self.repository}`. Make sure your --name and --branch settings are correct.')
+            else:
+                print(e)
+                raise RuntimeError('An uncaught error occurred with the git repository. Make sure your --name and --branch settings are correct.')
 
         self.log.log(f'Pulling latest repository updates from remotes origin...')
         # wait for 3 seconds to avoid triggering an API rate limit error
@@ -334,6 +342,10 @@ class InstallCache(Helper, GitCache):
                 except:
                     self.log.error('An error occurred when interpreting image data for installation instructions: {image_data}')
 
+            if _['image'].endswith('/'):
+                self.log.warning(f'An error occurred when interpreting image data for installation instructions. Does the image exist for the installation instructions ({self.repository}/{self.branch})?')
+                _['image'] = None
+
             # Get `software`
             sections = split_into_sections(file_contents, level_granularity=1)
             if len(sections) == 1:
@@ -517,7 +529,41 @@ class WorkshopCache(Helper, GitCache):
         
         data['name'] = list(split_into_sections(self.raw['frontmatter'], level_granularity=1).keys())[0]
         self.sections = {key: split_into_sections(value) for key, value in self.raw.items()}
+        
+        further_readings, tutorials, further_projects = '', '', ''
+
+        # TODO: #450 Should add this for other listed sections too... Perhaps iterate over a list of them all...?
+        for s, text in split_into_sections(self.raw['theory-to-practice'], level_granularity=2).items():
+            if 'further readings' in s.lower() or 'other tutorials' in s.lower() or 'projects or challenges to try' in s.lower():
+                subsections = split_into_sections(text, level_granularity=3)
+                if len(subsections):
+                    new_content = ''
+                    for header, content in subsections.items():
+                        new_content += re.sub('(^|\n?)- ', f'\n- ({header}) ', content).strip()
+                    
+                    if 'further readings' in s.lower():
+                        concerns = 'further readings'
+                        further_readings = new_content
+                    elif 'other tutorials' in s.lower():
+                        concerns = 'other tutorials'
+                        tutorials = new_content
+                    elif 'projects or challenges to try' in s.lower():
+                        concerns = 'projects or challenges to try'
+                        further_projects = new_content
+                    
+                    self.log.warning(f'Found {len(subsections)} subsections of the one of the sections in the theory-to-practice page ({concerns}). Adding the readings to the section but will not keep the meta information from the header.')
+
         self.sections = self._normalize_sections()
+
+        if further_readings:
+            self.sections['theory-to-practice']['further_readings'] = further_readings
+
+        if tutorials:
+            self.sections['theory-to-practice']['tutorials'] = tutorials
+
+        if further_projects:
+            self.sections['theory-to-practice']['further_projects'] = further_projects
+
         self.sections['frontmatter'] = self._fix_frontmatter()
         self.sections['theory-to-practice'] = self._fix_praxis()
         self.sections['lessons'] = self._fix_lessons()
@@ -537,19 +583,19 @@ class WorkshopCache(Helper, GitCache):
                 os.path.join(self.destination_dir, 'lessons.md'))
         except FileNotFoundError:
             raise FileNotFoundError(
-                f'The workshop repository {self.repository} is not correctly set up. It needs a `frontmatter.md` file.') from None
+                f'The workshop repository {self.repository} is not correctly set up. It needs a `lessons.md` file.') from None
         try:
             raw['theory-to-practice'] = self.read_file(
                 os.path.join(self.destination_dir, 'theory-to-practice.md'))
         except FileNotFoundError:
             raise FileNotFoundError(
-                f'The workshop repository {self.repository} is not correctly set up. It needs a `frontmatter.md` file.') from None
+                f'The workshop repository {self.repository} is not correctly set up. It needs a `theory-to-practice.md` file.') from None
         try:
             raw['image'] = self.read_file(
                 os.path.join(self.destination_dir, 'image.md'))
         except FileNotFoundError:
             raise FileNotFoundError(
-                f'The workshop repository {self.repository} is not correctly set up. It needs a `frontmatter.md` file.') from None
+                f'The workshop repository {self.repository} is not correctly set up. It needs an `image.md` file.') from None
 
         return raw
 
@@ -588,6 +634,8 @@ class WorkshopCache(Helper, GitCache):
                 return 'Re'
             if 'editor' in string.lower():
                 return 'Ed'
+            
+            raise RuntimeError(f'Could not get correct role from `{string}`. Roles can be `author`, `contributor`, `reviewer`, or `editor`. Please correct the markdown file.')
 
         def split_names(full_name: str) -> tuple:
             """Uses the `nameparser` library to interpret names."""
@@ -599,7 +647,12 @@ class WorkshopCache(Helper, GitCache):
             return((first_name, last_name))
 
         soup = BeautifulSoup(PARSER.convert(string), 'lxml')
-        link = soup.find('a')['href']
+        link = soup.find('a')
+        if link:
+            href = link['href']
+        else:
+            href = None
+
         current = 'current' in string.lower()
         past = 'past' in string.lower()
         full_name, first_name, last_name = None, None, None
@@ -618,7 +671,7 @@ class WorkshopCache(Helper, GitCache):
             'role': get_correct_role(string),
             'current': current,
             'past': past,
-            'link': link
+            'link': href
         }
 
     def _fix_frontmatter(self):
@@ -648,8 +701,8 @@ class WorkshopCache(Helper, GitCache):
             url_text = prerequisite_data.get('linked_text')
             html = prerequisite_data.get('annotation')
             install_link = 'shortcuts/install/' in url
-            insight_link = '/shortcuts/insight/' in url
-            workshop_link = '/shortcuts/workshop/' in url
+            insight_link = 'shortcuts/insight/' in url
+            workshop_link = 'shortcuts/workshop/' in url
             
             #TODO #429: Somehow determine what is a cheatsheet and ingest that here...
 
@@ -663,7 +716,7 @@ class WorkshopCache(Helper, GitCache):
 
             if install_link:
                 _.append({
-                    'type': 'install',
+                    'type': 'software',
                     'potential_name': self._extract_from_p(url_text),
                     'text': text,
                     'potential_slug_fragment': os.path.basename(url).replace('.md', ''),
@@ -720,9 +773,9 @@ class WorkshopCache(Helper, GitCache):
         for subheader, content in split_into_sections(markdown, level_granularity=2).items():
             if subheader.lower() == 'evaluation' or subheader.lower() == 'evaluations':
                 has_evaluation = True
-            if subheader.lower() == 'challenge' or subheader.lower() == 'challenges':
+            if subheader.lower() == 'challenge' or subheader.lower() == 'challenges' or subheader.lower().startswith('challenge: ') or subheader.lower().startswith('challenges: '):
                 has_challenge = True
-            if subheader.lower() == 'solution' or subheader.lower() == 'solutions':
+            if subheader.lower() == 'solution' or subheader.lower() == 'solutions' or subheader.lower().startswith('solution') or subheader.lower().startswith('solutions'):
                 has_solution = True
             if subheader.lower() == 'keyword' or subheader.lower() == 'keywords':
                 has_keywords = True
@@ -935,7 +988,7 @@ class WorkshopCache(Helper, GitCache):
                 if not os.path.exists(new_path):
                     copyfile(local_image, new_path)
             else:
-                raise NotImplementedError('This script does not yet download images as it should be synced in the repository.')
+                raise NotImplementedError(f'Ran into an error while trying to copy into the static directory. This script does not yet download images as it should be synced in the repository. The following is the path for troubleshooting:\n\n{local_image}\n\n')
 
             path = settings.STATIC_URL + f'website/images/lessons/{self.repository}/' + os.path.basename(local_image)
             img_data['src'] = path

@@ -1,3 +1,4 @@
+from backend.dhri_utils import dhri_slugify
 import filecmp
 from glossary.models import Term
 from learner.models import Profile
@@ -23,7 +24,7 @@ class Command(BaseCommand):
     WARNINGS, LOGS = [], []
 
     def add_arguments(self, parser):
-        parser.add_argument('--forceupdate', action='store_true')
+        parser.add_argument('--force', action='store_true')
         parser.add_argument('--name', nargs='+', type=str)
         parser.add_argument('--silent', action='store_true')
         parser.add_argument('--verbose', action='store_true')
@@ -59,8 +60,11 @@ class Command(BaseCommand):
             parent_repo = d.get('parent_repo')
 
             # 1. ENTER WORKSHOP
+
             workshop, created = Workshop.objects.update_or_create(
-                name=full_name, defaults={
+                name=full_name,
+                defaults={
+                    'slug': slug,
                     'parent_backend': parent_backend,
                     'parent_branch': parent_branch,
                     'parent_repo': parent_repo,
@@ -105,8 +109,9 @@ class Command(BaseCommand):
                     log.warning(f'Default workshop image does not exist. You will want to add it manually to the correct folder: {_get_media_path("")}')
 
             # Saving the slug in a format that matches the GitHub repositories (special method `save_slug`)
-            workshop.slug = slug
-            workshop.save_slug()
+            if created == True:
+                workshop.slug = slug
+                workshop.save_slug()
 
             # 2. ENTER FRONTMATTER
             frontmatter, created = Frontmatter.objects.update_or_create(
@@ -169,7 +174,7 @@ class Command(BaseCommand):
                                 profile = p
                                 log.info(f'In-depth search revealed a profile matching the full name for `{workshop.name}` contributor `{point.get("first_name")} {point.get("last_name")}`. It may or may not be the correct person, so make sure you verify it manually.')
 
-                        if not p:
+                        if not profile:
                             log.info(f'Could not find user profile on the curriculum website for contributor `{point.get("full_name")}` (searching by first name `{point.get("first_name")}` and last name `{point.get("last_name")}`).')
                     
                     contributor, created = Contributor.objects.update_or_create(
@@ -263,10 +268,9 @@ class Command(BaseCommand):
                         'order': lessoninfo.get('order'),
                         'text': lessoninfo.get('content'),
                     })
-
+                
                 for image in lessoninfo.get('lesson_images'):
-                    LessonImage.objects.update_or_create(
-                        url=image.get('path'), lesson=lesson, alt=image.get('alt'))
+                    LessonImage.objects.update_or_create(url=image.get('path'), lesson=lesson, defaults={'alt': image.get('alt')})
 
                 if not lessoninfo.get('challenge') and lessoninfo.get('solution'):
                     log.error(f'Lesson `{lesson.title}` (in workshop {workshop}) has a solution but no challenge. Correct the files on GitHub and rerun the buildworkshop command and then re-attempt the ingestworkshop command. Alternatively, you can change the datafile content manually.')
