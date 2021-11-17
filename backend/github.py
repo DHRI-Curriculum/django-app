@@ -150,7 +150,15 @@ class GitCache():
         self.repo.git.checkout(self.branch, force=True)
 
         self.log.log(f'Pulling latest repository updates from remotes origin...')
+        # wait for 3 seconds to avoid triggering an API rate limit error
+        import time
+        time.sleep(3)        
         self.repo.remotes.origin.pull()
+        try:
+            print(self.repo.git.status())
+        except:
+            print('No git status')
+        
 
         if self.repo.head.commit:
             latest_commit = self.repo.head.commit
@@ -163,12 +171,14 @@ class GitCache():
         self.log.info(f'Checked out branch: {self.repository}/{self.branch} latest commit {msg}')
 
         self.parsed_data = self.parse()
-
+    
     def _clone(self):
         if self.backend.lower() == 'github':
+            
             url = f'http://www.github.com/DHRI-Curriculum/{self.repository}'
             self.log.log(f'Cloning repository from GitHub: {url}')
             self.repo = Repo.clone_from(url, self.destination_dir)
+
         else:
             raise NotImplementedError(f'Backend `{self.backend}` cannot be used. No implementation for it.')
         return self.repo
@@ -637,7 +647,6 @@ class WorkshopCache(Helper, GitCache):
             url = prerequisite_data.get('url')
             url_text = prerequisite_data.get('linked_text')
             html = prerequisite_data.get('annotation')
-
             install_link = 'shortcuts/install/' in url
             insight_link = '/shortcuts/insight/' in url
             workshop_link = '/shortcuts/workshop/' in url

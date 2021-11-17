@@ -116,8 +116,8 @@ class GitHubParserCache():
                 log.error("\n- ".join(exceptions), kill=False)
 
                 fatal = True
-
-        if 'triggered an abuse detection mechanism' in rendered_str.lower():
+        print(f'{processor} rendered markdown: {rendered_str}')
+        if 'triggered an abuse detection mechanism' in rendered_str.lower() or 'you have exceeded a secondary rate limit' in rendered_str.lower():
             fatal = True
 
         if 'bad credentials' in rendered_str.lower():
@@ -232,23 +232,25 @@ class GitHubParser():
     
         soup = BeautifulSoup(text, 'lxml')
 
-        for tag in soup.descendants:
-            if tag.name == 'a':
-                # if element.text == None: # TODO: Drop links that have no text
-                tag = self._fix_link(tag)
+        if soup.body is not None:
+            for tag in soup.descendants:
+                if tag.name == 'a':
+                    # if element.text == None: # TODO: Drop links that have no text
+                    tag = self._fix_link(tag)
 
-        if not multiline:
-            if len([x for x in soup.body.children]) == 1 and soup.body.p:
-                # We only have one paragraph, so return the _text only_ from the p
-                return ''.join([str(x) for x in soup.body.p.children])
+            if not multiline:
+                if len([x for x in soup.body.children]) == 1 and soup.body.p:
+                    # We only have one paragraph, so return the _text only_ from the p
+                    return ''.join([str(x) for x in soup.body.p.children])
+                else:
+                    # We have multiline
+                    html_string = ''.join([str(x) for x in soup.html.body.children])
             else:
-                # We have multiline
                 html_string = ''.join([str(x) for x in soup.html.body.children])
+
+            return html_string
         else:
-            html_string = ''.join([str(x) for x in soup.html.body.children])
-
-        return html_string
-
+            return ''
 
     def quote_converter(self, string, reverse=False):
         """Takes a string and returns it with dumb quotes, single and double,

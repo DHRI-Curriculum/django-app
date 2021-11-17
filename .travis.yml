@@ -9,5 +9,5 @@ env:
   - SECRET_KEY="django-secret-key-here"
     EMAIL_HOST_USER="username"
     EMAIL_HOST_PASSWORD="password"
-    GITHUB_TOKEN="github-token-here"
+    GITHUB_TOKEN="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"
     ZOTERO_KEY="zotero-key-here"

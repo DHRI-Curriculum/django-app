@@ -67,7 +67,7 @@ class Command(BaseCommand):
 
         test_for_required_files(REQUIRED_PATHS=REQUIRED_PATHS, log=log)
         data = get_yaml(FULL_PATH, log=log)
-
+        
         for installdata in data:
             for operating_system in installdata.get('instructions'):
                 software, created = Software.objects.get_or_create(operating_system=operating_system, software=installdata.get('software'))
@@ -77,7 +77,7 @@ class Command(BaseCommand):
                 })
 
                 original_file = installdata.get('image')
-                if original_file:
+                if original_file and os.path.isfile(original_file):
                     if instruction_image_exists(original_file) and filecmp.cmp(original_file, get_instruction_image_path(original_file), shallow=False) == True:
                         log.log(f'Instruction image already exists. Ensuring path is in database: `{get_instruction_image_path(original_file)}`')
                         instruction.image.name = get_instruction_image_path(original_file, True)
